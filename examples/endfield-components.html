@@ -30,6 +30,7 @@
         <a href="#sec-forms" class="ef-side-rail__item">表单全套与菱形开关</a>
         <a href="#sec-overlays" class="ef-side-rail__item">弹窗、抽屉与气泡</a>
         <a href="#sec-data" class="ef-side-rail__item">表格、折叠与反馈</a>
+        <a href="#sec-advanced" class="ef-side-rail__item">高阶组件、HUD 与动效</a>
         <div class="ef-side-rail__group">// 主题切换</div>
         <div style="padding: 8px 20px; display: flex; gap: 8px;" role="group" aria-label="外观模式切换">
           <button type="button" id="ef-btn-light" class="ef-btn ef-btn--sm" aria-pressed="true" onclick="toggleTheme('light')" style="flex: 1; min-width: 0;">纸白</button>
@@ -152,7 +153,7 @@
         <header class="ef-section-title">
           <span class="ef-section-title__meta">▼ // SECTION 02 · NAVIGATION</span>
           <div class="ef-section-title__row">
-            <span class="ef-section-title__block" aria-hidden="true">↘</span>
+            <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
             <p class="ef-section-title__en">NAVIGATION &amp; TABS</p>
           </div>
           <h2 class="ef-section-title__cn">页签三态、分页条、步骤条与头像切换</h2>
@@ -249,7 +250,7 @@
         <header class="ef-section-title">
           <span class="ef-section-title__meta">▼ // SECTION 03 · FORMS</span>
           <div class="ef-section-title__row">
-            <span class="ef-section-title__block" aria-hidden="true">↘</span>
+            <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
             <p class="ef-section-title__en">FORMS &amp; INPUTS</p>
           </div>
           <h2 class="ef-section-title__cn">凹陷/描边输入、单复选菱形切换、开关与步进器</h2>
@@ -349,7 +350,7 @@
         <header class="ef-section-title">
           <span class="ef-section-title__meta">▼ // SECTION 04 · OVERLAYS &amp; DATA DISPLAY</span>
           <div class="ef-section-title__row">
-            <span class="ef-section-title__block" aria-hidden="true">↘</span>
+            <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
             <p class="ef-section-title__en">OVERLAYS, TABLES &amp; FEEDBACK</p>
           </div>
           <h2 class="ef-section-title__cn">弹窗抽屉、数据表格、折叠面板、时间线与完成横幅</h2>
@@ -477,6 +478,189 @@
           <span class="ef-completion-banner__word" aria-hidden="true">COMPLETED</span>
         </section>
       </section>
+
+      <hr class="ef-divider" style="margin: 0;">
+
+      <!-- 5. 高阶表单、测绘 HUD、媒体与动效演示 -->
+      <section id="sec-advanced" class="ef-section ef-stack">
+        <header class="ef-section-title">
+          <span class="ef-section-title__meta">▼ // SECTION 05 · ADVANCED, HUD &amp; MOTION</span>
+          <div class="ef-section-title__row">
+            <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
+            <p class="ef-section-title__en">ADVANCED &amp; TELEMETRY HUD</p>
+          </div>
+          <h2 class="ef-section-title__cn">高阶选择器、日历上传、测绘叠层、媒体与关键动效</h2>
+        </header>
+
+        <div class="ef-grid-2">
+          <div class="ef-stack">
+            <!-- Combobox -->
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-combo-in">可搜索组合框（Combobox）</label>
+              <div class="ef-combobox" id="ef-combobox">
+                <div class="ef-input-box ef-combobox__box">
+                  <input id="ef-combo-in" class="ef-input" type="text" role="combobox" aria-expanded="false" aria-controls="ef-combo-list" placeholder="输入或点击检索节点（如 北岭 / E03）">
+                  <button type="button" class="ef-combobox__toggle" id="ef-combo-btn" aria-label="切换候选面板">▾</button>
+                </div>
+                <div class="ef-menu" id="ef-combo-list" role="listbox">
+                  <button type="button" class="ef-menu__item is-active" role="option" aria-selected="true">TALOS-N07 · 北岭精炼主站</button>
+                  <button type="button" class="ef-menu__item" role="option" aria-selected="false">TALOS-E03 · 东段晶体采掘区</button>
+                  <button type="button" class="ef-menu__item" role="option" aria-selected="false">TALOS-S11 · 四号协议中枢</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TagInput -->
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-tag-entry">多标签输入（TagInput，输入后按回车）</label>
+              <div class="ef-input-box ef-tag-input" id="ef-tag-wrap">
+                <span class="ef-tag-chip">高纯源石 <button type="button" class="ef-tag-chip__del" aria-label="移除 高纯源石">✕</button></span>
+                <span class="ef-tag-chip">三号管廊 <button type="button" class="ef-tag-chip__del" aria-label="移除 三号管廊">✕</button></span>
+                <input id="ef-tag-entry" class="ef-tag-input__entry" type="text" placeholder="添加标签…">
+                <span class="ef-tag-input__count" id="ef-tag-count">2 / 8</span>
+              </div>
+            </div>
+
+            <!-- FileUpload -->
+            <div class="ef-upload" id="ef-upload">
+              <label class="ef-upload__drop">
+                <input type="file" multiple id="ef-file-input">
+                <div>
+                  <div class="ef-upload__hint">拖放工程图纸，或 <u>浏览选择文件</u></div>
+                  <div class="ef-upload__desc">支持 PDF / PNG / SVG · 单文件不超过 10 MB</div>
+                </div>
+              </label>
+              <div class="ef-file-item">
+                <span class="ef-file-item__ext">PDF</span>
+                <span class="ef-file-item__name">talos-north-pipeline-v4.pdf</span>
+                <span class="ef-file-item__size">2.4 MB</span>
+                <button type="button" class="ef-icon-btn ef-icon-btn--sm" onclick="this.parentElement.remove()" aria-label="移除文件">✕</button>
+                <span class="ef-file-item__bar"><i style="width: 72%;"></i></span>
+              </div>
+            </div>
+
+            <!-- Indeterminate / Segmented Progress + Skeleton -->
+            <div class="ef-stack" style="gap: 10px;">
+              <div class="ef-progress ef-progress--indeterminate">
+                <div class="ef-progress__track" role="progressbar" aria-label="不确定往返进度"><div class="ef-progress__fill"></div></div>
+              </div>
+              <div class="ef-progress ef-progress--segmented">
+                <div class="ef-progress__track" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="6"><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i></div>
+              </div>
+              <div class="ef-skeleton ef-skeleton--text"></div>
+              <div class="ef-skeleton ef-skeleton--text"></div>
+            </div>
+          </div>
+
+          <!-- Calendar + Schedule + LinkCard -->
+          <div class="ef-stack">
+            <div class="ef-calendar" role="grid" aria-label="2026年11月" id="ef-cal" style="align-self: flex-start;">
+              <div class="ef-cal__head">
+                <button type="button" class="ef-icon-btn ef-icon-btn--sm" aria-label="上月">‹</button>
+                <span class="ef-cal__title">2026年11月</span>
+                <button type="button" class="ef-icon-btn ef-icon-btn--sm" aria-label="下月">›</button>
+              </div>
+              <div class="ef-cal__grid">
+                <span class="ef-cal__wk">一</span><span class="ef-cal__wk">二</span><span class="ef-cal__wk">三</span><span class="ef-cal__wk">四</span><span class="ef-cal__wk">五</span><span class="ef-cal__wk">六</span><span class="ef-cal__wk">日</span>
+                <button type="button" class="ef-cal__day">09</button><button type="button" class="ef-cal__day">10</button><button type="button" class="ef-cal__day">11</button><button type="button" class="ef-cal__day">12</button><button type="button" class="ef-cal__day">13</button><button type="button" class="ef-cal__day">14</button><button type="button" class="ef-cal__day">15</button>
+                <button type="button" class="ef-cal__day is-selected is-today" aria-current="date" aria-selected="true">16</button><button type="button" class="ef-cal__day is-in-range">17</button><button type="button" class="ef-cal__day is-in-range">18</button><button type="button" class="ef-cal__day">19</button><button type="button" class="ef-cal__day">20</button><button type="button" class="ef-cal__day">21</button><button type="button" class="ef-cal__day" disabled>22</button>
+              </div>
+            </div>
+
+            <div class="ef-schedule">
+              <div class="ef-schedule__item is-active">
+                <span class="ef-schedule__time">18:30</span>
+                <span>核心机组压测并网</span>
+                <span class="ef-tag ef-tag--accent">LIVE</span>
+              </div>
+              <div class="ef-schedule__item">
+                <span class="ef-schedule__time">21:00</span>
+                <span>北区矿道夜间巡检</span>
+                <span class="ef-tag">QUEUED</span>
+              </div>
+            </div>
+            <a href="#sec-actions" class="ef-link-card ef-marker-host">
+              <span><span class="ef-marker-bar" aria-hidden="true"></span> 竖条变形与外链导航卡片 (悬停动效)</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Telemetry HUD, Media, Carousel & Marquee -->
+        <div class="ef-grid-3">
+          <div class="ef-viewfinder" data-theme="dark" style="min-height: 214px;">
+            <span class="ef-viewfinder__corners" aria-hidden="true"></span>
+            <span class="ef-viewfinder__ro ef-viewfinder__ro--tl">SECTOR // N-07</span>
+            <span class="ef-viewfinder__ro ef-viewfinder__ro--tr"><span class="ef-rec"><span class="ef-rec__dot" aria-hidden="true"></span><span class="ef-rec__br">[</span> REC <span class="ef-rec__br">]</span></span></span>
+            <div class="ef-tick-ring ef-tick-ring--spin" style="--_s: 112px;">
+              <svg class="ef-tick-ring__svg" viewBox="0 0 240 240" aria-hidden="true">
+                <circle cx="120" cy="120" r="96" fill="none" stroke="currentColor" stroke-opacity=".28"/>
+                <circle cx="120" cy="120" r="112" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="7" pathLength="400" stroke-dasharray="1.5 8.5"/>
+                <path d="M120 8A112 112 0 0 1 217 64" fill="none" stroke="currentColor" stroke-opacity=".7" stroke-width="5"/>
+              </svg>
+              <span class="ef-viewfinder__crosshair" aria-hidden="true"></span>
+            </div>
+            <span class="ef-viewfinder__ro ef-viewfinder__ro--bl">TICK RING 60S</span>
+            <span class="ef-viewfinder__ro ef-viewfinder__ro--br">2026.11.16</span>
+          </div>
+
+          <article class="ef-media-card">
+            <div class="ef-media-card__thumb" style="display: grid; place-items: center;">
+              <svg class="ef-sparkline" viewBox="0 0 160 40" style="width: 78%; height: 48px;" preserveAspectRatio="none" aria-label="产出走势图">
+                <polygon class="ef-sparkline__area" points="0,40 0,28 32,22 64,26 96,12 128,15 160,6 160,40"/>
+                <polyline class="ef-sparkline__line" points="0,28 32,22 64,26 96,12 128,15 160,6"/>
+              </svg>
+              <span class="ef-play-mark ef-media-card__play" aria-hidden="true"></span>
+            </div>
+            <div class="ef-media-card__meta"><span class="ef-tag">SPARKLINE</span><span>// WIPES LEFT → RIGHT (600MS)</span></div>
+            <h3 class="ef-media-card__title"><a href="#sec-advanced">悬停出现底边 4px 黄线 + 无轴面积图</a></h3>
+          </article>
+
+          <div class="ef-carousel" id="ef-carousel">
+            <div class="ef-carousel__viewport">
+              <div class="ef-carousel__track" id="ef-car-track">
+                <div class="ef-carousel__slide" data-title="一号精炼站实景" data-desc="原生横向 scroll-snap 轮播与 01/03 计数同步。">
+                  <div class="ef-scroll-hint" aria-hidden="true"><span class="ef-scroll-hint__label">SCROLL</span><span class="ef-scroll-hint__line"></span></div>
+                </div>
+                <div class="ef-carousel__slide" data-title="二号输电管廊" data-desc="切换时下方文字通过 aria-live 同步更新。"><span class="ef-tag ef-tag--accent">SLIDE 02 // ACTIVE</span></div>
+                <div class="ef-carousel__slide" data-title="三号仓储中心" data-desc="遵守不自动播放原则，保留清晰手动控制。"><span class="ef-tag">SLIDE 03 // DEPOT</span></div>
+              </div>
+              <div class="ef-carousel__controls">
+                <button type="button" class="ef-icon-btn ef-icon-btn--floating" onclick="moveCar(-1)" aria-label="上一张">‹</button>
+                <button type="button" class="ef-icon-btn ef-icon-btn--floating" onclick="moveCar(1)" aria-label="下一张">›</button>
+              </div>
+            </div>
+            <div class="ef-carousel__meta">
+              <span class="ef-carousel__count" id="ef-car-count">1 / 3</span>
+              <div class="ef-dash-indicator" id="ef-car-dashes"><i class="is-active"></i><i></i><i></i></div>
+            </div>
+            <h4 class="ef-carousel__title" id="ef-car-title">一号精炼站实景</h4>
+            <p class="ef-carousel__desc" id="ef-car-desc">原生横向 scroll-snap 轮播与 01/03 计数同步。</p>
+          </div>
+        </div>
+
+        <!-- Marquee with Pause Toggle -->
+        <div class="ef-row" style="padding: 10px 14px; border: 1px solid var(--ef-line); background: var(--ef-surface-raised);">
+          <button type="button" class="ef-btn ef-btn--sm ef-btn--light" id="btn-marquee" onclick="toggleMarquee()">暂停跑马灯</button>
+          <div class="ef-marquee" id="ef-marquee" style="flex: 1; min-width: 0; font-family: var(--font-tech); font-size: var(--text-sm);">
+            <div class="ef-marquee__track">
+              <span>ARKNIGHTS: ENDFIELD // TALOS-II AUTOMATED PIPELINE TELEMETRY // 80%-100% MECHANICAL PAUSE</span>
+              <span class="ef-marquee__clone" aria-hidden="true">ARKNIGHTS: ENDFIELD // TALOS-II AUTOMATED PIPELINE TELEMETRY // 80%-100% MECHANICAL PAUSE</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="ef-footer">
+        <div class="ef-hazard" style="height: 8px;" aria-hidden="true"></div>
+        <div class="ef-footer__inner">
+          <span class="ef-footer__meta">ENDFIELD UI STANDALONE // ALL COMPONENTS &amp; MOTION AUDIT</span>
+          <nav class="ef-footer__links" aria-label="页脚链接">
+            <a href="./endfield-boilerplate.html">整页构图样板</a>
+            <a href="./prts-components.html">PRTS 组件目录</a>
+            <button type="button" class="ef-back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
+          </nav>
+        </div>
+      </footer>
     </main>
   </div>
 
@@ -529,10 +713,16 @@
       if (indet) indet.indeterminate = true;
     })();
     function applyTheme(theme, persist) {
-      document.documentElement.dataset.theme = theme;
-      var bl = document.getElementById('ef-btn-light'), bd = document.getElementById('ef-btn-dark');
-      if (bl) bl.setAttribute('aria-pressed', String(theme === 'light'));
-      if (bd) bd.setAttribute('aria-pressed', String(theme === 'dark'));
+      var run = function () {
+        document.documentElement.dataset.theme = theme;
+        var bl = document.getElementById('ef-btn-light'), bd = document.getElementById('ef-btn-dark');
+        if (bl) bl.setAttribute('aria-pressed', String(theme === 'light'));
+        if (bd) bd.setAttribute('aria-pressed', String(theme === 'dark'));
+      };
+      if (persist && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.dataset.themeSwitching = '1';
+        document.startViewTransition(run).finished.finally(function () { delete document.documentElement.dataset.themeSwitching; });
+      } else { run(); }
       if (persist) { try { localStorage.setItem('ef-theme', theme); } catch (e) {} }
     }
     function toggleTheme(theme) { applyTheme(theme, true); }
@@ -581,10 +771,156 @@
     });
     function bindAnchor(wrapId, btnId) {
       var w = document.getElementById(wrapId), b = document.getElementById(btnId);
-      b.addEventListener('click', function () { var o = w.classList.toggle('is-open'); b.setAttribute('aria-expanded', String(o)); });
+      b.addEventListener('click', function (e) { e.stopPropagation(); var o = w.classList.toggle('is-open'); b.setAttribute('aria-expanded', String(o)); });
     }
     bindAnchor('ef-dd-strong', 'ef-dd-strong-btn');
     bindAnchor('ef-pop', 'ef-pop-btn');
+
+    // 点击外部关闭所有打开的菜单 / Popover / <details class="ef-dropdown"> / Combobox + 菜单内方向键移动
+    document.addEventListener('click', function (e) {
+      document.querySelectorAll('.ef-menu-anchor.is-open, .ef-combobox.is-open').forEach(function (el) {
+        if (!el.contains(e.target)) {
+          el.classList.remove('is-open');
+          var t = el.querySelector('[aria-expanded]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.querySelectorAll('details.ef-dropdown[open]').forEach(function (el) {
+        if (!el.contains(e.target)) el.removeAttribute('open');
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      var menu = e.target && e.target.closest && e.target.closest('.ef-menu');
+      if (menu && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+        var items = Array.prototype.slice.call(menu.querySelectorAll('.ef-menu__item:not(:disabled)')).filter(function (x) { return x.style.display !== 'none'; });
+        var idx = items.indexOf(document.activeElement);
+        if (items.length) {
+          e.preventDefault();
+          var next = e.key === 'ArrowDown' ? (idx + 1) % items.length : (idx - 1 + items.length) % items.length;
+          items[next].focus();
+        }
+      }
+    });
+
+    // Combobox / TagInput / Calendar / FileUpload / Carousel / Marquee 交互
+    (function () {
+      var cb = document.getElementById('ef-combobox'), cbi = document.getElementById('ef-combo-in'), cbb = document.getElementById('ef-combo-btn');
+      if (cb && cbi) {
+        var opts = Array.prototype.slice.call(cb.querySelectorAll('[role="option"]'));
+        var setOpen = function (v) { cb.classList.toggle('is-open', v); cbi.setAttribute('aria-expanded', String(v)); };
+        cbi.addEventListener('focus', function () {
+          if (cbi.dataset.skipOpen) { delete cbi.dataset.skipOpen; return; }
+          setOpen(true);
+        });
+        cbi.addEventListener('click', function () { setOpen(true); });
+        cbb.addEventListener('click', function (e) { e.stopPropagation(); setOpen(!cb.classList.contains('is-open')); });
+        cbi.addEventListener('input', function () {
+          setOpen(true);
+          var q = cbi.value.trim().toLowerCase();
+          opts.forEach(function (o) { o.style.display = o.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none'; });
+        });
+        cbi.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            var vis = opts.filter(function (o) { return o.style.display !== 'none'; });
+            if (vis.length) { e.preventDefault(); setOpen(true); vis[e.key === 'ArrowDown' ? 0 : vis.length - 1].focus(); }
+          }
+        });
+        opts.forEach(function (o) {
+          o.addEventListener('click', function () {
+            opts.forEach(function (x) { x.classList.remove('is-active'); x.setAttribute('aria-selected', 'false'); });
+            o.classList.add('is-active'); o.setAttribute('aria-selected', 'true');
+            cbi.value = o.textContent; setOpen(false);
+            cbi.dataset.skipOpen = '1'; cbi.focus(); setTimeout(function () { delete cbi.dataset.skipOpen; }, 0);
+          });
+        });
+      }
+
+      var tw = document.getElementById('ef-tag-wrap'), te = document.getElementById('ef-tag-entry'), tc = document.getElementById('ef-tag-count');
+      function updateTagCount() { if (tc && tw) tc.textContent = tw.querySelectorAll('.ef-tag-chip').length + ' / 8'; }
+      if (tw && te) {
+        tw.addEventListener('click', function (e) {
+          if (e.target.classList.contains('ef-tag-chip__del')) { e.target.parentElement.remove(); updateTagCount(); }
+        });
+        te.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && te.value.trim()) {
+            e.preventDefault();
+            var val = te.value.trim();
+            if (tw.querySelectorAll('.ef-tag-chip').length < 8) {
+              var s = document.createElement('span');
+              s.className = 'ef-tag-chip';
+              s.appendChild(document.createTextNode(val + ' '));
+              var b = document.createElement('button');
+              b.type = 'button'; b.className = 'ef-tag-chip__del'; b.setAttribute('aria-label', '移除 ' + val); b.textContent = '✕';
+              s.appendChild(b); tw.insertBefore(s, te); updateTagCount();
+            }
+            te.value = '';
+          }
+        });
+      }
+
+      var cal = document.getElementById('ef-cal');
+      if (cal) {
+        cal.querySelectorAll('.ef-cal__day:not(:disabled)').forEach(function (d) {
+          d.addEventListener('click', function () {
+            cal.querySelectorAll('.ef-cal__day').forEach(function (x) { x.classList.remove('is-selected'); x.setAttribute('aria-selected', 'false'); });
+            d.classList.add('is-selected'); d.setAttribute('aria-selected', 'true');
+          });
+        });
+      }
+
+      var fi = document.getElementById('ef-file-input'), up = document.getElementById('ef-upload');
+      if (fi && up) {
+        fi.addEventListener('change', function () {
+          Array.prototype.slice.call(fi.files).forEach(function (f) {
+            var ext = (f.name.split('.').pop() || 'FILE').toUpperCase().slice(0, 6);
+            var row = document.createElement('div'); row.className = 'ef-file-item';
+            row.innerHTML = '<span class="ef-file-item__ext"></span><span class="ef-file-item__name"></span><span class="ef-file-item__size"></span><button type="button" class="ef-icon-btn ef-icon-btn--sm" aria-label="移除文件">✕</button>';
+            row.querySelector('.ef-file-item__ext').textContent = ext;
+            row.querySelector('.ef-file-item__name').textContent = f.name;
+            row.querySelector('.ef-file-item__size').textContent = Math.max(1, Math.round(f.size / 1024)) + ' KB';
+            row.querySelector('button').onclick = function () { row.remove(); };
+            up.appendChild(row);
+          });
+        });
+      }
+    })();
+
+    var carIdx = 0;
+    function syncCarMeta(idx) {
+      var track = document.getElementById('ef-car-track');
+      if (!track) return;
+      var slides = track.querySelectorAll('.ef-carousel__slide');
+      if (!slides[idx]) return;
+      carIdx = idx;
+      document.getElementById('ef-car-count').textContent = (carIdx + 1) + ' / ' + slides.length;
+      document.getElementById('ef-car-title').textContent = slides[carIdx].getAttribute('data-title');
+      document.getElementById('ef-car-desc').textContent = slides[carIdx].getAttribute('data-desc');
+      document.querySelectorAll('#ef-car-dashes i').forEach(function (d, j) { d.classList.toggle('is-active', j === carIdx); });
+    }
+    function moveCar(delta) {
+      var track = document.getElementById('ef-car-track');
+      if (!track) return;
+      var slides = track.querySelectorAll('.ef-carousel__slide');
+      var next = (carIdx + delta + slides.length) % slides.length;
+      track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
+      syncCarMeta(next);
+    }
+    (function () {
+      var track = document.getElementById('ef-car-track');
+      if (track) {
+        track.addEventListener('scroll', function () {
+          if (track.clientWidth > 0) {
+            var idx = Math.round(track.scrollLeft / track.clientWidth);
+            if (idx !== carIdx) syncCarMeta(idx);
+          }
+        }, { passive: true });
+      }
+    })();
+    function toggleMarquee() {
+      var m = document.getElementById('ef-marquee'), b = document.getElementById('btn-marquee');
+      var p = m.classList.toggle('is-paused');
+      b.textContent = p ? '继续跑马灯' : '暂停跑马灯';
+    }
 
     var efOpener = null;
     function toggleEfDrawer(open) {
@@ -598,8 +934,18 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         toggleEfDrawer(false);
-        document.getElementById('ef-dd-strong').classList.remove('is-open');
-        document.getElementById('ef-pop').classList.remove('is-open');
+        document.querySelectorAll('.ef-menu-anchor.is-open, .ef-combobox.is-open').forEach(function (el) {
+          var hadFocus = el.contains(document.activeElement);
+          el.classList.remove('is-open');
+          var t = el.querySelector('[aria-expanded]');
+          if (t) {
+            t.setAttribute('aria-expanded', 'false');
+            if (hadFocus && document.activeElement !== t) {
+              t.dataset.skipOpen = '1'; t.focus(); setTimeout(function () { delete t.dataset.skipOpen; }, 0);
+            }
+          }
+        });
+        document.querySelectorAll('details.ef-dropdown[open]').forEach(function (el) { el.removeAttribute('open'); });
       }
     });
 

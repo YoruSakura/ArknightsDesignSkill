@@ -347,6 +347,9 @@
               <div class="ak-progress ak-progress--segmented">
                 <i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i>
               </div>
+              <div class="ak-progress ak-progress--indeterminate" aria-label="后台索引扫描中"></div>
+              <div class="ak-skeleton ak-skeleton--text"></div>
+              <div class="ak-skeleton ak-skeleton--text"></div>
               <div class="ak-flex ak-wrap ak-gap-4 ak-items-center">
                 <div class="ak-ring" style="--_v: 85;"><span>85%</span></div>
                 <span class="ak-spinner" aria-label="加载中"></span>
@@ -407,10 +410,70 @@
               <button type="button" class="ak-btn ak-btn--sm">查看全大陆图鉴</button>
             </div>
           </div>
+
+          <div class="ak-grid ak-grid-2 ak-gap-4 ak-mt-4">
+            <div class="ak-flex-col ak-gap-3">
+              <div class="ak-skill is-selected">
+                <div class="ak-skill__icon ak-skill__icon--attack" style="display: grid; place-items: center; color: #fff; font: 800 18px/1 var(--ak-font-display);">S3</div>
+                <div>
+                  <div class="ak-skill__head">
+                    <h4 class="ak-skill__name">赤霄·绝影</h4>
+                    <span class="ak-sp ak-sp--attack">攻击回复</span>
+                    <span class="ak-sp-trigger">手动触发</span>
+                  </div>
+                  <div class="ak-skill__stats"><span class="ak-sp-cost">技力 20</span><span class="ak-sp-init">初始 10</span></div>
+                </div>
+                <div class="ak-skill__desc">向周围敌人连续斩击 <span class="ak-rt-vup">10 次</span>，最后一次附加眩晕。</div>
+              </div>
+
+              <div class="ak-module" data-color="red">
+                <div class="ak-module__img" style="color: #fff; font: 800 22px/1 var(--ak-font-display);">SWD-X</div>
+                <div class="ak-module__main">
+                  <div class="ak-module__head">
+                    <span class="ak-module__type">SWORDMASTER</span>
+                    <h3 class="ak-module__name">赤霄红匣</h3>
+                    <span class="ak-module__lv">STAGE 3 <i><b class="on"></b><b class="on"></b><b class="on"></b></i></span>
+                  </div>
+                  <div class="ak-module__stats"><span>攻击 +55</span><span>攻速 +6</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ak-flex-col ak-gap-3">
+              <div class="ak-flex ak-gap-3 ak-items-start ak-wrap">
+                <a href="#domain" class="ak-op-card ak-not-prose" data-rarity="6">
+                  <span class="ak-op-card__portrait" style="display: grid; place-items: center; font: 800 26px/1 var(--ak-font-display); color: #fff;">
+                    <span class="ak-op-card__prof" style="font: 700 10px/1 var(--ak-font-body); color: #fff;">近卫</span>
+                    CH'EN
+                    <span class="ak-op-card__rarity"><span class="ak-rarity">★★★★★★</span></span>
+                  </span>
+                  <span class="ak-op-card__name">陈 <span class="ak-op-card__sub">GUARD // LM04</span></span>
+                </a>
+                <div class="ak-talent" style="flex: 1; min-width: 180px; margin-bottom: 0;">
+                  <h4 class="ak-talent__name">呵斥 <span class="ak-talent__req">精英二 · <span class="ak-level ak-level--badge"><span class="ak-level__lv">LV</span><span class="ak-level__n">90</span></span></span></h4>
+                  <div class="ak-talent__desc">在场时每过 <span class="ak-rt-kw">4 秒</span> 全场【攻击/受击回复】技力 +1。</div>
+                </div>
+              </div>
+
+              <dl class="ak-dialogue ak-m-0">
+                <dt>陈</dt><dd>通知外围小队，按三号方案收缩防线。</dd>
+                <dt class="narrator">PRTS</dt><dd class="narrator">指令已下达至罗德岛本舰调度频道。</dd>
+              </dl>
+
+              <div class="ak-voice" style="border-top: 1px solid var(--ak-border-subtle);">
+                <button type="button" class="ak-voice__play is-playing" onclick="this.classList.toggle('is-playing')" aria-label="播放/暂停语音"></button>
+                <div>
+                  <div class="ak-voice__title">作战中 1（声波动画演示）<span class="ak-voice__wave" aria-hidden="true"><i></i><i></i><i></i></span></div>
+                  <div class="ak-voice__text">拔刀要快，收刀要稳——点击左侧按钮可实时启停声波。</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
   </div>
+  <button type="button" class="ak-fab is-visible" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
 
   <!-- 原生 Dialog 演示 -->
   <dialog id="ak-modal" class="ak-dialog">
@@ -483,11 +546,30 @@
     }
     btn.addEventListener('click', function () { openSide(!side.classList.contains('is-open')); });
     scrim.addEventListener('click', function () { openSide(false); openAkDrawer(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { openSide(false); openAkDrawer(false); document.getElementById('demo-dd').classList.remove('is-open'); } });
 
-    // 下拉菜单受控演示
+    // 下拉菜单受控 + 点击外部关闭 + 菜单内方向键移动 + Esc 归还焦点
     var dd = document.getElementById('demo-dd'), ddb = document.getElementById('demo-dd-btn');
-    ddb.addEventListener('click', function () { var o = dd.classList.toggle('is-open'); ddb.setAttribute('aria-expanded', o); });
+    ddb.addEventListener('click', function (e) { e.stopPropagation(); var o = dd.classList.toggle('is-open'); ddb.setAttribute('aria-expanded', String(o)); });
+    document.addEventListener('click', function (e) {
+      if (dd.classList.contains('is-open') && !dd.contains(e.target)) { dd.classList.remove('is-open'); ddb.setAttribute('aria-expanded', 'false'); }
+      document.querySelectorAll('.ak-dropdown details[open]').forEach(function (el) { if (!el.contains(e.target)) el.removeAttribute('open'); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        openSide(false); openAkDrawer(false);
+        if (dd.classList.contains('is-open')) { dd.classList.remove('is-open'); ddb.setAttribute('aria-expanded', 'false'); ddb.focus(); }
+        document.querySelectorAll('.ak-dropdown details[open]').forEach(function (el) { el.removeAttribute('open'); });
+      }
+      var menu = e.target && e.target.closest && e.target.closest('.ak-menu');
+      if (menu && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+        var items = Array.prototype.slice.call(menu.querySelectorAll('.ak-menu__item:not(:disabled):not([aria-disabled="true"])'));
+        var idx = items.indexOf(document.activeElement);
+        if (items.length) {
+          e.preventDefault();
+          items[e.key === 'ArrowDown' ? (idx + 1) % items.length : (idx - 1 + items.length) % items.length].focus();
+        }
+      }
+    });
 
 
     // Tabs：点击 + 方向键/Home/End 漫游焦点（roving tabindex），符合 WAI-ARIA Tabs 模式

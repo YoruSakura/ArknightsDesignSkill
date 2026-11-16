@@ -55,7 +55,7 @@
             <header class="ef-section-title" style="margin-bottom: 28px;">
               <span class="ef-section-title__meta">▼ // SECTION 01 OF 03 · OPERATOR DOSSIER</span>
               <div class="ef-section-title__row">
-                <span class="ef-section-title__block" aria-hidden="true">↘</span>
+                <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
                 <p class="ef-section-title__en">SUPERVISOR</p>
               </div>
               <h2 class="ef-section-title__cn">核心干员档案</h2>
@@ -153,7 +153,7 @@
           <div class="ef-stat">
             <span class="ef-stat__label">POWER GRID OUTPUT</span>
             <div class="ef-stat__main">
-              <span class="ef-stat__value" style="font-size: var(--text-5xl);">18,640</span>
+              <span class="ef-stat__value ef-stat__value--xl">18,640</span>
               <span class="ef-stat__unit">kW</span>
               <span class="ef-tag ef-tag--gain">+12.4%</span>
             </div>
@@ -182,12 +182,13 @@
               <span style="font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-ink-secondary);">// 蓝=产出 · 黄=消耗 · 红=超支</span>
             </div>
 
-            <!-- 游戏内数据简报范式：浅色凹陷画布 + 固定深色行带 -->
+            <!-- 游戏内数据简报范式：浅色凹陷画布 + 固定深色行带 + 迷你趋势图 Sparkline -->
             <div class="ef-data-list" role="table" aria-label="产线实时吞吐简报">
               <div class="ef-data-row is-fav" style="--cat-color: var(--color-data);">
                 <span class="ef-data-row__cat" aria-hidden="true"></span>
                 <span class="ef-data-row__dot" aria-hidden="true"></span>
                 <span class="ef-data-row__name">北岭精炼厂 #01 · 高纯源石提纯</span>
+                <span class="ef-data-row__spark" aria-hidden="true"><svg class="ef-sparkline" viewBox="0 0 120 28" style="height: 24px;" preserveAspectRatio="none"><polygon class="ef-sparkline__area" points="0,28 0,20 24,18 48,15 72,11 96,10 120,6 120,28"/><polyline class="ef-sparkline__line" points="0,20 24,18 48,15 72,11 96,10 120,6"/></svg></span>
                 <span class="ef-data-row__val ef-data-row__val--info">+420 / min</span>
                 <span class="ef-data-row__ref">理论 450</span>
               </div>
@@ -195,6 +196,7 @@
                 <span class="ef-data-row__cat" aria-hidden="true"></span>
                 <span class="ef-data-row__dot" aria-hidden="true"></span>
                 <span class="ef-data-row__name">三号管廊枢纽 · 紫晶构件组装</span>
+                <span class="ef-data-row__spark" aria-hidden="true"><svg class="ef-sparkline" viewBox="0 0 120 28" style="height: 24px;" preserveAspectRatio="none"><polygon class="ef-sparkline__area" points="0,28 0,14 24,12 48,14 72,10 96,12 120,10 120,28"/><polyline class="ef-sparkline__line" points="0,14 24,12 48,14 72,10 96,12 120,10"/></svg></span>
                 <span class="ef-data-row__val ef-data-row__val--accent">180 / min</span>
                 <span class="ef-data-row__ref">满负荷</span>
               </div>
@@ -202,6 +204,7 @@
                 <span class="ef-data-row__cat" aria-hidden="true"></span>
                 <span class="ef-data-row__dot" aria-hidden="true"></span>
                 <span class="ef-data-row__name">四号反应堆 · 冷却液循环补给</span>
+                <span class="ef-data-row__spark" aria-hidden="true"><svg class="ef-sparkline ef-sparkline--danger" viewBox="0 0 120 28" style="height: 24px;" preserveAspectRatio="none"><polygon class="ef-sparkline__area" points="0,28 0,10 24,13 48,18 72,20 96,23 120,25 120,28"/><polyline class="ef-sparkline__line" points="0,10 24,13 48,18 72,20 96,23 120,25"/></svg></span>
                 <span class="ef-data-row__val ef-data-row__val--danger">-32 / min</span>
                 <span class="ef-data-row__ref">需扩容</span>
               </div>
@@ -275,8 +278,21 @@
         </div>
       </section>
 
-      <!-- 页脚顶边 8px 警示条纹 -->
-      <div aria-hidden="true" class="hazard" style="height: 8px;"></div>
+      <!-- 工业编辑风页脚：顶边 8px 警示条纹 + 版次信息与回到顶部 -->
+      <footer class="ef-footer">
+        <div aria-hidden="true" class="hazard" style="height: 8px;"></div>
+        <div class="ef-footer__inner">
+          <div>
+            <div class="ef-footer__meta">ENDFIELD INDUSTRIES // TALOS-II LOGISTICS CONSOLE</div>
+            <div class="ef-footer__meta">REV 2026.11 · PAPER-INK INDUSTRIAL EDITORIAL</div>
+          </div>
+          <nav class="ef-footer__links" aria-label="页脚导航">
+            <a href="./endfield-components.html">全组件交互目录</a>
+            <a href="./prts-boilerplate.html">切换本家 PRTS 样板</a>
+            <button type="button" class="ef-back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
+          </nav>
+        </div>
+      </footer>
     </main>
   </div>
 
@@ -287,10 +303,16 @@
       applyTheme(saved || document.documentElement.dataset.theme || 'light', false);
     })();
     function applyTheme(theme, persist) {
-      document.documentElement.dataset.theme = theme;
-      var bl = document.getElementById('ef-btn-light'), bd = document.getElementById('ef-btn-dark');
-      if (bl) bl.setAttribute('aria-pressed', String(theme === 'light'));
-      if (bd) bd.setAttribute('aria-pressed', String(theme === 'dark'));
+      var run = function () {
+        document.documentElement.dataset.theme = theme;
+        var bl = document.getElementById('ef-btn-light'), bd = document.getElementById('ef-btn-dark');
+        if (bl) bl.setAttribute('aria-pressed', String(theme === 'light'));
+        if (bd) bd.setAttribute('aria-pressed', String(theme === 'dark'));
+      };
+      if (persist && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.dataset.themeSwitching = '1';
+        document.startViewTransition(run).finished.finally(function () { delete document.documentElement.dataset.themeSwitching; });
+      } else { run(); }
       if (persist) { try { localStorage.setItem('ef-theme', theme); } catch (e) {} }
     }
     function toggleTheme(theme) { applyTheme(theme, true); }

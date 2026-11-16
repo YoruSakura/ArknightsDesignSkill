@@ -42,10 +42,16 @@
 .ak-search-trigger { position: relative; }
 .ak-search-trigger .ak-search__kbd { position: static; transform: none; flex: none; }
 
-/* 7. 手机窄屏页眉内分段按钮留足品牌间距 */
+/* 7. 手机窄屏页眉与分页适配：防止极窄屏（≤360px）品牌词与分段按钮或长分页栏横向溢出 */
 @media (max-width: 639px) {
-  .ak-header .ak-seg > button, .ak-header .ak-seg > label { min-width: 36px; padding: 0 9px; }
+  .ak-header .ak-header__logo { flex: 0 1 auto; min-width: 0; }
+  .ak-header .ak-header__wordmark { overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .ak-header .ak-seg > button, .ak-header .ak-seg > label { min-width: 32px; padding: 0 7px; font-size: var(--ak-fs-xs); }
 }
+@media (max-width: 420px) {
+  .ak-header .ak-header__wordmark { font-size: 15px; }
+}
+.ak-pagination { flex-wrap: wrap; }
 
 /* 8. 独立环境下 <button class="ak-menu__item"> 去掉 scope.css 裸 button 默认边框与底色 */
 .ak-menu button.ak-menu__item { width: 100%; border-top: 0; border-right: 0; border-bottom: 0; background: transparent; text-align: left; font-weight: 400; border-radius: 0; }
