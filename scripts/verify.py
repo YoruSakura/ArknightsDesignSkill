@@ -305,6 +305,30 @@ def check_mobile_viewports() -> list[str]:
     return errors
 
 
+
+
+def check_release_bundle() -> list[str]:
+    """Ensure release/arknights-design/ is up-to-date with canonical root files."""
+    errors: list[str] = []
+    bundle = ROOT / "release" / "arknights-design"
+    if not bundle.is_dir():
+        return ["release/arknights-design directory is missing (run scripts/package-release.py)"]
+    expected_rels = ["SKILL.md", "LICENSE", "NOTICE.md"]
+    for d in ("references", "resources", "examples"):
+        for f in sorted((ROOT / d).rglob("*")):
+            if f.is_file():
+                expected_rels.append(str(f.relative_to(ROOT)))
+    for rel in expected_rels:
+        src = ROOT / rel
+        dst = bundle / rel
+        if not dst.exists():
+            errors.append(f"release/arknights-design/{rel}: missing")
+        elif src.read_bytes() != dst.read_bytes():
+            errors.append(f"release/arknights-design/{rel}: out of sync with root {rel} (run scripts/package-release.py)")
+    print(f"[RELEASE] Checked {len(expected_rels)} files in release/arknights-design, out_of_sync={len(errors)}")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--render", action="store_true", help="Run headless Chrome screenshots and DOM/animation probes")
@@ -316,6 +340,7 @@ def main() -> int:
     errors.extend(check_html_files(defined))
     errors.extend(check_markdown_files(defined))
     errors.extend(check_css_animations())
+    errors.extend(check_release_bundle())
     if args.render:
         errors.extend(run_chrome_render_and_behavior(pathlib.Path(args.out)))
 

@@ -1,0 +1,973 @@
+/*! Endfield UI · @endfield-ui/react (Tailwind v4 Theme + Motif Utilities) · MIT License
+ *  Source: https://github.com/icaruszezen/endfield-ui
+ *  Docs:   https://icaruszezen.github.io/endfield-ui/design/
+ */
+/*
+ * endfield-ui 设计令牌
+ *
+ * 用法：
+ *   @import "tailwindcss";
+ *   @import "@endfield-ui/react/theme.css";
+ *
+ * 结构：
+ *   1. 语义变量      随主题变化；亮色在 :root 与 [data-theme="light"]，
+ *                    暗色在 [data-theme="dark"]。两种都可以加在局部容器上。
+ *                    [data-theme="inverse"] 是"和所在主题相反"，给反转块用
+ *   2. @theme        不随主题变化的原始令牌
+ *   3. @theme inline 把语义变量映射成 Tailwind 颜色工具类
+ *
+ * 每个值的依据与来源等级（实测 / 观察 / 社区 / 推断）写在
+ * docs/design/foundations/ 下的对应文档里；改值时两边一起改。
+ */
+
+/* ------------------------------------------------------------------ */
+/* 1. 语义变量                                                         */
+/* ------------------------------------------------------------------ */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* 表面 */
+  --ef-surface: #ffffff;
+  --ef-surface-raised: #fafafa;
+  --ef-surface-sunken: #f2f2f2;
+  --ef-surface-muted: #e6e6e6;
+  --ef-surface-inverse: #191919;
+
+  /* 文字 */
+  --ef-ink: #191919;
+  --ef-ink-secondary: #626262;
+  --ef-ink-tertiary: #8a8a8a;
+  --ef-ink-disabled: #b3b3b3;
+  --ef-ink-inverse: #ffffff;
+
+  /* 线 */
+  --ef-line: #d9d9d9;
+  --ef-line-strong: #b3b3b3;
+
+  /* 行动与选中 */
+  --ef-action: #fffa00;
+  --ef-action-pressed: #eeea00;
+  --ef-on-action: #191919;
+  --ef-accent-ink: #6b5d00;
+  /* 反转块（surface-inverse）上的强调记号：亮色主题下反转块是墨色，直接用行动色 */
+  --ef-accent-ink-inverse: var(--ef-action);
+
+  /* 中性控件 */
+  --ef-control: #383838;
+  --ef-control-hover: #484848;
+  --ef-control-pressed: #282828;
+  --ef-on-control: #eeeeee;
+
+  /*
+   * 按钮（Button 的 control 变体）：亮色就是中性控件那一档；暗色换成压在页面上的
+   * 半透明白（官网 /cloud 顶栏的按钮）。其余用 control 的控件不跟着变
+   */
+  --ef-button: #383838;
+  --ef-button-hover: #484848;
+  --ef-button-pressed: #282828;
+  --ef-on-button: #eeeeee;
+
+  /* 禁用控件的填充与其上的文字 */
+  --ef-disabled: #b3b3b3;
+  --ef-on-disabled: #626262;
+
+  /* 焦点与遮罩 */
+  --ef-focus: #191919;
+  --ef-scrim: rgb(0 0 0 / 0.5);
+
+  /* 状态（文字级，在亮色表面上 ≥ 4.5:1） */
+  --ef-danger: #de0909;
+  --ef-success: #007f43;
+  --ef-warning: #b74e00;
+  --ef-info: #25759f;
+
+  /*
+   * 相反主题的取值，给 [data-theme="inverse"] 用：和暗色那一块逐项相同
+   * （有一条测试核对）。两个主题下取值相同的令牌不用列；
+   * 底、字、强调色不在这里，由反转块的父元素现抄，见下面
+   */
+  --ef-x-scheme: dark;
+  --ef-x-surface-raised: #1f1f1f;
+  --ef-x-surface-sunken: #000000;
+  --ef-x-surface-muted: #282828;
+  --ef-x-ink-secondary: #b3b3b3;
+  --ef-x-ink-disabled: #626262;
+  --ef-x-line: #383838;
+  --ef-x-line-strong: #626262;
+  --ef-x-button: rgb(255 255 255 / 0.2);
+  --ef-x-button-hover: rgb(255 255 255 / 0.3);
+  --ef-x-button-pressed: rgb(255 255 255 / 0.15);
+  --ef-x-on-button: #d9d9d9;
+  --ef-x-disabled: #282828;
+  --ef-x-focus: #fffa00;
+  --ef-x-scrim: rgb(0 0 0 / 0.7);
+  --ef-x-danger: #f74040;
+  --ef-x-success: #00d872;
+  --ef-x-warning: #fc6c00;
+  --ef-x-info: #2d8fc2;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ef-surface: #141414;
+  --ef-surface-raised: #1f1f1f;
+  --ef-surface-sunken: #000000;
+  --ef-surface-muted: #282828;
+  --ef-surface-inverse: #fafafa;
+
+  --ef-ink: #fafafa;
+  --ef-ink-secondary: #b3b3b3;
+  --ef-ink-tertiary: #8a8a8a;
+  --ef-ink-disabled: #626262;
+  --ef-ink-inverse: #191919;
+
+  --ef-line: #383838;
+  --ef-line-strong: #626262;
+
+  --ef-action: #fffa00;
+  --ef-action-pressed: #eeea00;
+  --ef-on-action: #191919;
+  --ef-accent-ink: #fffa00;
+  /* 暗色主题下反转块是近白，记号换成强调色的文字档 */
+  --ef-accent-ink-inverse: #6b5d00;
+
+  --ef-control: #383838;
+  --ef-control-hover: #484848;
+  --ef-control-pressed: #282828;
+  --ef-on-control: #eeeeee;
+
+  /* 半透明白：压在哪种暗色面上都比那一面亮一档。字比官网的 #bfbfbf 亮一点，压在 surface-muted 上也有 4.5:1 */
+  --ef-button: rgb(255 255 255 / 0.2);
+  --ef-button-hover: rgb(255 255 255 / 0.3);
+  --ef-button-pressed: rgb(255 255 255 / 0.15);
+  --ef-on-button: #d9d9d9;
+
+  --ef-disabled: #282828;
+  --ef-on-disabled: #626262;
+
+  --ef-focus: #fffa00;
+  --ef-scrim: rgb(0 0 0 / 0.7);
+
+  /* 状态（文字级，在暗色表面上 ≥ 4.5:1） */
+  --ef-danger: #f74040;
+  --ef-success: #00d872;
+  --ef-warning: #fc6c00;
+  --ef-info: #2d8fc2;
+
+  /* 相反主题的取值：和亮色那一块逐项相同 */
+  --ef-x-scheme: light;
+  --ef-x-surface-raised: #fafafa;
+  --ef-x-surface-sunken: #f2f2f2;
+  --ef-x-surface-muted: #e6e6e6;
+  --ef-x-ink-secondary: #626262;
+  --ef-x-ink-disabled: #b3b3b3;
+  --ef-x-line: #d9d9d9;
+  --ef-x-line-strong: #b3b3b3;
+  --ef-x-button: #383838;
+  --ef-x-button-hover: #484848;
+  --ef-x-button-pressed: #282828;
+  --ef-x-on-button: #eeeeee;
+  --ef-x-disabled: #b3b3b3;
+  --ef-x-focus: #191919;
+  --ef-x-scrim: rgb(0 0 0 / 0.5);
+  --ef-x-danger: #de0909;
+  --ef-x-success: #007f43;
+  --ef-x-warning: #b74e00;
+  --ef-x-info: #25759f;
+}
+
+/*
+ * 反转块：标题带这类"和页面相反"的区域。把它做成一个局部主题，里面的控件、
+ * 焦点环就按这块底色取值，不用逐个改写法。
+ *
+ * 它的底、字、强调色就是所在处的 surface-inverse / ink-inverse / accent-ink-inverse
+ * ——反转块换成这个写法之后颜色不变，局部改过的强调色（主题色接管）也带得进来。
+ * 但一个元素读不到自己正在改写的变量在父级是什么值，所以由**父元素**把这三对
+ * 对调着抄一份（--ef-x-*），反转块再从继承来的那份里取。
+ *
+ * 反转块里面不再抄：反转块里再嵌一层反转块不会翻回去，和外面那层相同。
+ */
+:has(> [data-theme="inverse"]):not(
+  [data-theme="inverse"],
+  [data-theme="inverse"] *
+) {
+  --ef-x-surface: var(--ef-surface-inverse);
+  --ef-x-surface-inverse: var(--ef-surface);
+  --ef-x-ink: var(--ef-ink-inverse);
+  --ef-x-ink-inverse: var(--ef-ink);
+  --ef-x-accent-ink: var(--ef-accent-ink-inverse);
+  --ef-x-accent-ink-inverse: var(--ef-accent-ink);
+}
+
+/*
+ * 其余的令牌取相反主题的值：亮、暗两块里各备了一份。走的是继承，
+ * 取到的一定是最近那个主题的反面——亮、暗两个容器同时在页面上时（并排预览）也不会取错
+ */
+[data-theme="inverse"] {
+  color-scheme: var(--ef-x-scheme);
+
+  --ef-surface: var(--ef-x-surface);
+  --ef-surface-raised: var(--ef-x-surface-raised);
+  --ef-surface-sunken: var(--ef-x-surface-sunken);
+  --ef-surface-muted: var(--ef-x-surface-muted);
+  --ef-surface-inverse: var(--ef-x-surface-inverse);
+
+  --ef-ink: var(--ef-x-ink);
+  --ef-ink-secondary: var(--ef-x-ink-secondary);
+  --ef-ink-disabled: var(--ef-x-ink-disabled);
+  --ef-ink-inverse: var(--ef-x-ink-inverse);
+
+  --ef-line: var(--ef-x-line);
+  --ef-line-strong: var(--ef-x-line-strong);
+
+  --ef-accent-ink: var(--ef-x-accent-ink);
+  --ef-accent-ink-inverse: var(--ef-x-accent-ink-inverse);
+
+  --ef-button: var(--ef-x-button);
+  --ef-button-hover: var(--ef-x-button-hover);
+  --ef-button-pressed: var(--ef-x-button-pressed);
+  --ef-on-button: var(--ef-x-on-button);
+
+  --ef-disabled: var(--ef-x-disabled);
+
+  --ef-focus: var(--ef-x-focus);
+  --ef-scrim: var(--ef-x-scrim);
+
+  --ef-danger: var(--ef-x-danger);
+  --ef-success: var(--ef-x-success);
+  --ef-warning: var(--ef-x-warning);
+  --ef-info: var(--ef-x-info);
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. 原始令牌                                                         */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* —— 颜色：清掉 Tailwind 默认色板，只保留本系统的颜色 —— */
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* 中性阶：全部来自官网实测 */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f2f2f2;
+  --color-neutral-200: #e6e6e6;
+  --color-neutral-300: #d9d9d9;
+  --color-neutral-400: #b3b3b3;
+  --color-neutral-500: #8a8a8a;
+  --color-neutral-600: #626262;
+  --color-neutral-700: #484848;
+  --color-neutral-800: #383838;
+  --color-neutral-850: #282828;
+  --color-neutral-900: #191919;
+  --color-neutral-950: #141414;
+
+  /* 信号黄：官网实测；signal-ink 是亮底上的文字用深档（社区） */
+  --color-signal: #fffa00;
+  --color-signal-pressed: #eeea00;
+  --color-signal-deep: #e6de01;
+  --color-signal-ink: #6b5d00;
+
+  /* 角色色：游戏界面取色（社区），用作填充而非文字 */
+  --color-notice: #fc6c00; /* 橙：通知、倒计时、数量 */
+  --color-gain: #bce41d; /* 荧光黄绿：增益 */
+  --color-data: #2a84b4; /* 蓝：量值图表 */
+  --color-region: #06a2a2; /* 青：地区主题 */
+  --color-alert: #f62a2a; /* 红：危险 */
+  /* 红色按钮的底：两个主题同一个红，白字 5.1:1 起，悬停、按下各深一档 */
+  --color-alert-fill: #de0909;
+  --color-alert-fill-hover: #c40808;
+  --color-alert-fill-pressed: #a80707;
+  --color-confirm: #00d872; /* 绿：确认 */
+  --color-special: #904ef0; /* 紫：特殊 */
+
+  /* 稀有度色阶：由低到高（社区） */
+  --color-rarity-1: #24bafc;
+  --color-rarity-2: #904ef6;
+  --color-rarity-3: #fcba00;
+  --color-rarity-4: #fc6c00;
+
+  /* 注册色条：印刷三原色的屏幕近似值（推断） */
+  --color-reg-magenta: #ec008c;
+  --color-reg-cyan: #00aeef;
+  --color-reg-yellow: #fff200;
+
+  /* —— 字体：只列可自由使用的字体，官网的商业字体不在其中 —— */
+  --font-*: initial;
+
+  --font-sans:
+    "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "PingFang SC",
+    "Microsoft YaHei", system-ui, sans-serif;
+  --font-display: "Archivo", "Montserrat", "HarmonyOS Sans SC", sans-serif;
+  --font-display--font-variation-settings: "wdth" 125;
+  --font-latin: "Outfit", "Urbanist", "HarmonyOS Sans SC", sans-serif;
+  --font-tech: "Space Grotesk", "HarmonyOS Sans SC", sans-serif;
+  --font-tech--font-feature-settings: "tnum" 1;
+  --font-mono:
+    "JetBrains Mono", "Cascadia Code", ui-monospace, "SF Mono", Consolas,
+    monospace;
+
+  /* —— 字阶：比例取自官网（正文 = 1），落到 16px 基准 —— */
+  --text-*: initial;
+
+  --text-micro: 0.625rem; /* 10px 技术微标签 */
+  --text-micro--line-height: 1;
+  --text-xs: 0.75rem; /* 12px 英文小标、页码 */
+  --text-xs--line-height: 1.25;
+  --text-sm: 0.875rem; /* 14px 标签、导航 */
+  --text-sm--line-height: 1.4;
+  --text-base: 1rem; /* 16px 正文 */
+  --text-base--line-height: 1.6;
+  --text-lg: 1.25rem; /* 20px 按钮、页签 */
+  --text-lg--line-height: 1.2;
+  --text-xl: 1.5rem; /* 24px 英文分节标题 */
+  --text-xl--line-height: 1.1;
+  --text-2xl: 2rem; /* 32px 中文分节标题 */
+  --text-2xl--line-height: 1.1;
+  --text-3xl: 2.5rem; /* 40px 色带标题 */
+  --text-3xl--line-height: 1;
+  --text-4xl: 3.25rem; /* 52px 页面标题、名称 */
+  --text-4xl--line-height: 1;
+  --text-5xl: 4.5rem; /* 72px 代号 */
+  --text-5xl--line-height: 1;
+  --text-6xl: 6rem; /* 96px 主视觉大字 */
+  --text-6xl--line-height: 1;
+  --text-ghost: clamp(5rem, 10.4vw, 12.5rem); /* 镂空巨字 */
+  --text-ghost--line-height: 1;
+  --text-ghost--letter-spacing: -0.04em;
+
+  --tracking-ghost: -0.04em;
+  --tracking-label: 0.05em;
+
+  /* —— 圆角：默认直角，另有两档微圆角；胶囊与圆用 rounded-full —— */
+  --radius-*: initial;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+
+  /* —— 阴影：零偏移的环境阴影 —— */
+  --shadow-*: initial;
+
+  --shadow-xs: 0 0 4px rgb(0 0 0 / 0.25);
+  --shadow-sm: 0 0 8px rgb(0 0 0 / 0.25);
+  --shadow-md: 0 0 12px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 0 24px rgb(0 0 0 / 0.3);
+  --shadow-rail: 0 0 12px rgb(0 0 0 / 0.1);
+
+  /* —— 缓动与时长 —— */
+  --ease-standard: ease;
+  --ease-emphasis: ease-in-out;
+  --ease-exit: ease-out;
+
+  --duration-instant: 50ms;
+  --duration-fast: 200ms;
+  --duration-base: 300ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  /*
+   * 进场的方向位移：浮层从触发它的那一侧来。只是提示方向，不是滑行。
+   * 大的那一档给大面积的和贴着视口边缘出来的（全屏菜单的栏目、轻提示）
+   */
+  --motion-shift: 4px;
+  --motion-shift-lg: 8px;
+
+  /* —— 母题尺寸 —— */
+  --cut-sm: 6px;
+  --cut-md: 10px;
+  --cut-lg: 16px;
+  --hatch-size: 6px;
+
+  /*
+   * —— 层叠：从低到高。浮层全在同一层，它们都挂在 <body> 下，谁后打开谁在上，
+   * 所以弹窗里的下拉能盖住弹窗。轻提示单独高一层，加载页盖住一切 ——
+   */
+  --z-float: 100; /* 悬浮控件：回到顶部、浮在内容上的翻页 */
+  --z-nav: 200; /* 常驻导航：侧轨、顶栏 */
+  --z-overlay: 300; /* 文字提示、下拉、抽屉、弹窗和它们的遮罩 */
+  --z-toast: 400;
+  --z-loader: 1000;
+
+  /* —— 动画 —— */
+  --animate-*: initial;
+
+  --animate-flicker: ef-flicker 600ms linear both;
+  --animate-fill: ef-fill 600ms ease-out both;
+  --animate-scroll-hint: ef-scroll-hint 1.4s ease-in-out infinite;
+  --animate-breathe: ef-breathe 2s ease-in-out infinite;
+  --animate-marquee: ef-marquee 20s linear infinite;
+  --animate-spin: ef-spin 1s linear infinite;
+  --animate-spin-slow: ef-spin 60s linear infinite;
+  --animate-blink: ef-blink 1s step-end infinite;
+  --animate-slide-in: ef-slide-in 300ms ease-out both;
+  --animate-turn-in: ef-turn-in 300ms ease-out both;
+  --animate-fade-in: ef-fade-in 300ms ease-out both;
+  --animate-indeterminate: ef-indeterminate 1.2s linear infinite alternate;
+  --animate-indeterminate-y: ef-indeterminate-y 1.2s linear infinite alternate;
+  --animate-pulse: ef-pulse 2s ease-in-out infinite;
+  --animate-bracket-in: ef-bracket-in 200ms ease-out both;
+  --animate-shift-in: ef-shift-in 300ms ease-out both;
+  --animate-wipe-in: ef-wipe-in 300ms ease-out both;
+
+  /* 三次短促闪烁后点亮（官网实测的关键帧节奏） */
+  @keyframes ef-flicker {
+    0% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.5;
+    }
+    11% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 0.5;
+    }
+    21% {
+      opacity: 0;
+    }
+    40% {
+      opacity: 0.5;
+    }
+    41% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* 进度条、色块从左侧充填 */
+  @keyframes ef-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* 滚动提示：下坠并淡出 */
+  @keyframes ef-scroll-hint {
+    0% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+    60% {
+      opacity: 1;
+    }
+    80% {
+      transform: translateY(1.5rem);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes ef-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  /* 跑马灯：内容需要重复一遍，走完一半后停顿 */
+  @keyframes ef-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    80%,
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes ef-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @keyframes ef-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* 分节标题入场三步：滑块从左滑入 → 箭头转正 → 文字淡入 */
+  @keyframes ef-slide-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes ef-turn-in {
+    from {
+      transform: rotate(-45deg);
+    }
+    to {
+      transform: rotate(0);
+    }
+  }
+
+  @keyframes ef-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* 不确定进度：宽 40% 的色块在轨道上匀速往返，所以走自身宽度的 150% */
+  @keyframes ef-indeterminate {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(150%);
+    }
+  }
+
+  /* 同上，竖着的轨道：开屏页贴左缘的那根条 */
+  @keyframes ef-indeterminate-y {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(150%);
+    }
+  }
+
+  /* 骨架：很轻的明度往返，不是扫光 */
+  @keyframes ef-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  /*
+   * 角括号落位：八段短线各自从角的顶点伸到满长。写成 after:animate-bracket-in，
+   * 和 corner-brackets 一起用——八层的顺序（横、竖交替）跟着 utilities.css 里那八层背景走。
+   * 只写起点：终点就是括号自己的尺寸。只动背景的尺寸，括号不会比平时多占一点地方
+   */
+  @keyframes ef-bracket-in {
+    from {
+      background-size:
+        0 var(--_w),
+        var(--_w) 0,
+        0 var(--_w),
+        var(--_w) 0,
+        0 var(--_w),
+        var(--_w) 0,
+        0 var(--_w),
+        var(--_w) 0;
+    }
+  }
+
+  /*
+   * 位移入场：从偏着的地方淡入归位。往哪边偏、偏多少由用的地方给
+   * （--shift-x / --shift-y，量用 --motion-shift 那两档），不给就只是淡入。
+   * 只写起点：终点就是元素自己的样子
+   */
+  @keyframes ef-shift-in {
+    from {
+      opacity: 0;
+      translate: var(--shift-x, 0) var(--shift-y, 0);
+    }
+  }
+
+  /*
+   * 擦入：从左往右露出来。两头都要写——"没有裁切"和 inset() 之间插不了值。
+   * 有东西画到盒子外面一点的（小型面积图的折线有半个线宽在外面），用 --wipe-bleed
+   * 把另外几边往外让，不然走完之后那一圈是被裁掉的
+   */
+  @keyframes ef-wipe-in {
+    from {
+      clip-path: inset(
+        calc(0px - var(--wipe-bleed, 0px)) 100%
+          calc(0px - var(--wipe-bleed, 0px)) calc(0px - var(--wipe-bleed, 0px))
+      );
+    }
+    to {
+      clip-path: inset(calc(0px - var(--wipe-bleed, 0px)));
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. 语义颜色 → Tailwind 工具类                                       */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  --color-surface: var(--ef-surface);
+  --color-surface-raised: var(--ef-surface-raised);
+  --color-surface-sunken: var(--ef-surface-sunken);
+  --color-surface-muted: var(--ef-surface-muted);
+  --color-surface-inverse: var(--ef-surface-inverse);
+
+  --color-ink: var(--ef-ink);
+  --color-ink-secondary: var(--ef-ink-secondary);
+  --color-ink-tertiary: var(--ef-ink-tertiary);
+  --color-ink-disabled: var(--ef-ink-disabled);
+  --color-ink-inverse: var(--ef-ink-inverse);
+
+  --color-line: var(--ef-line);
+  --color-line-strong: var(--ef-line-strong);
+
+  --color-action: var(--ef-action);
+  --color-action-pressed: var(--ef-action-pressed);
+  --color-on-action: var(--ef-on-action);
+  --color-accent-ink: var(--ef-accent-ink);
+  --color-accent-ink-inverse: var(--ef-accent-ink-inverse);
+
+  --color-control: var(--ef-control);
+  --color-control-hover: var(--ef-control-hover);
+  --color-control-pressed: var(--ef-control-pressed);
+  --color-on-control: var(--ef-on-control);
+
+  --color-button: var(--ef-button);
+  --color-button-hover: var(--ef-button-hover);
+  --color-button-pressed: var(--ef-button-pressed);
+  --color-on-button: var(--ef-on-button);
+
+  --color-disabled: var(--ef-disabled);
+  --color-on-disabled: var(--ef-on-disabled);
+
+  --color-focus: var(--ef-focus);
+  --color-scrim: var(--ef-scrim);
+
+  --color-danger: var(--ef-danger);
+  --color-success: var(--ef-success);
+  --color-warning: var(--ef-warning);
+  --color-info: var(--ef-info);
+}
+
+/* ------------------------------------------------------------------ */
+/* 开屏页的进度                                                         */
+/* ------------------------------------------------------------------ */
+
+/*
+ * SplashScreen 把进度写成根上的这两个变量，注册成数值之后才能过渡：条长、读数的位置、
+ * 底图的模糊都由第一个算，读数的数字是第二个（整数，经计数器显示）。两个一起过渡，
+ * 所以这四样天然同拍，半路改值也是从当前的位置折过去。
+ * 不认 @property 的浏览器里它们只是普通变量：值照样对，只是不补间、直接到位。
+ */
+@property --ef-splash-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --ef-splash-percent {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* 主题切换                                                             */
+/* ------------------------------------------------------------------ */
+
+/*
+ * useTheme 切亮暗时整页交叉淡化一次（浏览器支持视图过渡时）。切的那一下它在 <html> 上标
+ * data-theme-switching，这里把根的那几层换成"颜色、透明度"那一档的时长。
+ * 只在这个标记下生效：使用方自己的视图过渡不受影响。三层要一起给——只改新旧两层的话，
+ * 组那一层还是浏览器默认的 250ms，整个过渡要到那时候才算完。
+ * "减少动态效果"不在这里管：开了的时候 useTheme 根本不走视图过渡
+ */
+:root[data-theme-switching]::view-transition-group(root),
+:root[data-theme-switching]::view-transition-old(root),
+:root[data-theme-switching]::view-transition-new(root) {
+  animation-duration: var(--duration-fast);
+  animation-timing-function: var(--ease-standard);
+}
+
+/* ------------------------------------------------------------------ */
+/* 减少动态效果                                                         */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    /* 延迟也归零：不然错开的入场会变成一项一项蹦出来 */
+    animation-delay: 0s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* === utilities.css === */
+/*
+ * endfield-ui 母题工具类
+ *
+ * 画法与取值的依据写在 docs/design/elements/ 下的对应文档里。
+ * 这些类只画形状，不带语义：谁能切角、哪里能放斜纹，见各篇文档的"什么时候用"。
+ */
+
+/* ------------------------------------------------------------------ */
+/* 斜纹：6px 方格、-45°。默认是"粗"档，用在跟随主题的条带上：            */
+/* 斜带取墨色的 5%，亮色下约等于实测的黑 5%，暗色下是比底色亮一档的浅带   */
+/* ------------------------------------------------------------------ */
+
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--hatch-color, color-mix(in srgb, var(--ef-ink) 5%, transparent)) 0
+      var(--hatch-width, 1.9px),
+    transparent 0 calc(var(--hatch-size) * 0.7071)
+  );
+}
+
+/* "中"档：比底色亮一档的斜带，压在深色控件上（返回按钮） */
+@utility hatch-mid {
+  --hatch-color: var(--color-neutral-700);
+  --hatch-width: 1.5px;
+}
+
+/* "细"档：很细的墨色斜带，填未探索的区域、最高一档的稀有度 */
+@utility hatch-fine {
+  --hatch-color: color-mix(in srgb, var(--ef-ink) 60%, transparent);
+  --hatch-width: 0.75px;
+}
+
+/* ------------------------------------------------------------------ */
+/* 警示条纹：黄黑相间的 45° 宽条。两个主题下相同，只做 6 – 12px 高的窄条 */
+/* ------------------------------------------------------------------ */
+
+@utility hazard {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-signal) 0 var(--hazard-size, 12px),
+    var(--color-neutral-900) var(--hazard-size, 12px)
+      calc(var(--hazard-size, 12px) * 2)
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 切角：把矩形的一个角沿 45° 切掉。cut-sm / cut-md / cut-lg 定切口大小  */
+/*                                                                    */
+/* clip-path 会把焦点环和阴影一起裁掉。可聚焦的元素不要直接切，          */
+/* 把切角画在伪元素的底上：                                             */
+/*   relative isolate before:absolute before:inset-0 before:-z-10      */
+/*   before:cut-tr before:bg-action                                    */
+/* ------------------------------------------------------------------ */
+
+@utility cut-* {
+  --cut: --value(--cut-*, [length]);
+}
+
+@utility cut-tr {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut, var(--cut-md))) 0,
+    100% var(--cut, var(--cut-md)),
+    100% 100%,
+    0 100%
+  );
+}
+
+@utility cut-br {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--cut, var(--cut-md))),
+    calc(100% - var(--cut, var(--cut-md))) 100%,
+    0 100%
+  );
+}
+
+@utility cut-diagonal {
+  clip-path: polygon(
+    var(--cut, var(--cut-md)) 0,
+    100% 0,
+    100% calc(100% - var(--cut, var(--cut-md))),
+    calc(100% - var(--cut, var(--cut-md))) 100%,
+    0 100%,
+    0 var(--cut, var(--cut-md))
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 斜楔：把左右两条边斜切，文字保持正立。--wedge 是斜边的水平宽度，      */
+/* 所以倾角跟着元素的高度变（40px 高、10px 宽约 14°）。                  */
+/* 和切角一样，可聚焦的元素把它画在伪元素的底上                          */
+/* ------------------------------------------------------------------ */
+
+@utility wedge {
+  clip-path: polygon(
+    var(--wedge, var(--cut-md)) 0,
+    100% 0,
+    calc(100% - var(--wedge, var(--cut-md))) 100%,
+    0 100%
+  );
+}
+
+/* 只斜切左边，右边贴边 */
+@utility wedge-l {
+  clip-path: polygon(var(--wedge, var(--cut-md)) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* 只斜切右边，左边贴边 */
+@utility wedge-r {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--wedge, var(--cut-md))) 100%,
+    0 100%
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 角括号：四角各一个 L 形短线，用 ::after 的背景画，不占用 outline。    */
+/* 宿主要自己定位（relative 或 absolute）；括号画在宿主之外，            */
+/* 所以宿主和它的裁切祖先之间要留出 --bracket-offset 的空隙。            */
+/* 要它出现时"落位"，再加 after:animate-bracket-in（关键帧在 theme.css）  */
+/* ------------------------------------------------------------------ */
+
+@utility corner-brackets {
+  &::after {
+    --_c: var(--bracket-color, var(--ef-ink));
+    --_w: var(--bracket-width, 2px);
+    --_l: var(--bracket-arm, 12px);
+    content: "";
+    position: absolute;
+    inset: calc(var(--bracket-offset, 4px) * -1);
+    pointer-events: none;
+    background:
+      linear-gradient(var(--_c) 0 0) 0 0 / var(--_l) var(--_w),
+      linear-gradient(var(--_c) 0 0) 0 0 / var(--_w) var(--_l),
+      linear-gradient(var(--_c) 0 0) 100% 0 / var(--_l) var(--_w),
+      linear-gradient(var(--_c) 0 0) 100% 0 / var(--_w) var(--_l),
+      linear-gradient(var(--_c) 0 0) 0 100% / var(--_l) var(--_w),
+      linear-gradient(var(--_c) 0 0) 0 100% / var(--_w) var(--_l),
+      linear-gradient(var(--_c) 0 0) 100% 100% / var(--_l) var(--_w),
+      linear-gradient(var(--_c) 0 0) 100% 100% / var(--_w) var(--_l);
+    background-repeat: no-repeat;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 镂空字：字形透明，只留斜纹或描边。                                    */
+/* 文字颜色已经是透明的，斜纹与描边不能写 currentColor，                 */
+/* 要换颜色就在容器上给 --ghost-ink                                     */
+/* ------------------------------------------------------------------ */
+
+@utility ghost-hatch {
+  color: transparent;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--ghost-ink, var(--ef-ink)) 0 0.75px,
+    transparent 0 calc(var(--hatch-size) * 0.7071)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.6;
+}
+
+@utility ghost-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px
+    var(--ghost-ink, color-mix(in srgb, var(--ef-ink) 22%, transparent));
+}
+
+/* ------------------------------------------------------------------ */
+/* 底纹：点阵、工程网格、等高线。一个视口选一种，画在独立的装饰层上，    */
+/* 不要让它穿过正文。颜色都取墨色的一个比例，跟着主题走                  */
+/* ------------------------------------------------------------------ */
+
+/* 点阵：印刷网点。用在面上（弹窗内容区、空状态的背景），窄条用斜纹 */
+@utility dot-grid {
+  background-image: radial-gradient(
+    circle,
+    var(--dot-color, color-mix(in srgb, var(--ef-ink) 10%, transparent))
+      var(--dot-size, 1px),
+    transparent calc(var(--dot-size, 1px) + 0.5px)
+  );
+  background-size: var(--dot-gap, 16px) var(--dot-gap, 16px);
+}
+
+/* 工程网格：大间距的细线，必须弱于界面里任何一条真实的线 */
+@utility blueprint-grid {
+  --_g: var(--grid-color, color-mix(in srgb, var(--ef-ink) 6%, transparent));
+  background-image:
+    linear-gradient(var(--_g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--_g) 1px, transparent 1px);
+  background-size: var(--grid-gap, 72px) var(--grid-gap, 72px);
+}
+
+/*
+ * 等高线：八圈原创的闭合曲线，圈距不均匀、一侧贴近。贴在右下角被容器截断，
+ * 朝左上方淡出；要放到别的角，把这一层翻转（-scale-x-100、-scale-y-100）。
+ * 曲线是遮罩，颜色由底色给——所以它会把元素自己的内容一起遮掉，
+ * 只能用在空的装饰层上（<Texture variant="contour" /> 就是）
+ */
+@utility contour {
+  background-color: var(
+    --contour-color,
+    color-mix(in srgb, var(--ef-ink) 18%, transparent)
+  );
+  -webkit-mask: var(--contour-image) var(--contour-position, 100% 100%) /
+    var(--contour-size, 30rem) no-repeat;
+  mask: var(--contour-image) var(--contour-position, 100% 100%) /
+    var(--contour-size, 30rem) no-repeat;
+  /* 曲线本体。一行很长，所以放在最后；想换成自己的图就覆盖这个变量 */
+  --contour-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 480' fill='none'%3E%3Cdefs%3E%3CradialGradient id='f' gradientUnits='userSpaceOnUse' cx='480' cy='480' r='480'%3E%3Cstop offset='.5' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath stroke='url(%23f)' vector-effect='non-scaling-stroke' d='M358 338C359 343 356 350 353 355C350 359 344 363 340 365C335 368 330 369 325 370C320 371 315 370 311 369C307 368 302 365 299 362C296 359 293 355 291 351C288 347 285 343 283 338C282 333 280 326 281 320C283 315 288 308 292 306C297 303 305 304 311 305C316 306 320 311 324 313C328 314 331 315 335 317C339 319 345 320 349 323C353 327 357 333 358 338ZM398 333C399 343 394 355 389 364C383 372 373 378 364 383C356 387 347 390 338 391C330 393 320 392 312 389C304 387 297 382 291 376C284 371 280 364 275 357C270 350 265 342 262 333C259 324 255 311 258 301C261 291 269 279 278 274C287 270 302 272 311 274C321 276 328 283 336 286C343 290 348 291 356 295C363 298 374 300 381 306C388 312 397 323 398 333ZM455 328C457 344 448 366 439 380C429 393 412 403 398 411C384 419 369 425 355 427C340 429 324 427 310 422C297 418 285 409 274 400C264 391 256 381 248 369C240 357 232 344 227 328C222 312 215 290 220 274C224 258 238 237 253 229C268 222 293 226 309 229C326 232 338 244 350 249C362 255 371 258 384 263C396 269 414 272 426 283C438 294 453 312 455 328ZM491 323C494 343 482 369 471 386C459 403 437 415 420 424C403 434 385 443 367 445C349 447 329 444 313 439C296 433 281 423 268 412C255 401 244 388 235 373C225 358 216 342 211 323C205 304 196 277 201 256C206 236 223 210 242 201C260 192 291 198 311 202C331 206 346 219 361 226C376 233 387 236 403 243C418 250 439 254 454 268C469 281 488 303 491 323ZM565 318C570 346 552 385 535 409C518 433 487 449 462 463C437 477 412 491 386 495C361 498 332 492 308 484C285 476 263 461 245 445C226 430 209 412 195 391C181 369 170 346 162 318C154 290 140 252 147 222C155 193 179 155 206 142C232 129 278 139 307 145C335 151 356 168 378 178C400 188 416 193 438 203C460 213 489 220 510 239C531 258 561 290 565 318ZM655 313C661 352 636 405 612 438C588 471 545 491 511 511C477 531 443 551 409 556C374 561 334 551 301 539C269 528 240 508 214 487C188 466 164 442 145 413C126 384 113 352 102 313C92 274 71 222 81 182C90 142 124 89 160 72C197 54 260 69 299 77C339 86 367 108 397 120C427 133 449 141 479 155C509 169 547 179 577 205C606 232 649 274 655 313ZM757 308C765 359 730 428 699 471C667 514 610 540 566 566C522 593 479 622 433 628C388 634 335 619 293 604C250 588 213 562 179 535C144 508 110 478 86 440C62 402 47 359 33 308C20 257 -9 189 3 136C15 83 59 13 107 -9C155 -32 238 -9 290 1C342 12 379 38 418 55C457 71 486 82 525 101C564 120 613 133 651 168C690 202 749 257 757 308ZM886 303C897 369 850 460 808 515C766 571 692 604 634 638C577 673 522 715 463 723C404 731 335 708 279 687C224 666 177 634 131 598C86 563 39 525 8 476C-23 427 -39 369 -56 303C-74 237 -114 148 -98 79C-83 10 -26 -83 36 -112C99 -141 209 -108 276 -94C344 -80 391 -49 443 -28C494 -7 533 7 583 32C633 57 694 76 744 121C795 166 876 237 886 303Z'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------------------ */
+/* 竖条变箭头：同一个元素的 clip-path 在两个四点多边形之间过渡           */
+/* 顶点数必须相同才能插值，所以三角形写成四个点（最后两个重合）          */
+/* ------------------------------------------------------------------ */
+
+@utility marker-bar {
+  clip-path: polygon(
+    0 0,
+    var(--marker-bar, 3px) 0,
+    var(--marker-bar, 3px) 100%,
+    0 100%
+  );
+}
+
+@utility marker-arrow {
+  clip-path: polygon(0 20%, 100% 50%, 0 80%, 0 80%);
+}
+
+/* ------------------------------------------------------------------ */
+/* 菱形表单符号（方案 B）的开关：和主题一样写在 <html> 或局部容器上，   */
+/*   <html data-choice="diamond">                                      */
+/* 复选与单选一起换成菱形。全库选一套，不要和方形混用                    */
+/* ------------------------------------------------------------------ */
+
+@custom-variant choice-diamond (&:where([data-choice="diamond"], [data-choice="diamond"] *));
+
+/* ------------------------------------------------------------------ */
+/* 所在的容器是竖着的（高大于宽）：开屏页据此换成竖排。                  */
+/* 看的是最近的尺寸容器（container-type: size），不是视口——             */
+/* 放进一个框里的开屏页，横竖由那个框说了算                              */
+/* ------------------------------------------------------------------ */
+
+@custom-variant cq-portrait (@container (orientation: portrait));
