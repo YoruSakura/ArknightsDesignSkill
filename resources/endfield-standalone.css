@@ -184,7 +184,7 @@
   --ef-x-button-pressed: rgb(255 255 255 / 0.15);
   --ef-x-on-button: #d9d9d9;
   --ef-x-disabled: #282828;
-  --ef-x-focus: #fffa00;
+  --ef-x-focus: var(--ef-accent-ink-inverse);
   --ef-x-scrim: rgb(0 0 0 / 0.7);
   --ef-x-danger: #f74040;
   --ef-x-success: #00d872;
@@ -234,7 +234,7 @@ body[data-theme="dark"] {
   --ef-disabled: #282828;
   --ef-on-disabled: #626262;
 
-  --ef-focus: #fffa00;
+  --ef-focus: var(--ef-accent-ink);
   --ef-scrim: rgb(0 0 0 / 0.7);
 
   --ef-danger: #f74040;
@@ -449,11 +449,11 @@ body[data-ef-scope] {
   --hatch-width: 0.75px;
 }
 
-/* Hazard stripes (黄黑警示条纹，仅用于 6-12px 窄条) */
+/* Hazard stripes (黄黑警示条纹，仅用于 6-12px 窄条；随 --ef-action 换色联动) */
 .ef-hazard, .hazard {
   background-image: repeating-linear-gradient(
     -45deg,
-    var(--color-signal) 0 var(--hazard-size, 12px),
+    var(--ef-action, var(--color-signal)) 0 var(--hazard-size, 12px),
     var(--color-neutral-900) var(--hazard-size, 12px) calc(var(--hazard-size, 12px) * 2)
   );
 }
@@ -775,7 +775,7 @@ body[data-ef-scope] {
   top: 20%;
   bottom: 20%;
   width: 2px;
-  background: rgb(25 25 25 / 0.12);
+  background: color-mix(in srgb, currentColor 16%, transparent);
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 .ef-btn--action:hover {
@@ -783,7 +783,7 @@ body[data-ef-scope] {
   color: var(--ef-on-action);
 }
 .ef-btn--action:hover::after {
-  background: rgb(25 25 25 / 0.22);
+  background: color-mix(in srgb, currentColor 28%, transparent);
 }
 .ef-btn--action:active {
   background: var(--ef-action-pressed);
@@ -1062,8 +1062,8 @@ body[data-ef-scope] {
   border: 1.5px solid #8a8a8a;
 }
 .ef-data-row.is-fav .ef-data-row__dot {
-  background: var(--color-signal);
-  border-color: var(--color-signal);
+  background: var(--ef-action, var(--color-signal));
+  border-color: var(--ef-action, var(--color-signal));
 }
 .ef-data-row__name {
   font-weight: 500;
@@ -1076,7 +1076,7 @@ body[data-ef-scope] {
   text-align: right;
 }
 .ef-data-row__val--info { color: #2d8fc2; }
-.ef-data-row__val--accent { color: #fffa00; }
+.ef-data-row__val--accent { color: var(--ef-action, #fffa00); }
 .ef-data-row__val--danger { color: #f74040; }
 .ef-data-row__ref {
   font-family: var(--font-tech);
@@ -2191,7 +2191,7 @@ dialog.ef-dialog[open] { animation: ef-shift-in var(--duration-base) var(--ease-
   animation: ef-shift-in var(--duration-base) var(--ease-exit) both;
   --shift-y: 8px;
 }
-.ef-toast__tone { width: 8px; height: 8px; flex: none; transform: rotate(45deg); background: var(--color-signal); }
+.ef-toast__tone { width: 8px; height: 8px; flex: none; transform: rotate(45deg); background: var(--ef-action, var(--color-signal)); }
 .ef-toast--success .ef-toast__tone { background: var(--color-confirm); transform: none; border-radius: 50%; }
 .ef-toast--warning .ef-toast__tone { background: var(--color-notice); }
 .ef-toast--danger .ef-toast__tone { background: var(--color-alert); }

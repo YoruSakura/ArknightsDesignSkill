@@ -8,10 +8,13 @@
 .ak-hero .ak-btn--contrast { --_bg: #fff; --_fg: #0f0f10; --_bd: #fff; }
 .ak-hero .ak-btn--contrast:hover { --_bg: rgba(255,255,255,.82); --_bd: rgba(255,255,255,.82); }
 
-/* 2. Hero 右侧色面：不再是一整块实心青色（像占位图）——只留右缘 8px 青色竖条 + 向左渐隐的半调网点。
+/* 2. Hero 右侧色面：不再是一整块实心青色（像占位图）——只留右缘 8px 强调竖条 + 向左渐隐的半调网点，随 --ak-theme-accent 品牌换色联动。
  *    需要放干员立绘/插图时，把图片放进 .ak-hero__side 里即可（img 自动铺满且不盖住色条）。 */
-.ak-hero__side { width: min(24%, 280px); background: transparent; opacity: 1; border-right: 8px solid var(--ak-cyan-500); box-sizing: border-box; }
-.ak-hero__side::after { background-image: radial-gradient(var(--ak-cyan-500) 1.2px, transparent 1.5px); background-size: 7px 7px;
+.ak-hero__eyebrow { color: var(--ak-theme-accent, var(--ak-cyan-500)); }
+.ak-switch > input:checked { background: var(--ak-accent); }
+.ak-hero__bar { background: var(--ak-theme-accent, var(--ak-cyan-500)); }
+.ak-hero__side { width: min(24%, 280px); background: transparent; opacity: 1; border-right: 8px solid var(--ak-theme-accent, var(--ak-cyan-500)); box-sizing: border-box; }
+.ak-hero__side::after { background-image: radial-gradient(var(--ak-theme-accent, var(--ak-cyan-500)) 1.2px, transparent 1.5px); background-size: 7px 7px;
   -webkit-mask-image: linear-gradient(270deg, #000, transparent 85%); mask-image: linear-gradient(270deg, #000, transparent 85%); }
 .ak-hero__side > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ak-hero > :not(.ak-hero__side) { position: relative; z-index: 1; }
