@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 """
+注意（见 AGENTS.md）：
+- 本脚本会【覆盖】 prts-tokens.css / prts-design.css / endfield-theme.css。对上游的修正请写进 resources/prts-addons.css。
+- resources/endfield-standalone.css 是【手工维护】的零依赖版，本脚本不会生成它；上游 theme/utilities 更新后需人工比对合并，
+  其末尾“Skill 补丁层”区块为本仓库自有，勿丢。
+
 Sync and bundle CSS tokens & stylesheets from upstream repositories:
 - MooncellWiki/prts-design (MIT)
 - icaruszezen/endfield-ui (MIT)
