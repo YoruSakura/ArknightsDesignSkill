@@ -24,9 +24,9 @@
         <a href="#pipeline" class="ef-side-rail__item">集成工业监控</a>
         <a href="#depot" class="ef-side-rail__item">四号仓储矩阵</a>
         <div class="ef-side-rail__group">// 外观模式</div>
-        <div style="padding: 8px 20px; display: flex; gap: 8px;">
-          <button type="button" class="ef-btn ef-btn--sm" onclick="toggleTheme('light')" style="flex: 1; min-width: 0;">纸白</button>
-          <button type="button" class="ef-btn ef-btn--sm ef-btn--light" onclick="toggleTheme('dark')" style="flex: 1; min-width: 0;">烟黑</button>
+        <div style="padding: 8px 20px; display: flex; gap: 8px;" role="group" aria-label="外观模式切换">
+          <button type="button" id="ef-btn-light" class="ef-btn ef-btn--sm" aria-pressed="true" onclick="toggleTheme('light')" style="flex: 1; min-width: 0;">纸白</button>
+          <button type="button" id="ef-btn-dark" class="ef-btn ef-btn--sm" aria-pressed="false" onclick="toggleTheme('dark')" style="flex: 1; min-width: 0;">烟黑</button>
         </div>
       </nav>
 
@@ -41,15 +41,15 @@
     <!-- 主舞台：偏心构图 + 亮暗交替版块 -->
     <main>
       <!-- 版块 1：纸白画册风 · 偏心构图主视觉 (1.6fr : 0.8fr 不等宽栅格) -->
-      <section id="hero" style="position: relative; overflow: clip; padding: 56px 48px 64px; border-bottom: 1px solid var(--ef-line);">
+      <section id="hero" class="ef-hero">
         <!-- 背景层：斜纹镂空巨字（越界截断）+ 右下角等高线 -->
-        <span aria-hidden="true" class="ghost-hatch" style="position: absolute; top: -16px; left: 32px;">
+        <span aria-hidden="true" class="ghost-hatch ef-hero__ghost">
           //PERLICA
         </span>
         <div aria-hidden="true" class="contour" style="position: absolute; inset: 0; pointer-events: none;"></div>
 
         <!-- 内容层：偏心分栏 -->
-        <div style="position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr); gap: 48px; align-items: end;">
+        <div class="ef-hero__grid">
           <div>
             <!-- 标准分节标题 (形态 A) -->
             <header class="ef-section-title" style="margin-bottom: 28px;">
@@ -140,16 +140,16 @@
           <p class="ef-band-title__sub">ARKNIGHTS: ENDFIELD // AUTOMATION</p>
           <h2 class="ef-band-title__main">INTEGRATED INDUSTRY</h2>
         </div>
-        <div style="font-family: var(--font-tech); font-size: var(--text-xs); text-align: right;">
+        <div class="ef-band-title__meta">
           <div>SECTION 02 OF 03</div>
           <div>PIPELINE TELEMETRY</div>
         </div>
       </div>
 
       <!-- 版块 2：产耗监控与仓储矩阵 -->
-      <section id="pipeline" style="padding: 48px; display: flex; flex-direction: column; gap: 36px;">
+      <section id="pipeline" class="ef-section" style="display: flex; flex-direction: column; gap: 36px;">
         <!-- 统计块行：不装进卡片，靠左缘 3px 墨线立住，最重要的一个用 5xl -->
-        <div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end;">
+        <div class="ef-stat-row">
           <div class="ef-stat">
             <span class="ef-stat__label">POWER GRID OUTPUT</span>
             <div class="ef-stat__main">
@@ -175,9 +175,9 @@
         </div>
 
         <!-- 不等宽双栏：左栏深色数据行带 + 右栏物品格矩阵面板 -->
-        <div id="depot" style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.9fr); gap: 32px; align-items: start;">
+        <div id="depot" class="ef-split">
           <div style="display: flex; flex-direction: column; gap: 16px;">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px;">
               <h3 style="margin: 0; font-size: var(--text-lg); font-weight: 700;">产线实时吞吐简报</h3>
               <span style="font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-ink-secondary);">// 蓝=产出 · 黄=消耗 · 红=超支</span>
             </div>
@@ -281,9 +281,19 @@
   </div>
 
   <script>
-    function toggleTheme(theme) {
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ef-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'light', false);
+    })();
+    function applyTheme(theme, persist) {
       document.documentElement.dataset.theme = theme;
+      var bl = document.getElementById('ef-btn-light'), bd = document.getElementById('ef-btn-dark');
+      if (bl) bl.setAttribute('aria-pressed', String(theme === 'light'));
+      if (bd) bd.setAttribute('aria-pressed', String(theme === 'dark'));
+      if (persist) { try { localStorage.setItem('ef-theme', theme); } catch (e) {} }
     }
+    function toggleTheme(theme) { applyTheme(theme, true); }
   </script>
 </body>
 </html>

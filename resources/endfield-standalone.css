@@ -127,6 +127,7 @@
   --z-loader: 1000;
 
   /* Semantic tokens — Light Theme */
+  --ef-page-ink: #191919;
   --ef-surface: #ffffff;
   --ef-surface-raised: #fafafa;
   --ef-surface-sunken: #f2f2f2;
@@ -192,6 +193,10 @@
 }
 
 /* ═══ 2. SEMANTIC TOKENS (DARK THEME) ═══ */
+:root[data-theme="dark"],
+body[data-theme="dark"] {
+  --ef-page-ink: #fafafa;
+}
 [data-theme="dark"] {
   color-scheme: dark;
 
@@ -612,9 +617,10 @@ body[data-ef-scope] {
   color: var(--ef-on-action);
   padding: 20px 40px;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 24px;
+  gap: 12px 24px;
   position: relative;
   overflow: hidden;
 }
@@ -633,6 +639,11 @@ body[data-ef-scope] {
   line-height: 1;
   text-transform: uppercase;
   margin: 0;
+}
+.ef-band-title__meta {
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  text-align: right;
 }
 
 /* 7.2 Bracket Title ([ 名称 ]) */
@@ -1166,7 +1177,7 @@ body[data-ef-scope] {
 }
 @media (max-width: 1023px) {
   .ef-app-shell {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);   /* 必须 minmax(0,1fr)：裸 1fr 会被内容撑出视口 */
   }
 }
 .ef-side-rail {
@@ -1250,3 +1261,65 @@ body[data-ef-scope] {
   background: var(--ef-action);
   color: var(--ef-on-action);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  Skill 补丁层：响应式外壳 + 页面布局助手（Hero / 偏心分栏 / 版块内边距）
+ *  样板页不再写内联 grid，一律用下列类，手机上自动堆叠。
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 窄屏：侧栏不再占满整屏（100vh sticky），改为顶部横向导轨，内容紧随其后 */
+@media (max-width: 1023px) {
+  .ef-side-rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--ef-line); }
+  .ef-side-rail__brand { border-bottom: 0; padding: 14px 16px 8px; }
+  .ef-side-rail__nav { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; padding: 0 8px 8px; overflow: visible; }
+  .ef-side-rail__group { display: none; }
+  .ef-side-rail__item { height: 40px; padding: 0 12px; }
+  .ef-side-rail__item.is-current::before, .ef-side-rail__item[aria-current="page"]::before { top: auto; bottom: 0; left: 12px; right: 12px; width: auto; height: 3px; }
+  .ef-side-rail__nav > div:not(.ef-side-rail__group) { margin-left: auto; padding: 0 !important; }
+  .ef-nav-action { margin: 0 12px 12px; }
+}
+
+/* 页面版块内边距 */
+.ef-section { padding: 48px; }
+@media (max-width: 767px) { .ef-section { padding: 28px 16px; } }
+
+/* Hero：镂空巨字是背景层，内容层用 padding-top 让出巨字高度，保证巨字与标题/面包屑不重叠
+ *   .ef-hero > .ghost-hatch.ef-hero__ghost（absolute，aria-hidden） + .ef-hero__grid（内容层）
+ *   巨字字号 = --text-ghost，内容层顶部让出 0.65 倍，仍保留少量压叠的“印刷叠影”感，但文字清晰可读 */
+.ef-hero { position: relative; overflow: clip; padding: 56px 48px 64px; border-bottom: 1px solid var(--ef-line); }
+.ef-hero__ghost { position: absolute; top: -0.1em; left: 32px; z-index: 0; max-width: calc(100% - 32px); overflow: hidden; }
+.ef-hero__grid { position: relative; z-index: 1; padding-top: calc(var(--text-ghost) * 0.65);
+  display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr); gap: 48px; align-items: end; }
+@media (max-width: 1023px) { .ef-hero__grid { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+@media (max-width: 767px) {
+  .ef-hero { padding: 28px 16px 40px; }
+  .ef-hero__grid { padding-top: calc(var(--text-ghost) * 0.5); }
+}
+
+/* 偏心不等宽双栏 */
+.ef-split { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.9fr); gap: 32px; align-items: start; }
+@media (max-width: 1023px) { .ef-split { grid-template-columns: minmax(0, 1fr); } }
+
+/* 统计块行 */
+.ef-stat-row { display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: flex-end; }
+@media (max-width: 767px) { .ef-stat-row { gap: 20px 28px; } .ef-stat__value { font-size: min(var(--text-5xl), 14vw); } }
+
+.ef-app-shell > main { min-width: 0; }
+.ef-hero__ghost { font-size: min(var(--text-ghost), 22vw); }
+@media (max-width: 767px) {
+  .ef-hero__grid > * { min-width: 0; }
+  .ef-band-title { padding: 18px 16px; gap: 10px 16px; }
+  .ef-band-title__main { font-size: clamp(1.5rem, 6.5vw, var(--text-3xl)); }
+  .ef-band-title__meta { text-align: left; }
+}
+
+/* 局部异色面板（如亮色页中的 [data-theme="dark"] 视窗）的外部角括号对齐宿主页面墨色，避免浅色括号在白底上隐身 */
+:not(html)[data-theme]:is(.ef-corner-brackets, .corner-brackets)::after {
+  --_c: var(--bracket-color, var(--ef-page-ink, var(--ef-ink)));
+}
+
+/* 互斥切换按钮（主题开关等带 aria-pressed 属性的按钮）视觉同步 */
+.ef-btn[aria-pressed="true"] { background: var(--ef-surface-inverse); color: var(--ef-ink-inverse); box-shadow: none; }
+.ef-btn[aria-pressed="true"]:hover { background: var(--ef-surface-inverse); color: var(--ef-ink-inverse); }
+.ef-btn[aria-pressed="false"] { background: var(--ef-surface-sunken); color: var(--ef-ink-secondary); border: 1px solid var(--ef-line); box-shadow: none; }
+.ef-btn[aria-pressed="false"]:hover { background: var(--ef-surface-muted); color: var(--ef-ink); }

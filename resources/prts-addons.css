@@ -1,0 +1,45 @@
+/*! PRTS Design · 本 Skill 自有补丁层（addons）
+ *  与 prts-design.css 配套加载（放在其后）。prts-design.css 由 scripts/sync-upstream.py 覆盖生成，
+ *  所以对上游样式的一切修正都写在这里，不要直接改 prts-design.css。
+ *  规则依然遵守：纯直角、无辉光、无 45° 切角。
+ */
+
+/* 1. 黑色 Hero 内的 contrast 按钮：Hero 恒为黑底，按钮必须恒为白底黑字（上游 contrast 跟随主题，亮色模式下会黑底黑字） */
+.ak-hero .ak-btn--contrast { --_bg: #fff; --_fg: #0f0f10; --_bd: #fff; }
+.ak-hero .ak-btn--contrast:hover { --_bg: rgba(255,255,255,.82); --_bd: rgba(255,255,255,.82); }
+
+/* 2. Hero 右侧色面：不再是一整块实心青色（像占位图）——只留右缘 8px 青色竖条 + 向左渐隐的半调网点。
+ *    需要放干员立绘/插图时，把图片放进 .ak-hero__side 里即可（img 自动铺满且不盖住色条）。 */
+.ak-hero__side { width: min(24%, 280px); background: transparent; opacity: 1; border-right: 8px solid var(--ak-cyan-500); box-sizing: border-box; }
+.ak-hero__side::after { background-image: radial-gradient(var(--ak-cyan-500) 1.2px, transparent 1.5px); background-size: 7px 7px;
+  -webkit-mask-image: linear-gradient(270deg, #000, transparent 85%); mask-image: linear-gradient(270deg, #000, transparent 85%); }
+.ak-hero__side > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ak-hero > :not(.ak-hero__side) { position: relative; z-index: 1; }
+
+/* 3. 窄屏：Hero 色面让位给文字；宽表格走横向滚动，不允许把单元格挤成逐字竖排 */
+@media (max-width: 639px) {
+  .ak-hero { padding: 28px 20px; }
+  .ak-hero__side { display: none; }
+}
+.ak-table-scroll { overflow-x: auto; max-width: 100%; }
+.ak-table-scroll > table { min-width: 640px; }
+.ak-table-scroll th, .ak-table-scroll td { white-space: nowrap; }
+
+/* 4. 抽屉打开时的遮罩（<1120 侧栏成为抽屉；点遮罩关闭） */
+.ak-drawer-scrim { display: none; }
+@media (max-width: 1119px) {
+  .ak-drawer-scrim.is-open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: calc(var(--ak-z-modal) - 1); }
+}
+
+/* 5. 窄屏：统计标签换行时不与数值重叠 */
+.ak-stat__label { line-height: 1.5; }
+
+/* 6. 搜索触发器内的 `/` 快捷键徽标：上游 .ak-search__kbd 用绝对定位（预设父级 .ak-search 有 position:relative），
+ *    放到 inline-flex 的 .ak-search-trigger 内会跳到整行 .ak-header__inner 最右侧，改为流式贴右对齐 */
+.ak-search-trigger { position: relative; }
+.ak-search-trigger .ak-search__kbd { position: static; transform: none; flex: none; }
+
+/* 7. 手机窄屏页眉内分段按钮留足品牌间距 */
+@media (max-width: 639px) {
+  .ak-header .ak-seg > button, .ak-header .ak-seg > label { min-width: 36px; padding: 0 9px; }
+}

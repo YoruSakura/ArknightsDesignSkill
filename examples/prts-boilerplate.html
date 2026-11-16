@@ -6,6 +6,7 @@
   <title>PRTS.TERMINAL // 罗德岛战术神经终端样板</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap">
   <link rel="stylesheet" href="../resources/prts-design.css">
+  <link rel="stylesheet" href="../resources/prts-addons.css">
   <style>
     body { margin: 0; background: var(--ak-bg-canvas); min-height: 100vh; display: flex; flex-direction: column; }
   </style>
@@ -29,16 +30,23 @@
       </div>
       <div class="ak-header__tools">
         <div class="ak-seg" role="group" aria-label="界面主题切换">
-          <button type="button" onclick="setTheme('light')" id="btn-light">档案 (Light)</button>
+          <button type="button" onclick="setTheme('light')" id="btn-light" aria-pressed="false">档案 (Light)</button>
           <button type="button" onclick="setTheme('dark')" id="btn-dark" class="is-active" aria-pressed="true">终端 (Dark)</button>
         </div>
       </div>
     </div>
+    <!-- <1120 时侧栏变抽屉，此入口才显示（桌面 display:none） -->
+    <nav class="ak-local-nav" aria-label="页面菜单">
+      <button type="button" class="ak-local-nav__btn ak-local-nav__menu" id="ak-menu-btn" aria-controls="ak-sidebar" aria-expanded="false">
+        <svg class="ak-icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2 4h16v2H2zM2 9h16v2H2zM2 14h16v2H2z"/></svg>菜单
+      </button>
+    </nav>
   </header>
+  <div class="ak-drawer-scrim" id="ak-scrim"></div>
 
   <!-- 主体两栏骨架 -->
-  <div class="ak-layout ak-layout--no-toc" style="max-width: 1440px; width: 100%; margin: 0 auto; padding: 24px; box-sizing: border-box; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; flex: 1;">
-    <aside class="ak-sidebar">
+  <div class="ak-layout ak-layout--no-toc">
+    <aside class="ak-sidebar" id="ak-sidebar">
       <div class="ak-portlet">
         <h3 class="ak-portlet__title">COMMAND // 终端</h3>
         <ul>
@@ -82,7 +90,7 @@
       <!-- 面板级 HUD 统计读数 -->
       <div class="ak-stat-row">
         <div class="ak-stat">
-          <span class="ak-stat__label">DEPLOYED // 已部署干员</span>
+          <span class="ak-stat__label">DEPLOYED // 编队</span>
           <span class="ak-stat__value">12<small>/ 12</small></span>
           <span class="ak-stat__delta ak-stat__delta--up">▲ 编队满员</span>
         </div>
@@ -92,7 +100,7 @@
           <span class="ak-stat__delta">恢复倒计时 18:00</span>
         </div>
         <div class="ak-stat">
-          <span class="ak-stat__label">ORIGINIUM // 源石纯度</span>
+          <span class="ak-stat__label">ORIGINIUM // 纯度</span>
           <span class="ak-stat__value">98.4<small>%</small></span>
           <span class="ak-stat__delta ak-stat__delta--down">▼ 活性偏高</span>
         </div>
@@ -128,6 +136,7 @@
             <button type="button" class="ak-chip" aria-pressed="false">医疗</button>
           </div>
 
+          <div class="ak-table-scroll">
           <table class="ak-table">
             <thead>
               <tr>
@@ -182,6 +191,7 @@
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
       </section>
 
@@ -257,11 +267,29 @@
   </footer>
 
   <script>
-    function setTheme(theme) {
+    // 侧栏抽屉（<1120）开合
+    (function () {
+      var btn = document.getElementById('ak-menu-btn'), side = document.getElementById('ak-sidebar'), scrim = document.getElementById('ak-scrim');
+      function toggle(open) { side.classList.toggle('is-open', open); scrim.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open); }
+      btn.addEventListener('click', function () { toggle(!side.classList.contains('is-open')); });
+      scrim.addEventListener('click', function () { toggle(false); });
+      side.addEventListener('click', function (e) { if (e.target.closest('a')) toggle(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggle(false); });
+    })();
+    // 主题：启动时与当前 data-theme / localStorage 同步，记住用户选择
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ak-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'dark', false);
+    })();
+    function applyTheme(theme, persist) {
+      if (persist) { try { localStorage.setItem('ak-theme', theme); } catch (e) {} }
       document.documentElement.dataset.theme = theme;
-      document.getElementById('btn-light').classList.toggle('is-active', theme === 'light');
-      document.getElementById('btn-dark').classList.toggle('is-active', theme === 'dark');
+      var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
+      if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
+      if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
     }
+    function setTheme(theme) { applyTheme(theme, true); }
   </script>
 </body>
 </html>
