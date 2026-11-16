@@ -36,10 +36,14 @@
 
 ### 在其他前端项目中接入本 Skill
 
-将本仓库克隆或链接到目标项目的 Skill 目录（以项目级接入为例）：
+可以直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链），或克隆整仓到目标项目的 Skill 目录：
 
 ```bash
-# Antigravity / 通用 .agents 目录
+# 方式一（推荐测试用）：直接复制已打包的 Skill 文件夹
+mkdir -p .agents/skills
+cp -r /path/to/ArknightsDesignSkill/release/arknights-design .agents/skills/arknights-design
+
+# 方式二：从 GitHub 克隆到目标项目 .agents 目录
 git clone https://github.com/YoruSakura/ArknightsDesignSkill.git .agents/skills/arknights-design
 
 # Claude Code 项目级目录（如使用软链接复用同一份目录）
@@ -109,7 +113,12 @@ ArknightsDesignSkill/
 │   ├── prts-components.html
 │   ├── endfield-boilerplate.html
 │   └── endfield-components.html
+├── release/                                  # 【即用型 Skill 发布产物】（由 scripts/package-release.py 生成）
+│   ├── README.md
+│   ├── arknights-design/                     # 独立纯净 Skill 文件夹（无维护脚手架，含 SKILL/规范/CSS/样板）
+│   └── arknights-design.zip                  # 同内容便携归档包
 └── scripts/
+    ├── package-release.py                    # 生成 release/arknights-design/ 及 zip 并校验包内断链与越界引用
     ├── sync-upstream.py                      # 从本地上游仓库同步生成 prts-tokens.css / prts-design.css / endfield-theme.css
     └── verify.py                             # 静态一致性、动画关键帧审计与无头 Chrome 16 图渲染/交互探针校验脚本
 ```
@@ -118,11 +127,12 @@ ArknightsDesignSkill/
 
 ## 维护与上游同步说明
 
-若上游开源设计系统有更新，可在本地同步仓库后运行 [`scripts/sync-upstream.py`](./scripts/sync-upstream.py)，改动完成后运行 [`scripts/verify.py`](./scripts/verify.py) 做回归验证：
+若上游开源设计系统有更新或调整了 Skill 规范，可在仓库根目录依次运行同步、校验与发布打包脚本：
 
 ```bash
 python3 scripts/sync-upstream.py <path-to-prts-design> <path-to-endfield-ui>
 python3 scripts/verify.py --render --out /tmp/arknights-verify
+python3 scripts/package-release.py
 ```
 
 * `resources/prts-design.css`、`resources/prts-tokens.css` 与 `resources/endfield-theme.css` 由脚本覆盖生成，**勿手改**；

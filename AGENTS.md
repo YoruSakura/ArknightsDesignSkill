@@ -25,6 +25,8 @@
 | `examples/**` | 整页样板 | ✅ 必须通过第三节的渲染验证 |
 | `SKILL.md` | Skill 总入口 | ✅ 保持精炼；新增硬规则放“第四步/第五步” |
 | `scripts/verify.py` | 校验与回归门禁 | ✅ 新增/修改组件、动效或文档类名时须同步扩展探针与校验 |
+| `scripts/package-release.py` | Skill 发布打包脚本 | ✅ 修改 Skill 资源/规范后重跑以更新 `release/` |
+| `release/**` | **打包脚本生成** | ❌ 不要直接手改包内副本；统一改根目录源文件后重新运行 `package-release.py` |
 | `LICENSE` `NOTICE.md` | 许可 | ✅ 引入新上游时同步更新 NOTICE |
 
 ## 三、工作流程（硬性）
@@ -104,13 +106,16 @@
 | 32 | 390px 手机端 `.ef-viewfinder` 四角括号、角标读数与内嵌 `[ REC ]` 全部消失；`prts-components.html` 在 375px–390px 下顶栏 `.ak-header__tools` 超出视口 2px | `@media (max-width: 639px)` 无条件隐藏了 `.ef-viewfinder__corners` 与 `.ef-viewfinder__ro`；`PRTS.COMPONENTS` 15 字符品牌词配 `.ak-seg` 按钮在 375px 下总宽达 377px | 默认保留 `.ef-viewfinder` 四角与读数（`<480px` 微调内边距与字号，仅 `.ef-viewfinder--compact-mobile` 修饰类才隐藏）；`prts-addons.css` 收紧 `<640px` 顶栏分段钮至 `padding: 0 7px; font-size: var(--ak-fs-xs)` | 窄屏媒体查询勿一刀切隐藏核心演示特征；长品牌词页面须测 375px 宽度溢出 |
 | 33 | `endfield-components.html` 的 Combobox 输入框按 `ArrowDown` 无法聚焦下拉项；Carousel 仅按钮点击更新页码，原生横向滑动不同步 | 键盘监听仅绑在 `.ef-menu` 内部；`#ef-car-track` 未监听原生 `scroll` 事件 | 为 `#ef-combo-in` 补齐 `ArrowDown`/`ArrowUp` 展开并聚焦首尾可选项；为 `#ef-car-track` 增加被动 `scroll` 监听同步 `01/03` 计数与标题；`verify.py` 增补 `comboArrowOk` 与 `noOverflow` 探针 | 声明支持键盘或原生 `scroll-snap` 同步的控件必须绑定对应事件并纳入探针 |
 | 34 | 真实 `cw=360px` 极窄屏下 `endfield-boilerplate.html` `.ef-stat`（370px）与 `prts-components.html` 页眉/分页栏（369–370px）仍溢出；`endfield-components.html` Combobox 过滤后按上下键会命中隐藏项，且选定/按 `Esc` 归还焦点会触发 `focus` 立即重开 | 无头 Chrome `--dump-dom` 将窗口夹紧至 485px 掩盖窄屏实宽；`endfield-boilerplate` 内联 `font-size: var(--text-5xl)` 覆盖了 `14vw` 断点规则；`.ak-pagination` 缺换行与 `<420px` 品牌字号收敛；菜单键盘监听未跳过 `display:none`，且 Combobox `focus` 监听未区分程序性焦点归还 | `endfield-standalone.css` 增 `.ef-stat__value--xl` 与 `.ef-stat__main` 折行并移除内联字号；`prts-addons.css` 增 `<420px` 品牌字阶/缩容与 `.ak-pagination{flex-wrap:wrap}`；`endfield-components.html` 过滤隐藏菜单项并为选定/`Esc` 归还焦点加 `skipOpen` 保护；`verify.py` 增同源 `375px/390px` iframe 实测 | 移动端溢出探针须在不受桌面最小窗宽夹紧影响的受控视口中校验；带 `focus` 自动展开的输入框在归还焦点时须防重开 |
+| 35 | `SKILL.md` 第五步包含本仓库专用 `scripts/verify.py` 链接与“同步脚本”措辞，下游项目单独拷贝 Skill 文件夹时会形成断链并误导弱模型去运行不存在的校验脚本 | 上轮未区分“仓库研发视角”与“下游测试项目运行时视角”，且缺独立发布目录 | 清理 `SKILL.md` 中的仓库维护专有措辞（保留在 `README.md`/`AGENTS.md`），新增 `.gitignore` 与 [`scripts/package-release.py`](./scripts/package-release.py)，打包零冗余的 [`release/arknights-design/`](./release/arknights-design/) 与 `release/arknights-design.zip` 并校验包内零断链、零维护文件泄露 | 下游入口文档 `SKILL.md` 严禁引用 `scripts/` 或 `AGENTS.md` 等维护态文件；每次发布测试包一律用打包脚本校验 |
+| 36 | 下游用 DeepSeek 4.1 flash 跑通 `test-01`~`test-04` 四项冷启动盲测：前 3 项体系还原度与 ARIA 交互全过（仅 `test-03` 残留 `北岭` 地名），`test-04` 冲突压测因以“按需求破例”让步，直接丢掉 `.ak-*` 基座、放行 `style="grid-template-columns"`、`0x7F3A` 及 `RHODES ISLAND` | 此前 `SKILL.md` 未区分“可随机应变的局部视觉衍生”与“不可破例的工程/基座/脱敏底线”，导致模型面对用户显式偏离指令时全盘放弃底座 | 在 `SKILL.md` 第三步新增第 4 项「弹性适配边界」并同步细化第四步自检：锁定等价实现三底线（基座组件复用、响应式 CSS 类代内联 grid、样板专有词黑名单），明确领域图表/SVG 开放拓展与用户显式偏好仅限局部派生、不偏离主视觉方向；重打包 `release/` | 业务自定义需求统一收敛为“主骨架/令牌不丢 + 局部扩展类派生”，禁止绕开基座或用内联布局妥协 |
+| 37 | 下游业务站点需接入自有品牌配色时，上游 `.ak-hero__*` / `.ak-switch` 仍直读 `--ak-cyan-500` / `--ak-blue-600`，Endfield `.ef-hazard` / `.ef-data-row__val--accent` / `.ef-toast__tone` / 暗态 `--ef-focus` / `.ef-btn--action::after` 未联动品牌令牌，且规范未写明换色边界 | 早期配色只针对官方青/信号黄，未在文档与补丁层显式暴露“换强调不换骨”覆盖清单 | `prts-addons.css` 让 `.ak-hero__*` 改读 `--ak-theme-accent`、`.ak-switch > input:checked` 改读 `--ak-accent`；`endfield-standalone.css` 让 `.ef-hazard` / `.ef-data-row__val--accent` / `.ef-toast__tone` 联动 `--ef-action`、暗/反转态 `--ef-focus` 联动 `--ef-accent-ink(-inverse)`、`.ef-btn--action::after` 改读 `currentColor`；在 `SKILL.md` 及两份 `foundations.md` 写入品牌换色令牌清单与对比度约束，并在 `verify.py` 增加 `release/` 同步校验后重打 `release/` | 品牌换色一律通过语义令牌覆盖完成，保留 90% 中性纸墨基底并同步校验 `--ef-on-action` / `--ef-accent-ink` 对比度与 `release/` 一致性 |
 
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
 - 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
 - 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
-- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针）；新建空白外部项目、交由其他模型冷启动盲测的功能验证可按 `README.md` 快速开始指引另行执行。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并已使用 DeepSeek 4.1 flash 完成 4 个冷启动外部项目（PRTS / Endfield 整页 / 复杂组件 / 冲突压测）烟测；后续可按需对强模型再复跑一次 `test-04` 验证弹性边界约束效果。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 

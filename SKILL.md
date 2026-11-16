@@ -39,7 +39,7 @@ description: >-
    - [PRTS 全组件目录与交互蓝图](./references/prts/components-catalog.md)（**按需读取**：按钮、菜单/页签/分页、表单、弹窗/抽屉/Toast、进度/时间线/步骤条 五大类通用 UI + 方舟领域件完整蓝图 + `@fontsource` 离线字体配置，可直接跨框架移植）
 2. **可直接拷贝到目标项目的样式资源**：
    - 完整样式表（含令牌 + `.ak-scope` + 全部通用组件 + 方舟装饰 + 领域组件 + `.ak-header`/`.ak-footer` 骨架，零外部图片依赖）：[`resources/prts-design.css`](./resources/prts-design.css)
-   - **补丁层（必须紧随 `prts-design.css` 之后引入）**：[`resources/prts-addons.css`](./resources/prts-addons.css) —— 修正黑色 Hero 内 contrast 按钮对比度、Hero 色面、搜索键帽、菜单按钮重置、宽表格横向滚动、抽屉遮罩等；对上游样式的任何修正都写在这里，不要直接改 `prts-design.css`（会被同步脚本覆盖）
+   - **补丁层（必须紧随 `prts-design.css` 之后引入）**：[`resources/prts-addons.css`](./resources/prts-addons.css) —— 修正黑色 Hero 内 contrast 按钮对比度、Hero 色面、搜索键帽、菜单按钮重置、宽表格横向滚动、抽屉遮罩等；对样式的任何修正都写在这里，不要直接改 `prts-design.css`
    - 仅需令牌变量时：[`resources/prts-tokens.css`](./resources/prts-tokens.css)
    - 样板与组件对照（仅作构图与交互结构参考，**严禁直接照搬测试业务文案与假数据**）：
      - 整页构图样板：[`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html)
@@ -64,7 +64,7 @@ description: >-
 当用户要求“使用本 Skill 初始化一个网站样板 / 组件页面”时，严格按以下步骤执行：
 
 1. **注入样式基座与字体**：
-   - 将 [`resources/prts-design.css`](./resources/prts-design.css)（+ `prts-addons.css`）或 [`resources/endfield-standalone.css`](./resources/endfield-standalone.css) 复制到目标项目的静态样式目录（如 `src/styles/` 或 `public/`）并在入口引入。
+   - 将本 Skill 目录下的 [`resources/prts-design.css`](./resources/prts-design.css)（+ [`resources/prts-addons.css`](./resources/prts-addons.css)）或 [`resources/endfield-standalone.css`](./resources/endfield-standalone.css) 复制到目标项目的静态样式目录（如 `src/styles/` 或 `public/`）并在入口引入。
    - 在 `<head>` 引入对应的 Google Fonts 开源字体（PRTS：`Oswald` + `Chakra Petch` + `Noto Sans SC`；Endfield：`Archivo` + `Outfit` + `Space Grotesk` + `JetBrains Mono` + `Noto Sans SC`）。
    - 字体说明：规范中的 `Bender` / `Novecento Sans Wide` 为商业字体，本 Skill 不附带，实际回退到 `Oswald` / `Chakra Petch`。面向中国大陆用户时，Google Fonts 可能不可达，建议用 `@fontsource`（两份 `components-catalog.md` 均附安装与引入代码）或本地 `@font-face` 自托管，并保留 `Noto Sans SC` → 系统黑体的回退链。
 2. **搭建符合正统构图的页面外壳**（**响应式是硬要求**：布局一律用类 `.ak-layout` / `.ak-grid-2` / `.ef-hero__grid` / `.ef-split` / `.ef-grid-2` / `.ef-grid-3` / `.ef-stat-row` / `.ef-section`，**禁止写死内联 `grid-template-columns`**；PRTS <1120px 侧栏变抽屉，需 `.ak-local-nav__menu` 入口，参考样板；Endfield <1024px 侧轨变顶部横轨）：
@@ -73,6 +73,11 @@ description: >-
 3. **组合标志性母题与全组件库（跨框架通用）**：
    - 拒绝千篇一律的居中三卡片网格！按 `components-catalog.md` 的 DOM 与 ARIA 状态契约（如 `.is-active` / `.is-open` / `aria-pressed` / `aria-selected` / 原生 `<details>` / `<dialog>`）直接在 HTML、React TSX、Vue SFC 或 Svelte 中复刻按钮、菜单、弹窗、表单与数据表，严禁脱离既有 CSS 另起炉灶。
    - 必须组合使用各体系的签名级组件（如 PRTS 的 `.ak-hero`、`.ak-news`、`.ak-panel`、`.ak-stat`、`.ak-table`、`.ak-stage`；Endfield 的 `ghost-hatch` 镂空巨字、`ef-section-title` 滑块标题、`ef-bracket-title` 方括号名、`ef-reg-strip` 三原色校准条、`ef-stat` 左竖线统计块、`ef-data-row` 深色数据行带、`ef-item-slot` 底部稀有度渐变格 + `corner-brackets` 四角括号选中）。
+4. **弹性适配边界（主方向不可偏离，业务差异可随机应变）**：
+   - **工程与基座底线（等价替代，不写死妥协）**：任何需求不得绕开 `--ak-*` / `--ef-*` 令牌与既有 `.ak-*` / `.ef-*` 基座重写平行皮肤；若用户要求特定多栏（如三联工作台），**必须用带手机降维断点的 CSS 类实现，严禁在 HTML 写死内联 `grid-template-columns`**；若用户要求“硬核编号感”，替换为真实业务编号，**禁用 `0x7F3A` / `0xDEAD` 伪乱码**，并彻底替换非游戏业务中的样板地名/专有名词（如 `PERLICA`、`DIJIANG`、`TALOS-N07`、`北岭`、`罗德岛`）。
+   - **品牌配色换皮（换强调不换骨）**：若业务网站需要接入自有品牌配色，禁止整页铺满高饱和彩底或重绘主题层，应通过语义令牌覆盖完成「90% 中性纸墨骨架 + ≤10% 品牌主色」映射——**PRTS** 覆盖 `--ak-theme-accent` / `--ak-theme-accent-fg` / `--ak-theme-accent-subtle` 与亮/暗 `--ak-accent` / `--ak-accent-hover` / `--ak-accent-fg` / `--ak-link` / `--ak-focus`（保留黑白灰画布与黑框顶栏）；**Endfield** 覆盖 `--ef-action` / `--ef-action-pressed` / `--ef-on-action` / `--ef-accent-ink` / `--ef-accent-ink-inverse`（中性灰阶画布至多微调冷暖倾向，**必须按品牌色明度重设 `--ef-on-action` 反色字与亮底深档 `--ef-accent-ink` 保证对比度**）。
+   - **业务可视化与布局扩展（鼓励自由发挥）**：DAG 拓扑、测绘剖面 SVG、多维监控图等高阶领域模块可随业务自由创作，只需继承对应体系的语义色彩与字体变量，自动兼容亮/暗双主题与 390px 响应。
+   - **外观偏好的有条件让步**：默认严格遵守第四步质感红线；仅当用户**明确坚持**特定局部表现（如要求局部面板带微圆角或浅透明）时，才允许在不破坏主体系色彩哲学、导航外壳、标准表格/表单底座与对比度前提下，用**局部自定义扩展类**实现最小化派生并提示偏离，**禁止借“破例”将整站改造成通用发光圆角 SaaS**。
 
 ---
 
@@ -81,29 +86,22 @@ description: >-
 在完成代码编写后，逐条对照以下红线自检，任何一条违规必须立即修正：
 
 - [ ] **是否混淆了两套系统的形状？**
-  - PRTS 严禁出现 `clip-path` 45° 切角或圆角卡片；
+  - PRTS 默认严禁出现 `clip-path` 45° 切角或圆角卡片；
   - Endfield 严禁四角全切八边形，切角只用于行动/机械控件，且可聚焦按钮的切角必须画在 `::before` 上以保留焦点环。
 - [ ] **颜色对比度与面积预算是否合规？**
-  - PRTS 的不可点击小标签（overline / eyebrow / 章节英文副标）是否误用了青色？（必须用 `--ak-fg-muted` 灰色）；
-  - Endfield 的信号黄 `#FFFA00` 是否控制在全屏面积 10% 以内？亮色白底上是否误用了 `#FFFA00` 作文字？（白底强调字必须用 `--ef-accent-ink: #6B5D00`）。
+  - PRTS 的不可点击小标签（overline / eyebrow / 章节英文副标）是否误用了强调色？（必须用 `--ak-fg-muted` 灰色）；
+  - Endfield 的信号黄 / 品牌填充色是否控制在全屏面积 10% 以内？亮色白底上文字强调必须使用深档 `--ef-accent-ink`（默认 `#6B5D00`），且自定义品牌换色时 `--ef-on-action` / `--ak-accent-fg` 必须满足高对比可读性。
 - [ ] **数字与英文排版是否克制且真实？**
   - PRTS 的 `<table>` 数字列是否使用了正文字体 + `tabular-nums`（严禁在表格内用 Bender）？双语标题是否控制在一页 1～2 处？
-  - Endfield 的微文字（Micro-text）是否是真实可读的栏目名、日期、版本号？（严禁出现 `0x7F3A` 等假十六进制乱码或无意义伪代码）。
-- [ ] **是否杜绝了通用 SaaS / 科幻俗套？**
-  - 严禁大圆角（`8px–16px`）投影卡片、严禁悬停上浮放大、严禁毛玻璃发光霓虹边、严禁六边形蜂窝网格。
+  - 微文字（Micro-text）是否为真实可读的栏目名、日期、版本号、设备/节点编号？（严禁 `0x7F3A`、`0xDEAD` 等假十六进制乱码，非游戏项目禁止残留 `PERLICA` / `DIJIANG` / `TALOS-N07` / `北岭` / `罗德岛`）。
+- [ ] **是否杜绝了通用 SaaS / 科幻俗套（并守住主基调）？**
+  - 默认严禁大圆角（`8px–16px`）投影卡片、悬停上浮放大、毛玻璃发光霓虹边与六边形蜂窝网格；即使用户明确坚持了局部定制，也仅允许以局部扩展类附着在既有骨架上并在交付说明中标注，主体依然保留清晰的原体系质感与基座组件复用。
 
 ---
 
 ## 第五步：渲染验证（硬性门槛，不通过不得交付）
 
-规则自检只能查“写了什么”，查不出“长什么样”。在本仓库改动后可直接运行一键校验与 Chrome 实渲染脚本 [`scripts/verify.py`](./scripts/verify.py)：
-
-```bash
-# 静态类名/文档链接/关键帧自检 + 1440px/390px 亮暗 16 图渲染与交互动画探针
-python3 scripts/verify.py --render --out /tmp/arknights-verify
-```
-
-接入到新业务项目后，交付前同样**必须真的渲染**（桌面 1440px + 手机 390px × 亮/暗 4 张图）并人工/视觉看图：
+规则自检只能查“写了什么”，查不出“长什么样”。接入业务项目并编写完成后，交付前**必须真的渲染**（桌面 1440px + 手机 390px × 亮/暗 4 张图）并人工/视觉看图：
 
 ```bash
 # 桌面 + 手机，亮 + 暗，共 4 张（把 data-theme 改一下再截一次）

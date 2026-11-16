@@ -100,6 +100,8 @@
 | `--ef-accent-ink-inverse` | `#fffa00` | `#6b5d00` | **反转块（`surface-inverse`）上的强调记号**（如面板黑标题带左端的黄竖条） |
 | `--ef-button` / `-hover` | `#383838` / `#484848` | `rgb(255 255 255 / 0.2)` / `0.3` | 默认 `control` 按钮底色（暗色下自动变为半透明白） |
 
+> **项目品牌换色接口**：保持 13 级中性灰纸墨基底不变（或仅微调倾向），直接覆盖 `--ef-action` / `--ef-action-pressed` / `--ef-on-action` / `--ef-accent-ink` / `--ef-accent-ink-inverse`（`.ef-band-title`、`.ef-hazard`、`.ef-data-row__val--accent` 等均已联动 `--ef-action`）。换成深色品牌主色时须将 `--ef-on-action` 改为 `#ffffff`，亮底文字强调 `--ef-accent-ink` 须取深档高对比色，强调面积仍控制在 $\le 10\%$。
+
 ### 2. 游戏界面角色色（Role Colors）与语义分工
 
 > [!WARNING]

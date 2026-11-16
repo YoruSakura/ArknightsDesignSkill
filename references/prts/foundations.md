@@ -73,6 +73,8 @@ UI 的本质是**「罗德岛档案 / PRTS 终端」**，而不是科幻驾驶�
 | `--ak-border-strong` | `#b1b1b1` | `#4a4c4f` | 按钮、输入框、表头底边强边框 |
 | `--ak-info` / `--ak-success` / `--ak-warning` / `--ak-danger` | `#0072a8` / `#1f8f5f` / `#b86f00` / `#c8102e` | `#5ddcff` / `#4fd18f` / `#ffb340` / `#ff5c5c` | 四态语义文字/色条色（另有对应 `-bg` 淡底） |
 
+> **项目品牌换色接口**：保留黑白灰基底（`--ak-bg-*` / `--ak-fg-*`）与纯直角骨架，只需覆盖 `--ak-theme-accent` / `--ak-theme-accent-fg` / `--ak-theme-accent-subtle`（联动顶栏、侧栏分组、页脚斜纹及 `.ak-hero` 眉题/网点）与亮暗两态下的 `--ak-accent` / `--ak-accent-hover` / `--ak-accent-fg` / `--ak-link` / `--ak-focus`，即可切入网站自有品牌色。
+
 ### 2. 方舟专属领域令牌
 
 * **稀有度色阶（1★ ～ 6★）**：
