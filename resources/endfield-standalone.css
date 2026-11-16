@@ -1,0 +1,1252 @@
+/*! ═══════════════════════════════════════════════════════════════════════════
+ *  Endfield UI · Standalone CSS (Tokens + Motifs + Animations + Core Components)
+ *  Industrial Editorial Design System ("工业编辑风")
+ *  Derived from https://github.com/icaruszezen/endfield-ui (MIT License)
+ *
+ *  Works in ANY browser or framework (Vanilla HTML, Vue, React, Svelte)
+ *  without requiring Tailwind CSS v4 build plugins.
+ *
+ *  Theme switching:
+ *    <html data-theme="light">   Paper white surface (Default / Website)
+ *    <html data-theme="dark">    Smoke black surface (Game HUD / Dark section)
+ *    <div data-theme="inverse">  Local inverted band (Panel header / Table head)
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ═══ 1. PRIMITIVE TOKENS & SEMANTIC TOKENS (LIGHT DEFAULT) ═══ */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Neutral scale (13 steps, pure R=G=B gray from official website measurements) */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f2f2f2;
+  --color-neutral-200: #e6e6e6;
+  --color-neutral-300: #d9d9d9;
+  --color-neutral-400: #b3b3b3;
+  --color-neutral-500: #8a8a8a;
+  --color-neutral-600: #626262;
+  --color-neutral-700: #484848;
+  --color-neutral-800: #383838;
+  --color-neutral-850: #282828;
+  --color-neutral-900: #191919;
+  --color-neutral-950: #141414;
+
+  /* Signal Yellow (never use --color-signal as text on light surface; use --ef-accent-ink) */
+  --color-signal: #fffa00;
+  --color-signal-pressed: #eeea00;
+  --color-signal-deep: #e6de01;
+  --color-signal-ink: #6b5d00;
+
+  /* Role colors (Game UI functional palette) */
+  --color-notice: #fc6c00;        /* Orange: notification badge, countdown, count */
+  --color-gain: #bce41d;          /* Lime: buff/gain tag (+6%) */
+  --color-data: #2a84b4;          /* Blue: chart/volume metrics (NOT progress) */
+  --color-region: #06a2a2;        /* Teal: region/faction theme */
+  --color-alert: #f62a2a;         /* Red: danger / overdraft */
+  --color-alert-fill: #de0909;
+  --color-alert-fill-hover: #c40808;
+  --color-alert-fill-pressed: #a80707;
+  --color-confirm: #00d872;       /* Green: confirm / ample */
+  --color-special: #904ef0;       /* Purple: special / tactical */
+
+  /* Rarity scale (1 -> 4: Blue -> Purple -> Gold -> Orange) */
+  --color-rarity-1: #24bafc;
+  --color-rarity-2: #904ef6;
+  --color-rarity-3: #fcba00;
+  --color-rarity-4: #fc6c00;
+
+  /* Registration strip (CMY print calibration marks) */
+  --color-reg-magenta: #ec008c;
+  --color-reg-cyan: #00aeef;
+  --color-reg-yellow: #fff200;
+
+  /* Font families (4 distinct roles + mono) */
+  --font-sans: "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-display: "Archivo", "Montserrat", "Oswald", "HarmonyOS Sans SC", sans-serif;
+  --font-latin: "Outfit", "Urbanist", "HarmonyOS Sans SC", sans-serif;
+  --font-tech: "Space Grotesk", "Chakra Petch", "HarmonyOS Sans SC", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, "SF Mono", Consolas, monospace;
+
+  /* Type scale (wide jumps, sparse middle) */
+  --text-micro: 0.625rem;         /* 10px */
+  --text-xs: 0.75rem;             /* 12px */
+  --text-sm: 0.875rem;            /* 14px */
+  --text-base: 1rem;              /* 16px */
+  --text-lg: 1.25rem;             /* 20px */
+  --text-xl: 1.5rem;              /* 24px */
+  --text-2xl: 2rem;               /* 32px */
+  --text-3xl: 2.5rem;             /* 40px */
+  --text-4xl: 3.25rem;            /* 52px */
+  --text-5xl: 4.5rem;             /* 72px */
+  --text-6xl: 6rem;               /* 96px */
+  --text-ghost: clamp(5rem, 10.4vw, 12.5rem);
+
+  --tracking-ghost: -0.04em;
+  --tracking-label: 0.05em;
+
+  /* Radius (0 by default; 2-6px micro-rounding for controls; 9999px for pills/circles) */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-full: 9999px;
+
+  /* Zero-offset ambient shadows */
+  --shadow-xs: 0 0 4px rgb(0 0 0 / 0.25);
+  --shadow-sm: 0 0 8px rgb(0 0 0 / 0.25);
+  --shadow-md: 0 0 12px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 0 24px rgb(0 0 0 / 0.3);
+  --shadow-rail: 0 0 12px rgb(0 0 0 / 0.1);
+
+  /* Motion (short & hard: 200-300ms, no bounce) */
+  --ease-standard: ease;
+  --ease-emphasis: ease-in-out;
+  --ease-exit: ease-out;
+  --duration-instant: 50ms;
+  --duration-fast: 200ms;
+  --duration-base: 300ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+  --motion-shift: 4px;
+  --motion-shift-lg: 8px;
+
+  /* Motif dimensions */
+  --cut-sm: 6px;
+  --cut-md: 10px;
+  --cut-lg: 16px;
+  --hatch-size: 6px;
+
+  /* Z-index layers */
+  --z-float: 100;
+  --z-nav: 200;
+  --z-overlay: 300;
+  --z-toast: 400;
+  --z-loader: 1000;
+
+  /* Semantic tokens — Light Theme */
+  --ef-surface: #ffffff;
+  --ef-surface-raised: #fafafa;
+  --ef-surface-sunken: #f2f2f2;
+  --ef-surface-muted: #e6e6e6;
+  --ef-surface-inverse: #191919;
+
+  --ef-ink: #191919;
+  --ef-ink-secondary: #626262;
+  --ef-ink-tertiary: #8a8a8a;
+  --ef-ink-disabled: #b3b3b3;
+  --ef-ink-inverse: #ffffff;
+
+  --ef-line: #d9d9d9;
+  --ef-line-strong: #b3b3b3;
+
+  --ef-action: #fffa00;
+  --ef-action-pressed: #eeea00;
+  --ef-on-action: #191919;
+  --ef-accent-ink: #6b5d00;
+  --ef-accent-ink-inverse: var(--ef-action);
+
+  --ef-control: #383838;
+  --ef-control-hover: #484848;
+  --ef-control-pressed: #282828;
+  --ef-on-control: #eeeeee;
+
+  --ef-button: #383838;
+  --ef-button-hover: #484848;
+  --ef-button-pressed: #282828;
+  --ef-on-button: #eeeeee;
+
+  --ef-disabled: #b3b3b3;
+  --ef-on-disabled: #626262;
+
+  --ef-focus: #191919;
+  --ef-scrim: rgb(0 0 0 / 0.5);
+
+  --ef-danger: #de0909;
+  --ef-success: #007f43;
+  --ef-warning: #b74e00;
+  --ef-info: #25759f;
+
+  /* Opposite theme backup for [data-theme="inverse"] */
+  --ef-x-scheme: dark;
+  --ef-x-surface-raised: #1f1f1f;
+  --ef-x-surface-sunken: #000000;
+  --ef-x-surface-muted: #282828;
+  --ef-x-ink-secondary: #b3b3b3;
+  --ef-x-ink-disabled: #626262;
+  --ef-x-line: #383838;
+  --ef-x-line-strong: #626262;
+  --ef-x-button: rgb(255 255 255 / 0.2);
+  --ef-x-button-hover: rgb(255 255 255 / 0.3);
+  --ef-x-button-pressed: rgb(255 255 255 / 0.15);
+  --ef-x-on-button: #d9d9d9;
+  --ef-x-disabled: #282828;
+  --ef-x-focus: #fffa00;
+  --ef-x-scrim: rgb(0 0 0 / 0.7);
+  --ef-x-danger: #f74040;
+  --ef-x-success: #00d872;
+  --ef-x-warning: #fc6c00;
+  --ef-x-info: #2d8fc2;
+}
+
+/* ═══ 2. SEMANTIC TOKENS (DARK THEME) ═══ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ef-surface: #141414;
+  --ef-surface-raised: #1f1f1f;
+  --ef-surface-sunken: #000000;
+  --ef-surface-muted: #282828;
+  --ef-surface-inverse: #fafafa;
+
+  --ef-ink: #fafafa;
+  --ef-ink-secondary: #b3b3b3;
+  --ef-ink-tertiary: #8a8a8a;
+  --ef-ink-disabled: #626262;
+  --ef-ink-inverse: #191919;
+
+  --ef-line: #383838;
+  --ef-line-strong: #626262;
+
+  --ef-action: #fffa00;
+  --ef-action-pressed: #eeea00;
+  --ef-on-action: #191919;
+  --ef-accent-ink: #fffa00;
+  --ef-accent-ink-inverse: #6b5d00;
+
+  --ef-control: #383838;
+  --ef-control-hover: #484848;
+  --ef-control-pressed: #282828;
+  --ef-on-control: #eeeeee;
+
+  --ef-button: rgb(255 255 255 / 0.2);
+  --ef-button-hover: rgb(255 255 255 / 0.3);
+  --ef-button-pressed: rgb(255 255 255 / 0.15);
+  --ef-on-button: #d9d9d9;
+
+  --ef-disabled: #282828;
+  --ef-on-disabled: #626262;
+
+  --ef-focus: #fffa00;
+  --ef-scrim: rgb(0 0 0 / 0.7);
+
+  --ef-danger: #f74040;
+  --ef-success: #00d872;
+  --ef-warning: #fc6c00;
+  --ef-info: #2d8fc2;
+
+  --ef-x-scheme: light;
+  --ef-x-surface-raised: #fafafa;
+  --ef-x-surface-sunken: #f2f2f2;
+  --ef-x-surface-muted: #e6e6e6;
+  --ef-x-ink-secondary: #626262;
+  --ef-x-ink-disabled: #b3b3b3;
+  --ef-x-line: #d9d9d9;
+  --ef-x-line-strong: #b3b3b3;
+  --ef-x-button: #383838;
+  --ef-x-button-hover: #484848;
+  --ef-x-button-pressed: #282828;
+  --ef-x-on-button: #eeeeee;
+  --ef-x-disabled: #b3b3b3;
+  --ef-x-focus: #191919;
+  --ef-x-scrim: rgb(0 0 0 / 0.5);
+  --ef-x-danger: #de0909;
+  --ef-x-success: #007f43;
+  --ef-x-warning: #b74e00;
+  --ef-x-info: #25759f;
+}
+
+/* ═══ 3. LOCAL INVERSE THEME ([data-theme="inverse"]) ═══ */
+:has(> [data-theme="inverse"]):not([data-theme="inverse"], [data-theme="inverse"] *) {
+  --ef-x-surface: var(--ef-surface-inverse);
+  --ef-x-surface-inverse: var(--ef-surface);
+  --ef-x-ink: var(--ef-ink-inverse);
+  --ef-x-ink-inverse: var(--ef-ink);
+  --ef-x-accent-ink: var(--ef-accent-ink-inverse);
+  --ef-x-accent-ink-inverse: var(--ef-accent-ink);
+}
+
+[data-theme="inverse"] {
+  color-scheme: var(--ef-x-scheme);
+  --ef-surface: var(--ef-x-surface, var(--ef-surface-inverse));
+  --ef-surface-raised: var(--ef-x-surface-raised);
+  --ef-surface-sunken: var(--ef-x-surface-sunken);
+  --ef-surface-muted: var(--ef-x-surface-muted);
+  --ef-surface-inverse: var(--ef-x-surface-inverse, var(--ef-surface));
+  --ef-ink: var(--ef-x-ink, var(--ef-ink-inverse));
+  --ef-ink-secondary: var(--ef-x-ink-secondary);
+  --ef-ink-disabled: var(--ef-x-ink-disabled);
+  --ef-ink-inverse: var(--ef-x-ink-inverse, var(--ef-ink));
+  --ef-line: var(--ef-x-line);
+  --ef-line-strong: var(--ef-x-line-strong);
+  --ef-accent-ink: var(--ef-x-accent-ink, var(--ef-accent-ink-inverse));
+  --ef-accent-ink-inverse: var(--ef-x-accent-ink-inverse, var(--ef-accent-ink));
+  --ef-button: var(--ef-x-button);
+  --ef-button-hover: var(--ef-x-button-hover);
+  --ef-button-pressed: var(--ef-x-button-pressed);
+  --ef-on-button: var(--ef-x-on-button);
+  --ef-disabled: var(--ef-x-disabled);
+  --ef-focus: var(--ef-x-focus);
+  --ef-scrim: var(--ef-x-scrim);
+  --ef-danger: var(--ef-x-danger);
+  --ef-success: var(--ef-x-success);
+  --ef-warning: var(--ef-x-warning);
+  --ef-info: var(--ef-x-info);
+}
+
+/* ═══ 4. BASE SCOPE ═══ */
+.ef-scope,
+body[data-ef-scope] {
+  background-color: var(--ef-surface);
+  color: var(--ef-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ef-scope *,
+.ef-scope *::before,
+.ef-scope *::after {
+  box-sizing: border-box;
+}
+
+/* ═══ 5. KEYFRAMES & MOTION ═══ */
+@keyframes ef-flicker {
+  0%, 11%, 21%, 41% { opacity: 0; }
+  10%, 20%, 40% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+@keyframes ef-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes ef-scroll-hint {
+  0% { transform: translateY(0); opacity: 0; }
+  60% { opacity: 1; }
+  80%, 100% { transform: translateY(1.5rem); opacity: 0; }
+}
+@keyframes ef-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+@keyframes ef-marquee {
+  0% { transform: translateX(0); }
+  80%, 100% { transform: translateX(-50%); }
+}
+@keyframes ef-spin {
+  to { transform: rotate(1turn); }
+}
+@keyframes ef-blink {
+  50% { opacity: 0; }
+}
+@keyframes ef-slide-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes ef-turn-in {
+  from { transform: rotate(-45deg); }
+  to { transform: rotate(0); }
+}
+@keyframes ef-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ef-indeterminate {
+  from { transform: translateX(0); }
+  to { transform: translateX(150%); }
+}
+@keyframes ef-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+@keyframes ef-bracket-in {
+  from {
+    background-size: 0 var(--_w), var(--_w) 0, 0 var(--_w), var(--_w) 0, 0 var(--_w), var(--_w) 0, 0 var(--_w), var(--_w) 0;
+  }
+}
+@keyframes ef-shift-in {
+  from {
+    opacity: 0;
+    translate: var(--shift-x, 0) var(--shift-y, 0);
+  }
+}
+@keyframes ef-wipe-in {
+  from {
+    clip-path: inset(calc(0px - var(--wipe-bleed, 0px)) 100% calc(0px - var(--wipe-bleed, 0px)) calc(0px - var(--wipe-bleed, 0px)));
+  }
+  to {
+    clip-path: inset(calc(0px - var(--wipe-bleed, 0px)));
+  }
+}
+
+.animate-flicker { animation: ef-flicker 600ms linear both; }
+.animate-fill { animation: ef-fill 600ms ease-out both; transform-origin: left; }
+.animate-slide-in { animation: ef-slide-in 300ms ease-out both; }
+.animate-turn-in { animation: ef-turn-in 300ms ease-out both; }
+.animate-fade-in { animation: ef-fade-in 300ms ease-out both; }
+.animate-shift-in { animation: ef-shift-in 300ms ease-out both; }
+.animate-wipe-in { animation: ef-wipe-in 300ms ease-out both; }
+.animate-spin-slow { animation: ef-spin 60s linear infinite; }
+.animate-blink { animation: ef-blink 1s step-end infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══ 6. SIGNATURE MOTIFS (母题工具类) ═══ */
+/* 45° Hatching (斜纹) */
+.ef-hatch, .hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--hatch-color, color-mix(in srgb, var(--ef-ink) 5%, transparent)) 0 var(--hatch-width, 1.9px),
+    transparent 0 calc(var(--hatch-size, 6px) * 0.7071)
+  );
+}
+.ef-hatch-mid, .hatch-mid {
+  --hatch-color: var(--color-neutral-700);
+  --hatch-width: 1.5px;
+}
+.ef-hatch-fine, .hatch-fine {
+  --hatch-color: color-mix(in srgb, var(--ef-ink) 60%, transparent);
+  --hatch-width: 0.75px;
+}
+
+/* Hazard stripes (黄黑警示条纹，仅用于 6-12px 窄条) */
+.ef-hazard, .hazard {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-signal) 0 var(--hazard-size, 12px),
+    var(--color-neutral-900) var(--hazard-size, 12px) calc(var(--hazard-size, 12px) * 2)
+  );
+}
+
+/* Corner Cuts & Wedges (切角与斜楔) */
+.cut-sm { --cut: var(--cut-sm); }
+.cut-md { --cut: var(--cut-md); }
+.cut-lg { --cut: var(--cut-lg); }
+
+.ef-cut-tr, .cut-tr {
+  clip-path: polygon(0 0, calc(100% - var(--cut, var(--cut-md))) 0, 100% var(--cut, var(--cut-md)), 100% 100%, 0 100%);
+}
+.ef-cut-br, .cut-br {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--cut, var(--cut-md))), calc(100% - var(--cut, var(--cut-md))) 100%, 0 100%);
+}
+.ef-cut-diagonal, .cut-diagonal {
+  clip-path: polygon(
+    var(--cut, var(--cut-md)) 0, 100% 0, 100% calc(100% - var(--cut, var(--cut-md))),
+    calc(100% - var(--cut, var(--cut-md))) 100%, 0 100%, 0 var(--cut, var(--cut-md))
+  );
+}
+
+.ef-wedge, .wedge {
+  clip-path: polygon(var(--wedge, var(--cut-md)) 0, 100% 0, calc(100% - var(--wedge, var(--cut-md))) 100%, 0 100%);
+}
+.ef-wedge-l, .wedge-l {
+  clip-path: polygon(var(--wedge, var(--cut-md)) 0, 100% 0, 100% 100%, 0 100%);
+}
+.ef-wedge-r, .wedge-r {
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--wedge, var(--cut-md))) 100%, 0 100%);
+}
+
+/* Corner Brackets (四角 L 形短线，画在 ::after 上，不占用 outline) */
+.ef-corner-brackets, .corner-brackets {
+  position: relative;
+}
+.ef-corner-brackets::after, .corner-brackets::after {
+  --_c: var(--bracket-color, var(--ef-ink));
+  --_w: var(--bracket-width, 2px);
+  --_l: var(--bracket-arm, 12px);
+  content: "";
+  position: absolute;
+  inset: calc(var(--bracket-offset, 4px) * -1);
+  pointer-events: none;
+  background:
+    linear-gradient(var(--_c) 0 0) 0 0 / var(--_l) var(--_w),
+    linear-gradient(var(--_c) 0 0) 0 0 / var(--_w) var(--_l),
+    linear-gradient(var(--_c) 0 0) 100% 0 / var(--_l) var(--_w),
+    linear-gradient(var(--_c) 0 0) 100% 0 / var(--_w) var(--_l),
+    linear-gradient(var(--_c) 0 0) 0 100% / var(--_l) var(--_w),
+    linear-gradient(var(--_c) 0 0) 0 100% / var(--_w) var(--_l),
+    linear-gradient(var(--_c) 0 0) 100% 100% / var(--_l) var(--_w),
+    linear-gradient(var(--_c) 0 0) 100% 100% / var(--_w) var(--_l);
+  background-repeat: no-repeat;
+  animation: ef-bracket-in 200ms ease-out both;
+}
+
+/* Ghost Text (镂空巨字：斜纹填充 / 描边) */
+.ef-ghost-hatch, .ghost-hatch {
+  font-family: var(--font-display);
+  font-size: var(--text-ghost);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--tracking-ghost);
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  color: transparent;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--ghost-ink, var(--ef-ink)) 0 0.75px,
+    transparent 0 calc(var(--hatch-size, 6px) * 0.7071)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.6;
+}
+.ef-ghost-outline, .ghost-outline {
+  font-family: var(--font-display);
+  font-size: var(--text-ghost);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--tracking-ghost);
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ghost-ink, color-mix(in srgb, var(--ef-ink) 22%, transparent));
+}
+
+/* Surface Textures (点阵 / 工程网格 / 等高线) */
+.ef-dot-grid, .dot-grid {
+  background-image: radial-gradient(
+    circle,
+    var(--dot-color, color-mix(in srgb, var(--ef-ink) 10%, transparent)) var(--dot-size, 1px),
+    transparent calc(var(--dot-size, 1px) + 0.5px)
+  );
+  background-size: var(--dot-gap, 16px) var(--dot-gap, 16px);
+}
+
+.ef-blueprint-grid, .blueprint-grid {
+  --_g: var(--grid-color, color-mix(in srgb, var(--ef-ink) 6%, transparent));
+  background-image:
+    linear-gradient(var(--_g) 1px, transparent 1px),
+    linear-gradient(90deg, var(--_g) 1px, transparent 1px);
+  background-size: var(--grid-gap, 72px) var(--grid-gap, 72px);
+}
+
+.ef-contour, .contour {
+  background-color: var(--contour-color, color-mix(in srgb, var(--ef-ink) 18%, transparent));
+  -webkit-mask: var(--contour-image) var(--contour-position, 100% 100%) / var(--contour-size, 30rem) no-repeat;
+  mask: var(--contour-image) var(--contour-position, 100% 100%) / var(--contour-size, 30rem) no-repeat;
+  --contour-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 480' fill='none'%3E%3Cdefs%3E%3CradialGradient id='f' gradientUnits='userSpaceOnUse' cx='480' cy='480' r='480'%3E%3Cstop offset='.5' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath stroke='url(%23f)' vector-effect='non-scaling-stroke' d='M358 338C359 343 356 350 353 355C350 359 344 363 340 365C335 368 330 369 325 370C320 371 315 370 311 369C307 368 302 365 299 362C296 359 293 355 291 351C288 347 285 343 283 338C282 333 280 326 281 320C283 315 288 308 292 306C297 303 305 304 311 305C316 306 320 311 324 313C328 314 331 315 335 317C339 319 345 320 349 323C353 327 357 333 358 338ZM398 333C399 343 394 355 389 364C383 372 373 378 364 383C356 387 347 390 338 391C330 393 320 392 312 389C304 387 297 382 291 376C284 371 280 364 275 357C270 350 265 342 262 333C259 324 255 311 258 301C261 291 269 279 278 274C287 270 302 272 311 274C321 276 328 283 336 286C343 290 348 291 356 295C363 298 374 300 381 306C388 312 397 323 398 333ZM455 328C457 344 448 366 439 380C429 393 412 403 398 411C384 419 369 425 355 427C340 429 324 427 310 422C297 418 285 409 274 400C264 391 256 381 248 369C240 357 232 344 227 328C222 312 215 290 220 274C224 258 238 237 253 229C268 222 293 226 309 229C326 232 338 244 350 249C362 255 371 258 384 263C396 269 414 272 426 283C438 294 453 312 455 328ZM491 323C494 343 482 369 471 386C459 403 437 415 420 424C403 434 385 443 367 445C349 447 329 444 313 439C296 433 281 423 268 412C255 401 244 388 235 373C225 358 216 342 211 323C205 304 196 277 201 256C206 236 223 210 242 201C260 192 291 198 311 202C331 206 346 219 361 226C376 233 387 236 403 243C418 250 439 254 454 268C469 281 488 303 491 323Z'/%3E%3C/svg%3E");
+}
+
+/* Registration Strip (印刷三原色校准色条) */
+.ef-reg-strip {
+  display: flex;
+  height: 3px;
+  align-items: stretch;
+}
+.ef-reg-strip > .m { width: 48px; background: var(--color-reg-magenta); }
+.ef-reg-strip > .c { width: 48px; background: var(--color-reg-cyan); }
+.ef-reg-strip > .y { width: 48px; background: var(--color-reg-yellow); }
+.ef-reg-strip > .rule { flex: 1; background: var(--ef-line); }
+
+/* ═══ 7. CORE ENDFIELD COMPONENTS (纯 CSS 实现) ═══ */
+
+/* 7.1 Section Title (A: 标准滑块分节标题 / B: 信号黄色带标题) */
+.ef-section-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ef-section-title__meta {
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  color: var(--ef-ink-secondary);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+.ef-section-title__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ef-section-title__block {
+  width: 5.5rem;
+  height: 1.75rem;
+  background: var(--color-neutral-300);
+  color: var(--color-neutral-900);
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  font-family: var(--font-tech);
+  font-weight: 700;
+  animation: ef-slide-in 300ms ease-out both;
+}
+.ef-section-title__en {
+  font-family: var(--font-latin);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--ef-ink);
+}
+.ef-section-title__cn {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 2px 0 0;
+  color: var(--ef-ink);
+}
+
+/* Variant B: Full-bleed Signal Yellow Band Title */
+.ef-band-title {
+  background: var(--ef-action);
+  color: var(--ef-on-action);
+  padding: 20px 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.ef-band-title__sub {
+  font-family: var(--font-latin);
+  font-size: var(--text-sm);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.ef-band-title__main {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* 7.2 Bracket Title ([ 名称 ]) */
+.ef-bracket-title {
+  font-family: var(--font-sans);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ef-ink);
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+}
+.ef-bracket-title::before {
+  content: "[";
+  font-weight: 500;
+  color: var(--ef-ink-tertiary);
+}
+.ef-bracket-title::after {
+  content: "]";
+  font-weight: 500;
+  color: var(--ef-ink-tertiary);
+}
+
+/* 7.3 Buttons (4px rounded-sm, icon + 1px divider + text, hover color-only) */
+.ef-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  min-width: 96px;
+  padding: 0 24px;
+  border-radius: var(--radius-sm);
+  border: 0;
+  background: var(--ef-button);
+  color: var(--ef-on-button);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  position: relative;
+  user-select: none;
+}
+.ef-btn:hover {
+  background: var(--ef-button-hover);
+  color: #ffffff;
+}
+.ef-btn:active {
+  background: var(--ef-button-pressed);
+}
+.ef-btn:focus-visible {
+  outline: 2px solid var(--ef-focus);
+  outline-offset: 2px;
+}
+.ef-btn__sep {
+  width: 1px;
+  height: 14px;
+  background: currentColor;
+  opacity: 0.3;
+}
+.ef-btn--sm { height: 32px; min-width: 64px; padding: 0 16px; font-size: var(--text-sm); }
+.ef-btn--lg { height: 56px; min-width: 160px; padding: 0 32px; font-size: var(--text-lg); }
+
+/* Action variant (One per screen!) */
+.ef-btn--action {
+  background: var(--ef-action);
+  color: var(--ef-on-action);
+  box-shadow: var(--shadow-md);
+  padding-right: 28px;
+}
+.ef-btn--action::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 20%;
+  bottom: 20%;
+  width: 2px;
+  background: rgb(25 25 25 / 0.12);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.ef-btn--action:hover {
+  background: var(--ef-action);
+  color: var(--ef-on-action);
+}
+.ef-btn--action:hover::after {
+  background: rgb(25 25 25 / 0.22);
+}
+.ef-btn--action:active {
+  background: var(--ef-action-pressed);
+}
+
+/* Cut-corner action button (Game UI mechanical action: cut drawn on ::before to keep focus ring intact) */
+.ef-btn--cut {
+  background: transparent !important;
+  box-shadow: none !important;
+  isolation: isolate;
+}
+.ef-btn--cut::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ef-action);
+  clip-path: polygon(0 0, calc(100% - var(--cut-md)) 0, 100% var(--cut-md), 100% 100%, 0 100%);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+.ef-btn--cut {
+  color: var(--ef-on-action) !important;
+}
+.ef-btn--cut:active::before {
+  background: var(--ef-action-pressed);
+}
+
+/* Light variant (with subtle dot-grid) */
+.ef-btn--light {
+  background-color: var(--color-neutral-100);
+  background-image: radial-gradient(circle, rgb(25 25 25 / 0.08) 1px, transparent 1.5px);
+  background-size: 4px 4px;
+  color: var(--color-neutral-900);
+}
+.ef-btn--light:hover {
+  background-color: var(--color-neutral-50);
+  color: var(--color-neutral-900);
+}
+
+/* Back variant (dark gray with mid hatching) */
+.ef-btn--back {
+  background-color: var(--ef-control);
+  background-image: repeating-linear-gradient(-45deg, var(--color-neutral-700) 0 1.5px, transparent 0 calc(6px * 0.7071));
+  color: var(--ef-on-control);
+}
+
+/* Danger variant */
+.ef-btn--danger {
+  background: var(--color-alert-fill);
+  color: #ffffff;
+}
+.ef-btn--danger:hover {
+  background: var(--color-alert-fill-hover);
+}
+
+/* 7.4 Tags, TagPairs & Filter Chips (Shape = Semantics: Square = Archive, Capsule = Mutable State) */
+.ef-tag-pair {
+  display: inline-flex;
+  align-items: stretch;
+  height: 28px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 28px;
+}
+.ef-tag-pair__key {
+  background: var(--ef-surface-inverse);
+  color: var(--ef-ink-inverse);
+  padding: 0 10px;
+}
+.ef-tag-pair--emphasis .ef-tag-pair__key {
+  background: var(--ef-action);
+  color: var(--ef-on-action);
+}
+.ef-tag-pair__val {
+  background: var(--ef-surface-sunken);
+  color: var(--ef-ink);
+  padding: 0 12px;
+}
+
+.ef-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 8px;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  background: var(--ef-control);
+  color: var(--ef-on-control);
+  border-radius: var(--radius-xs);
+}
+.ef-tag--outline {
+  background: var(--ef-surface);
+  color: var(--ef-ink);
+  border: 1px solid var(--ef-line-strong);
+  border-radius: 0;
+}
+.ef-tag--accent {
+  background: var(--ef-action);
+  color: var(--ef-on-action);
+  border-radius: 0;
+}
+.ef-tag--gain {
+  background: var(--color-gain);
+  color: var(--color-neutral-900);
+  font-family: var(--font-tech);
+  font-variant-numeric: tabular-nums;
+  border-radius: 0;
+}
+
+/* Filter Chip & Resource Chip (Capsules) */
+.ef-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--ef-line-strong);
+  background: transparent;
+  color: var(--ef-ink);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+.ef-filter-chip:hover {
+  background: color-mix(in srgb, var(--ef-ink) 5%, transparent);
+}
+.ef-filter-chip.is-selected,
+.ef-filter-chip[aria-pressed="true"] {
+  background: var(--ef-surface-inverse);
+  color: var(--ef-ink-inverse);
+  border-color: var(--ef-surface-inverse);
+}
+
+.ef-resource-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px 0 4px;
+  border-radius: var(--radius-full);
+  background: var(--ef-control);
+  color: var(--ef-on-control);
+  font-family: var(--font-tech);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+.ef-resource-chip__icon {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--color-neutral-700);
+  display: inline-grid;
+  place-items: center;
+  font-size: var(--text-xs);
+}
+
+/* 7.5 Panel (Square, 1px line, no shadow; optional inverse header band with left yellow bar) */
+.ef-panel {
+  background: var(--ef-surface-raised);
+  border: 1px solid var(--ef-line);
+  border-radius: 0;
+}
+.ef-panel__head {
+  height: 32px;
+  padding: 0 12px;
+  background: var(--ef-surface-inverse);
+  color: var(--ef-ink-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  position: relative;
+}
+.ef-panel__head::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  background: var(--ef-accent-ink-inverse);
+  margin-right: 10px;
+  flex: none;
+}
+.ef-panel__title {
+  flex: 1;
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+.ef-panel__body {
+  padding: 20px;
+}
+
+/* 7.6 Stat Block (No card box! Left 3px ink bar + // LABEL + large tabular-nums) */
+.ef-stat {
+  border-left: 3px solid var(--ef-ink);
+  padding-left: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ef-stat__label {
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  color: var(--ef-ink-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+}
+.ef-stat__label::before {
+  content: "// ";
+  color: var(--ef-ink-tertiary);
+}
+.ef-stat__main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.ef-stat__value {
+  font-family: var(--font-tech);
+  font-size: var(--text-4xl);
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ef-ink);
+}
+.ef-stat__unit {
+  font-size: var(--text-sm);
+  color: var(--ef-ink-secondary);
+}
+
+/* 7.7 Data Row Band (Game UI Briefing: Sunken canvas + Dark bands #141414 + semantic numbers) */
+.ef-data-list {
+  background: var(--ef-surface-sunken);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ef-data-row {
+  background: #141414;
+  color: #fafafa;
+  border: 1px solid #383838;
+  min-height: 44px;
+  padding: 0 16px 0 0;
+  display: grid;
+  grid-template-columns: 4px auto 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+}
+.ef-data-row__cat {
+  align-self: stretch;
+  background: var(--cat-color, var(--color-data));
+}
+.ef-data-row__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #8a8a8a;
+}
+.ef-data-row.is-fav .ef-data-row__dot {
+  background: var(--color-signal);
+  border-color: var(--color-signal);
+}
+.ef-data-row__name {
+  font-weight: 500;
+  font-size: var(--text-sm);
+}
+.ef-data-row__val {
+  font-family: var(--font-tech);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  text-align: right;
+}
+.ef-data-row__val--info { color: #2d8fc2; }
+.ef-data-row__val--accent { color: #fffa00; }
+.ef-data-row__val--danger { color: #f74040; }
+.ef-data-row__ref {
+  font-family: var(--font-tech);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  color: #8a8a8a;
+}
+
+/* 7.8 Item Slot (Matrix cell with bottom rarity gradient + corner-brackets selection) */
+.ef-item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 8px;
+  padding: 4px;
+}
+.ef-item-slot {
+   --rarity: var(--color-rarity-1);
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--ef-surface-raised);
+  border: 1px solid var(--ef-line);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+.ef-item-slot[data-rarity="1"] { --rarity: var(--color-rarity-1); }
+.ef-item-slot[data-rarity="2"] { --rarity: var(--color-rarity-2); }
+.ef-item-slot[data-rarity="3"] { --rarity: var(--color-rarity-3); }
+.ef-item-slot[data-rarity="4"] { --rarity: var(--color-rarity-4); }
+.ef-item-slot::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 40%;
+  background: linear-gradient(to top, color-mix(in srgb, var(--rarity) 55%, transparent), transparent);
+  pointer-events: none;
+}
+.ef-item-slot:hover {
+  border-color: var(--ef-line-strong);
+}
+.ef-item-slot__count {
+  position: absolute;
+  right: 6px;
+  bottom: 4px;
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  z-index: 1;
+}
+.ef-item-slot__new {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--ef-action);
+  color: var(--ef-on-action);
+  font-family: var(--font-tech);
+  font-size: var(--text-micro);
+  font-weight: 700;
+  padding: 2px 6px 2px 4px;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%);
+  z-index: 1;
+}
+
+/* 7.9 Sunken Input with Left-to-Right Focus Wipe */
+.ef-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ef-field__label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ef-ink);
+}
+.ef-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 12px;
+  background: var(--ef-surface-sunken);
+  border-bottom: 2px solid var(--ef-line-strong);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+.ef-input-box::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--ef-ink);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--duration-base) var(--ease-exit);
+}
+.ef-input-box:focus-within::before {
+  clip-path: inset(0 0 0 0);
+}
+.ef-input-box:focus-within {
+  outline: 2px solid var(--ef-focus);
+  outline-offset: 2px;
+}
+.ef-input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--ef-ink);
+  font: inherit;
+  outline: none;
+}
+
+/* 7.10 Alert (No full border! Raised surface + 4px left semantic bar) */
+.ef-alert {
+  --_tone: var(--ef-info);
+  background: var(--ef-surface-raised);
+  border-left: 4px solid var(--_tone);
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: var(--text-sm);
+}
+.ef-alert--success { --_tone: var(--ef-success); }
+.ef-alert--warning { --_tone: var(--ef-warning); }
+.ef-alert--danger  { --_tone: var(--ef-danger); }
+
+/* 7.11 Progress Bar (Gray track + Signal Yellow fill) */
+.ef-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ef-progress__track {
+  flex: 1;
+  height: 8px;
+  background: var(--ef-line);
+  overflow: hidden;
+  position: relative;
+}
+.ef-progress__fill {
+  height: 100%;
+  background: var(--ef-action);
+  transform-origin: left;
+  animation: ef-fill 600ms ease-out both;
+}
+.ef-progress__val {
+  font-family: var(--font-tech);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: var(--text-sm);
+  min-width: 3.5ch;
+  text-align: right;
+}
+
+/* 7.12 SideRail & Layout Shell */
+.ef-app-shell {
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+  min-height: 100vh;
+}
+@media (max-width: 1023px) {
+  .ef-app-shell {
+    grid-template-columns: 1fr;
+  }
+}
+.ef-side-rail {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--ef-surface);
+  border-right: 1px solid var(--ef-line);
+  box-shadow: var(--shadow-rail);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-nav);
+}
+.ef-side-rail__brand {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--ef-line);
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.ef-side-rail__nav {
+  flex: 1;
+  padding: 12px 0;
+  overflow-y: auto;
+}
+.ef-side-rail__group {
+  padding: 12px 20px 4px;
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  color: var(--ef-ink-tertiary);
+  text-transform: uppercase;
+}
+.ef-side-rail__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 20px;
+  color: var(--ef-ink-secondary);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  position: relative;
+  transition: background-color var(--duration-fast), color var(--duration-fast);
+}
+.ef-side-rail__item:hover {
+  background: var(--ef-surface-muted);
+  color: var(--ef-ink);
+}
+.ef-side-rail__item.is-current,
+.ef-side-rail__item[aria-current="page"] {
+  color: var(--ef-ink);
+  font-weight: 700;
+}
+.ef-side-rail__item.is-current::before,
+.ef-side-rail__item[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 4px;
+  background: var(--ef-ink);
+}
+.ef-nav-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  margin: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--ef-surface-inverse);
+  color: var(--ef-ink-inverse);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--duration-fast), color var(--duration-fast);
+}
+.ef-nav-action:hover {
+  background: var(--ef-action);
+  color: var(--ef-on-action);
+}

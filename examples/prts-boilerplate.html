@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRTS.TERMINAL // 罗德岛战术神经终端样板</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap">
+  <link rel="stylesheet" href="../resources/prts-design.css">
+  <style>
+    body { margin: 0; background: var(--ak-bg-canvas); min-height: 100vh; display: flex; flex-direction: column; }
+  </style>
+</head>
+<body class="ak-scope">
+  <!-- 顶部黑色终端栏（亮暗主题下恒为黑框） -->
+  <header class="ak-header">
+    <div class="ak-header__inner">
+      <a class="ak-header__logo" href="#">
+        <span class="ak-header__wordmark">
+          PRTS.TERMINAL
+          <small>RHODES ISLAND NEURAL NETWORK</small>
+        </span>
+      </a>
+      <div class="ak-header__search">
+        <button type="button" class="ak-search-trigger">
+          <span class="ak-search-trigger__icon">⌕</span>
+          <span class="ak-search-trigger__label">检索干员档案、主线作战、模组终端…</span>
+          <kbd class="ak-search__kbd">/</kbd>
+        </button>
+      </div>
+      <div class="ak-header__tools">
+        <div class="ak-seg" role="group" aria-label="界面主题切换">
+          <button type="button" onclick="setTheme('light')" id="btn-light">档案 (Light)</button>
+          <button type="button" onclick="setTheme('dark')" id="btn-dark" class="is-active" aria-pressed="true">终端 (Dark)</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体两栏骨架 -->
+  <div class="ak-layout ak-layout--no-toc" style="max-width: 1440px; width: 100%; margin: 0 auto; padding: 24px; box-sizing: border-box; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; flex: 1;">
+    <aside class="ak-sidebar">
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">COMMAND // 终端</h3>
+        <ul>
+          <li class="is-active"><a href="#overview">作战中枢总览</a></li>
+          <li><a href="#roster">干员战术编队</a></li>
+          <li><a href="#stages">切尔诺伯格航线</a></li>
+        </ul>
+      </div>
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">DATABASE // 档案</h3>
+        <ul>
+          <li><a href="#dossier">人事绝密纪要</a></li>
+          <li><a href="#riic">基建后勤排班</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="ak-main ak-flex-col ak-gap-6">
+      <!-- Breaking News 横幅 -->
+      <div class="ak-news">
+        <span class="ak-news__label">BREAKING NEWS</span>
+        <span class="ak-news__text">「怒号光明」核心城突入指令已下达 · 罗德岛精英干员编队待命完毕 · <a href="#stages">查阅作战简报</a></span>
+      </div>
+
+      <!-- 官网风 Hero 横幅 -->
+      <section class="ak-hero" id="overview">
+        <div class="ak-hero__side"></div>
+        <div class="ak-hero__eyebrow">OPERATION // ROARING FLARE</div>
+        <h1 class="ak-hero__title">
+          RHODES ISLAND
+          <span class="cn">罗德岛战术指挥系统 v4.2</span>
+        </h1>
+        <div class="ak-hero__bar"></div>
+        <p class="ak-hero__desc">黑白为体、青为用；全直角无辉光几何设计语言。当前连接节点：切尔诺伯格核心城外环观测站。</p>
+        <div class="ak-flex ak-gap-3 ak-mt-4">
+          <button type="button" class="ak-btn ak-btn--contrast ak-btn--lg">开始行动</button>
+          <button type="button" class="ak-btn ak-btn--primary ak-btn--lg">同步神经连接</button>
+        </div>
+      </section>
+
+      <!-- 面板级 HUD 统计读数 -->
+      <div class="ak-stat-row">
+        <div class="ak-stat">
+          <span class="ak-stat__label">DEPLOYED // 已部署干员</span>
+          <span class="ak-stat__value">12<small>/ 12</small></span>
+          <span class="ak-stat__delta ak-stat__delta--up">▲ 编队满员</span>
+        </div>
+        <div class="ak-stat">
+          <span class="ak-stat__label">SANITY // 理智储备</span>
+          <span class="ak-stat__value">132<small>/ 135</small></span>
+          <span class="ak-stat__delta">恢复倒计时 18:00</span>
+        </div>
+        <div class="ak-stat">
+          <span class="ak-stat__label">ORIGINIUM // 源石纯度</span>
+          <span class="ak-stat__value">98.4<small>%</small></span>
+          <span class="ak-stat__delta ak-stat__delta--down">▼ 活性偏高</span>
+        </div>
+        <div class="ak-stat">
+          <span class="ak-stat__label">THREAT // 威胁评级</span>
+          <span class="ak-stat__value">LV.08</span>
+          <span class="ak-stat__delta">高危感染区</span>
+        </div>
+      </div>
+
+      <!-- 一级章节标题（一页仅 1~2 处带英文副标） -->
+      <div class="ak-heading" id="roster">
+        <h2 class="ak-heading__title">核心编队与数据矩阵</h2>
+        <span class="ak-heading__en" lang="en">SQUADRON MATRIX</span>
+        <span class="ak-heading__aside"><a class="ak-chevrons" href="#">完整人事名册</a></span>
+      </div>
+
+      <!-- 面板 + 表格（表格数字严禁用 Bender，使用正文字体 + tabular-nums） -->
+      <section class="ak-panel">
+        <header class="ak-panel__head">
+          <h3 class="ak-panel__title">第一突击梯队</h3>
+          <div class="ak-flex ak-gap-2">
+            <span class="ak-tag ak-tag--accent">精英二阶</span>
+            <span class="ak-tag ak-tag--new">READY</span>
+          </div>
+        </header>
+        <div class="ak-panel__body">
+          <div class="ak-flex ak-gap-2 ak-wrap ak-mb-4">
+            <button type="button" class="ak-chip is-active" aria-pressed="true">全部职业</button>
+            <button type="button" class="ak-chip" aria-pressed="false">近卫</button>
+            <button type="button" class="ak-chip" aria-pressed="false">狙击</button>
+            <button type="button" class="ak-chip" aria-pressed="false">术师</button>
+            <button type="button" class="ak-chip" aria-pressed="false">医疗</button>
+          </div>
+
+          <table class="ak-table">
+            <thead>
+              <tr>
+                <th>干员代号</th>
+                <th>职业分支</th>
+                <th>稀有度</th>
+                <th>主力技能 / 技力</th>
+                <th class="num">生命上限</th>
+                <th class="num">攻击力</th>
+                <th class="num">防御力</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-selected">
+                <td><b>陈 (Ch'en)</b> <span class="ak-code-id">LM04</span></td>
+                <td>近卫 · 剑豪</td>
+                <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
+                <td>
+                  <span class="ak-fw-700">赤霄·绝影</span>
+                  <span class="ak-sp ak-sp--attack" style="margin-left: 6px;">攻击回复</span>
+                  <span class="ak-sp-cost" style="margin-left: 4px;">32</span>
+                </td>
+                <td class="num">2,880</td>
+                <td class="num">660</td>
+                <td class="num">402</td>
+              </tr>
+              <tr>
+                <td><b>阿米娅 (Amiya)</b> <span class="ak-code-id">R001</span></td>
+                <td>术师 · 中坚术师</td>
+                <td><span data-rarity="5" class="ak-r-chip">★5</span></td>
+                <td>
+                  <span class="ak-fw-700">奇美拉</span>
+                  <span class="ak-sp" style="margin-left: 6px;">自动回复</span>
+                  <span class="ak-sp-cost" style="margin-left: 4px;">120</span>
+                </td>
+                <td class="num">1,680</td>
+                <td class="num">682</td>
+                <td class="num">121</td>
+              </tr>
+              <tr>
+                <td><b>凯尔希 (Kal'tsit)</b> <span class="ak-code-id">SW03</span></td>
+                <td>医疗 · 医师</td>
+                <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
+                <td>
+                  <span class="ak-fw-700">指令：熔毁</span>
+                  <span class="ak-sp" style="margin-left: 6px;">自动回复</span>
+                  <span class="ak-sp-cost" style="margin-left: 4px;">15</span>
+                </td>
+                <td class="num">2,033</td>
+                <td class="num">490</td>
+                <td class="num">255</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 作战关卡与加密档案卡片 -->
+      <div class="ak-grid ak-grid-2 ak-gap-4" id="stages">
+        <div class="ak-card ak-card--accent-left">
+          <div class="ak-card__header">
+            <h3 class="ak-card__title">切尔诺伯格航线关卡</h3>
+            <span class="ak-tag ak-tag--danger-solid">突袭开放</span>
+          </div>
+          <div class="ak-card__body ak-flex-col ak-gap-2">
+            <a href="#" class="ak-stage ak-stage--story ak-not-prose">
+              <div class="ak-stage__code">JT8-2<small>MAIN STORY</small></div>
+              <div>
+                <div class="ak-stage__name">日落即逝</div>
+                <div class="ak-stage__meta"><span>推荐等级 <b>精英2 LV.40</b></span><span>理智 <b>21</b></span></div>
+              </div>
+            </a>
+            <a href="#" class="ak-stage ak-stage--hard ak-not-prose">
+              <div class="ak-stage__code">H8-4<small>HELL STAGE</small></div>
+              <div>
+                <div class="ak-stage__name">火光不熄</div>
+                <div class="ak-stage__meta"><span>推荐等级 <b>精英2 LV.70</b></span><span>理智 <b>30</b></span></div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="ak-dossier is-locked" data-unlock="需要信赖值达到 200% 解锁绝密人事记录" id="dossier">
+          <div class="ak-dossier__title">
+            <span>干员密录 · 第四卷</span>
+            <span class="ak-dossier__unlock">CLASSIFIED // LEVEL 4</span>
+          </div>
+          <p>【档案记录员】凯尔希
+【加密摘要】有关巴别塔时期的历史遗留档案与「魔王」继承权的底层协议记录，未经授权严禁调阅。</p>
+        </div>
+      </div>
+
+      <!-- 45° 警示斜纹分隔带 -->
+      <div class="ak-stripes ak-stripes--hazard ak-stripe-bar"></div>
+    </main>
+  </div>
+
+  <!-- 底部黑色页脚 -->
+  <footer class="ak-footer">
+    <span class="ak-watermark">RHODES</span>
+    <div class="ak-footer__inner">
+      <div class="ak-footer__brand">
+        <div class="ak-header__wordmark">PRTS.DESIGN</div>
+        <p>明日方舟本家网页设计系统样板 · 黑白为体、青为用、全直角无切角。</p>
+      </div>
+      <div class="ak-footer__col">
+        <h4>SYSTEM // 规范</h4>
+        <ul>
+          <li><a href="#">色彩与双主题令牌</a></li>
+          <li><a href="#">装饰几何语言</a></li>
+        </ul>
+      </div>
+      <div class="ak-footer__col">
+        <h4>TERMINAL // 节点</h4>
+        <ul>
+          <li><a href="#">罗德岛本舰</a></li>
+          <li><a href="#">龙门近卫局</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ak-footer__bottom">
+      <div class="ak-footer__bottom-text">
+        <span class="ak-en">RHODES ISLAND PHARMACEUTICAL INC.</span>
+        <span>PRTS Neural Network Terminal</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function setTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      document.getElementById('btn-light').classList.toggle('is-active', theme === 'light');
+      document.getElementById('btn-dark').classList.toggle('is-active', theme === 'dark');
+    }
+  </script>
+</body>
+</html>

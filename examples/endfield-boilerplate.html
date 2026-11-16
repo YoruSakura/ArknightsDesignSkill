@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ENDFIELD // 塔卫二集成工业调度台样板</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,600..800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Outfit:wght@300;500;700&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../resources/endfield-standalone.css">
+</head>
+<body class="ef-scope">
+  <div class="ef-app-shell">
+    <!-- 左侧常驻窄轨 (SideRail) -->
+    <aside class="ef-side-rail" aria-label="主导航">
+      <div class="ef-side-rail__brand">
+        ENDFIELD // IND.
+        <div style="font-family: var(--font-tech); font-size: var(--text-micro); color: var(--ef-ink-tertiary); font-weight: 400; margin-top: 4px;">
+          TALOS-II LOGISTICS REV 2026.11
+        </div>
+      </div>
+
+      <nav class="ef-side-rail__nav">
+        <div class="ef-side-rail__group">// 枢纽调度</div>
+        <a href="#hero" class="ef-side-rail__item is-current" aria-current="page">干员与主视觉</a>
+        <a href="#pipeline" class="ef-side-rail__item">集成工业监控</a>
+        <a href="#depot" class="ef-side-rail__item">四号仓储矩阵</a>
+        <div class="ef-side-rail__group">// 外观模式</div>
+        <div style="padding: 8px 20px; display: flex; gap: 8px;">
+          <button type="button" class="ef-btn ef-btn--sm" onclick="toggleTheme('light')" style="flex: 1; min-width: 0;">纸白</button>
+          <button type="button" class="ef-btn ef-btn--sm ef-btn--light" onclick="toggleTheme('dark')" style="flex: 1; min-width: 0;">烟黑</button>
+        </div>
+      </nav>
+
+      <!-- 全界面唯一的主行动块：默认黑底白字，悬停变信号黄底墨字 -->
+      <a href="#depot" class="ef-nav-action">
+        <span>▶</span>
+        <span style="width: 1px; height: 14px; background: currentColor; opacity: .3;" aria-hidden="true"></span>
+        <span>部署拓荒管线</span>
+      </a>
+    </aside>
+
+    <!-- 主舞台：偏心构图 + 亮暗交替版块 -->
+    <main>
+      <!-- 版块 1：纸白画册风 · 偏心构图主视觉 (1.6fr : 0.8fr 不等宽栅格) -->
+      <section id="hero" style="position: relative; overflow: clip; padding: 56px 48px 64px; border-bottom: 1px solid var(--ef-line);">
+        <!-- 背景层：斜纹镂空巨字（越界截断）+ 右下角等高线 -->
+        <span aria-hidden="true" class="ghost-hatch" style="position: absolute; top: -16px; left: 32px;">
+          //PERLICA
+        </span>
+        <div aria-hidden="true" class="contour" style="position: absolute; inset: 0; pointer-events: none;"></div>
+
+        <!-- 内容层：偏心分栏 -->
+        <div style="position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr); gap: 48px; align-items: end;">
+          <div>
+            <!-- 标准分节标题 (形态 A) -->
+            <header class="ef-section-title" style="margin-bottom: 28px;">
+              <span class="ef-section-title__meta">▼ // SECTION 01 OF 03 · OPERATOR DOSSIER</span>
+              <div class="ef-section-title__row">
+                <span class="ef-section-title__block" aria-hidden="true">↘</span>
+                <p class="ef-section-title__en">SUPERVISOR</p>
+              </div>
+              <h2 class="ef-section-title__cn">核心干员档案</h2>
+            </header>
+
+            <!-- 方括号标题 [ 名称 ] + 注册色条 -->
+            <h1 class="ef-bracket-title">佩丽卡</h1>
+            <div style="margin-top: 6px;">
+              <span class="ef-tag">PERLICA // ENDFIELD INDUSTRIES</span>
+            </div>
+
+            <div aria-hidden="true" class="ef-reg-strip" style="margin: 16px 0 20px; max-width: 420px;">
+              <span class="m"></span>
+              <span class="c"></span>
+              <span class="y"></span>
+              <span class="rule"></span>
+            </div>
+
+            <!-- 名值对标签组 (无缝紧贴) -->
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+              <span class="ef-tag-pair">
+                <span class="ef-tag-pair__key">所属机构</span>
+                <span class="ef-tag-pair__val">终末地工业</span>
+              </span>
+              <span class="ef-tag-pair">
+                <span class="ef-tag-pair__key">职能定位</span>
+                <span class="ef-tag-pair__val">协议监督与中枢调度</span>
+              </span>
+              <span class="ef-tag-pair ef-tag-pair--emphasis">
+                <span class="ef-tag-pair__key">安全许可</span>
+                <span class="ef-tag-pair__val">OMEGA // 01</span>
+              </span>
+            </div>
+
+            <p style="max-width: 54ch; color: var(--ef-ink-secondary); margin: 0 0 28px;">
+              负责塔卫二开拓区自动化工业网络与协议核心的统筹监督，能在高危侵蚀环境下快速重建协议中继链路。
+            </p>
+
+            <!-- 行动按钮组：一屏仅限一个信号黄主行动 -->
+            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+              <button type="button" class="ef-btn ef-btn--action">调阅拓荒日志</button>
+              <button type="button" class="ef-btn">
+                <span>◈</span>
+                <span class="ef-btn__sep" aria-hidden="true"></span>
+                <span>装备矩阵预览</span>
+              </button>
+              <button type="button" class="ef-btn ef-btn--light">声纹记录</button>
+            </div>
+          </div>
+
+          <!-- 右侧：带刻度圆环与取景角的展示焦点区 (局部暗色面板) -->
+          <div data-theme="dark" class="ef-scope corner-brackets" style="position: relative; padding: 32px 24px; min-height: 320px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--ef-line);">
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-ink-secondary);">
+              <span>SECTOR // N-07</span>
+              <span style="color: var(--ef-accent-ink);">● TELEMETRY ACTIVE</span>
+            </div>
+
+            <div style="display: grid; place-items: center; margin: 16px 0; position: relative;">
+              <svg viewBox="0 0 240 240" width="180" height="180" aria-hidden="true" class="animate-spin-slow" style="color: var(--ef-ink);">
+                <circle cx="120" cy="120" r="92" fill="none" stroke="currentColor" stroke-opacity=".25" />
+                <circle cx="120" cy="120" r="110" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="8" pathLength="400" stroke-dasharray="1.5 8.5" />
+                <path d="M120 10A110 110 0 0 1 215 65" fill="none" stroke="currentColor" stroke-opacity=".7" stroke-width="5" />
+                <path d="M65 215A110 110 0 0 1 15 150" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="4" />
+              </svg>
+              <div style="position: absolute; text-align: center;">
+                <div style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800;">DIJIANG</div>
+                <div style="font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-accent-ink);">ORBITAL SYNC 99.4%</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-ink-secondary);">
+              <span>ALT // 412.0 KM</span>
+              <span>01 / 04</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 版块切换过渡：通栏信号黄色带标题 (形态 B，全站黄色面积最大的一处换气带) -->
+      <div class="ef-band-title">
+        <div>
+          <p class="ef-band-title__sub">ARKNIGHTS: ENDFIELD // AUTOMATION</p>
+          <h2 class="ef-band-title__main">INTEGRATED INDUSTRY</h2>
+        </div>
+        <div style="font-family: var(--font-tech); font-size: var(--text-xs); text-align: right;">
+          <div>SECTION 02 OF 03</div>
+          <div>PIPELINE TELEMETRY</div>
+        </div>
+      </div>
+
+      <!-- 版块 2：产耗监控与仓储矩阵 -->
+      <section id="pipeline" style="padding: 48px; display: flex; flex-direction: column; gap: 36px;">
+        <!-- 统计块行：不装进卡片，靠左缘 3px 墨线立住，最重要的一个用 5xl -->
+        <div style="display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-end;">
+          <div class="ef-stat">
+            <span class="ef-stat__label">POWER GRID OUTPUT</span>
+            <div class="ef-stat__main">
+              <span class="ef-stat__value" style="font-size: var(--text-5xl);">18,640</span>
+              <span class="ef-stat__unit">kW</span>
+              <span class="ef-tag ef-tag--gain">+12.4%</span>
+            </div>
+          </div>
+          <div class="ef-stat">
+            <span class="ef-stat__label">ACTIVE CONVEYORS</span>
+            <div class="ef-stat__main">
+              <span class="ef-stat__value">42</span>
+              <span class="ef-stat__unit">条管线</span>
+            </div>
+          </div>
+          <div class="ef-stat">
+            <span class="ef-stat__label">DEPOT CAPACITY</span>
+            <div class="ef-stat__main">
+              <span class="ef-stat__value">84.5</span>
+              <span class="ef-stat__unit">%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 不等宽双栏：左栏深色数据行带 + 右栏物品格矩阵面板 -->
+        <div id="depot" style="display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.9fr); gap: 32px; align-items: start;">
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <h3 style="margin: 0; font-size: var(--text-lg); font-weight: 700;">产线实时吞吐简报</h3>
+              <span style="font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-ink-secondary);">// 蓝=产出 · 黄=消耗 · 红=超支</span>
+            </div>
+
+            <!-- 游戏内数据简报范式：浅色凹陷画布 + 固定深色行带 -->
+            <div class="ef-data-list" role="table" aria-label="产线实时吞吐简报">
+              <div class="ef-data-row is-fav" style="--cat-color: var(--color-data);">
+                <span class="ef-data-row__cat" aria-hidden="true"></span>
+                <span class="ef-data-row__dot" aria-hidden="true"></span>
+                <span class="ef-data-row__name">北岭精炼厂 #01 · 高纯源石提纯</span>
+                <span class="ef-data-row__val ef-data-row__val--info">+420 / min</span>
+                <span class="ef-data-row__ref">理论 450</span>
+              </div>
+              <div class="ef-data-row is-fav" style="--cat-color: var(--color-region);">
+                <span class="ef-data-row__cat" aria-hidden="true"></span>
+                <span class="ef-data-row__dot" aria-hidden="true"></span>
+                <span class="ef-data-row__name">三号管廊枢纽 · 紫晶构件组装</span>
+                <span class="ef-data-row__val ef-data-row__val--accent">180 / min</span>
+                <span class="ef-data-row__ref">满负荷</span>
+              </div>
+              <div class="ef-data-row" style="--cat-color: var(--color-alert);">
+                <span class="ef-data-row__cat" aria-hidden="true"></span>
+                <span class="ef-data-row__dot" aria-hidden="true"></span>
+                <span class="ef-data-row__name">四号反应堆 · 冷却液循环补给</span>
+                <span class="ef-data-row__val ef-data-row__val--danger">-32 / min</span>
+                <span class="ef-data-row__ref">需扩容</span>
+              </div>
+            </div>
+
+            <!-- 无外框提示条 (左缘 4px 语义色条) -->
+            <div class="ef-alert ef-alert--warning" role="alert">
+              <strong>▲</strong>
+              <div>四号反应堆冷却液消耗略高于当前管线供给，建议增设二级泵站。</div>
+            </div>
+          </div>
+
+          <!-- 右侧：带反转标题带的直角面板 + 物品矩阵 -->
+          <section class="ef-panel">
+            <header class="ef-panel__head" data-theme="inverse">
+              <h3 class="ef-panel__title">四号仓储矩阵</h3>
+              <span style="font-family: var(--font-tech); font-size: var(--text-xs); opacity: .8;">SLOT // 06</span>
+            </header>
+            <div class="ef-panel__body" style="display: flex; flex-direction: column; gap: 16px;">
+              <!-- 胶囊筛选器 -->
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <button type="button" class="ef-filter-chip is-selected" aria-pressed="true">全部物资</button>
+                <button type="button" class="ef-filter-chip" aria-pressed="false">T4 珍稀</button>
+                <button type="button" class="ef-filter-chip" aria-pressed="false">工业合成</button>
+              </div>
+
+              <!-- 物品矩阵：底部稀有度渐变 + 选中项四角括号落位 -->
+              <div class="ef-item-grid" role="group" aria-label="仓储物品">
+                <button type="button" class="ef-item-slot corner-brackets" data-rarity="4" aria-pressed="true">
+                  <span class="ef-item-slot__new">NEW</span>
+                  <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">源石核心</span>
+                  <span class="ef-item-slot__count">16</span>
+                </button>
+                <button type="button" class="ef-item-slot" data-rarity="4" aria-pressed="false">
+                  <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">协议棱镜</span>
+                  <span class="ef-item-slot__count">08</span>
+                </button>
+                <button type="button" class="ef-item-slot" data-rarity="3" aria-pressed="false">
+                  <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">紫晶构件</span>
+                  <span class="ef-item-slot__count">142</span>
+                </button>
+                <button type="button" class="ef-item-slot" data-rarity="2" aria-pressed="false">
+                  <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">精炼铁锭</span>
+                  <span class="ef-item-slot__count">640</span>
+                </button>
+                <button type="button" class="ef-item-slot" data-rarity="1" aria-pressed="false">
+                  <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">粗制矿渣</span>
+                  <span class="ef-item-slot__count">999</span>
+                </button>
+                <button type="button" class="ef-item-slot" data-rarity="3" aria-pressed="false">
+                  <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">高能电池</span>
+                  <span class="ef-item-slot__count">54</span>
+                </button>
+              </div>
+
+              <!-- 灰轨 + 信号黄填充进度条 -->
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--ef-ink-secondary); margin-bottom: 6px;">
+                  <span>批次转运进度</span>
+                  <span style="font-family: var(--font-tech);">BATCH // TR-2041</span>
+                </div>
+                <div class="ef-progress">
+                  <div class="ef-progress__track" role="progressbar" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100">
+                    <div class="ef-progress__fill" style="width: 84%;"></div>
+                  </div>
+                  <span class="ef-progress__val">84%</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- 页脚顶边 8px 警示条纹 -->
+      <div aria-hidden="true" class="hazard" style="height: 8px;"></div>
+    </main>
+  </div>
+
+  <script>
+    function toggleTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+    }
+  </script>
+</body>
+</html>
