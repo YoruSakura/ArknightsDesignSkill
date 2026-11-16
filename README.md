@@ -15,19 +15,23 @@ ArknightsDesignSkill/
 ├── references/                               # 【按需读取】深度设计规范与组件 DOM/CSS 蓝图
 │   ├── prts/
 │   │   ├── foundations.md                    # PRTS 视觉哲学（黑白为体青为用、全直角禁切角、双正典主题、令牌表）
-│   │   └── decor-and-components.md           # PRTS 装饰母题（斜纹/网点/角标/反转）与全套 .ak-* 组件实现手册
+│   │   ├── decor-and-components.md           # PRTS 装饰母题（斜纹/网点/角标/反转）与外壳/常用组件蓝图
+│   │   └── components-catalog.md             # PRTS 全组件目录（按钮/菜单/弹窗/抽屉/表单/进度/时间线/领域件）
 │   └── endfield/
 │       ├── foundations.md                    # Endfield 工业编辑风总纲、六条核心原则、角色色分工与七大界面家族
-│       └── motifs-and-components.md          # Endfield 母题工具类（镂空巨字/滑块标题/切角/等高线/角括号）与 .ef-* 组件手册
+│       ├── motifs-and-components.md          # Endfield 母题工具类（镂空巨字/滑块标题/切角/等高线/角括号）与核心展示件
+│       └── components-catalog.md             # Endfield 全组件目录（三态页签/菜单/弹窗抽屉/表单含菱形/表格/反馈）
 ├── resources/                                # 【可直接拷贝】零外部图片依赖的完整 CSS 样式表与设计令牌
 │   ├── prts-design.css                       # PRTS Design 完整单文件样式表（Standalone + Chrome 骨架）
-│   ├── prts-addons.css                       # PRTS 补丁层（Hero 按钮/色面、表格滚动、抽屉遮罩）；紧随 prts-design.css 引入，不会被同步脚本覆盖
+│   ├── prts-addons.css                       # PRTS 补丁层（Hero 按钮/色面、菜单、表格滚动、抽屉遮罩）；紧随 prts-design.css 引入
 │   ├── prts-tokens.css                       # PRTS Design 纯令牌变量文件
-│   ├── endfield-standalone.css               # Endfield UI 零依赖纯 CSS 样式表（令牌 + 动画 + 母题 + 核心组件，全框架通用）
+│   ├── endfield-standalone.css               # Endfield UI 零依赖纯 CSS 样式表（令牌 + 动画 + 母题 + 全套组件，全框架通用）
 │   └── endfield-theme.css                    # Endfield UI Tailwind CSS v4 专用 @theme 与 @utility 样式文件
-├── examples/                                 # 【整页样板参考】
+├── examples/                                 # 【整页构图锚点 & 全组件可视化目录】
 │   ├── prts-boilerplate.html                 # 明日方舟本家（PRTS 终端/档案）整页网站样板
-│   └── endfield-boilerplate.html             # 明日方舟：终末地（工业编辑风）整页网站样板
+│   ├── prts-components.html                  # PRTS 全组件对照目录与交互参考（可跨框架移植）
+│   ├── endfield-boilerplate.html             # 明日方舟：终末地（工业编辑风）整页网站样板
+│   └── endfield-components.html              # Endfield 全组件对照目录与交互参考（含菱形表单实时切换）
 └── scripts/
     └── sync-upstream.py                      # 从上游开源仓库同步最新令牌与样式的构建脚本
 ```

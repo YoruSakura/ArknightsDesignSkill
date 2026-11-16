@@ -71,10 +71,33 @@
 | 14 | Endfield 390px 手机端黄色色带 `.ef-band-title` 右侧 `SECTION 02 OF 03 / PIPELINE TELEMETRY` 被裁切 | `.ef-band-title` 未允许换行且 `--text-3xl` 在 390px 过宽，超出部分被 `overflow: hidden` 截断 | `endfield-standalone.css` 为 `.ef-band-title` 补 `flex-wrap: wrap` 与 `<768px` 缩字号/内边距，新增 `.ef-band-title__meta` | 含 `overflow: hidden` 的横幅必须配 `flex-wrap` 与窄屏字阶 |
 | 15 | Endfield `纸白`/`烟黑` 按钮未体现当前激活态；两样板首次加载若无 `localStorage` 不主动同步 `aria-pressed` | `aria-pressed` 仅在点击回调更新，且 Endfield 按钮未绑状态样式 | 两样板拆出 `applyTheme(theme, persist)` 从 `dataset.theme` 同步状态；`endfield-standalone.css` 补 `.ef-btn[aria-pressed]` 样式 | 主题开关须支持“DOM 预置状态即按钮状态” |
 
+### 2026-11-16 · 跨框架通用组件库大而全扩充（双体系 Catalog + 交互陈列页 + 实渲染复核）
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 16 | Endfield 此前仅覆盖少量页面展示组件，缺少全套可脱离 React 直接移植的菜单/表单/反馈/数据组件 | 上游为 `@endfield-ui/react`，未在独立 CSS 中全量展开 | 在 `endfield-standalone.css` 补齐 8.1–8.6 全套样式与 `.ef-grid-2` / `.ef-grid-3` 等响应助手，并新增 `references/*/components-catalog.md` 与 `examples/*-components.html` | 文档/目录同步列出“框架无关语义状态钩子” |
+| 17 | `<header class="ef-panel__head" data-theme="inverse">` 亮色下白底白字不可见（同时影响 `endfield-boilerplate` 与 `endfield-components`） | `.ef-panel__head` 读取 `--ef-surface-inverse` / `--ef-ink-inverse`，而 `data-theme="inverse"` 内部已做过一次反转，导致二次反转回宿主同色 | `endfield-standalone.css` 新增 `.ef-panel__head[data-theme="inverse"]` 直接读取 `--ef-surface` / `--ef-ink` / `--ef-accent-ink` | 凡自带 `[data-theme="inverse"]` 作用域的反转块，须区分作用域内外令牌 |
+| 18 | `.ef-switch-dual` 首选项 `2D` 无法高亮；暗色分页禁用左钮融入背景；`.ef-avatar` 多字折行 | `.ef-switch-dual__knob` span 干扰 `:first-of-type` 命中；暗色 `--ef-disabled` 与分页 `--ef-surface-muted` 同为 `#282828` | 改为显式 `.ef-switch-dual__opt--off/--on`；覆盖 `.ef-pagination .ef-icon-btn:disabled` 底色；`.ef-avatar` 加 `line-height: 1; white-space: nowrap;` | 同父级含装饰节点时禁止依赖 `:first-of-type`；同色调容器内检查禁用态对比度 |
+| 19 | `.ef-completion-banner__word` 大字描边 `COMPLETED` 压在黄底 CTA 按钮前方；`.ef-flyout__item` 暗条字符对比偏弱 | `position: absolute` 节点在 DOM 后方且未分 `z-index` 层级 | 内容节点设 `z-index: 1`、水印设 `z-index: 0`；`.ef-flyout__item` 提亮至 `#fafafa` | 含背景大字水印的横幅必须在 CSS 明示 `z-index` 前后层级 |
+| 20 | PRTS `<button class="ak-menu__item">` 受基础按钮样式残留边框，且 `<hr class="ak-divider--text">` 无法承载文字标签 | `ak-menu__item` 用 `<button>` 继承基础按钮样式；`<hr>` 为空元素不能放文本 | `prts-addons.css` 对 `.ak-menu .ak-menu__item` 去框去底；文字分割线规范改为 `<div class="ak-divider ak-divider--text"><span>…</span></div>` | 文档示例统一用真实可渲染标签验证后再收录 |
+
+### 2026-11-16 · 组件库审查修复（实渲染 + 行为测试：键盘、抽屉焦点、遮罩）
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 21 | PRTS 右侧抽屉在桌面端无遮罩、点外部关不掉 | `prts-addons.css` 把 `.ak-drawer-scrim.is-open` 限定在 <1120px | 遮罩改为所有宽度生效 | 通用浮层的辅助元素不要绑定“只为某断点写”的媒体查询 |
+| 22 | `.ak-drawer` 关闭态可被 Tab 聚焦，阴影漏到视口右缘 | 只靠 `transform` 移出屏幕，缺 `visibility:hidden` | addons：`.ak-drawer:not(.is-open){visibility:hidden;box-shadow:none}`，收起时延迟隐藏；两页抽屉补 `role="dialog" aria-modal`，打开聚焦首个按钮、关闭还焦点 | 屏幕外元素必须同时退出无障碍树与 Tab 序 |
+| 23 | Tabs 只有 `role="tab"`，缺 `aria-controls`/`aria-labelledby`、roving `tabindex`、方向键 | 示例只绑了 click | 两页示例与两份 catalog 补齐 ARIA 契约，`initTabs()` 支持 ←→/↑↓/Home/End；已用脚本模拟键盘验证 | catalog 的 HTML 片段必须是“可原样复制且合规”的完整片段 |
+| 24 | SKILL.md 写“34 类”无依据；必读手册由 2 份变 3 份，体量过大 | 夸大描述；组件目录被当成必读 | 改为“五大类”；组件目录改为**按需读取**，必读仅 foundations + 母题/装饰 | 数量类描述须可核对；渐进式披露中大文件默认按需 |
+| 25 | PRTS 手机端分区标题孤字（“标”单独成行）；暗色下屏蔽词是刺眼白条 | 标题无均衡断行；上游遮盖条取 `--ak-fg` | addons：`text-wrap:balance`、英文副标 `nowrap`、编号 `flex:none`；暗色屏蔽词改深灰条 | 双语标题+右侧编号的组合须检查窄屏换行 |
+| 26 | Endfield 陈列页一排无文字的小徽章看不出是什么组件 | 只摆了组件，没有标注 | 拆成带微标注的 `.ef-demo-cell`（仅陈列页内样式） | 陈列页每个组件必须有可读名称 |
+| 27 | Endfield 分页 `01 / 12` 斜纹底显脏 | 在灰底叠斜纹，又配灰色禁用钮 | `.ef-pagination` 去掉斜纹，纯色底 | 斜纹只用于有明确语义的位置（标题带/抽屉头） |
+
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
 - 字体自托管的现成方案（fontsource 目录/示例）尚未提供。
+- Dialog 使用原生 `<dialog>`（自带焦点捕获），Dropdown/Popover 尚未做方向键与焦点管理，真实项目需自行补齐。
 - 尚无自动化视觉回归脚本（可考虑把渲染截图 + class 比对封装进 `scripts/`）。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
