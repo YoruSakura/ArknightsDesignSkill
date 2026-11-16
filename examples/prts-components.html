@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PRTS Design // 全组件目录与交互参考</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap">
+  <link rel="stylesheet" href="../resources/prts-design.css">
+  <link rel="stylesheet" href="../resources/prts-addons.css">
+  <style>
+    body { margin: 0; background: var(--ak-bg-canvas); min-height: 100vh; display: flex; flex-direction: column; }
+  </style>
+</head>
+<body class="ak-scope">
+  <header class="ak-header">
+    <div class="ak-header__inner">
+      <a class="ak-header__logo" href="./prts-boilerplate.html">
+        <span class="ak-header__wordmark">
+          PRTS.COMPONENTS
+          <small>CATALOG // ALL COMPONENTS</small>
+        </span>
+      </a>
+      <div class="ak-header__search">
+        <button type="button" class="ak-search-trigger" data-ak-tip="返回整页样板：prts-boilerplate.html">
+          <span class="ak-search-trigger__icon">⌕</span>
+          <span class="ak-search-trigger__label">PRTS 全组件目录（纯直角 · 无切角 · 无辉光）</span>
+          <kbd class="ak-search__kbd">/</kbd>
+        </button>
+      </div>
+      <div class="ak-header__tools">
+        <div class="ak-seg" role="group" aria-label="界面主题切换">
+          <button type="button" onclick="setTheme('light')" id="btn-light" aria-pressed="false">档案 (Light)</button>
+          <button type="button" onclick="setTheme('dark')" id="btn-dark" class="is-active" aria-pressed="true">终端 (Dark)</button>
+        </div>
+      </div>
+    </div>
+    <nav class="ak-local-nav" aria-label="组件导航">
+      <button type="button" class="ak-local-nav__btn ak-local-nav__menu" id="ak-menu-btn" aria-controls="ak-sidebar" aria-expanded="false">
+        <svg class="ak-icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2 4h16v2H2zM2 9h16v2H2zM2 14h16v2H2z"/></svg>菜单
+      </button>
+    </nav>
+  </header>
+  <div class="ak-drawer-scrim" id="ak-scrim"></div>
+
+  <div class="ak-layout ak-layout--no-toc">
+    <aside class="ak-sidebar" id="ak-sidebar">
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">COMPONENTS // 目录</h3>
+        <ul>
+          <li class="is-active"><a href="#buttons">按钮与动作组</a></li>
+          <li><a href="#menus">菜单、页签与路径</a></li>
+          <li><a href="#forms">表单与输入控件</a></li>
+          <li><a href="#overlays">弹窗、抽屉与轻提示</a></li>
+          <li><a href="#feedback">进度、时间线与档案</a></li>
+        </ul>
+      </div>
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">REFERENCE // 导航</h3>
+        <ul>
+          <li><a href="./prts-boilerplate.html">整页构图样板</a></li>
+          <li><a href="./endfield-components.html">切换 Endfield 目录</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="ak-main ak-flex-col ak-gap-6">
+      <div class="ak-news">
+        <span class="ak-news__label">CATALOG</span>
+        <span class="ak-news__text">PRTS Design 通用 UI 与方舟领域组件全景对照 · 任意框架均可直接复制 HTML + ARIA 状态移植</span>
+      </div>
+
+      <!-- 1. 按钮、芯片、标签与徽标 -->
+      <section class="ak-panel" id="buttons">
+        <header class="ak-panel__head">
+          <h2 class="ak-panel__title">一、按钮、按钮组、筛选芯片与状态徽标 <span class="ak-en">CONTROLS &amp; TAGS</span></h2>
+          <span class="ak-code-id">SEC // 01</span>
+        </header>
+        <div class="ak-panel__body ak-flex-col ak-gap-4">
+          <div class="ak-flex ak-wrap ak-gap-2 ak-items-center">
+            <button type="button" class="ak-btn ak-btn--primary">确认部署</button>
+            <button type="button" class="ak-btn ak-btn--contrast">开始行动</button>
+            <button type="button" class="ak-btn">默认按钮</button>
+            <button type="button" class="ak-btn ak-btn--outline">描边按钮</button>
+            <button type="button" class="ak-btn ak-btn--ghost">幽灵</button>
+            <button type="button" class="ak-btn ak-btn--danger ak-stripes">紧急撤离</button>
+            <a href="#buttons" class="ak-btn ak-btn--link">链接按钮</a>
+            <button type="button" class="ak-btn is-loading" aria-busy="true">载入</button>
+            <button type="button" class="ak-btn" disabled>已锁定</button>
+          </div>
+
+          <div class="ak-flex ak-wrap ak-gap-4 ak-items-center">
+            <div class="ak-btn-group" role="group" aria-label="排班视图" data-demo-group>
+              <button type="button" class="ak-btn ak-btn--sm is-active">列表</button>
+              <button type="button" class="ak-btn ak-btn--sm">矩阵</button>
+              <button type="button" class="ak-btn ak-btn--sm">时间轴</button>
+            </div>
+
+            <div class="ak-flex ak-wrap ak-gap-2 ak-items-center" data-chip-group>
+              <button type="button" class="ak-chip is-active" aria-pressed="true">近卫</button>
+              <button type="button" class="ak-chip" aria-pressed="false">重装</button>
+              <button type="button" class="ak-chip" aria-pressed="false">术师</button>
+            </div>
+
+            <div class="ak-badge-wrap">
+              <button type="button" class="ak-btn ak-btn--sm">战术通告</button>
+              <span class="ak-badge">8</span>
+            </div>
+            <div class="ak-badge-wrap">
+              <button type="button" class="ak-btn ak-btn--sm">异常告警</button>
+              <span class="ak-badge ak-badge--danger">!</span>
+            </div>
+            <div class="ak-tags">
+              <span class="ak-tag">标准</span>
+              <span class="ak-tag ak-tag--accent">主色</span>
+              <span class="ak-tag ak-tag--yellow">UP</span>
+              <span class="ak-tag ak-tag--new">NEW</span>
+              <span class="ak-tag ak-tag--danger-solid">BREAKING</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. 菜单、页签、路径与分页 -->
+      <section class="ak-panel" id="menus">
+        <header class="ak-panel__head">
+          <h2 class="ak-panel__title">二、下拉菜单、多态页签、面包屑、路径条与分页</h2>
+          <span class="ak-code-id">SEC // 02</span>
+        </header>
+        <div class="ak-panel__body ak-flex-col ak-gap-4">
+          <div class="ak-flex ak-wrap ak-gap-4 ak-items-center">
+            <!-- 原生 details 零 JS 菜单 -->
+            <div class="ak-dropdown">
+              <details>
+                <summary class="ak-btn">战术菜单 (点击展开) ▾</summary>
+                <div class="ak-menu" role="menu">
+                  <div class="ak-menu__label">TACTICAL</div>
+                  <button type="button" class="ak-menu__item is-active" role="menuitem">检视编队属性</button>
+                  <button type="button" class="ak-menu__item" role="menuitem">同步至公开招募</button>
+                  <div class="ak-menu__sep"></div>
+                  <button type="button" class="ak-menu__item ak-menu__item--danger" role="menuitem">清空当前方案</button>
+                </div>
+              </details>
+            </div>
+
+            <!-- 可视 JS 受控菜单 -->
+            <div class="ak-dropdown" id="demo-dd">
+              <button type="button" class="ak-btn ak-btn--outline" id="demo-dd-btn" aria-expanded="false">节点切换菜单 ▾</button>
+              <div class="ak-menu ak-menu--right" role="menu">
+                <div class="ak-menu__head"><span>罗德岛本舰</span></div>
+                <nav class="ak-menu__group">
+                  <div class="ak-menu__label">NODES</div>
+                  <ul>
+                    <li><button type="button" class="ak-menu__item is-active">PRTS-MAIN (主节点)</button></li>
+                    <li><button type="button" class="ak-menu__item">LM-04 (龙门分部)</button></li>
+                    <li><button type="button" class="ak-menu__item" aria-disabled="true">BABEL (离线)</button></li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+
+            <ol class="ak-breadcrumb ak-m-0">
+              <li><a href="#buttons">首页</a></li>
+              <li><a href="#menus">干员档案</a></li>
+              <li aria-current="page">陈</li>
+            </ol>
+          </div>
+
+          <div class="ak-pathnav ak-not-prose" role="navigation" aria-label="条目路径">
+            <span class="ak-pathnav__home"><a href="#buttons">首页</a></span>
+            <span class="ak-pathnav__up"><a href="#menus">近卫干员一览</a></span>
+            <span class="ak-pathnav__here">陈 (Ch'en)</span>
+          </div>
+
+          <!-- 页签组演示：默认 + 块状 -->
+          <div class="ak-grid ak-grid-2 ak-gap-4">
+            <div>
+              <div class="ak-overline ak-mb-2">DEFAULT TABS // 下划线变体</div>
+              <div class="ak-tabs" role="tablist" data-tabs="tabset-a">
+                <button type="button" role="tab" class="ak-tab is-active" id="ak-tabset-a-tab0" aria-controls="ak-tabset-a-panel0" aria-selected="true" tabindex="0">作战记录 <small>24</small></button>
+                <button type="button" role="tab" class="ak-tab" id="ak-tabset-a-tab1" aria-controls="ak-tabset-a-panel1" aria-selected="false" tabindex="-1">基建技能</button>
+                <button type="button" role="tab" class="ak-tab" id="ak-tabset-a-tab2" aria-controls="ak-tabset-a-panel2" aria-selected="false" tabindex="-1">模组档案</button>
+              </div>
+              <div class="ak-tabpanel" role="tabpanel" id="ak-tabset-a-panel0" aria-labelledby="ak-tabset-a-tab0" tabindex="0" data-tabpanel="tabset-a">面板 A1：主线突入作战演练记录已同步。</div>
+              <div class="ak-tabpanel" role="tabpanel" id="ak-tabset-a-panel1" aria-labelledby="ak-tabset-a-tab1" tabindex="0" data-tabpanel="tabset-a" hidden>面板 A2：控制中枢与贸易站后勤效率 +35%。</div>
+              <div class="ak-tabpanel" role="tabpanel" id="ak-tabset-a-panel2" aria-labelledby="ak-tabset-a-tab2" tabindex="0" data-tabpanel="tabset-a" hidden>面板 A3：模组「赤霄」阶段三解锁条件达成。</div>
+            </div>
+            <div>
+              <div class="ak-overline ak-mb-2">BLOCK TABS // 游戏内黑白反转块</div>
+              <div class="ak-tabs ak-tabs--block" role="tablist" data-tabs="tabset-b">
+                <button type="button" role="tab" class="ak-tab is-active" id="ak-tabset-b-tab0" aria-controls="ak-tabset-b-panel0" aria-selected="true" tabindex="0">精英二阶</button>
+                <button type="button" role="tab" class="ak-tab" id="ak-tabset-b-tab1" aria-controls="ak-tabset-b-panel1" aria-selected="false" tabindex="-1">精英一阶</button>
+                <button type="button" role="tab" class="ak-tab" id="ak-tabset-b-tab2" aria-controls="ak-tabset-b-panel2" aria-selected="false" tabindex="-1">初始</button>
+              </div>
+              <div class="ak-tabpanel" role="tabpanel" id="ak-tabset-b-panel0" aria-labelledby="ak-tabset-b-tab0" tabindex="0" data-tabpanel="tabset-b">已解锁全部技能与天赋槽位。</div>
+              <div class="ak-tabpanel" role="tabpanel" id="ak-tabset-b-panel1" aria-labelledby="ak-tabset-b-tab1" tabindex="0" data-tabpanel="tabset-b" hidden>解锁第一天赋并提升部署等级上限。</div>
+              <div class="ak-tabpanel" role="tabpanel" id="ak-tabset-b-panel2" aria-labelledby="ak-tabset-b-tab2" tabindex="0" data-tabpanel="tabset-b" hidden>初始作战配置与基础语音档案。</div>
+            </div>
+          </div>
+
+          <div class="ak-flex ak-wrap ak-justify-between ak-items-center ak-gap-3">
+            <nav class="ak-pagination" aria-label="分页示例">
+              <button type="button" class="ak-pagination__item is-disabled" disabled>‹</button>
+              <button type="button" class="ak-pagination__item is-active" aria-current="page">1</button>
+              <button type="button" class="ak-pagination__item">2</button>
+              <button type="button" class="ak-pagination__item">3</button>
+              <span class="ak-pagination__ellipsis">…</span>
+              <button type="button" class="ak-pagination__item">12</button>
+              <button type="button" class="ak-pagination__item">›</button>
+            </nav>
+            <div class="ak-phase-tabs" role="group" aria-label="精英阶段切换">
+              <button type="button">E0</button>
+              <button type="button">E1</button>
+              <button type="button" class="is-active">E2</button>
+            </div>
+            <div class="ak-skill-levels" role="group" aria-label="技能等级">
+              <button type="button">5</button>
+              <button type="button">6</button>
+              <button type="button" class="is-active">7</button>
+              <button type="button" class="is-mastery">M1</button>
+              <button type="button" class="is-mastery">M2</button>
+              <button type="button" class="is-mastery is-active">M3</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 表单与输入控件 -->
+      <section class="ak-panel" id="forms">
+        <header class="ak-panel__head">
+          <h2 class="ak-panel__title">三、表单、选择框、开关、步进器与滑杆</h2>
+          <span class="ak-code-id">SEC // 03</span>
+        </header>
+        <div class="ak-panel__body">
+          <div class="ak-grid ak-grid-2 ak-gap-4">
+            <div>
+              <div class="ak-field">
+                <label class="ak-label" for="ak-in-code">干员代号 <span class="req">*</span></label>
+                <input id="ak-in-code" class="ak-input" type="text" placeholder="输入代号，如 AMIYA_R001">
+                <span class="ak-help">标准索引代号，仅限字母数字与下划线</span>
+              </div>
+              <div class="ak-field is-invalid">
+                <label class="ak-label" for="ak-in-host">节点地址（校验错误态）</label>
+                <div class="ak-input-group">
+                  <span class="ak-input-group__addon">PRTS://</span>
+                  <input id="ak-in-host" class="ak-input" type="text" value="unreachable-node" aria-invalid="true">
+                </div>
+                <span class="ak-help ak-help--error">无法握手目标终端，请核对接入端口</span>
+              </div>
+              <div class="ak-field ak-mb-0">
+                <label class="ak-label" for="ak-sel-dept">所属分部</label>
+                <select id="ak-sel-dept" class="ak-select">
+                  <option>罗德岛核心舰桥</option>
+                  <option>龙门近卫局联络处</option>
+                  <option>企鹅物流协防站</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="ak-flex-col ak-gap-4">
+              <div class="ak-check-group">
+                <label class="ak-check"><input type="checkbox" checked> <span>启用自动代理作战</span></label>
+                <label class="ak-check"><input type="checkbox"> <span>锁定期限干员池</span></label>
+              </div>
+              <div class="ak-check-group">
+                <label class="ak-check"><input type="radio" name="ak-r1" checked> <span>标准档案视图</span></label>
+                <label class="ak-check"><input type="radio" name="ak-r1"> <span>紧凑矩阵视图</span></label>
+              </div>
+              <label class="ak-switch"><input type="checkbox" checked> <span>理智溢满预警推送</span></label>
+
+              <div class="ak-flex ak-wrap ak-gap-4 ak-items-center">
+                <div class="ak-number">
+                  <button type="button" onclick="stepAk(-1)" aria-label="减少">−</button>
+                  <input id="ak-num-val" type="number" value="7" min="1" max="10" aria-label="等级">
+                  <button type="button" onclick="stepAk(1)" aria-label="增加">+</button>
+                </div>
+                <div class="ak-flex ak-items-center ak-gap-2" style="flex: 1; min-width: 180px;">
+                  <input id="ak-slider" type="range" class="ak-slider" min="0" max="100" value="75" oninput="document.getElementById('ak-slider-out').textContent=this.value+'%'" aria-label="增益倍率">
+                  <span id="ak-slider-out" class="ak-code-id">75%</span>
+                </div>
+              </div>
+
+              <div class="ak-field ak-mb-0">
+                <label class="ak-label" for="ak-ta">行动简报附注</label>
+                <textarea id="ak-ta" class="ak-textarea" placeholder="填写战场态势补充说明…"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. 浮层（弹窗 / 抽屉 / 轻提示 / 提示 / 折叠） -->
+      <section class="ak-panel" id="overlays">
+        <header class="ak-panel__head">
+          <h2 class="ak-panel__title">四、弹窗、抽屉、Toast 轻提示、气泡与手风琴</h2>
+          <span class="ak-code-id">SEC // 04</span>
+        </header>
+        <div class="ak-panel__body ak-flex-col ak-gap-4">
+          <div class="ak-flex ak-wrap ak-gap-3 ak-items-center">
+            <button type="button" class="ak-btn ak-btn--primary" onclick="document.getElementById('ak-modal').showModal()">打开弹窗 (Dialog)</button>
+            <button type="button" class="ak-btn" onclick="openAkDrawer(true)">打开右侧抽屉 (Drawer)</button>
+            <button type="button" class="ak-btn ak-btn--outline" onclick="pushAkToast()">触发 Toast 轻提示</button>
+            <button type="button" class="ak-btn" data-ak-tip="快捷键：按 / 开启全局档案搜索">悬停查看 Tooltip <kbd class="ak-kbd">/</kbd></button>
+            <span class="ak-term" data-ak-tip="法术伤害无视目标物理防御力，按法术抗性百分比结算">术语：法术伤害</span>
+          </div>
+
+          <div class="ak-cbox ak-cbox--tip">
+            <div class="ak-cbox__icon" aria-hidden="true">i</div>
+            <div class="ak-cbox__body">
+              <div class="ak-cbox__title">Wiki Cbox 正文提示框</div>
+              <p>用于正文内部标注版本变更、前置章节引用或条目收归说明。</p>
+            </div>
+          </div>
+
+          <div class="ak-message ak-message--warning">
+            <div class="ak-message__body">
+              <div class="ak-message__title">系统警告横幅（.ak-message）</div>
+              <div>切尔诺伯格分舰信号延迟升高，建议优先校验神经同步链路。</div>
+            </div>
+          </div>
+
+          <div>
+            <details class="ak-details" open>
+              <summary>手风琴条目 A · 原生 details 零 JS 展开</summary>
+              <div class="ak-details__body">不依赖任何 JavaScript 即可实现完整无障碍折叠与 ＋/− 状态记号切换。</div>
+            </details>
+            <details class="ak-details">
+              <summary>手风琴条目 B · 信赖解锁与语音差分规则</summary>
+              <div class="ak-details__body">完成指定章节并提升干员信赖度后，即可调阅对应档案与语音台词。</div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. 进度、时间线、步骤条、属性卡与空状态 -->
+      <section class="ak-panel" id="feedback">
+        <header class="ak-panel__head">
+          <h2 class="ak-panel__title">五、进度指示、菱形时间线、步骤条、干员属性与空状态</h2>
+          <span class="ak-code-id">SEC // 05</span>
+        </header>
+        <div class="ak-panel__body ak-flex-col ak-gap-4">
+          <div class="ak-grid ak-grid-2 ak-gap-4">
+            <div class="ak-flex-col ak-gap-3">
+              <div>
+                <div class="ak-progress-label"><span>SYNC PROGRESS</span><span>72%</span></div>
+                <div class="ak-progress" style="--_v: 72%;"></div>
+              </div>
+              <div class="ak-progress ak-progress--segmented">
+                <i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i>
+              </div>
+              <div class="ak-flex ak-wrap ak-gap-4 ak-items-center">
+                <div class="ak-ring" style="--_v: 85;"><span>85%</span></div>
+                <span class="ak-spinner" aria-label="加载中"></span>
+                <span class="ak-loader" aria-label="传输中"><i></i><i></i><i></i></span>
+                <div class="ak-avatar-group">
+                  <span class="ak-avatar">陈</span>
+                  <span class="ak-avatar">阿</span>
+                  <span class="ak-avatar ak-avatar--round">凯</span>
+                </div>
+              </div>
+              <ol class="ak-stepper">
+                <li class="ak-step is-done">验证权限</li>
+                <li class="ak-step is-active">编制梯队</li>
+                <li class="ak-step">发起突击</li>
+              </ol>
+            </div>
+
+            <ul class="ak-timeline">
+              <li class="is-done">
+                <span class="ak-timeline__date">STAGE 01 // DONE</span>
+                <div class="ak-timeline__title">完成外环雷达站静默渗透</div>
+              </li>
+              <li class="is-active">
+                <span class="ak-timeline__date">STAGE 02 // ACTIVE</span>
+                <div class="ak-timeline__title">夺取核心城动力炉控制权</div>
+                <p class="ak-timeline__desc">仅 4 处可使用源石菱形，时间线节点为其中之一。</p>
+              </li>
+              <li>
+                <span class="ak-timeline__date">STAGE 03 // QUEUED</span>
+                <div class="ak-timeline__title">撤离并封存作战黑匣子</div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="ak-divider ak-divider--text" role="separator"><span>DOMAIN ARCHIVE</span></div>
+
+          <div class="ak-grid ak-grid-2 ak-gap-4">
+            <div class="ak-flex-col ak-gap-3">
+              <div class="ak-attrs">
+                <div class="ak-attr ak-attr--accent"><span class="ak-attr__label">HP <span class="cn">生命上限</span></span><span class="ak-attr__value">2,880</span></div>
+                <div class="ak-attr"><span class="ak-attr__label">ATK <span class="cn">攻击力</span></span><span class="ak-attr__value">660</span></div>
+                <div class="ak-attr"><span class="ak-attr__label">DEF <span class="cn">防御力</span></span><span class="ak-attr__value">402</span></div>
+              </div>
+              <dl class="ak-kv ak-kv--boxed">
+                <dt>干员代号</dt><dd>陈 (Ch'en) · <span class="ak-redacted" tabindex="0">前龙门近卫局特别督察组组长</span>（悬停显示屏蔽词）</dd>
+                <dt>阻挡攻击范围</dt>
+                <dd>
+                  <div class="ak-range ak-range--sm" style="--cols: 3;" aria-label="1x3 攻击范围">
+                    <i class="self"></i><i class="on"></i><i class="on"></i>
+                  </div>
+                </dd>
+              </dl>
+            </div>
+
+            <div class="ak-empty">
+              <div class="ak-empty__code">EMPTY</div>
+              <p class="ak-empty__title">暂无匹配的敌人图鉴档案</p>
+              <button type="button" class="ak-btn ak-btn--sm">查看全大陆图鉴</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 原生 Dialog 演示 -->
+  <dialog id="ak-modal" class="ak-dialog">
+    <header class="ak-dialog__head">
+      <h3 class="ak-dialog__title">确认重置作战终端配置</h3>
+      <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" onclick="this.closest('dialog').close()" aria-label="关闭">✕</button>
+    </header>
+    <div class="ak-dialog__body">
+      将清理当前本地编队草稿并重新同步 PRTS 主节点数据。该操作不可撤回。
+    </div>
+    <footer class="ak-dialog__foot">
+      <button type="button" class="ak-btn" onclick="this.closest('dialog').close()">取消</button>
+      <button type="button" class="ak-btn ak-btn--primary" onclick="this.closest('dialog').close(); pushAkToast();">确认重置</button>
+    </footer>
+  </dialog>
+
+  <!-- 右侧 Drawer 演示 -->
+  <aside id="ak-right-drawer" class="ak-drawer ak-drawer--right ak-p-4" role="dialog" aria-modal="true" aria-label="节点详情抽屉">
+    <div class="ak-flex ak-justify-between ak-items-center ak-mb-4">
+      <strong>详情抽屉 (.ak-drawer)</strong>
+      <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" onclick="openAkDrawer(false)" aria-label="关闭">✕</button>
+    </div>
+    <p class="ak-fs-sm ak-fg-2">左侧导航抽屉用于移动端导航，右侧抽屉适合在不打断列表的情况下查看或编辑干员详情。</p>
+  </aside>
+
+  <div class="ak-toasts" id="ak-toasts" aria-live="polite"></div>
+
+  <footer class="ak-footer">
+    <span class="ak-watermark">PRTS</span>
+    <div class="ak-footer__inner">
+      <div class="ak-footer__brand">
+        <div class="ak-header__wordmark">PRTS.DESIGN</div>
+        <p>明日方舟本家全组件参考手册 · 黑白为体、青为用、纯直角无切角。</p>
+      </div>
+      <div class="ak-footer__col">
+        <h4>NAVIGATE</h4>
+        <ul>
+          <li><a href="./prts-boilerplate.html">整页构图样板</a></li>
+          <li><a href="./endfield-boilerplate.html">Endfield 整页样板</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 主题同步
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ak-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'dark', false);
+    })();
+    function applyTheme(theme, persist) {
+      if (persist) { try { localStorage.setItem('ak-theme', theme); } catch (e) {} }
+      document.documentElement.dataset.theme = theme;
+      var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
+      if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
+      if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
+    }
+    function setTheme(t) { applyTheme(t, true); }
+
+    // 侧栏与右侧抽屉联动
+    var btn = document.getElementById('ak-menu-btn'), side = document.getElementById('ak-sidebar'), scrim = document.getElementById('ak-scrim'), rdrawer = document.getElementById('ak-right-drawer');
+    function openSide(open) { side.classList.toggle('is-open', open); scrim.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open); }
+    var drawerOpener = null;
+    function openAkDrawer(open) {
+      if (open) drawerOpener = document.activeElement;
+      rdrawer.classList.toggle('is-open', open); scrim.classList.toggle('is-open', open);
+      if (open) { var c = rdrawer.querySelector('button'); if (c) c.focus(); }
+      else if (drawerOpener) { drawerOpener.focus(); drawerOpener = null; }
+    }
+    btn.addEventListener('click', function () { openSide(!side.classList.contains('is-open')); });
+    scrim.addEventListener('click', function () { openSide(false); openAkDrawer(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { openSide(false); openAkDrawer(false); document.getElementById('demo-dd').classList.remove('is-open'); } });
+
+    // 下拉菜单受控演示
+    var dd = document.getElementById('demo-dd'), ddb = document.getElementById('demo-dd-btn');
+    ddb.addEventListener('click', function () { var o = dd.classList.toggle('is-open'); ddb.setAttribute('aria-expanded', o); });
+
+
+    // Tabs：点击 + 方向键/Home/End 漫游焦点（roving tabindex），符合 WAI-ARIA Tabs 模式
+    function initTabs(listSel, attr, panelAttr) {
+      document.querySelectorAll(listSel).forEach(function (list) {
+        var key = list.getAttribute(attr);
+        var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+        var panels = Array.prototype.slice.call(document.querySelectorAll('[' + panelAttr + '="' + key + '"]'));
+        function select(i, focus) {
+          tabs.forEach(function (x, j) { x.classList.toggle('is-active', i === j); x.setAttribute('aria-selected', String(i === j)); x.tabIndex = i === j ? 0 : -1; });
+          panels.forEach(function (p, j) { p.hidden = i !== j; });
+          if (focus) tabs[i].focus();
+        }
+        tabs.forEach(function (t, i) {
+          t.addEventListener('click', function () { select(i, false); });
+          t.addEventListener('keydown', function (e) {
+            var n = tabs.length, to = null;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = (i + 1) % n;
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') to = (i - 1 + n) % n;
+            else if (e.key === 'Home') to = 0;
+            else if (e.key === 'End') to = n - 1;
+            if (to !== null) { e.preventDefault(); select(to, true); }
+          });
+        });
+      });
+    }
+    initTabs('[data-tabs]', 'data-tabs', 'data-tabpanel');
+
+    // Chip & 按钮组切换
+    document.querySelectorAll('[data-chip-group] .ak-chip').forEach(function (c) {
+      c.addEventListener('click', function () { var on = c.classList.toggle('is-active'); c.setAttribute('aria-pressed', on); });
+    });
+    document.querySelectorAll('[data-demo-group] .ak-btn').forEach(function (b) {
+      b.addEventListener('click', function () { b.parentElement.querySelectorAll('.ak-btn').forEach(function (x) { x.classList.remove('is-active'); }); b.classList.add('is-active'); });
+    });
+
+    // 步进器 & Toast
+    function stepAk(d) {
+      var el = document.getElementById('ak-num-val');
+      el.value = Math.min(10, Math.max(1, (parseInt(el.value, 10) || 1) + d));
+    }
+    function pushAkToast() {
+      var wrap = document.getElementById('ak-toasts');
+      var t = document.createElement('div');
+      t.className = 'ak-toast ak-toast--success';
+      t.setAttribute('role', 'status');
+      t.innerHTML = '<div class="ak-toast__body"><div class="ak-toast__title">操作已同步</div><div>PRTS 终端队列写入完成。</div></div><button type="button" class="ak-btn ak-btn--ghost ak-btn--xs" aria-label="关闭">✕</button><div class="ak-toast__progress"></div>';
+      t.querySelector('button').onclick = function () { t.remove(); };
+      wrap.appendChild(t);
+      setTimeout(function () { if (t.parentNode) t.remove(); }, 4500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ENDFIELD UI // 全组件目录与交互参考</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,600..800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700&family=Outfit:wght@300;500;700&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../resources/endfield-standalone.css">
+  <style>
+    /* 仅陈列页使用：给“无文字”的小组件加说明标注 */
+    .ef-demo-caps { align-items: flex-end; gap: 20px 28px; }
+    .ef-demo-cell { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+    .ef-demo-cap { font-family: var(--font-tech); font-size: var(--text-micro); color: var(--ef-ink-tertiary); text-transform: uppercase; letter-spacing: .04em; }
+  </style>
+</head>
+<body class="ef-scope">
+  <div class="ef-app-shell">
+    <aside class="ef-side-rail" aria-label="组件目录导航">
+      <div class="ef-side-rail__brand">
+        ENDFIELD // CATALOG
+        <div style="font-family: var(--font-tech); font-size: var(--text-micro); color: var(--ef-ink-tertiary); font-weight: 400; margin-top: 4px;">
+          ALL COMPONENTS STANDALONE
+        </div>
+      </div>
+
+      <nav class="ef-side-rail__nav">
+        <div class="ef-side-rail__group">// 控件分组</div>
+        <a href="#sec-actions" class="ef-side-rail__item is-current" aria-current="page">按钮、菜单与工具栏</a>
+        <a href="#sec-nav" class="ef-side-rail__item">页签、分页与步骤条</a>
+        <a href="#sec-forms" class="ef-side-rail__item">表单全套与菱形开关</a>
+        <a href="#sec-overlays" class="ef-side-rail__item">弹窗、抽屉与气泡</a>
+        <a href="#sec-data" class="ef-side-rail__item">表格、折叠与反馈</a>
+        <div class="ef-side-rail__group">// 主题切换</div>
+        <div style="padding: 8px 20px; display: flex; gap: 8px;" role="group" aria-label="外观模式切换">
+          <button type="button" id="ef-btn-light" class="ef-btn ef-btn--sm" aria-pressed="true" onclick="toggleTheme('light')" style="flex: 1; min-width: 0;">纸白</button>
+          <button type="button" id="ef-btn-dark" class="ef-btn ef-btn--sm" aria-pressed="false" onclick="toggleTheme('dark')" style="flex: 1; min-width: 0;">烟黑</button>
+        </div>
+      </nav>
+
+      <a href="./endfield-boilerplate.html" class="ef-nav-action">
+        <span>◀</span>
+        <span style="width: 1px; height: 14px; background: currentColor; opacity: .3;" aria-hidden="true"></span>
+        <span>返回整页样板</span>
+      </a>
+    </aside>
+
+    <main>
+      <div class="ef-band-title">
+        <div>
+          <p class="ef-band-title__sub">ARKNIGHTS: ENDFIELD // COMPONENT KIT</p>
+          <h1 class="ef-band-title__main">STANDALONE UI LIBRARY</h1>
+        </div>
+        <div class="ef-band-title__meta">
+          <div>FRAMEWORK AGNOSTIC</div>
+          <div>PURE CSS + ARIA REFERENCE</div>
+        </div>
+      </div>
+
+      <!-- 1. 按钮、图标钮、工具栏与菜单 -->
+      <section id="sec-actions" class="ef-section ef-stack">
+        <header class="ef-page-header">
+          <ol class="ef-breadcrumb">
+            <li><a href="./endfield-boilerplate.html">TALOS-II</a></li>
+            <li aria-current="page">全组件对照目录</li>
+          </ol>
+          <div class="ef-page-header__row">
+            <div class="ef-page-header__main">
+              <a href="./endfield-boilerplate.html" class="ef-page-header__back" aria-label="返回样板页">←</a>
+              <div>
+                <h2 class="ef-page-header__title">按钮族、工具栏、下拉菜单与展开条</h2>
+                <p class="ef-page-header__desc">形状即语义：按钮统一 4px 微圆角，切角仅用于核心行动或机械件，面板与浮层维持直角与零偏移阴影。</p>
+              </div>
+            </div>
+            <div class="ef-btn-group ef-btn-group--sm">
+              <button type="button" class="ef-btn ef-btn--light">重置演示</button>
+              <button type="button" class="ef-btn ef-btn--action">主行动按钮</button>
+            </div>
+          </div>
+        </header>
+
+        <div class="ef-row">
+          <button type="button" class="ef-btn ef-btn--cut">切角行动 (::before)</button>
+          <button type="button" class="ef-btn"><span>◈</span><span class="ef-btn__sep" aria-hidden="true"></span><span>默认 control</span></button>
+          <button type="button" class="ef-btn ef-btn--light">浅色点阵</button>
+          <button type="button" class="ef-btn ef-btn--back">返回斜纹</button>
+          <button type="button" class="ef-btn ef-btn--danger">危险操作</button>
+          <a href="#sec-actions" class="ef-btn ef-btn--text">行内文字行动</a>
+          <button type="button" class="ef-btn" disabled>禁用态</button>
+        </div>
+
+        <div class="ef-row">
+          <button type="button" class="ef-icon-btn" aria-label="同步" data-ef-tip="普通方形图标钮">↻</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--accent" aria-label="下一节">›</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--inverse" aria-pressed="true" aria-label="固定视图">⌖</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--floating" aria-label="圆形翻页">←</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--close" aria-label="关闭悬停旋转"><span>✕</span></button>
+
+          <div class="ef-toolbar" role="toolbar" aria-label="密级视图切换">
+            <button type="button" class="ef-toolbar__btn is-active" aria-pressed="true"><span class="ef-toolbar__icon">▤</span><span>标准行高</span></button>
+            <button type="button" class="ef-toolbar__btn" aria-pressed="false"><span>▥</span><span>紧凑模式</span></button>
+            <span class="ef-toolbar__sep" aria-hidden="true"></span>
+            <button type="button" class="ef-toolbar__btn">导出</button>
+          </div>
+
+          <div class="ef-flyout" role="toolbar" aria-label="快捷工具展开条">
+            <button type="button" class="ef-flyout__item" data-ef-tip="复制调度链路">⌘</button>
+            <button type="button" class="ef-flyout__item" data-ef-tip="打印图纸">◫</button>
+            <button type="button" class="ef-flyout__item" data-ef-tip="分享快照">↗</button>
+          </div>
+        </div>
+
+        <div class="ef-row">
+          <!-- 原生 details 浅色下拉菜单 -->
+          <details class="ef-dropdown">
+            <summary class="ef-btn">浅色下拉菜单 (点击展开) ▾</summary>
+            <div class="ef-menu" role="menu">
+              <div class="ef-menu__label">// SECTOR TOOLS</div>
+              <button type="button" class="ef-menu__item is-active" role="menuitem">实时吞吐图谱 <span class="ef-menu__kbd">G</span></button>
+              <button type="button" class="ef-menu__item" role="menuitem">切换电力节点</button>
+              <div class="ef-menu__sep"></div>
+              <button type="button" class="ef-menu__item ef-menu__item--danger" role="menuitem">重置配额参数</button>
+            </div>
+          </details>
+
+          <!-- 深色强对比菜单（受控演示） -->
+          <div class="ef-menu-anchor" id="ef-dd-strong">
+            <button type="button" class="ef-btn ef-btn--light" id="ef-dd-strong-btn" aria-expanded="false">深色下拉菜单 ▾</button>
+            <div class="ef-menu ef-menu--strong" role="menu">
+              <div class="ef-menu__label">// REGION</div>
+              <button type="button" class="ef-menu__item is-active" role="menuitem">TALOS-II 主站</button>
+              <button type="button" class="ef-menu__item" role="menuitem">北岭矿区精炼厂</button>
+              <button type="button" class="ef-menu__item" disabled role="menuitem">离线站点（只读）</button>
+            </div>
+          </div>
+
+          <!-- 气泡卡片 Popover -->
+          <div class="ef-menu-anchor" id="ef-pop">
+            <button type="button" class="ef-btn ef-btn--light" id="ef-pop-btn" aria-expanded="false">气泡卡片 Popover</button>
+            <div class="ef-popover" role="dialog" aria-label="节点概览">
+              <h4 class="ef-popover__title">中继站 N-07</h4>
+              <p class="ef-popover__desc">当前连接数 14 条，温度维持在工业安全阈值内。</p>
+              <button type="button" class="ef-btn ef-btn--sm" onclick="document.getElementById('ef-pop').classList.remove('is-open')">知悉</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="ef-divider" style="margin: 0;">
+
+      <!-- 2. 页签三态、分页、导航器、步骤条与目录 -->
+      <section id="sec-nav" class="ef-section ef-stack">
+        <header class="ef-section-title">
+          <span class="ef-section-title__meta">▼ // SECTION 02 · NAVIGATION</span>
+          <div class="ef-section-title__row">
+            <span class="ef-section-title__block" aria-hidden="true">↘</span>
+            <p class="ef-section-title__en">NAVIGATION &amp; TABS</p>
+          </div>
+          <h2 class="ef-section-title__cn">页签三态、分页条、步骤条与头像切换</h2>
+        </header>
+
+        <div class="ef-grid-3">
+          <section class="ef-panel">
+            <header class="ef-panel__head" data-theme="inverse"><h3 class="ef-panel__title">BLOCK // 格子式页签</h3></header>
+            <div class="ef-panel__body">
+              <div class="ef-tabs ef-tabs--block" role="tablist" data-ef-tabs="t1">
+                <button type="button" role="tab" class="ef-tab is-active" id="ef-t1-tab0" aria-controls="ef-t1-panel0" aria-selected="true" tabindex="0">概况</button>
+                <button type="button" role="tab" class="ef-tab" id="ef-t1-tab1" aria-controls="ef-t1-panel1" aria-selected="false" tabindex="-1">管线</button>
+                <button type="button" role="tab" class="ef-tab" id="ef-t1-tab2" aria-controls="ef-t1-panel2" aria-selected="false" tabindex="-1">日志</button>
+              </div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t1-panel0" aria-labelledby="ef-t1-tab0" tabindex="0" data-ef-panel="t1">激活项背景变浅、文字左移、右侧淡入方框箭头。</div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t1-panel1" aria-labelledby="ef-t1-tab1" tabindex="0" data-ef-panel="t1" hidden>管线负载分布正常，共 42 条在役传输线。</div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t1-panel2" aria-labelledby="ef-t1-tab2" tabindex="0" data-ef-panel="t1" hidden>最近一条审计日志：TR-2041 已签收。</div>
+            </div>
+          </section>
+
+          <section class="ef-panel">
+            <header class="ef-panel__head" data-theme="inverse"><h3 class="ef-panel__title">CAPSULE // 胶囊页签</h3></header>
+            <div class="ef-panel__body">
+              <div class="ef-tabs ef-tabs--capsule" role="tablist" data-ef-tabs="t2">
+                <button type="button" role="tab" class="ef-tab is-active" id="ef-t2-tab0" aria-controls="ef-t2-panel0" aria-selected="true" tabindex="0">全部</button>
+                <button type="button" role="tab" class="ef-tab" id="ef-t2-tab1" aria-controls="ef-t2-panel1" aria-selected="false" tabindex="-1">T4 矿物</button>
+                <button type="button" role="tab" class="ef-tab" id="ef-t2-tab2" aria-controls="ef-t2-panel2" aria-selected="false" tabindex="-1">能源</button>
+              </div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t2-panel0" aria-labelledby="ef-t2-tab0" tabindex="0" data-ef-panel="t2">胶囊变体专用于筛选与类目切换，激活项反转为墨底白字。</div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t2-panel1" aria-labelledby="ef-t2-tab1" tabindex="0" data-ef-panel="t2" hidden>仅展示高纯源石与稀有晶体库存。</div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t2-panel2" aria-labelledby="ef-t2-tab2" tabindex="0" data-ef-panel="t2" hidden>反应堆冷却液与电池储量概览。</div>
+            </div>
+          </section>
+
+          <section class="ef-panel">
+            <header class="ef-panel__head" data-theme="inverse"><h3 class="ef-panel__title">WEDGE // 楔形一级页签</h3></header>
+            <div class="ef-panel__body">
+              <div class="ef-tabs ef-tabs--wedge" role="tablist" data-ef-tabs="t3">
+                <button type="button" role="tab" class="ef-tab is-active" id="ef-t3-tab0" aria-controls="ef-t3-panel0" aria-selected="true" tabindex="0">在途批次</button>
+                <button type="button" role="tab" class="ef-tab" id="ef-t3-tab1" aria-controls="ef-t3-panel1" aria-selected="false" tabindex="-1">历史归档</button>
+              </div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t3-panel0" aria-labelledby="ef-t3-tab0" tabindex="0" data-ef-panel="t3">斜楔画在 ::before 上且坐在 2px 墨色基线上，键盘焦点环不裁切。</div>
+              <div class="ef-tabpanel" role="tabpanel" id="ef-t3-panel1" aria-labelledby="ef-t3-tab1" tabindex="0" data-ef-panel="t3" hidden>包含过去三十日所有完结的开拓区调度批次。</div>
+            </div>
+          </section>
+        </div>
+
+        <div class="ef-row" style="justify-content: space-between;">
+          <nav class="ef-pagination" aria-label="列表分页">
+            <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--accent" disabled aria-label="上一页">‹</button>
+            <span class="ef-pagination__counter"><strong>01</strong> / 12</span>
+            <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--accent" aria-label="下一页">›</button>
+          </nav>
+
+          <div class="ef-row">
+            <div class="ef-navigator" role="group" aria-label="站点快速翻页">
+              <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--floating" aria-label="上一项">‹</button>
+              <span class="ef-navigator__body"><span class="ef-navigator__index">02 / 04</span><span>北岭精炼工段</span></span>
+              <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--floating" aria-label="下一项">›</button>
+            </div>
+            <div class="ef-dash-indicator" role="img" aria-label="第 2 项，共 4 项"><i></i><i class="is-active"></i><i></i><i></i></div>
+          </div>
+
+          <div class="ef-avatar-switcher">
+            <span class="ef-avatar ef-avatar--sm">佩</span>
+            <span class="ef-avatar is-selected">管</span>
+            <span class="ef-avatar ef-avatar--sm">陈</span>
+          </div>
+        </div>
+
+        <ol class="ef-steps">
+          <li class="ef-step is-done">
+            <div class="ef-step__head"><span class="ef-step__badge">✓</span><span class="ef-step__line"></span></div>
+            <span class="ef-step__title">原料入库校验</span>
+            <span class="ef-step__desc">纯度检测 98.4%</span>
+          </li>
+          <li class="ef-step is-current">
+            <div class="ef-step__head"><span class="ef-step__badge">02</span><span class="ef-step__line"></span></div>
+            <span class="ef-step__title">三号管廊并网</span>
+            <span class="ef-step__desc">压力校准执行中</span>
+          </li>
+          <li class="ef-step">
+            <div class="ef-step__head"><span class="ef-step__badge">03</span><span class="ef-step__line"></span></div>
+            <span class="ef-step__title">投产签收</span>
+            <span class="ef-step__desc">等待中枢批准</span>
+          </li>
+        </ol>
+      </section>
+
+      <hr class="ef-divider" style="margin: 0;">
+
+      <!-- 3. 表单全套（支持方案 A 方圆 vs 方案 B 菱形实时切换） -->
+      <section id="sec-forms" class="ef-section ef-stack">
+        <header class="ef-section-title">
+          <span class="ef-section-title__meta">▼ // SECTION 03 · FORMS</span>
+          <div class="ef-section-title__row">
+            <span class="ef-section-title__block" aria-hidden="true">↘</span>
+            <p class="ef-section-title__en">FORMS &amp; INPUTS</p>
+          </div>
+          <h2 class="ef-section-title__cn">凹陷/描边输入、单复选菱形切换、开关与步进器</h2>
+        </header>
+
+        <div class="ef-grid-2">
+          <div class="ef-stack">
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-f1">中继站代号 <span class="ef-field__req">*</span></label>
+              <div class="ef-input-box"><input id="ef-f1" class="ef-input" type="text" placeholder="例如 TALOS-N07"></div>
+              <span class="ef-field__help">聚焦时底部 2px 墨线从左向右擦出</span>
+            </div>
+
+            <div class="ef-field is-invalid">
+              <label class="ef-field__label" for="ef-f2">错误状态输入（sunken / outline）</label>
+              <div class="ef-input-box ef-input-box--outline is-invalid"><input id="ef-f2" class="ef-input" type="text" value="UNKNOWN_ID" aria-invalid="true"></div>
+              <span class="ef-field__error">未检索到有效管线编号，请核对后重新提交</span>
+            </div>
+
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-sel">目标分配区域（Select）</label>
+              <div class="ef-input-box">
+                <select id="ef-sel" class="ef-select">
+                  <option>四号谷地 · 集成核心枢纽</option>
+                  <option>北岭矿区 · 东段精炼站</option>
+                  <option>七号中继站 · 高压反应堆</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-ta">工程附注（Textarea）</label>
+              <textarea id="ef-ta" class="ef-textarea" placeholder="填写拓荒作业现场环境参数…"></textarea>
+            </div>
+          </div>
+
+          <div class="ef-stack" id="ef-choice-zone">
+            <div class="ef-panel">
+              <header class="ef-panel__head" data-theme="inverse">
+                <h3 class="ef-panel__title">选择符号与交互开关</h3>
+                <button type="button" class="ef-btn ef-btn--sm" id="btn-diamond" onclick="toggleChoiceScheme()" style="height: 24px; min-width: 0; padding: 0 10px;">切换菱形方案</button>
+              </header>
+              <div class="ef-panel__body ef-stack">
+                <div class="ef-row">
+                  <label class="ef-check"><input type="checkbox" checked> <span>启用自动调度</span></label>
+                  <label class="ef-check"><input type="checkbox" id="ef-indet"> <span>半选态示范</span></label>
+                  <label class="ef-check"><input type="checkbox" disabled> <span>只读权限</span></label>
+                </div>
+                <div class="ef-row">
+                  <label class="ef-check"><input type="radio" name="ef-rad" checked> <span>优先级 P0</span></label>
+                  <label class="ef-check"><input type="radio" name="ef-rad"> <span>优先级 P1</span></label>
+                </div>
+                <div class="ef-row">
+                  <label class="ef-switch"><input type="checkbox" checked> <span>墨轨黄钮开关</span></label>
+                  <label class="ef-switch-dual">
+                    <input type="checkbox" aria-label="地图维度">
+                    <span class="ef-switch-dual__knob" aria-hidden="true"></span>
+                    <span class="ef-switch-dual__opt ef-switch-dual__opt--off">2D</span>
+                    <span class="ef-switch-dual__opt ef-switch-dual__opt--on">3D</span>
+                  </label>
+                </div>
+                <div class="ef-row">
+                  <div class="ef-seg" role="group" aria-label="采集步长" data-ef-seg>
+                    <button type="button" class="is-selected" aria-pressed="true">100ms</button>
+                    <button type="button" aria-pressed="false">500ms</button>
+                    <button type="button" aria-pressed="false">1s</button>
+                  </div>
+                  <div class="ef-stepper">
+                    <button type="button" class="ef-stepper__btn" onclick="stepEf(-1)" aria-label="减少">−</button>
+                    <input id="ef-step-in" type="text" class="ef-stepper__input" value="12" aria-label="配额值">
+                    <button type="button" class="ef-stepper__btn" onclick="stepEf(1)" aria-label="增加">+</button>
+                  </div>
+                </div>
+                <div class="ef-slider-wrap">
+                  <input type="range" class="ef-slider" min="0" max="100" value="68" oninput="document.getElementById('ef-sl-val').textContent=this.value+'%'" aria-label="管线阈值">
+                  <span id="ef-sl-val" class="ef-slider__val">68%</span>
+                </div>
+                <div class="ef-otp" aria-label="六位交接口令">
+                  <input class="ef-otp__cell" maxlength="1" value="2" aria-label="第1位">
+                  <input class="ef-otp__cell" maxlength="1" value="0" aria-label="第2位">
+                  <input class="ef-otp__cell" maxlength="1" value="4" aria-label="第3位">
+                  <span class="ef-otp__dash" aria-hidden="true"></span>
+                  <input class="ef-otp__cell" maxlength="1" placeholder="•" aria-label="第4位">
+                  <input class="ef-otp__cell" maxlength="1" placeholder="•" aria-label="第5位">
+                  <input class="ef-otp__cell" maxlength="1" placeholder="•" aria-label="第6位">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="ef-divider" style="margin: 0;">
+
+      <!-- 4. 弹窗、抽屉、Toast 与 5. 表格、折叠、时间线与完成横幅 -->
+      <section id="sec-overlays" class="ef-section ef-stack">
+        <header class="ef-section-title">
+          <span class="ef-section-title__meta">▼ // SECTION 04 · OVERLAYS &amp; DATA DISPLAY</span>
+          <div class="ef-section-title__row">
+            <span class="ef-section-title__block" aria-hidden="true">↘</span>
+            <p class="ef-section-title__en">OVERLAYS, TABLES &amp; FEEDBACK</p>
+          </div>
+          <h2 class="ef-section-title__cn">弹窗抽屉、数据表格、折叠面板、时间线与完成横幅</h2>
+        </header>
+
+        <div class="ef-row">
+          <button type="button" class="ef-btn" onclick="document.getElementById('ef-dialog').showModal()">打开弹窗 Dialog</button>
+          <button type="button" class="ef-btn ef-btn--light" onclick="toggleEfDrawer(true)">打开右侧抽屉 Drawer</button>
+          <button type="button" class="ef-btn ef-btn--light" onclick="pushEfToast()">触发轻提示 Toast</button>
+        </div>
+
+        <div class="ef-row ef-demo-caps">
+          <div class="ef-demo-cell"><span class="ef-demo-cap">图标按钮 + 圆点角标</span>
+            <span class="ef-badge-wrap">
+              <button type="button" class="ef-icon-btn" aria-label="告警消息">!</button>
+              <span class="ef-badge ef-badge--dot" aria-label="新消息"></span>
+            </span></div>
+          <div class="ef-demo-cell"><span class="ef-demo-cap">计数角标</span><span class="ef-badge">12</span></div>
+          <div class="ef-demo-cell"><span class="ef-demo-cap">快捷键键帽</span><span class="ef-kbd">CTRL+K</span></div>
+          <div class="ef-demo-cell"><span class="ef-demo-cap">倒计时 / 紧急</span>
+            <span class="ef-row"><span class="ef-countdown">03:42:18</span><span class="ef-countdown ef-countdown--urgent">! 00:18:40</span></span></div>
+          <div class="ef-demo-cell"><span class="ef-demo-cap">术语提示</span><strong class="ef-term ef-term--info">净产出 +320</strong></div>
+          <div class="ef-demo-cell"><span class="ef-demo-cap">环形进度</span><div class="ef-ring" style="--_v: 78;"><span>78</span></div></div>
+          <div class="ef-demo-cell"><span class="ef-demo-cap">加载指示</span><span class="ef-spinner" aria-label="运行中"></span></div>
+        </div>
+
+        <div class="ef-table-wrap">
+          <table class="ef-table">
+            <thead>
+              <tr>
+                <th>批次编号</th>
+                <th>产线源头</th>
+                <th>目标仓储</th>
+                <th class="num">净增量</th>
+                <th class="num">负载率</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-selected">
+                <td>TR-2041</td>
+                <td>北岭精炼厂 #01</td>
+                <td>四号谷地主仓</td>
+                <td class="num">+420</td>
+                <td class="num">94.2%</td>
+              </tr>
+              <tr>
+                <td>TR-2042</td>
+                <td>三号管廊枢纽</td>
+                <td>南段缓冲站</td>
+                <td class="num">180</td>
+                <td class="num">81.0%</td>
+              </tr>
+              <tr>
+                <td>TR-2043</td>
+                <td>东区矿脉采集点</td>
+                <td>中心配电站</td>
+                <td class="num">−32</td>
+                <td class="num">104.5%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ef-grid-2" id="sec-data">
+          <div class="ef-stack">
+            <div class="ef-accordion">
+              <details class="ef-accordion__item" open>
+                <summary class="ef-accordion__trigger">折叠面板一 · 原生 details + / − 切换</summary>
+                <div class="ef-accordion__body">无外框，只保留上下 1px 细分隔线，展开后标题加粗并用渐变线动画化为减号。</div>
+              </details>
+              <details class="ef-accordion__item">
+                <summary class="ef-accordion__trigger">折叠面板二 · 工业管廊异常应急断路</summary>
+                <div class="ef-accordion__body">当任意反应堆冷却液连续三次超支时，自动降级为旁路供电。</div>
+              </details>
+            </div>
+
+            <div class="ef-empty">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--ef-ink-tertiary);" aria-hidden="true">
+                <path d="M2 10V2h8M34 2h8v8M42 34v8h-8M10 42H2v-8M14 22h16M22 14v16"/>
+              </svg>
+              <h4 class="ef-empty__title">当前区段暂无在途清单</h4>
+              <p class="ef-empty__desc">切换筛选胶囊或等待下一次自动调度周期。</p>
+            </div>
+          </div>
+
+          <div class="ef-stack">
+            <ol class="ef-timeline">
+              <li class="ef-timeline__item is-past">
+                <div class="ef-timeline__axis"><span class="ef-timeline__node"></span></div>
+                <div>
+                  <div class="ef-timeline__date">2026.11.01</div>
+                  <h4 class="ef-timeline__title">一期高压输电网完工</h4>
+                </div>
+              </li>
+              <li class="ef-timeline__item is-current">
+                <div class="ef-timeline__axis"><span class="ef-timeline__node"></span></div>
+                <div>
+                  <div class="ef-timeline__date">2026.11.16</div>
+                  <h4 class="ef-timeline__title">自动化分拣节拍联调</h4>
+                  <p class="ef-timeline__desc">轴线不穿过空心节点，当前菱形采用信号黄加 1px 墨色外框。</p>
+                </div>
+              </li>
+              <li class="ef-timeline__item">
+                <div class="ef-timeline__axis"><span class="ef-timeline__node"></span></div>
+                <div>
+                  <div class="ef-timeline__date">2026.11.24</div>
+                  <h4 class="ef-timeline__title">二号精炼区正式投产</h4>
+                </div>
+              </li>
+            </ol>
+
+            <div class="ef-list">
+              <div class="ef-list__row is-selected"><span>核心协议核心 · 运行状态</span><span style="font-family: var(--font-tech);">ACTIVE</span></div>
+              <div class="ef-list__row is-completed"><span>北岭矿区初次勘探测绘</span><span class="ef-list__done-word" aria-hidden="true">DONE</span></div>
+            </div>
+          </div>
+        </div>
+
+        <section class="ef-completion-banner" role="status">
+          <div>
+            <h3 class="ef-completion-banner__title">三号网段全套组件验收完成</h3>
+            <p class="ef-completion-banner__desc">所有部件遵循亮/暗/反转三套语义令牌，可由任意前端框架直接移植复用。</p>
+          </div>
+          <a href="./endfield-boilerplate.html" class="ef-btn ef-btn--action">查看整页样板</a>
+          <span class="ef-completion-banner__word" aria-hidden="true">COMPLETED</span>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- 原生 Dialog -->
+  <dialog id="ef-dialog" class="ef-dialog">
+    <header class="ef-dialog__head">
+      <h3 class="ef-dialog__title">管线参数变更确认</h3>
+      <div class="ef-dialog__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <button type="button" class="ef-dialog__close" onclick="this.closest('dialog').close()" aria-label="关闭"><span>✕</span></button>
+    </header>
+    <div class="ef-dialog__body">
+      <div class="ef-dialog__card">
+        <p style="margin: 0;">将在下个周期把三号管廊输出功率上调 12%，实色底垫起正文不让背景点阵穿过文字。</p>
+      </div>
+    </div>
+    <footer class="ef-dialog__foot">
+      <button type="button" class="ef-btn ef-btn--light" onclick="this.closest('dialog').close()">取消</button>
+      <button type="button" class="ef-btn" onclick="this.closest('dialog').close(); pushEfToast();">确认执行</button>
+    </footer>
+  </dialog>
+
+  <!-- 右侧 Drawer -->
+  <div class="ef-drawer-backdrop" id="ef-drawer-bg" onclick="toggleEfDrawer(false)"></div>
+  <aside class="ef-drawer ef-drawer--accent" id="ef-drawer" role="dialog" aria-modal="true" aria-label="详细面板">
+    <header class="ef-drawer__head">
+      <h3 class="ef-drawer__title">TR-2041 实时遥测</h3>
+      <button type="button" class="ef-icon-btn ef-icon-btn--close" style="background: transparent; color: #fafafa;" onclick="toggleEfDrawer(false)" aria-label="关闭抽屉"><span>✕</span></button>
+    </header>
+    <div class="ef-drawer__body">
+      <div class="ef-prop-list">
+        <div class="ef-prop-row"><span class="ef-prop-row__k">发起站点</span><span class="ef-prop-row__v">NORTH-RIDGE #01</span></div>
+        <div class="ef-prop-row"><span class="ef-prop-row__k">源石结晶纯度</span><span class="ef-prop-row__v">99.2%</span></div>
+        <div class="ef-prop-row"><span class="ef-prop-row__k">当前速率</span><span class="ef-prop-row__v">+420 / min</span></div>
+      </div>
+    </div>
+    <footer class="ef-drawer__foot">
+      <button type="button" class="ef-btn ef-btn--light" onclick="toggleEfDrawer(false)">关闭</button>
+      <button type="button" class="ef-btn" onclick="toggleEfDrawer(false)">确认归档</button>
+    </footer>
+  </aside>
+
+  <div class="ef-toast-region" id="ef-toasts" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ef-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'light', false);
+      var indet = document.getElementById('ef-indet');
+      if (indet) indet.indeterminate = true;
+    })();
+    function applyTheme(theme, persist) {
+      document.documentElement.dataset.theme = theme;
+      var bl = document.getElementById('ef-btn-light'), bd = document.getElementById('ef-btn-dark');
+      if (bl) bl.setAttribute('aria-pressed', String(theme === 'light'));
+      if (bd) bd.setAttribute('aria-pressed', String(theme === 'dark'));
+      if (persist) { try { localStorage.setItem('ef-theme', theme); } catch (e) {} }
+    }
+    function toggleTheme(theme) { applyTheme(theme, true); }
+
+    function toggleChoiceScheme() {
+      var zone = document.getElementById('ef-choice-zone');
+      var on = zone.getAttribute('data-choice') === 'diamond';
+      if (on) zone.removeAttribute('data-choice');
+      else zone.setAttribute('data-choice', 'diamond');
+      document.getElementById('btn-diamond').textContent = on ? '切换菱形方案' : '恢复方圆方案';
+    }
+
+
+    // Tabs：点击 + 方向键/Home/End 漫游焦点（roving tabindex），符合 WAI-ARIA Tabs 模式
+    function initTabs(listSel, attr, panelAttr) {
+      document.querySelectorAll(listSel).forEach(function (list) {
+        var key = list.getAttribute(attr);
+        var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+        var panels = Array.prototype.slice.call(document.querySelectorAll('[' + panelAttr + '="' + key + '"]'));
+        function select(i, focus) {
+          tabs.forEach(function (x, j) { x.classList.toggle('is-active', i === j); x.setAttribute('aria-selected', String(i === j)); x.tabIndex = i === j ? 0 : -1; });
+          panels.forEach(function (p, j) { p.hidden = i !== j; });
+          if (focus) tabs[i].focus();
+        }
+        tabs.forEach(function (t, i) {
+          t.addEventListener('click', function () { select(i, false); });
+          t.addEventListener('keydown', function (e) {
+            var n = tabs.length, to = null;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = (i + 1) % n;
+            else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') to = (i - 1 + n) % n;
+            else if (e.key === 'Home') to = 0;
+            else if (e.key === 'End') to = n - 1;
+            if (to !== null) { e.preventDefault(); select(to, true); }
+          });
+        });
+      });
+    }
+    initTabs('[data-ef-tabs]', 'data-ef-tabs', 'data-ef-panel');
+
+    // SegmentedControl & Popover & Dropdown
+    document.querySelectorAll('[data-ef-seg] button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        b.parentElement.querySelectorAll('button').forEach(function (x) { x.classList.remove('is-selected'); x.setAttribute('aria-pressed', 'false'); });
+        b.classList.add('is-selected'); b.setAttribute('aria-pressed', 'true');
+      });
+    });
+    function bindAnchor(wrapId, btnId) {
+      var w = document.getElementById(wrapId), b = document.getElementById(btnId);
+      b.addEventListener('click', function () { var o = w.classList.toggle('is-open'); b.setAttribute('aria-expanded', String(o)); });
+    }
+    bindAnchor('ef-dd-strong', 'ef-dd-strong-btn');
+    bindAnchor('ef-pop', 'ef-pop-btn');
+
+    var efOpener = null;
+    function toggleEfDrawer(open) {
+      var d = document.getElementById('ef-drawer');
+      if (open) efOpener = document.activeElement;
+      d.classList.toggle('is-open', open);
+      document.getElementById('ef-drawer-bg').classList.toggle('is-open', open);
+      if (open) { var c = d.querySelector('button'); if (c) c.focus(); }
+      else if (efOpener) { efOpener.focus(); efOpener = null; }
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        toggleEfDrawer(false);
+        document.getElementById('ef-dd-strong').classList.remove('is-open');
+        document.getElementById('ef-pop').classList.remove('is-open');
+      }
+    });
+
+    function stepEf(d) {
+      var el = document.getElementById('ef-step-in');
+      el.value = Math.max(0, (parseInt(el.value, 10) || 0) + d);
+    }
+    function pushEfToast() {
+      var wrap = document.getElementById('ef-toasts');
+      wrap.innerHTML = '';
+      var t = document.createElement('div');
+      t.className = 'ef-toast ef-toast--success';
+      t.setAttribute('role', 'status');
+      t.innerHTML = '<span class="ef-toast__tone" aria-hidden="true"></span><span>操作参数已写入调度队列</span>';
+      wrap.appendChild(t);
+      setTimeout(function () { if (t.parentNode) t.remove(); }, 3500);
+    }
+  </script>
+</body>
+</html>

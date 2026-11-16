@@ -25,11 +25,14 @@
 .ak-table-scroll > table { min-width: 640px; }
 .ak-table-scroll th, .ak-table-scroll td { white-space: nowrap; }
 
-/* 4. 抽屉打开时的遮罩（<1120 侧栏成为抽屉；点遮罩关闭） */
+/* 4. 抽屉遮罩：所有宽度都生效（<1120 的侧栏抽屉 与 任意宽度的 .ak-drawer 共用；点遮罩关闭） */
 .ak-drawer-scrim { display: none; }
-@media (max-width: 1119px) {
-  .ak-drawer-scrim.is-open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: calc(var(--ak-z-modal) - 1); }
-}
+.ak-drawer-scrim.is-open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: calc(var(--ak-z-modal) - 1); }
+
+/* 4b. .ak-drawer 关闭态：必须 visibility:hidden —— 否则键盘 Tab 能进入屏幕外的抽屉，阴影也会漏到视口边缘
+ *     （与上游侧栏抽屉同一处理；展开时 visibility 立即恢复，收起时等动画结束再隐藏） */
+.ak-drawer:not(.is-open) { visibility: hidden; box-shadow: none; transition: transform var(--ak-dur-normal) var(--ak-ease), visibility 0s var(--ak-dur-normal), box-shadow 0s var(--ak-dur-normal); }
+.ak-drawer.is-open { visibility: visible; }
 
 /* 5. 窄屏：统计标签换行时不与数值重叠 */
 .ak-stat__label { line-height: 1.5; }
@@ -43,3 +46,20 @@
 @media (max-width: 639px) {
   .ak-header .ak-seg > button, .ak-header .ak-seg > label { min-width: 36px; padding: 0 9px; }
 }
+
+/* 8. 独立环境下 <button class="ak-menu__item"> 去掉 scope.css 裸 button 默认边框与底色 */
+.ak-menu button.ak-menu__item { width: 100%; border-top: 0; border-right: 0; border-bottom: 0; background: transparent; text-align: left; font-weight: 400; border-radius: 0; }
+.ak-menu button.ak-menu__item:hover { border-top: 0; border-right: 0; border-bottom: 0; }
+.ak-menu button.ak-menu__item:focus-visible { outline: 2px solid var(--ak-focus); outline-offset: -2px; }
+
+/* 9. 面板标题：长中文标题 + 右侧编号在窄屏换行时均衡断行，不留“孤字”；英文副标整体换行；编号不折行 */
+.ak-panel__head { padding-block: 6px; }
+.ak-panel__title { min-width: 0; text-wrap: balance; }
+.ak-panel__title .ak-en { white-space: nowrap; }
+.ak-panel__head > .ak-code-id { flex: none; white-space: nowrap; }
+
+/* 10. 屏蔽词（.ak-redacted）暗色模式：上游用 --ak-fg 作遮盖条，暗色下是刺眼的白条；改为深灰条，悬停/聚焦显出白字 */
+:root[data-theme="dark"] .ak-redacted { background: #4a4a4e; }
+:root[data-theme="dark"] .ak-redacted:hover,
+:root[data-theme="dark"] .ak-redacted:focus-visible,
+:root[data-theme="dark"] .ak-redacted.is-revealed { color: #fff; }
