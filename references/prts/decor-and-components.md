@@ -1,6 +1,6 @@
 # PRTS Design（明日方舟本家）装饰语言与组件蓝图
 
-> 只需在页面引入 [`resources/prts-design.css`](../../resources/prts-design.css)（或通过 CDN 引入 `@mooncellwiki/prts-design-css`），并在 `<body>` 或容器上添加 `class="ak-scope"`，即可直接使用以下所有 DOM 结构与类名。
+> 只需在页面引入 [`resources/prts-design.css`](../../resources/prts-design.css) 与补丁层 [`resources/prts-addons.css`](../../resources/prts-addons.css)（或通过 CDN 引入 `@mooncellwiki/prts-design-css` 并配套 `prts-addons.css`），并在 `<body>` 或容器上添加 `class="ak-scope"`，即可直接使用以下所有 DOM 结构与类名。
 
 ---
 
@@ -11,6 +11,7 @@
 <html lang="zh-CN" data-theme="dark"> <!-- 'dark'(终端) | 'light'(档案) | 不写跟随系统 -->
 <head>
   <link rel="stylesheet" href="./prts-design.css">
+  <link rel="stylesheet" href="./prts-addons.css">
   <style>
     body { margin: 0; background: var(--ak-bg-canvas); }
   </style>
@@ -110,16 +111,23 @@
     <div class="ak-header__tools">
       <!-- 亮暗主题分段开关 -->
       <div class="ak-seg" role="group" aria-label="界面主题">
-        <button type="button" data-theme-btn="light">档案</button>
+        <button type="button" data-theme-btn="light" aria-pressed="false">档案</button>
         <button type="button" data-theme-btn="dark" class="is-active" aria-pressed="true">终端</button>
       </div>
     </div>
   </div>
+  <!-- <1120 窄屏时侧栏收为抽屉，需在顶栏内放入菜单入口并在页眉后放遮罩 -->
+  <nav class="ak-local-nav" aria-label="页面菜单">
+    <button type="button" class="ak-local-nav__btn ak-local-nav__menu" id="ak-menu-btn" aria-controls="ak-sidebar" aria-expanded="false">
+      <svg class="ak-icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2 4h16v2H2zM2 9h16v2H2zM2 14h16v2H2z"/></svg>菜单
+    </button>
+  </nav>
 </header>
+<div class="ak-drawer-scrim" id="ak-scrim"></div>
 
-<!-- 2. 主体两列布局（左侧导轨 + 右侧主内容区） -->
-<div class="ak-layout ak-layout--no-toc" style="max-width: 1680px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px;">
-  <aside class="ak-sidebar">
+<!-- 2. 主体两列布局（使用内置 .ak-layout 类，严禁写死内联 grid-template-columns） -->
+<div class="ak-layout ak-layout--no-toc">
+  <aside class="ak-sidebar" id="ak-sidebar">
     <div class="ak-portlet">
       <h3 class="ak-portlet__title">导航终端</h3>
       <ul>
@@ -293,34 +301,36 @@
   </div>
 </div>
 
-<!-- 数据表（数字列必须加 class="num"，使用正文字体等宽数字，严禁用 Bender） -->
-<table class="ak-table ak-mt-4">
-  <thead>
-    <tr>
-      <th>代号</th>
-      <th>职业</th>
-      <th>稀有度</th>
-      <th class="num">生命上限</th>
-      <th class="num">攻击力</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr class="is-selected">
-      <td><b>维什戴尔</b></td>
-      <td>狙击 · 投掷手</td>
-      <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
-      <td class="num">2,418</td>
-      <td class="num">892</td>
-    </tr>
-    <tr>
-      <td><b>陈</b></td>
-      <td>近卫 · 剑豪</td>
-      <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
-      <td class="num">2,880</td>
-      <td class="num">610</td>
-    </tr>
-  </tbody>
-</table>
+<!-- 数据表（数字列必须加 class="num"，使用正文字体等宽数字，严禁用 Bender；外包 .ak-table-scroll 防窄屏 squeeze） -->
+<div class="ak-table-scroll ak-mt-4">
+  <table class="ak-table">
+    <thead>
+      <tr>
+        <th>代号</th>
+        <th>职业</th>
+        <th>稀有度</th>
+        <th class="num">生命上限</th>
+        <th class="num">攻击力</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="is-selected">
+        <td><b>维什戴尔</b></td>
+        <td>狙击 · 投掷手</td>
+        <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
+        <td class="num">2,418</td>
+        <td class="num">892</td>
+      </tr>
+      <tr>
+        <td><b>陈</b></td>
+        <td>近卫 · 剑豪</td>
+        <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
+        <td class="num">2,880</td>
+        <td class="num">610</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 ```
 
 ---
@@ -357,3 +367,12 @@
      <span class="ak-sp-dur">25s</span>
    </div>
    ```
+
+---
+
+## 附：补丁层 `prts-addons.css` 的约定
+
+- 黑色 `.ak-hero` 内的 `.ak-btn--contrast` 恒为白底黑字（上游按主题反转，会在亮色模式下变成黑底黑字）。
+- `.ak-hero__side` 为右缘 8px 青条 + 向左渐隐的半调网点；放立绘时把 `<img>` 放进去即可。
+- 宽表格外包 `.ak-table-scroll`；<1120px 侧栏为抽屉，需 `.ak-local-nav__menu` 入口按钮 + `.ak-drawer-scrim` 遮罩；`.ak-search-trigger` 内的 `.ak-search__kbd` 改为流式贴右对齐（不外溢到页眉右缘）。
+- 对上游样式的修正只写在 `prts-addons.css`，不要改 `prts-design.css`。

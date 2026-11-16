@@ -8,6 +8,9 @@
 
 ```text
 ArknightsDesignSkill/
+├── AGENTS.md                                 # 协作规范 + 项目记忆（改动前必读，改动后更新）
+├── LICENSE                                   # MIT（本仓库）；上游声明见 NOTICE.md
+├── NOTICE.md                                 # 上游开源项目署名与许可
 ├── SKILL.md                                  # Skill 总入口：风格路由器、渐进式披露索引、开发工作流与红线自检表
 ├── references/                               # 【按需读取】深度设计规范与组件 DOM/CSS 蓝图
 │   ├── prts/
@@ -18,6 +21,7 @@ ArknightsDesignSkill/
 │       └── motifs-and-components.md          # Endfield 母题工具类（镂空巨字/滑块标题/切角/等高线/角括号）与 .ef-* 组件手册
 ├── resources/                                # 【可直接拷贝】零外部图片依赖的完整 CSS 样式表与设计令牌
 │   ├── prts-design.css                       # PRTS Design 完整单文件样式表（Standalone + Chrome 骨架）
+│   ├── prts-addons.css                       # PRTS 补丁层（Hero 按钮/色面、表格滚动、抽屉遮罩）；紧随 prts-design.css 引入，不会被同步脚本覆盖
 │   ├── prts-tokens.css                       # PRTS Design 纯令牌变量文件
 │   ├── endfield-standalone.css               # Endfield UI 零依赖纯 CSS 样式表（令牌 + 动画 + 母题 + 核心组件，全框架通用）
 │   └── endfield-theme.css                    # Endfield UI Tailwind CSS v4 专用 @theme 与 @utility 样式文件

@@ -16,7 +16,7 @@ description: >-
 
 ## 第一步：判定目标视觉体系（Style Router）
 
-在开始写代码前，先根据用户需求判定采用哪一套设计体系（若用户仅说“明日方舟风格”未指明本家还是终末地，默认优先询问或提供双风格对比/切换）：
+在开始写代码前，先根据用户需求判定采用哪一套设计体系（若用户仅说“明日方舟风格”未指明本家还是终末地，**先向用户确认**；无法提问时默认采用体系 A（本家 PRTS），并在回复中明确写出这一假设，且不得混用两套规则）：
 
 | 维度 | 体系 A：明日方舟本家 (`PRTS Design`) | 体系 B：明日方舟：终末地 (`Endfield UI`) |
 | :--- | :--- | :--- |
@@ -38,6 +38,7 @@ description: >-
    - [PRTS 装饰母题与全组件 DOM+CSS 蓝图](./references/prts/decor-and-components.md)
 2. **可直接拷贝到目标项目的样式资源**：
    - 完整样式表（含令牌 + `.ak-scope` + 全部通用组件 + 方舟装饰 + 领域组件 + `.ak-header`/`.ak-footer` 骨架，零外部图片依赖）：[`resources/prts-design.css`](./resources/prts-design.css)
+   - **补丁层（必须紧随 `prts-design.css` 之后引入）**：[`resources/prts-addons.css`](./resources/prts-addons.css) —— 修正黑色 Hero 内 contrast 按钮对比度、Hero 色面、宽表格横向滚动、抽屉遮罩等；对上游样式的任何修正都写在这里，不要直接改 `prts-design.css`（会被同步脚本覆盖）
    - 仅需令牌变量时：[`resources/prts-tokens.css`](./resources/prts-tokens.css)
    - 整页标准样板参考：[`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html)
 
@@ -57,13 +58,14 @@ description: >-
 当用户要求“使用本 Skill 初始化一个网站样板 / 组件页面”时，严格按以下步骤执行：
 
 1. **注入样式基座与字体**：
-   - 将 [`resources/prts-design.css`](./resources/prts-design.css) 或 [`resources/endfield-standalone.css`](./resources/endfield-standalone.css) 复制到目标项目的静态样式目录（如 `src/styles/` 或 `public/`）并在入口引入。
+   - 将 [`resources/prts-design.css`](./resources/prts-design.css)（+ `prts-addons.css`）或 [`resources/endfield-standalone.css`](./resources/endfield-standalone.css) 复制到目标项目的静态样式目录（如 `src/styles/` 或 `public/`）并在入口引入。
    - 在 `<head>` 引入对应的 Google Fonts 开源字体（PRTS：`Oswald` + `Chakra Petch` + `Noto Sans SC`；Endfield：`Archivo` + `Outfit` + `Space Grotesk` + `JetBrains Mono` + `Noto Sans SC`）。
-2. **搭建符合正统构图的页面外壳**：
+   - 字体说明：规范中的 `Bender` / `Novecento Sans Wide` 为商业字体，本 Skill 不附带，实际回退到 `Oswald` / `Chakra Petch`。面向中国大陆用户时，Google Fonts 可能不可达，建议用 `fontsource`/本地 `@font-face` 自托管，并保留 `Noto Sans SC` → 系统黑体的回退链。
+2. **搭建符合正统构图的页面外壳**（**响应式是硬要求**：布局一律用类 `.ak-layout` / `.ef-hero__grid` / `.ef-split` / `.ef-stat-row` / `.ef-section`，**禁止写死内联 `grid-template-columns`**；PRTS <1120px 侧栏变抽屉，需 `.ak-local-nav__menu` 入口，参考样板；Endfield <1024px 侧轨变顶部横轨）：
    - **PRTS**：采用「黑色终端顶栏 `.ak-header` + 左侧导航导轨 `.ak-sidebar` + 主内容区 `.ak-main` + 黑色斜纹顶边页脚 `.ak-footer`」，支持「档案（Light）/ 终端（Dark）」一键切换。
    - **Endfield**：采用「左侧窄轨 `.ef-side-rail`（底部配唯一主行动块 `.ef-nav-action`）+ 偏心构图主舞台（`1.5fr : 0.9fr` 不等宽分栏）+ 通栏信号黄色带标题 `.ef-band-title` 分隔亮暗版块」，支持「纸白（Light）/ 烟黑（Dark）」切换及局部 `[data-theme="inverse"]` 反转标题带。
 3. **组合标志性母题与业务组件**：
-   - 拒绝千篇一律的居中三卡片网格！必ず组合使用各体系的签名级组件（如 PRTS 的 `.ak-hero`、`.ak-news`、`.ak-panel`、`.ak-stat`、`.ak-table`、`.ak-stage`；Endfield 的 `ghost-hatch` 镂空巨字、`ef-section-title` 滑块标题、`ef-bracket-title` 方括号名、`ef-reg-strip` 三原色校准条、`ef-stat` 左竖线统计块、`ef-data-row` 深色数据行带、`ef-item-slot` 底部稀有度渐变格 + `corner-brackets` 四角括号选中）。
+   - 拒绝千篇一律的居中三卡片网格！必须组合使用各体系的签名级组件（如 PRTS 的 `.ak-hero`、`.ak-news`、`.ak-panel`、`.ak-stat`、`.ak-table`、`.ak-stage`；Endfield 的 `ghost-hatch` 镂空巨字、`ef-section-title` 滑块标题、`ef-bracket-title` 方括号名、`ef-reg-strip` 三原色校准条、`ef-stat` 左竖线统计块、`ef-data-row` 深色数据行带、`ef-item-slot` 底部稀有度渐变格 + `corner-brackets` 四角括号选中）。
 
 ---
 
@@ -82,3 +84,22 @@ description: >-
   - Endfield 的微文字（Micro-text）是否是真实可读的栏目名、日期、版本号？（严禁出现 `0x7F3A` 等假十六进制乱码或无意义伪代码）。
 - [ ] **是否杜绝了通用 SaaS / 科幻俗套？**
   - 严禁大圆角（`8px–16px`）投影卡片、严禁悬停上浮放大、严禁毛玻璃发光霓虹边、严禁六边形蜂窝网格。
+
+---
+
+## 第五步：渲染验证（硬性门槛，不通过不得交付）
+
+规则自检只能查“写了什么”，查不出“长什么样”。交付前**必须真的渲染**并看图：
+
+```bash
+# 桌面 + 手机，亮 + 暗，共 4 张（把 data-theme 改一下再截一次）
+google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=1440,1300 --virtual-time-budget=6000 --screenshot=desktop.png file://$PWD/index.html
+google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=390,2400  --virtual-time-budget=6000 --screenshot=mobile.png  file://$PWD/index.html
+```
+
+逐项检查，任一项不过必须修复：
+- [ ] **无文字重叠/被裁切**：镂空巨字（`ghost-hatch`）只能是背景层，与标题、面包屑之间要留出空间（用 `.ef-hero__ghost` + `.ef-hero__grid`）。
+- [ ] **手机 390px 无横向溢出**、主内容可见、表格不被挤成逐字竖排（宽表格套 `.ak-table-scroll`）。
+- [ ] **亮/暗两套主题下所有按钮、文字对比度足够**（尤其“恒为黑底”的区域内的 contrast/反转按钮）。
+- [ ] **没有大面积纯色占位块**；Hero 色面要么是网点渐隐，要么放真实图片。
+- [ ] 主题切换按钮初始状态与 `data-theme` 一致，并持久化用户选择。

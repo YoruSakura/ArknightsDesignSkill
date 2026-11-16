@@ -37,8 +37,8 @@
     //LOGISTICS
   </span>
 
-  <!-- 内容层 -->
-  <div style="position: relative; z-index: 1;">
+  <!-- 内容层（首屏 Hero 请使用文末「安全布局」的 .ef-hero / .ef-hero__ghost / .ef-hero__grid） -->
+  <div style="position: relative; z-index: 1; padding-top: calc(var(--text-ghost) * 0.55);">
     <!-- 微标行：真实可读的栏目名、日期或版本号，绝不写假十六进制乱码 -->
     <p style="font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-ink-secondary); margin: 0 0 8px;">
       // TALOS-II INDUSTRIAL NETWORK　REV 2026.11
@@ -304,3 +304,22 @@
   <div>二号矿脉采集速率下降，请检查供电桩连接状态。</div>
 </div>
 ```
+
+---
+
+## 附：Hero 与镂空巨字的安全布局（防重叠）
+
+镂空巨字（`ghost-hatch`）是**背景层**，必须与标题/面包屑分层，否则会出现文字叠压、被裁切的事故：
+
+```html
+<section class="ef-hero">
+  <span aria-hidden="true" class="ghost-hatch ef-hero__ghost">//PERLICA</span>
+  <div class="ef-hero__grid"> <!-- 内容层：自带 padding-top = 巨字高度 × 0.65，且 z-index:1 -->
+    …标题 / 方括号姓名 / 行动按钮…
+  </div>
+</section>
+```
+
+- 禁止对巨字与内容层使用同一坐标系的 `top: 0`；巨字只允许“越界截断”，不允许压在可读文字上。
+- 版块布局只用 `.ef-hero__grid` / `.ef-split` / `.ef-stat-row` / `.ef-section`（已含手机断点），不要写内联 `grid-template-columns`。
+- `.ef-app-shell` 手机列必须是 `minmax(0,1fr)`，否则内容会撑出视口。

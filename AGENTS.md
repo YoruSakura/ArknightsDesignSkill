@@ -1,0 +1,86 @@
+# AGENTS.md — 协作规范与项目记忆
+
+> 面向所有在本仓库工作的 AI 助手与人类协作者（Antigravity / Claude Code / Cursor / Codex）。
+> **改动前先读本文件；改动后更新第四节“项目记忆”。** 语言：中文为主，代码与标识符保持英文。
+
+## 一、项目是什么
+
+`arknights-design`：一个面向 AI 编码助手的前端设计 **Skill**，包含两套**互相正交**的设计体系：
+
+| 体系 | 前缀 | 气质 | 形状铁律 |
+| :--- | :--- | :--- | :--- |
+| A · PRTS Design（明日方舟本家） | `.ak-*` / `--ak-*` | 黑白为体、青为用；档案(亮)/终端(暗) | 纯直角，**严禁 45° 切角**，无辉光 |
+| B · Endfield UI（终末地） | `.ef-*` / `--ef-*` | 工业编辑风；纸与墨 + 信号黄 | 形状即语义；切角只给行动/机械控件 |
+
+入口：[SKILL.md](./SKILL.md)。结构说明：[README.md](./README.md)。
+
+## 二、目录职责与“谁能改什么”
+
+| 路径 | 性质 | 规则 |
+| :--- | :--- | :--- |
+| `resources/prts-design.css` `prts-tokens.css` `endfield-theme.css` | **上游同步生成** | ❌ 不要手改；由 `scripts/sync-upstream.py` 覆盖 |
+| `resources/prts-addons.css` | 本仓库自有补丁层 | ✅ 对 PRTS 上游的一切修正写这里，紧随 `prts-design.css` 引入 |
+| `resources/endfield-standalone.css` | **手工维护** | ✅ 可改；末尾“Skill 补丁层”区块为本仓库自有，同步/合并时勿丢 |
+| `references/**` | 规范文档 | ✅ 规则变更必须同步改文档，文档与 CSS/样板不得矛盾 |
+| `examples/**` | 整页样板 | ✅ 必须通过第三节的渲染验证 |
+| `SKILL.md` | Skill 总入口 | ✅ 保持精炼；新增硬规则放“第四步/第五步” |
+| `LICENSE` `NOTICE.md` | 许可 | ✅ 引入新上游时同步更新 NOTICE |
+
+## 三、工作流程（硬性）
+
+1. **先读后改**：改任一体系前，先读对应 `references/*/foundations.md`，确认不违反该体系铁律；**严禁把 A、B 两套规则混用**。
+2. **布局只用类，不写死内联 grid**（`.ak-layout`、`.ef-hero__grid`、`.ef-split`、`.ef-stat-row`、`.ef-section`）。新增布局必须带手机断点。
+3. **改了 CSS / 样板 / 规范，必须渲染验证**（不能只“看代码觉得对”）：
+   ```bash
+   # 在仓库根目录；亮/暗各一次需改 data-theme 的临时副本，放 scratch，不要污染仓库
+   google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=1440,1300 --virtual-time-budget=6000 --screenshot=/tmp/d.png file://$PWD/examples/prts-boilerplate.html
+   google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=390,2400  --virtual-time-budget=6000 --screenshot=/tmp/m.png file://$PWD/examples/prts-boilerplate.html
+   ```
+   检查清单见 [SKILL.md 第五步](./SKILL.md)：无文字重叠/裁切、390px 无横向溢出、亮暗对比度、无纯色占位块。
+4. **规则 ↔ 实现一致**：SKILL.md / references 里写的类名必须在 CSS 里真实存在（可用脚本比对样板里用到的 class 是否都有定义）。
+5. **小步提交**：一个主题一个 commit，信息用 `feat|fix|docs|chore: 简述`。**不要未经用户要求就 commit / push。**
+6. **不随意加依赖/商业资源**：不引入鹰角官方位图与商业字体；字体只用开源字体并在 NOTICE 说明回退。
+7. 回复保持简洁；引用文件用相对链接。
+
+## 四、项目记忆（Project Memory）
+
+> 追加式。每条：日期 · 现象 → 根因 → 处理 → 防再犯。
+
+### 2026-11-16 · 首次质量审查与修复（渲染 1440px / 390px × 亮暗）
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 1 | Endfield 首屏巨字 `#PERLICA` 与面包屑/标题叠压、顶部被裁 | 巨字 `top:-16px` 与内容层同位；内容层无让位 | 新增 `.ef-hero` / `.ef-hero__ghost` / `.ef-hero__grid`（`padding-top = --text-ghost × .65`，内容 z-index:1） | SKILL 第五步“无重叠”检查；references 增“防重叠布局”附录 |
+| 2 | 两个样板手机端不可用（Endfield 内容整屏不可见；PRTS 内容被挤成竖排） | Endfield 侧轨 `100vh sticky` 且 `1fr` 被内容撑破；PRTS 内联 `200px 1fr` 覆盖了响应式 | Endfield <1024 侧轨改顶部横轨、列用 `minmax(0,1fr)`、新增响应式布局类；PRTS 去掉内联 grid，补抽屉入口 `.ak-local-nav__menu` + 遮罩，表格包 `.ak-table-scroll` | 禁止内联 grid；必须截 390px 图 |
+| 3 | PRTS 亮色模式 Hero 内“开始行动”黑底黑字几乎不可见 | `.ak-btn--contrast` 随主题反转，而 Hero 恒黑 | `prts-addons.css`：`.ak-hero .ak-btn--contrast` 恒白底黑字 | 恒深色区域内的反转按钮要单独检查亮暗两主题 |
+| 4 | PRTS Hero 右侧大块纯青色像占位图 | 上游 `.ak-hero__side` 实心 `#18D1FF @ .9` | addons：右缘 8px 青条 + 渐隐网点，支持放 `<img>` | 禁止大面积纯色占位块 |
+| 5 | 规范与实现不符：字体 Bender/Novecento 未附带；Google Fonts 在大陆可能不可达 | 商业字体不能分发；仅在线字体 | SKILL.md 增“字体说明”（回退链 + 自托管建议） | NOTICE 写明字体授权由使用者自行获得 |
+| 6 | 自检清单只查规则不看渲染，漏掉 1-4 | 流程缺口 | SKILL.md 新增“第五步：渲染验证” | 本文件第三节第 3 条 |
+| 7 | 风格路由对“只说明日方舟风格”有歧义 | 文案“询问或提供对比”不确定 | 改为：先确认；无法提问默认体系 A 并声明假设 | — |
+| 8 | 文案日文残留 `必ず`；主题按钮初始态写死且不持久化 | 笔误 / 样板简化 | 改为“必须”；两样板主题用 localStorage 持久化，`aria-pressed` 同步 | — |
+| 9 | `sync-upstream.py` 不生成 `endfield-standalone.css`，README 暗示全是同步产物 | 该文件为手工维护 | 脚本头部注释与本文件第二节写明 | 合并上游更新时人工比对 |
+| 10 | 缺 LICENSE / NOTICE | 仅 README 提及 MIT | 新增 `LICENSE`、`NOTICE.md` | 引入新上游时更新 NOTICE |
+
+### 2026-11-16 · 二次互审补全（Antigravity Chrome 实渲染 8 图 + 文档一致性校验）
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 11 | `references/prts/decor-and-components.md` 第 3 节仍写死内联 `grid-template-columns: 200px minmax(0, 1fr)`，且遗漏 `prts-addons.css`、`.ak-local-nav__menu`、`.ak-drawer-scrim`、`.ak-table-scroll` | 文档未随首次修复同步 | 改用纯类 `.ak-layout` 并补齐 `prts-addons.css` 与抽屉/滚表结构 | 改示例或规范后同步检查正文片段 |
+| 12 | PRTS 桌面页眉搜索快捷键 `/`（`.ak-search__kbd`）浮到整行最右（`终端 (Dark)` 右侧） | 上游 `.ak-search__kbd` 为 `position: absolute`，而 `.ak-search-trigger` 为 `inline-flex` 且未设 `position: relative` | `prts-addons.css` 设 `.ak-search-trigger { position: relative; }` 并将内嵌 `.ak-search__kbd` 改为流式贴右；同步收窄手机端 `.ak-header .ak-seg` 按钮内边距、精简 `DEPLOYED // 编队` 标签防单字折行 | 新增组件变体时检查 `.ak-*` 绝对定位锚点与 390px 换行 |
+| 13 | Endfield 亮色模式下，局部暗色面板 `DIJIANG` 的四角括号（`.corner-brackets`）在白纸背景上“隐身” | 面板内 `[data-theme="dark"]` 将 `--ef-ink` 覆写为 `#fafafa`，而 `::after` 位于外扩 `-4px` 的白色宿主画布上 | `endfield-standalone.css` 新增 `--ef-page-ink`；`:not(html)[data-theme].corner-brackets::after` 默认读取 `--ef-page-ink` | 异色局部容器若带外扩装饰（`inset < 0`），颜色须取宿主层令牌 |
+| 14 | Endfield 390px 手机端黄色色带 `.ef-band-title` 右侧 `SECTION 02 OF 03 / PIPELINE TELEMETRY` 被裁切 | `.ef-band-title` 未允许换行且 `--text-3xl` 在 390px 过宽，超出部分被 `overflow: hidden` 截断 | `endfield-standalone.css` 为 `.ef-band-title` 补 `flex-wrap: wrap` 与 `<768px` 缩字号/内边距，新增 `.ef-band-title__meta` | 含 `overflow: hidden` 的横幅必须配 `flex-wrap` 与窄屏字阶 |
+| 15 | Endfield `纸白`/`烟黑` 按钮未体现当前激活态；两样板首次加载若无 `localStorage` 不主动同步 `aria-pressed` | `aria-pressed` 仅在点击回调更新，且 Endfield 按钮未绑状态样式 | 两样板拆出 `applyTheme(theme, persist)` 从 `dataset.theme` 同步状态；`endfield-standalone.css` 补 `.ef-btn[aria-pressed]` 样式 | 主题开关须支持“DOM 预置状态即按钮状态” |
+
+**已知遗留 / 待办**
+- Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
+- 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
+- 字体自托管的现成方案（fontsource 目录/示例）尚未提供。
+- 尚无自动化视觉回归脚本（可考虑把渲染截图 + class 比对封装进 `scripts/`）。
+
+## 五、给 AI 助手的快速自检（交付前 30 秒）
+
+- [ ] 我是否混用了 A/B 两套规则？（PRTS 不许切角/圆角卡片；Endfield 不许四角全切）
+- [ ] 我改的是“可手改”的文件吗？（见第二节表）
+- [ ] 我渲染并看过 1440px 与 390px、亮与暗了吗？
+- [ ] 文档、CSS、样板三者一致吗？
+- [ ] 我把这次的现象→根因→处理追加进第四节了吗？
