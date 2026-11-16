@@ -36,7 +36,7 @@ description: >-
 1. **必读规范**：
    - [PRTS 基础设计规范与色彩/排版令牌](./references/prts/foundations.md)
    - [PRTS 装饰母题与壳层/核心组件蓝图](./references/prts/decor-and-components.md)
-   - [PRTS 全组件目录与交互蓝图](./references/prts/components-catalog.md)（**按需读取**：按钮、菜单/页签/分页、表单、弹窗/抽屉/Toast、进度/时间线/步骤条 五大类通用 UI + 方舟领域件速查，可直接跨框架移植）
+   - [PRTS 全组件目录与交互蓝图](./references/prts/components-catalog.md)（**按需读取**：按钮、菜单/页签/分页、表单、弹窗/抽屉/Toast、进度/时间线/步骤条 五大类通用 UI + 方舟领域件完整蓝图 + `@fontsource` 离线字体配置，可直接跨框架移植）
 2. **可直接拷贝到目标项目的样式资源**：
    - 完整样式表（含令牌 + `.ak-scope` + 全部通用组件 + 方舟装饰 + 领域组件 + `.ak-header`/`.ak-footer` 骨架，零外部图片依赖）：[`resources/prts-design.css`](./resources/prts-design.css)
    - **补丁层（必须紧随 `prts-design.css` 之后引入）**：[`resources/prts-addons.css`](./resources/prts-addons.css) —— 修正黑色 Hero 内 contrast 按钮对比度、Hero 色面、搜索键帽、菜单按钮重置、宽表格横向滚动、抽屉遮罩等；对上游样式的任何修正都写在这里，不要直接改 `prts-design.css`（会被同步脚本覆盖）
@@ -49,7 +49,7 @@ description: >-
 1. **必读规范**：
    - [Endfield 基础设计规范、六大原则与七大界面家族](./references/endfield/foundations.md)
    - [Endfield 母题工具类与核心展示组件](./references/endfield/motifs-and-components.md)
-   - [Endfield 全组件目录与交互蓝图](./references/endfield/components-catalog.md)（**按需读取**：按钮/工具栏、三态页签、分页步骤、下拉菜单/气泡/展开条、弹窗/抽屉/Toast、全套表单含菱形切换、表格/折叠/时间线/完成横幅）
+   - [Endfield 全组件目录与交互蓝图](./references/endfield/components-catalog.md)（**按需读取**：按钮/工具栏、三态页签、分页步骤、下拉/气泡、弹窗/抽屉/Toast、表单含菱形切换、表格/折叠/时间线、高阶选择器与测绘 HUD `Sparkline`/`TickRing`/`Viewfinder`/`Carousel` + 16 个关键帧与 17 个 `.animate-*` 动效类）
 2. **可直接拷贝到目标项目的样式资源**：
    - 零依赖通用纯 CSS 版（含 `--ef-*` 亮/暗/反转三套令牌 + 全部母题类 + 全套 `.ef-*` 通用交互组件，适用于任意 HTML / Vue / React / Svelte 项目，AI 可直接按类名与 ARIA 状态契约移植封装）：[`resources/endfield-standalone.css`](./resources/endfield-standalone.css)
    - Tailwind CSS v4 专用版（含 `@theme`、`@theme inline`、`@utility`）：[`resources/endfield-theme.css`](./resources/endfield-theme.css)
@@ -66,7 +66,7 @@ description: >-
 1. **注入样式基座与字体**：
    - 将 [`resources/prts-design.css`](./resources/prts-design.css)（+ `prts-addons.css`）或 [`resources/endfield-standalone.css`](./resources/endfield-standalone.css) 复制到目标项目的静态样式目录（如 `src/styles/` 或 `public/`）并在入口引入。
    - 在 `<head>` 引入对应的 Google Fonts 开源字体（PRTS：`Oswald` + `Chakra Petch` + `Noto Sans SC`；Endfield：`Archivo` + `Outfit` + `Space Grotesk` + `JetBrains Mono` + `Noto Sans SC`）。
-   - 字体说明：规范中的 `Bender` / `Novecento Sans Wide` 为商业字体，本 Skill 不附带，实际回退到 `Oswald` / `Chakra Petch`。面向中国大陆用户时，Google Fonts 可能不可达，建议用 `fontsource`/本地 `@font-face` 自托管，并保留 `Noto Sans SC` → 系统黑体的回退链。
+   - 字体说明：规范中的 `Bender` / `Novecento Sans Wide` 为商业字体，本 Skill 不附带，实际回退到 `Oswald` / `Chakra Petch`。面向中国大陆用户时，Google Fonts 可能不可达，建议用 `@fontsource`（两份 `components-catalog.md` 均附安装与引入代码）或本地 `@font-face` 自托管，并保留 `Noto Sans SC` → 系统黑体的回退链。
 2. **搭建符合正统构图的页面外壳**（**响应式是硬要求**：布局一律用类 `.ak-layout` / `.ak-grid-2` / `.ef-hero__grid` / `.ef-split` / `.ef-grid-2` / `.ef-grid-3` / `.ef-stat-row` / `.ef-section`，**禁止写死内联 `grid-template-columns`**；PRTS <1120px 侧栏变抽屉，需 `.ak-local-nav__menu` 入口，参考样板；Endfield <1024px 侧轨变顶部横轨）：
    - **PRTS**：采用「黑色终端顶栏 `.ak-header` + 左侧导航导轨 `.ak-sidebar` + 主内容区 `.ak-main` + 黑色斜纹顶边页脚 `.ak-footer`」，支持「档案（Light）/ 终端（Dark）」一键切换。
    - **Endfield**：采用「左侧窄轨 `.ef-side-rail`（底部配唯一主行动块 `.ef-nav-action`）+ 偏心构图主舞台（`1.5fr : 0.9fr` 不等宽分栏）+ 通栏信号黄色带标题 `.ef-band-title` 分隔亮暗版块」，支持「纸白（Light）/ 烟黑（Dark）」切换及局部 `[data-theme="inverse"]` 反转标题带。
@@ -96,7 +96,14 @@ description: >-
 
 ## 第五步：渲染验证（硬性门槛，不通过不得交付）
 
-规则自检只能查“写了什么”，查不出“长什么样”。交付前**必须真的渲染**并看图：
+规则自检只能查“写了什么”，查不出“长什么样”。在本仓库改动后可直接运行一键校验与 Chrome 实渲染脚本 [`scripts/verify.py`](./scripts/verify.py)：
+
+```bash
+# 静态类名/文档链接/关键帧自检 + 1440px/390px 亮暗 16 图渲染与交互动画探针
+python3 scripts/verify.py --render --out /tmp/arknights-verify
+```
+
+接入到新业务项目后，交付前同样**必须真的渲染**（桌面 1440px + 手机 390px × 亮/暗 4 张图）并人工/视觉看图：
 
 ```bash
 # 桌面 + 手机，亮 + 暗，共 4 张（把 data-theme 改一下再截一次）

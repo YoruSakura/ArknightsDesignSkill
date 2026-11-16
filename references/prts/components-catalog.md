@@ -247,13 +247,15 @@
 ## 五、 进度、时间线、步骤条与空状态
 
 ```html
-<!-- 线性进度 / 分段进度 / 环形进度 -->
+<!-- 线性进度 / 分段进度 / 不确定斜纹 / 环形进度 -->
 <div class="ak-progress-label"><span>MISSION SYNC</span><span>72%</span></div>
 <div class="ak-progress" style="--_v: 72%;"></div>
 
 <div class="ak-progress ak-progress--segmented ak-mt-2">
   <i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i>
 </div>
+
+<div class="ak-progress ak-progress--indeterminate ak-mt-2" aria-label="同步中"></div>
 
 <div class="ak-ring ak-mt-4" style="--_v: 85;"><span>85%</span></div>
 
@@ -281,9 +283,11 @@
   <li class="ak-step">下达行动</li>
 </ol>
 
-<!-- 菱形加载涟漪、骨架屏与空状态 -->
+<!-- 菱形涟漪、三竖条声波加载、骨架屏、悬浮回到顶部 FAB 与空状态 -->
 <span class="ak-spinner" aria-label="加载中"></span>
+<span class="ak-loader" aria-label="数据传输"><i></i><i></i><i></i></span>
 <div class="ak-skeleton ak-skeleton--text"></div>
+<button type="button" class="ak-fab is-visible" aria-label="回到顶部">↑</button>
 <div class="ak-empty">
   <div class="ak-empty__code">NO DATA</div>
   <p class="ak-empty__title">当前筛选条件下暂无干员记录</p>
@@ -293,20 +297,104 @@
 
 ---
 
-## 六、 方舟领域常用数据卡速查（PRTS CSS 已内置）
+## 六、 方舟领域全组件 DOM 蓝图（PRTS CSS 已全量内置）
 
-以下类均已内置于 `resources/prts-design.css`，可在Wiki工具站 / 资料面板直接组合（完整示例见 [`examples/prts-components.html`](../../examples/prts-components.html)）：
+以下类均已内置于 [`resources/prts-design.css`](../../resources/prts-design.css)（完整可交互展示见 [`examples/prts-components.html`](../../examples/prts-components.html)）：
 
+### 1. 干员卡与横向列表（`.ak-op-card` / `.ak-op-row`）
+```html
+<!-- 整卡链接加 .ak-not-prose；data-rarity="1..6" 自动注入背景稀有度渐变 -->
+<div class="ak-op-grid">
+  <a href="#op" class="ak-op-card ak-not-prose" data-rarity="6">
+    <span class="ak-op-card__portrait">
+      <span class="ak-op-card__prof">近卫</span>
+      <span class="ak-op-card__rarity"><span class="ak-rarity">★★★★★★</span></span>
+    </span>
+    <span class="ak-op-card__name">陈 <span class="ak-op-card__sub">CH'EN</span></span>
+  </a>
+</div>
+
+<!-- 表格内干员横向条目 -->
+<a href="#op" class="ak-op-row ak-not-prose" data-rarity="6">
+  <span class="ak-avatar">陈</span>
+  <span>
+    <span class="ak-op-row__name">陈</span>
+    <span class="ak-op-row__meta">剑豪 · 6★</span>
+  </span>
+</a>
+```
+
+### 2. 技能卡（`.ak-skill`）、专精等级（`.ak-skill-levels` / `.ak-phase-tabs`）与天赋（`.ak-talent` / `.ak-talent-table`）
+```html
+<!-- 技能卡（__icon 配色支持 --auto / --attack / --hit / --passive） -->
+<div class="ak-skill is-selected">
+  <div class="ak-skill__icon ak-skill__icon--attack"></div>
+  <div>
+    <div class="ak-skill__head">
+      <h4 class="ak-skill__name">赤霄·绝影</h4>
+      <span class="ak-sp ak-sp--attack">攻击回复</span>
+      <span class="ak-sp-trigger">自动触发</span>
+    </div>
+    <div class="ak-skill__stats"><span class="ak-sp-cost">技力 20</span><span class="ak-sp-init">初始 10</span></div>
+  </div>
+  <div class="ak-skill__desc">造成 <span class="ak-rt-vup">10 次</span> 斩击物理伤害。</div>
+</div>
+
+<!-- 天赋卡 & 精英阶段/专精 -->
+<div class="ak-talent">
+  <h4 class="ak-talent__name">呵斥 <span class="ak-talent__req">精英二 解锁</span></h4>
+  <div class="ak-talent__desc">在场时每过 <span class="ak-rt-kw">4 秒</span> 全场【攻击/受击回复】技力 +1。</div>
+</div>
+```
+
+### 3. 模组（`.ak-module`）、对话记录（`.ak-dialogue`）与语音声波条（`.ak-voice`）
+```html
+<!-- 模组卡（data-color="red|blue|green|yellow|purple"） -->
+<div class="ak-module" data-color="red">
+  <div class="ak-module__img"></div>
+  <div class="ak-module__main">
+    <div class="ak-module__head">
+      <span class="ak-module__type">SWORDMASTER-X</span>
+      <h3 class="ak-module__name">赤霄红匣</h3>
+      <span class="ak-module__lv">STAGE 3 <i><b class="on"></b><b class="on"></b><b class="on"></b></i></span>
+    </div>
+    <div class="ak-module__stats"><span>攻击 +55</span><span>攻速 +6</span></div>
+  </div>
+</div>
+
+<!-- 剧情对话与语音（播放中 .ak-voice__play 加 .is-playing 驱动右侧 .ak-voice__wave 声波） -->
+<dl class="ak-dialogue">
+  <dt>陈</dt><dd>别发呆了，下一波集成策略敌人已经逼近外环。</dd>
+  <dt class="narrator">PRTS</dt><dd class="narrator">神经同期信号校验通过。</dd>
+</dl>
+<div class="ak-voice">
+  <button type="button" class="ak-voice__play is-playing" aria-label="播放语音"></button>
+  <div>
+    <div class="ak-voice__title">作战中 1 <span class="ak-voice__wave" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    <div class="ak-voice__text">拔刀要快，收刀要稳。</div>
+  </div>
+</div>
+```
+
+### 4. 其他内置领域速查（属性格 / 攻击范围 / 加密档案 / 关卡 / 敌人 / 活动 / 富文本）
 | 组件 | 核心类名 | 用途要点 |
 | :--- | :--- | :--- |
-| **干员属性格 / 键值表** | `.ak-attrs` / `.ak-attr` / `.ak-kv` | `.ak-attrs` 1px 网格底色分割；`.ak-kv` 键值表格，数字回正文字体 |
+| **干员属性格 / 键值表** | `.ak-attrs` / `.ak-attr` / `.ak-kv` | `.ak-attrs` 1px 网格分割；`.ak-kv` 键值表数字用正文字体 |
 | **攻击范围格** | `.ak-range` (`i.self`, `i.on`, `i.off`) | `--cols` 控制列数，`.ak-range--sm` 适配卡片内嵌 |
-| **干员密录 / 加密档案** | `.ak-dossier` (`.is-locked`), `.ak-archive`, `.ak-redacted` | `.ak-redacted` 涂黑屏蔽词，悬停/聚焦显字 |
+| **干员密录 / 加密档案** | `.ak-dossier` (`.is-locked`), `.ak-archive`, `.ak-redacted` | 涂黑屏蔽词悬停/聚焦显示，暗色由 `prts-addons.css` 适配为深灰条 |
 | **关卡卡 & 理智** | `.ak-stage` (`--hard`, `--ex`, `--story`), `.ak-stage-code`, `.ak-sanity` | 整卡链接加 `.ak-not-prose`；左侧 4px 色条直角拼接 |
 | **敌人威胁评级卡** | `.ak-enemy` (`--boss`, `--elite`), `.ak-enemy__level` | 红色小菱形（源石菱形允许位）标示威胁等级 |
+| **等级 / 信赖 / 阵营** | `.ak-level--badge`, `.ak-trust`, `.ak-camp`, `.ak-elite` | 等级读数用灰色徽标（不反白，保留选中态语义独占） |
 | **倒计时 & 活动卡** | `.ak-countdown`, `.ak-event` (`.is-live`, `.is-ended`) | 进行中带红色闪烁方点 |
-| **头像与分割线** | `.ak-avatar` (`--sm|--lg`, `--round`), `.ak-divider` (`--accent`, `--text`) | 仅需要时用 `--round`，普通 UI 保持直角 |
+| **头像与分割线** | `.ak-avatar` (`--sm|--lg`, `--round`), `.ak-divider` (`--accent`, `--text`) | 文字分割线用 `<div class="ak-divider ak-divider--text"><span>…</span></div>` |
 
-### AI 跨框架移植约定
-1. 任意框架（React/Vue/Svelte）只需保持上述 `ak-*` 类名与状态钩子（`.is-active` / `.is-open` / `.is-selected` / `aria-pressed` / `aria-selected` / `aria-expanded`）即可 1:1 复刻视觉与亮暗双主题。
-2. 弹窗优先用原生 `<dialog class="ak-dialog">`（`.showModal()` 自带焦点捕获与 `Esc` 关闭）；手风琴优先 `<details class="ak-details">`；下拉菜单优先 `.ak-dropdown > details` 或在根上控制 `.is-open`。
+### AI 跨框架移植与离线字体
+1. **状态与浮层契约**：任意框架保持 `ak-*` 类名与状态位（`.is-active` / `.is-open` / `.is-selected` / `aria-pressed` / `aria-selected` / `aria-expanded`）即可 1:1 复刻视觉与亮暗双主题；弹窗优先 `<dialog class="ak-dialog">`；手风琴优先 `<details class="ak-details">`；下拉/气泡需补齐点击外部与 `Esc` 关闭逻辑。
+2. **离线 / 中国大陆字体自托管**（替代 Google Fonts CDN）：
+   ```css
+   /* 安装：npm i @fontsource/oswald @fontsource/chakra-petch @fontsource/noto-sans-sc */
+   import '@fontsource/oswald/600.css';
+   import '@fontsource/chakra-petch/600.css';
+   import '@fontsource/noto-sans-sc/400.css';
+   ```
+

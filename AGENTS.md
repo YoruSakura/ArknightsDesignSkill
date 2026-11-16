@@ -24,6 +24,7 @@
 | `references/**` | 规范文档 | ✅ 规则变更必须同步改文档，文档与 CSS/样板不得矛盾 |
 | `examples/**` | 整页样板 | ✅ 必须通过第三节的渲染验证 |
 | `SKILL.md` | Skill 总入口 | ✅ 保持精炼；新增硬规则放“第四步/第五步” |
+| `scripts/verify.py` | 校验与回归门禁 | ✅ 新增/修改组件、动效或文档类名时须同步扩展探针与校验 |
 | `LICENSE` `NOTICE.md` | 许可 | ✅ 引入新上游时同步更新 NOTICE |
 
 ## 三、工作流程（硬性）
@@ -32,12 +33,11 @@
 2. **布局只用类，不写死内联 grid**（`.ak-layout`、`.ef-hero__grid`、`.ef-split`、`.ef-stat-row`、`.ef-section`）。新增布局必须带手机断点。
 3. **改了 CSS / 样板 / 规范，必须渲染验证**（不能只“看代码觉得对”）：
    ```bash
-   # 在仓库根目录；亮/暗各一次需改 data-theme 的临时副本，放 scratch，不要污染仓库
-   google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=1440,1300 --virtual-time-budget=6000 --screenshot=/tmp/d.png file://$PWD/examples/prts-boilerplate.html
-   google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=390,2400  --virtual-time-budget=6000 --screenshot=/tmp/m.png file://$PWD/examples/prts-boilerplate.html
+   # 在仓库根目录一键运行：静态类/链接/关键帧检查 + 1440px/390px 亮暗 16 图 + Chrome 实时动效/交互探针
+   python3 scripts/verify.py --render --out /tmp/arknights-verify
    ```
    检查清单见 [SKILL.md 第五步](./SKILL.md)：无文字重叠/裁切、390px 无横向溢出、亮暗对比度、无纯色占位块。
-4. **规则 ↔ 实现一致**：SKILL.md / references 里写的类名必须在 CSS 里真实存在（可用脚本比对样板里用到的 class 是否都有定义）。
+4. **规则 ↔ 实现一致**：SKILL.md / references 里写的类名必须在 CSS 里真实存在（`python3 scripts/verify.py` 会比对样板与文档中的 `.ak-*` / `.ef-*` 类及 `@keyframes`）。
 5. **小步提交**：一个主题一个 commit，信息用 `feat|fix|docs|chore: 简述`。**不要未经用户要求就 commit / push。**
 6. **不随意加依赖/商业资源**：不引入鹰角官方位图与商业字体；字体只用开源字体并在 NOTICE 说明回退。
 7. 回复保持简洁；引用文件用相对链接。
@@ -93,12 +93,24 @@
 | 26 | Endfield 陈列页一排无文字的小徽章看不出是什么组件 | 只摆了组件，没有标注 | 拆成带微标注的 `.ef-demo-cell`（仅陈列页内样式） | 陈列页每个组件必须有可读名称 |
 | 27 | Endfield 分页 `01 / 12` 斜纹底显脏 | 在灰底叠斜纹，又配灰色禁用钮 | `.ef-pagination` 去掉斜纹，纯色底 | 斜纹只用于有明确语义的位置（标题带/抽屉头） |
 
+### 2026-11-16 · 上游全量对照补齐、动效监控与自动化视觉校验
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 28 | 对照上游发现 Endfield 缺 8.7–8.8 控件及 `foundations.md` 已承诺的 `Sparkline`；两份目录漏录多组内置类（`.ef-top-bar`/`.ef-toc`/`.ef-tooltip`/`.ak-loader`/`.ak-skeleton`/`.ak-fab`/PRTS 领域件蓝图）；`endfield-boilerplate` 缺 `Sparkline` 与完整 Footer | 上轮按通用组件归类扩展，未逐项比对上游源码模块与目录索引 | 在 `endfield-standalone.css` 补全 8.7–8.8 全套组件、`endfield-boilerplate.html` 嵌 `Sparkline` 与 `.ef-footer`，扩充双目录（含 `@fontsource` 引入方案）及两份陈列页；新增 `scripts/verify.py` | 每次增删组件或同步上游后跑 `python3 scripts/verify.py` 校验类覆盖与文档链接 |
+| 29 | Endfield 动效存在缺漏：`ef-indeterminate-y` 与 8 个 `.animate-*` 类缺失；`SectionTitle` 的 `↘` 未包裹导致三段式旋转不触发；`ef-menu::before`、View Transitions 缺位；`[data-ef-tip]` 改 `display` 触发 reflow | 早期只搬运了 7 个动画类，未逐行对照上游 `motion.md` 与 `theme.css` | 补齐 16 `@keyframes` + 17 `.animate-*` + `View Transitions`；包裹 `.ef-section-title__block > span` 触发 `100ms` 旋转与 `200ms` 标题淡入；升级非对称聚焦线、`.ef-completion-banner` `wipe-in` 及零 reflow `[data-ef-tip]` | `verify.py` 强制校零缺失/零闲置 `@keyframes`、`prefers-reduced-motion` 及 Chrome 实时 `animationName` 探针 |
+| 30 | 两套组件陈列页 Dropdown 仅支持点击触发器开关，无点击外部关闭与方向键导航 | 上轮遗留为轻量展示脚本 | `endfield-components.html` 与 `prts-components.html` 补齐点击外部关闭、`ArrowUp`/`ArrowDown` 与 `Esc` 归还焦点，并在两份 catalog 明示契约 | `verify.py --render` 内置点击外部关闭与 Tabs 键盘实测探针 |
+| 31 | `endfield-components.html` 第 5 节 1440px 下 `.ef-schedule` 被 `.ef-calendar` 挤成窄列竖排；`.ef-viewfinder` 四角读数与 `TickRing` 间距偏紧 | `.ef-calendar` 与 `.ef-schedule` 共处半栏 `.ef-row` 宽度不足；`.ef-tick-ring` 默认 `168px` 与内边距叠加 | 第 5 节右栏改用 `.ef-stack` 纵向排布；`.ef-viewfinder` 内边距调至 `46px 28px`、角标内移 `10px`，演示环 `--_s: 112px` | 固定列宽组件（日历）勿与文本列表硬塞同排 `.ef-row`，改后必须看 1440px 实渲染图 |
+| 32 | 390px 手机端 `.ef-viewfinder` 四角括号、角标读数与内嵌 `[ REC ]` 全部消失；`prts-components.html` 在 375px–390px 下顶栏 `.ak-header__tools` 超出视口 2px | `@media (max-width: 639px)` 无条件隐藏了 `.ef-viewfinder__corners` 与 `.ef-viewfinder__ro`；`PRTS.COMPONENTS` 15 字符品牌词配 `.ak-seg` 按钮在 375px 下总宽达 377px | 默认保留 `.ef-viewfinder` 四角与读数（`<480px` 微调内边距与字号，仅 `.ef-viewfinder--compact-mobile` 修饰类才隐藏）；`prts-addons.css` 收紧 `<640px` 顶栏分段钮至 `padding: 0 7px; font-size: var(--ak-fs-xs)` | 窄屏媒体查询勿一刀切隐藏核心演示特征；长品牌词页面须测 375px 宽度溢出 |
+| 33 | `endfield-components.html` 的 Combobox 输入框按 `ArrowDown` 无法聚焦下拉项；Carousel 仅按钮点击更新页码，原生横向滑动不同步 | 键盘监听仅绑在 `.ef-menu` 内部；`#ef-car-track` 未监听原生 `scroll` 事件 | 为 `#ef-combo-in` 补齐 `ArrowDown`/`ArrowUp` 展开并聚焦首尾可选项；为 `#ef-car-track` 增加被动 `scroll` 监听同步 `01/03` 计数与标题；`verify.py` 增补 `comboArrowOk` 与 `noOverflow` 探针 | 声明支持键盘或原生 `scroll-snap` 同步的控件必须绑定对应事件并纳入探针 |
+| 34 | 真实 `cw=360px` 极窄屏下 `endfield-boilerplate.html` `.ef-stat`（370px）与 `prts-components.html` 页眉/分页栏（369–370px）仍溢出；`endfield-components.html` Combobox 过滤后按上下键会命中隐藏项，且选定/按 `Esc` 归还焦点会触发 `focus` 立即重开 | 无头 Chrome `--dump-dom` 将窗口夹紧至 485px 掩盖窄屏实宽；`endfield-boilerplate` 内联 `font-size: var(--text-5xl)` 覆盖了 `14vw` 断点规则；`.ak-pagination` 缺换行与 `<420px` 品牌字号收敛；菜单键盘监听未跳过 `display:none`，且 Combobox `focus` 监听未区分程序性焦点归还 | `endfield-standalone.css` 增 `.ef-stat__value--xl` 与 `.ef-stat__main` 折行并移除内联字号；`prts-addons.css` 增 `<420px` 品牌字阶/缩容与 `.ak-pagination{flex-wrap:wrap}`；`endfield-components.html` 过滤隐藏菜单项并为选定/`Esc` 归还焦点加 `skipOpen` 保护；`verify.py` 增同源 `375px/390px` iframe 实测 | 移动端溢出探针须在不受桌面最小窗宽夹紧影响的受控视口中校验；带 `focus` 自动展开的输入框在归还焦点时须防重开 |
+
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
-- 字体自托管的现成方案（fontsource 目录/示例）尚未提供。
-- Dialog 使用原生 `<dialog>`（自带焦点捕获），Dropdown/Popover 尚未做方向键与焦点管理，真实项目需自行补齐。
-- 尚无自动化视觉回归脚本（可考虑把渲染截图 + class 比对封装进 `scripts/`）。
+- 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
+- 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针）；新建空白外部项目、交由其他模型冷启动盲测的功能验证可按 `README.md` 快速开始指引另行执行。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 

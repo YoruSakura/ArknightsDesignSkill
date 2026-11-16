@@ -345,4 +345,181 @@
   <button type="button" class="ef-btn ef-btn--action">签收许可</button>
   <span class="ef-completion-banner__word" aria-hidden="true">COMPLETED</span>
 </section>
+
+<!-- 5. 不确定进度、分段进度、骨架屏、空状态、任务行列表、键值属性、键盘提示与带字分割线 -->
+<div class="ef-progress ef-progress--indeterminate">
+  <div class="ef-progress__track" role="progressbar" aria-label="链路同步中"><div class="ef-progress__fill"></div></div>
+</div>
+<div class="ef-progress ef-progress--segmented">
+  <div class="ef-progress__track" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="5">
+    <i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i>
+  </div>
+</div>
+
+<div class="ef-skeleton ef-skeleton--text"></div>
+<div class="ef-skeleton ef-skeleton--text"></div>
+<span class="ef-spinner" role="status" aria-label="加载中"></span>
+<span class="ef-kbd">CTRL+K</span>
+<div class="ef-divider ef-divider--text" role="separator"><span>TELEMETRY // LOGS</span></div>
+
+<div class="ef-empty">
+  <h4 class="ef-empty__title">当前区段暂无在途清单</h4>
+  <p class="ef-empty__desc">切换筛选胶囊或等待下一次自动调度周期。</p>
+</div>
+
+<div class="ef-list">
+  <div class="ef-list__row is-selected"><span>核心协议链路 · 实时遥测</span><span>ACTIVE</span></div>
+  <div class="ef-list__row is-completed"><span>北岭矿区初次测绘</span><span class="ef-list__done-word" aria-hidden="true">DONE</span></div>
+</div>
+
+<div class="ef-prop-list">
+  <div class="ef-prop-row"><span class="ef-prop-row__k">发起站点</span><span class="ef-prop-row__v">NORTH-RIDGE #01</span></div>
+</div>
+
+<!-- 6. 顶栏 (.ef-top-bar)、页内目录 (.ef-toc)、头像切换 (.ef-avatar-switcher) 与返回顶部 (.ef-back-to-top) -->
+<header class="ef-top-bar">
+  <strong>ENDFIELD // OPS</strong>
+  <span class="ef-top-bar__spacer"></span>
+  <div class="ef-avatar-switcher">
+    <span class="ef-avatar ef-avatar--sm">佩</span>
+    <span class="ef-avatar is-selected">管</span>
+  </div>
+  <button type="button" class="ef-back-to-top" aria-label="回到顶部">↑</button>
+</header>
+<ul class="ef-toc">
+  <li class="ef-toc__item is-current"><a href="#sec-overview">总览</a></li>
+  <li class="ef-toc__item ef-toc__item--l2"><a href="#sec-power">电力拓扑</a></li>
+</ul>
 ```
+
+---
+
+## 六、 高阶表单与选择器（Combobox / TagInput / Calendar / DatePicker / FileUpload / Textarea / OTP）
+
+```html
+<!-- 1. 多行文本 (.ef-textarea) 与六位分段验证码 (.ef-otp) -->
+<textarea class="ef-textarea" placeholder="填写调度附注…"></textarea>
+<div class="ef-otp" aria-label="六位交接口令">
+  <input class="ef-otp__cell" maxlength="1" value="2" aria-label="第 1 位">
+  <input class="ef-otp__cell" maxlength="1" value="0" aria-label="第 2 位">
+  <input class="ef-otp__cell" maxlength="1" value="4" aria-label="第 3 位">
+  <span class="ef-otp__dash" aria-hidden="true"></span>
+  <input class="ef-otp__cell" maxlength="1" aria-label="第 4 位">
+  <input class="ef-otp__cell" maxlength="1" aria-label="第 5 位">
+  <input class="ef-otp__cell" maxlength="1" aria-label="第 6 位">
+</div>
+
+<!-- 2. 可搜索下拉组合框 (.ef-combobox，切 .is-open 展开 .ef-menu) -->
+<div class="ef-combobox is-open">
+  <div class="ef-input-box ef-combobox__box">
+    <input class="ef-input" type="text" role="combobox" aria-expanded="true" placeholder="筛选节点编号…">
+    <button type="button" class="ef-combobox__toggle" aria-label="展开候选列表">▾</button>
+  </div>
+  <div class="ef-menu" role="listbox">
+    <button type="button" class="ef-menu__item is-active" role="option" aria-selected="true">TALOS-N07 · 北岭枢纽</button>
+    <button type="button" class="ef-menu__item" role="option" aria-selected="false">TALOS-E03 · 东段矿区</button>
+  </div>
+</div>
+
+<!-- 3. 多标签输入 (.ef-tag-input + .ef-tag-chip，非胶囊以区分状态与已定值) -->
+<div class="ef-input-box ef-tag-input">
+  <span class="ef-tag-chip">高纯源石 <button type="button" class="ef-tag-chip__del" aria-label="移除 高纯源石">✕</button></span>
+  <span class="ef-tag-chip">协议核心 <button type="button" class="ef-tag-chip__del" aria-label="移除 协议核心">✕</button></span>
+  <input class="ef-tag-input__entry" type="text" placeholder="回车添加关键词">
+  <span class="ef-tag-input__count">2 / 8</span>
+</div>
+
+<!-- 4. 工业月历 (.ef-calendar) 与日期选择器 (.ef-datepicker) -->
+<div class="ef-calendar" role="grid" aria-label="2026年11月">
+  <div class="ef-cal__head">
+    <button type="button" class="ef-icon-btn ef-icon-btn--sm" aria-label="上个月">‹</button>
+    <span class="ef-cal__title">2026年11月</span>
+    <button type="button" class="ef-icon-btn ef-icon-btn--sm" aria-label="下个月">›</button>
+  </div>
+  <div class="ef-cal__grid">
+    <span class="ef-cal__wk">一</span><span class="ef-cal__wk">二</span><span class="ef-cal__wk">三</span><span class="ef-cal__wk">四</span><span class="ef-cal__wk">五</span><span class="ef-cal__wk">六</span><span class="ef-cal__wk">日</span>
+    <button type="button" class="ef-cal__day">15</button>
+    <button type="button" class="ef-cal__day is-selected is-today" aria-current="date" aria-selected="true">16</button>
+    <button type="button" class="ef-cal__day is-in-range">17</button>
+    <button type="button" class="ef-cal__day" disabled>18</button>
+  </div>
+</div>
+
+<!-- 5. 文件上传投放区与文件行 (.ef-upload / .ef-file-item) -->
+<div class="ef-upload">
+  <label class="ef-upload__drop">
+    <input type="file" multiple>
+    <div>
+      <div class="ef-upload__hint">将图纸拖至此处，或 <u>点击选择文件</u></div>
+      <div class="ef-upload__desc">支持 PDF / PNG / SVG，单文件不超过 10 MB</div>
+    </div>
+  </label>
+  <div class="ef-file-item">
+    <span class="ef-file-item__ext">PDF</span>
+    <span class="ef-file-item__name">north-ridge-grid-v4.pdf</span>
+    <span class="ef-file-item__size">2.4 MB</span>
+    <button type="button" class="ef-icon-btn ef-icon-btn--sm" aria-label="移除文件">✕</button>
+    <span class="ef-file-item__bar"><i style="width: 68%;"></i></span>
+  </div>
+</div>
+```
+
+---
+
+## 七、 测绘 HUD、媒体展示与动效/移植契约
+
+```html
+<!-- 1. 迷你走势面积图 (.ef-sparkline：无坐标轴网格，蓝色产出 / 红色超支，600ms 从左擦入) -->
+<svg class="ef-sparkline" viewBox="0 0 120 32" preserveAspectRatio="none" aria-hidden="true">
+  <polygon class="ef-sparkline__area" points="0,32 0,22 24,18 48,20 72,10 96,12 120,4 120,32"/>
+  <polyline class="ef-sparkline__line" points="0,22 24,18 48,20 72,10 96,12 120,4"/>
+</svg>
+
+<!-- 2. 刻度圆环 (.ef-tick-ring)、取景角 (.ef-viewfinder，可选 .ef-viewfinder--compact-mobile 窄屏收敛)、录制闪烁 (.ef-rec)、滚动提示 (.ef-scroll-hint) 与跑马灯 (.ef-marquee) -->
+<div class="ef-tick-ring ef-tick-ring--spin">
+  <svg class="ef-tick-ring__svg" viewBox="0 0 240 240" aria-hidden="true">
+    <circle cx="120" cy="120" r="96" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+    <circle cx="120" cy="120" r="112" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="7" pathLength="400" stroke-dasharray="1.5 8.5"/>
+    <path d="M120 8A112 112 0 0 1 217 64" fill="none" stroke="currentColor" stroke-opacity=".65" stroke-width="5"/>
+  </svg>
+  <span class="ef-tick-ring__center">ORBITAL</span>
+</div>
+
+<div class="ef-viewfinder" data-theme="dark">
+  <span class="ef-viewfinder__corners" aria-hidden="true"></span>
+  <span class="ef-viewfinder__crosshair" aria-hidden="true"></span>
+  <span class="ef-viewfinder__ro ef-viewfinder__ro--tl">CAM // N-07</span>
+  <span class="ef-viewfinder__ro ef-viewfinder__ro--br">2026.11.16</span>
+</div>
+
+<span class="ef-rec"><span class="ef-rec__dot" aria-hidden="true"></span><span class="ef-rec__br">[</span> REC <span class="ef-rec__br">]</span></span>
+<div class="ef-scroll-hint" aria-hidden="true"><span class="ef-scroll-hint__label">SCROLL</span><span class="ef-scroll-hint__line"></span></div>
+
+<!-- 3. 媒体卡 (.ef-media-card + .ef-play-mark)、轮播 (.ef-carousel)、加载页 (.ef-loader) 与工业页脚 (.ef-footer) -->
+<article class="ef-media-card">
+  <div class="ef-media-card__thumb"><span class="ef-play-mark ef-media-card__play" aria-hidden="true"></span></div>
+  <div class="ef-media-card__meta"><span class="ef-tag">PV</span><span>// FIELD LOG · 2026.11.16</span></div>
+  <h3 class="ef-media-card__title"><a href="#media">北岭自动化产线实机演示</a></h3>
+</article>
+
+<footer class="ef-footer">
+  <div class="ef-hazard" style="height: 8px;" aria-hidden="true"></div>
+  <div class="ef-footer__inner">
+    <span class="ef-footer__meta">ENDFIELD // TALOS-II INDUSTRIAL EDITORIAL</span>
+    <nav class="ef-footer__links"><a href="#top">回到顶部</a></nav>
+  </div>
+</footer>
+```
+
+### 动效清单、浮层交互与离线字体
+1. **动画类清单**：`resources/endfield-standalone.css` 内置全部 16 个关键帧与 `.animate-{flicker,fill,scroll-hint,breathe,marquee,spin,spin-slow,blink,slide-in,turn-in,fade-in,indeterminate,indeterminate-y,pulse,bracket-in,shift-in,wipe-in}`（含 `--stagger` 与 `prefers-reduced-motion` 自动静止）。其中 `.ef-section-title__block > span` 触发 `100ms` 旋转、标题 `200ms` 淡入；`.ef-menu::before` 在展开时从左延伸；`[data-theme-switching]::view-transition-*(root)` 支持亮/暗切换平滑过渡。
+2. **Dropdown / Popover 关闭契约**：受控菜单及 `<details class="ef-dropdown">` 应同时绑定「点击组件外部关闭」与 `Esc` 关闭归还焦点（完整参考实现见 [`examples/endfield-components.html`](../../examples/endfield-components.html)）。
+3. **离线 / 中国大陆字体自托管**（替代 Google Fonts CDN）：
+   ```css
+   /* 安装：npm i @fontsource/archivo @fontsource/outfit @fontsource/space-grotesk @fontsource/jetbrains-mono @fontsource/noto-sans-sc */
+   import '@fontsource/archivo/700.css';
+   import '@fontsource/outfit/500.css';
+   import '@fontsource/space-grotesk/500.css';
+   import '@fontsource/noto-sans-sc/400.css';
+   ```
+
