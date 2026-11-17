@@ -44,6 +44,7 @@ description: >-
    - 样板与组件对照（仅作构图与交互结构参考，**严禁直接照搬测试业务文案与假数据**）：
      - 整页构图样板：[`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html)
      - 全组件交互目录：[`examples/prts-components.html`](./examples/prts-components.html)
+   - **按需扩展 · 官方活动系列皮肤（Series Presets）**：当需求指向特定活动系列视觉风格（`regulation` 卫戍规程 / `anniversary` 周年礼仪 / `sui` 炎国岁系列国风 / `exhibition` 矢量波普巡展 / `brawl` 喧闹大字报 / `theater` 集成战略暗黑剧场）时，先阅读 [`references/series/event-series-templates.md`](./references/series/event-series-templates.md) 并追加引入 [`resources/prts-series.css`](./resources/prts-series.css)，配套样板：[`series-regulation.html`](./examples/series-regulation.html) · [`series-anniversary.html`](./examples/series-anniversary.html) · [`series-sui.html`](./examples/series-sui.html) · [`series-exhibition.html`](./examples/series-exhibition.html) · [`series-brawl.html`](./examples/series-brawl.html) · [`series-theater.html`](./examples/series-theater.html)
 
 ### 选体系 B（明日方舟：终末地 · Endfield UI）时：
 1. **必读规范**：
@@ -64,8 +65,8 @@ description: >-
 当用户要求“使用本 Skill 初始化一个网站样板 / 组件页面”时，严格按以下步骤执行：
 
 1. **注入样式基座与字体**：
-   - 将本 Skill 目录下的 [`resources/prts-design.css`](./resources/prts-design.css)（+ [`resources/prts-addons.css`](./resources/prts-addons.css)）或 [`resources/endfield-standalone.css`](./resources/endfield-standalone.css) 复制到目标项目的静态样式目录（如 `src/styles/` 或 `public/`）并在入口引入。
-   - 在 `<head>` 引入对应的 Google Fonts 开源字体（PRTS：`Oswald` + `Chakra Petch` + `Noto Sans SC`；Endfield：`Archivo` + `Outfit` + `Space Grotesk` + `JetBrains Mono` + `Noto Sans SC`）。
+   - 将本 Skill 目录下的 [`resources/prts-design.css`](./resources/prts-design.css)（+ [`resources/prts-addons.css`](./resources/prts-addons.css)；如启用 `[data-ak-series]` 活动皮肤则再追加 [`resources/prts-series.css`](./resources/prts-series.css)）或 [`resources/endfield-standalone.css`](./resources/endfield-standalone.css) 复制到目标项目的静态样式目录（如 `src/styles/` 或 `public/`）并在入口引入。
+   - 在 `<head>` 引入对应的 Google Fonts 开源字体（PRTS：`Oswald` + `Chakra Petch` + `Noto Sans SC`；`sui`/`theater` 系列按需叠加 `Noto Serif SC` / `Cormorant Garamond`；Endfield：`Archivo` + `Outfit` + `Space Grotesk` + `JetBrains Mono` + `Noto Sans SC`）。
    - 字体说明：规范中的 `Bender` / `Novecento Sans Wide` 为商业字体，本 Skill 不附带，实际回退到 `Oswald` / `Chakra Petch`。面向中国大陆用户时，Google Fonts 可能不可达，建议用 `@fontsource`（两份 `components-catalog.md` 均附安装与引入代码）或本地 `@font-face` 自托管，并保留 `Noto Sans SC` → 系统黑体的回退链。
 2. **搭建符合正统构图的页面外壳**（**响应式是硬要求**：布局一律用类 `.ak-layout` / `.ak-grid-2` / `.ef-hero__grid` / `.ef-split` / `.ef-grid-2` / `.ef-grid-3` / `.ef-stat-row` / `.ef-section`，**禁止写死内联 `grid-template-columns`**；PRTS <1120px 侧栏变抽屉，需 `.ak-local-nav__menu` 入口，参考样板；Endfield <1024px 侧轨变顶部横轨）：
    - **PRTS**：采用「黑色终端顶栏 `.ak-header` + 左侧导航导轨 `.ak-sidebar` + 主内容区 `.ak-main` + 黑色斜纹顶边页脚 `.ak-footer`」，支持「档案（Light）/ 终端（Dark）」一键切换。
@@ -86,7 +87,7 @@ description: >-
 在完成代码编写后，逐条对照以下红线自检，任何一条违规必须立即修正：
 
 - [ ] **是否混淆了两套系统的形状？**
-  - PRTS 默认严禁出现 `clip-path` 45° 切角或圆角卡片；
+  - PRTS 默认严禁出现 `clip-path` 45° 切角或圆角卡片（**唯一显式系列例外**：在 `[data-ak-series="exhibition"]` 中 `.ak-pop-card` 专用于 `10px` 轻圆角 CMY 波普手账卡，严禁跨系列滥用）；
   - Endfield 严禁四角全切八边形，切角只用于行动/机械控件，且可聚焦按钮的切角必须画在 `::before` 上以保留焦点环。
 - [ ] **颜色对比度与面积预算是否合规？**
   - PRTS 的不可点击小标签（overline / eyebrow / 章节英文副标）是否误用了强调色？（必须用 `--ak-fg-muted` 灰色）；

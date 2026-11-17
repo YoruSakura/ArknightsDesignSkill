@@ -20,6 +20,7 @@
 | :--- | :--- | :--- |
 | `resources/prts-design.css` `prts-tokens.css` `endfield-theme.css` | **上游同步生成** | ❌ 不要手改；由 `scripts/sync-upstream.py` 覆盖 |
 | `resources/prts-addons.css` | 本仓库自有补丁层 | ✅ 对 PRTS 上游的一切修正写这里，紧随 `prts-design.css` 引入 |
+| `resources/prts-series.css` | **手工维护**（活动系列扩展层） | ✅ 可改；在 `prts-addons.css` 之后按需引入，承载 6 大官方活动系列主题与平面母题 |
 | `resources/endfield-standalone.css` | **手工维护** | ✅ 可改；末尾“Skill 补丁层”区块为本仓库自有，同步/合并时勿丢 |
 | `references/**` | 规范文档 | ✅ 规则变更必须同步改文档，文档与 CSS/样板不得矛盾 |
 | `examples/**` | 整页样板 | ✅ 必须通过第三节的渲染验证 |
@@ -35,7 +36,7 @@
 2. **布局只用类，不写死内联 grid**（`.ak-layout`、`.ef-hero__grid`、`.ef-split`、`.ef-stat-row`、`.ef-section`）。新增布局必须带手机断点。
 3. **改了 CSS / 样板 / 规范，必须渲染验证**（不能只“看代码觉得对”）：
    ```bash
-   # 在仓库根目录一键运行：静态类/链接/关键帧检查 + 1440px/390px 亮暗 16 图 + Chrome 实时动效/交互探针
+   # 在仓库根目录一键运行：静态类/链接/关键帧检查 + 1440px/390px 亮暗全页渲染 + Chrome 实时动效/交互探针
    python3 scripts/verify.py --render --out /tmp/arknights-verify
    ```
    检查清单见 [SKILL.md 第五步](./SKILL.md)：无文字重叠/裁切、390px 无横向溢出、亮暗对比度、无纯色占位块。
@@ -110,12 +111,18 @@
 | 36 | 下游用 DeepSeek 4.1 flash 跑通 `test-01`~`test-04` 四项冷启动盲测：前 3 项体系还原度与 ARIA 交互全过（仅 `test-03` 残留 `北岭` 地名），`test-04` 冲突压测因以“按需求破例”让步，直接丢掉 `.ak-*` 基座、放行 `style="grid-template-columns"`、`0x7F3A` 及 `RHODES ISLAND` | 此前 `SKILL.md` 未区分“可随机应变的局部视觉衍生”与“不可破例的工程/基座/脱敏底线”，导致模型面对用户显式偏离指令时全盘放弃底座 | 在 `SKILL.md` 第三步新增第 4 项「弹性适配边界」并同步细化第四步自检：锁定等价实现三底线（基座组件复用、响应式 CSS 类代内联 grid、样板专有词黑名单），明确领域图表/SVG 开放拓展与用户显式偏好仅限局部派生、不偏离主视觉方向；重打包 `release/` | 业务自定义需求统一收敛为“主骨架/令牌不丢 + 局部扩展类派生”，禁止绕开基座或用内联布局妥协 |
 | 37 | 下游业务站点需接入自有品牌配色时，上游 `.ak-hero__*` / `.ak-switch` 仍直读 `--ak-cyan-500` / `--ak-blue-600`，Endfield `.ef-hazard` / `.ef-data-row__val--accent` / `.ef-toast__tone` / 暗态 `--ef-focus` / `.ef-btn--action::after` 未联动品牌令牌，且规范未写明换色边界 | 早期配色只针对官方青/信号黄，未在文档与补丁层显式暴露“换强调不换骨”覆盖清单 | `prts-addons.css` 让 `.ak-hero__*` 改读 `--ak-theme-accent`、`.ak-switch > input:checked` 改读 `--ak-accent`；`endfield-standalone.css` 让 `.ef-hazard` / `.ef-data-row__val--accent` / `.ef-toast__tone` 联动 `--ef-action`、暗/反转态 `--ef-focus` 联动 `--ef-accent-ink(-inverse)`、`.ef-btn--action::after` 改读 `currentColor`；在 `SKILL.md` 及两份 `foundations.md` 写入品牌换色令牌清单与对比度约束，并在 `verify.py` 增加 `release/` 同步校验后重打 `release/` | 品牌换色一律通过语义令牌覆盖完成，保留 90% 中性纸墨基底并同步校验 `--ef-on-action` / `--ef-accent-ink` 对比度与 `release/` 一致性 |
 
+### 2026-11-17 · 官方活动 6 系列视觉体系提炼与总成样板（`regulation` / `anniversary` / `sui` / `exhibition` / `brawl` / `theater`）
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 38 | 基于官网 2019–2026 海报档案扩展 6 套系列模板后，初轮 `verify.py` 暴露 4 处不存在工具类/文档类名（`ak-items-stretch`/`ak-mt-3`/`.ak-link`）；实看 390px 渲染图发现周年/剧场页 `.ak-tabs--block` 右侧裁切、波普页 `.ak-panel__head` 配 3 枚 `.ak-btn-group` 按钮时标题被挤压折行；暗色下 `.ak-brawl-poster` 内置 `--ak-accent` 原为亮黄需独立锁黑对比 | 样式未检查窄屏下 `.ak-tabs--block` 与带按钮组面板头换行；明黄海报区内部令牌未同时覆盖 `--ak-accent`/`--ak-bg-surface-2`；手写类名未对照 `prts-design.css` utilities | 新增 [`resources/prts-series.css`](./resources/prts-series.css)、[`references/series/event-series-templates.md`](./references/series/event-series-templates.md) 及 6 份脱敏交互样板 [`examples/series-*.html`](./examples/series-regulation.html)；锁死 `.ak-brawl-poster` 内部黑黄对比与 `[data-ak-series="exhibition"]` CMY 对比；`<640px` 为 `[data-ak-series]` 补 `.ak-tabs--block` 与 `.ak-panel__head` 换行；扩展 `verify.py` 覆盖 `prts-series.css` 动画/类、6 套样板脱敏黑名单、40 张亮暗渲染图及 Chrome 交互探针并重打 `release/`（全部通过） | 新增系列层必须在 `verify.py` 注册动画与 375/390/1440 渲染探针；带按钮组的 `.ak-panel__head` 与 3 项以上 `.ak-tabs--block` 窄屏默认允许换行 |
+
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
 - 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
 - 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
-- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并已完成 DeepSeek 4.1 flash 四项基础/压测 + 二轮品牌换色/弹性边界复测（`SkillTest2` 全通过），正式归档发布 `v1.0`；后续可按需补充 Vite/React 或 Endfield 深色品牌换色的真机项目烟测。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 40 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并已完成 `v1.0` 基础四项盲测及二轮品牌换色/弹性边界复测（`SkillTest2`）；当前新增 6 大官方活动系列皮肤已通过全部静态、渲染与 `375px`/`390px` 零溢出校验，待确认版本策略（如 `v1.1`）后即可按需打 tag 发布或补充下游子系列细分烟测。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 
