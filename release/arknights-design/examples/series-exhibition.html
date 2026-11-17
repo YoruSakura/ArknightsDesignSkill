@@ -51,7 +51,7 @@
         <h3 class="ak-portlet__title">EXPO // 双年展导览</h3>
         <ul>
           <li class="is-active"><a href="#hero">特展主视觉公告</a></li>
-          <li><a href="#booths">等距展位交互导览</a></li>
+          <li><a href="#booths">展位平面交互导览</a></li>
           <li><a href="#pop-guides">CMY 导览手账卡</a></li>
           <li><a href="#masonry">变列宽展陈图库</a></li>
         </ul>
@@ -80,15 +80,15 @@
           净白画布搭配洋红 / 亮青 / 酸橙高明度 CMY 撞色波普语汇：专为艺术巡展、快闪店、创意周边市集与交互图库设计。支持 10px 轻圆角导览卡例外规则与实时变列宽画廊。
         </p>
         <div class="ak-flex ak-wrap ak-gap-3 ak-mt-4">
-          <a class="ak-btn ak-btn--primary" href="#booths">进入立体展位导览</a>
+          <a class="ak-btn ak-btn--primary" href="#booths">进入展位平面导览</a>
           <a class="ak-btn ak-btn--outline" href="#masonry">切换图库列数</a>
         </div>
       </div>
 
-      <!-- 等距交互展位图 -->
+      <!-- 直角平面交互展位图 -->
       <section class="ak-panel" id="booths">
         <header class="ak-panel__head">
-          <h2 class="ak-panel__title">立体展位交互地图 <span class="ak-en">ISOMETRIC BOOTH MAP</span></h2>
+          <h2 class="ak-panel__title">展位交互平面图</h2>
           <div class="ak-btn-group" role="group" aria-label="选择展区">
             <button type="button" class="ak-btn ak-btn--sm is-active" data-booth="0" onclick="selectBooth(0)">A01 声光厅</button>
             <button type="button" class="ak-btn ak-btn--sm" data-booth="1" onclick="selectBooth(1)">B02 矢量墙</button>
@@ -97,14 +97,14 @@
         </header>
         <div class="ak-panel__body">
           <div class="ak-series-split">
-            <svg class="ak-expo-map" viewBox="0 0 420 210" role="img" aria-label="双年展三展区等距平面示意图">
+            <svg class="ak-expo-map" viewBox="0 0 420 210" role="img" aria-label="双年展三展区平面示意图">
               <g>
-                <polygon id="booth-0" points="28,110 112,68 196,110 112,152" fill="var(--ak-pop-cyan, #00b7e6)" fill-opacity="0.30" stroke="var(--ak-pop-cyan, #00b7e6)" stroke-width="2.5" style="cursor:pointer" onclick="selectBooth(0)"/>
-                <polygon id="booth-1" points="134,76 218,34 302,76 218,118" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5" style="cursor:pointer" onclick="selectBooth(1)"/>
-                <polygon id="booth-2" points="224,132 308,90 392,132 308,174" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5" style="cursor:pointer" onclick="selectBooth(2)"/>
-                <text x="112" y="114" text-anchor="middle" fill="var(--ak-fg)" font-size="11" font-weight="700" style="pointer-events:none">A01 // SOUND</text>
-                <text x="218" y="80" text-anchor="middle" fill="var(--ak-fg)" font-size="11" font-weight="700" style="pointer-events:none">B02 // VECTOR</text>
-                <text x="308" y="136" text-anchor="middle" fill="var(--ak-fg)" font-size="11" font-weight="700" style="pointer-events:none">C03 // PRINT</text>
+                <rect id="booth-0" x="16" y="16" width="176" height="178" fill="var(--ak-pop-cyan, #00b7e6)" fill-opacity="0.30" stroke="var(--ak-pop-cyan, #00b7e6)" stroke-width="2.5" style="cursor:pointer" onclick="selectBooth(0)"/>
+                <rect id="booth-1" x="208" y="16" width="196" height="82" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5" style="cursor:pointer" onclick="selectBooth(1)"/>
+                <rect id="booth-2" x="208" y="112" width="196" height="82" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5" style="cursor:pointer" onclick="selectBooth(2)"/>
+                <text x="104" y="109" text-anchor="middle" fill="var(--ak-fg)" font-size="13" font-weight="700" style="pointer-events:none">A01 // SOUND</text>
+                <text x="306" y="62" text-anchor="middle" fill="var(--ak-fg)" font-size="13" font-weight="700" style="pointer-events:none">B02 // VECTOR</text>
+                <text x="306" y="158" text-anchor="middle" fill="var(--ak-fg)" font-size="13" font-weight="700" style="pointer-events:none">C03 // PRINT</text>
               </g>
             </svg>
 
@@ -115,6 +115,10 @@
                 12 组同步激光矩阵跟随访客步态实时调制合成器泛音，场内设有三处低延时体感拾音踏板。
               </p>
               <div class="ak-badge-tall">实时排队：约 10 分钟 // CAPACITY 40</div>
+              <div class="ak-flex ak-wrap ak-gap-2 ak-mt-2">
+                <button type="button" class="ak-btn ak-btn--primary ak-btn--sm">预约本展区场次</button>
+                <button type="button" class="ak-btn ak-btn--sm">下载展位导览单</button>
+              </div>
             </div>
           </div>
         </div>
@@ -122,7 +126,7 @@
 
       <!-- CMY 3-stripe 圆角导览卡 -->
       <div class="ak-heading" id="pop-guides">
-        <h2 class="ak-heading__title">CMY 三色条波普导览单元</h2>
+        <h2 class="ak-heading__title">CMY 三色波普导览卡</h2>
         <span class="ak-heading__en" lang="en">POP GUIDE CARDS</span>
       </div>
 

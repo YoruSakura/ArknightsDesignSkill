@@ -1,11 +1,11 @@
-# Release Bundle — `arknights-design` (v1.1-beta.1)
+# Release Bundle — `arknights-design` (v1.1)
 
-本目录由 [`scripts/package-release.py`](../scripts/package-release.py) 生成，包含可直接复制或解压接入下游前端项目的**测试版（Pre-release · 待审查）纯运行时 Skill 包**（版本 `v1.1-beta.1`，共 26 个文件，未压缩 907.2 KB；压缩包 275.6 KB），已剔除维护文档（`AGENTS.md`）与同步/校验脚本（`scripts/`）。
+本目录由 [`scripts/package-release.py`](../scripts/package-release.py) 生成，包含可直接复制或解压接入下游前端项目的**正式版纯运行时 Skill 包**（版本 `v1.1`，共 26 个文件，未压缩 908.8 KB；压缩包 276.2 KB），已剔除维护文档（`AGENTS.md`）与同步/校验脚本（`scripts/`）。
 
 ## 包含产物
 
 - `arknights-design/`：可直接拷贝或软链接的完整 Skill 文件夹（含 `SKILL.md`、`LICENSE`、`NOTICE.md`、`references/`、`resources/`、`examples/`）
-- `arknights-design.zip`：同内容的便携压缩包（顶层目录为 `arknights-design/`，`SHA-256`: `1b69e3ab8329f41da4d63368922635f22d847b99ceb35c0de5fe9e6967c6cc42`）
+- `arknights-design.zip`：同内容的便携压缩包（顶层目录为 `arknights-design/`，`SHA-256`: `10aade390d620e9a294d20ab280fe351f1a0a6672a93c8422c511b2a8ae70978`）
 
 ## 快速安装到项目
 

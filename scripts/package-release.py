@@ -15,7 +15,7 @@ import sys
 import zipfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DEFAULT_VERSION = "v1.0"
+DEFAULT_VERSION = "v1.1"
 RELEASE_DIR = ROOT / "release"
 BUNDLE_NAME = "arknights-design"
 BUNDLE_DIR = RELEASE_DIR / BUNDLE_NAME

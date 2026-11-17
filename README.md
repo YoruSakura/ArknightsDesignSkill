@@ -35,9 +35,9 @@
 
 ## 快速开始
 
-### 在其他前端项目中接入本 Skill（正式版 `v1.0` / 测试版 `v1.1-beta.1`）
+### 在其他前端项目中接入本 Skill（正式版 `v1.1`）
 
-生产环境推荐下载 [GitHub Releases · v1.0](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.0) 中的 `arknights-design-v1.0.zip` 解压；如需抢先评测 **6 大官方活动系列皮肤与整页样板（待审查测试版）**，可下载 [Pre-release · v1.1-beta.1](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.1-beta.1) 或直接使用仓库内 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
+推荐下载 [GitHub Releases · v1.1](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.1) 中的 `arknights-design-v1.1.zip` 解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链；含双正交设计体系及 6 大官方活动系列皮肤）：
 
 ```bash
 # 方式一（推荐正式接入）：直接复制已打包的 Skill 文件夹
@@ -78,12 +78,12 @@ python3 -m http.server 8080
 | :--- | :--- | :--- |
 | [`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html) | PRTS 整页构图样板 | 终端顶栏、响应式侧栏抽屉、Banner、Hero 视觉区、数据矩阵表、密录档案、暗色页脚 |
 | [`examples/prts-components.html`](./examples/prts-components.html) | PRTS 全组件对照与交互陈列 | 按钮/筛选芯片、`<details>`/受控下拉菜单、面包屑/路径条、WAI-ARIA 多态页签、表单、弹窗/抽屉/Toast、骨架屏/进度与干员/技能/模组/声波领域件 |
-| [`examples/series-regulation.html`](./examples/series-regulation.html) | 活动系列 01 · 战术规程风 | 深枪灰 + 战术青绿/琥珀橙、规程等级阶梯选择卡、等距拓扑图、`COMPLETED` 水印结算行 |
+| [`examples/series-regulation.html`](./examples/series-regulation.html) | 活动系列 01 · 战术规程风 | 深枪灰 + 战术青绿/琥珀橙、规程等级阶梯选择卡、分层直角拓扑图、`COMPLETED` 水印结算行 |
 | [`examples/series-anniversary.html`](./examples/series-anniversary.html) | 活动系列 02 · 周年礼仪庆典风 | 曜石黑 + 绯红绶带章条 `.ak-ribbon-head` + 暖金星芒 + WAI-ARIA 里程碑分轨页签 |
 | [`examples/series-sui.html`](./examples/series-sui.html) | 活动系列 03 · 炎国岁系列国风 | 宣纸米白 + 朱砂/石青、`Noto Serif SC`、回纹双框 `.ak-fret-box`、注音标题与年份步进器 |
-| [`examples/series-exhibition.html`](./examples/series-exhibition.html) | 活动系列 04 · 矢量波普巡展风 | 净白画布 + CMY 撞色、空心大字、交互等距展位地图、CMY 三色顶条波普卡与可调列数画廊 |
+| [`examples/series-exhibition.html`](./examples/series-exhibition.html) | 活动系列 04 · 矢量波普巡展风 | 净白画布 + CMY 撞色、空心大字、直角平面交互展位图、CMY 三色顶条波普卡与可调列数画廊 |
 | [`examples/series-brawl.html`](./examples/series-brawl.html) | 活动系列 05 · 街头大字报风 | 明黄印刷海报 `.ak-brawl-poster`、`01-` 前导序号与分数、双拼印章、纯 CSS 条形码与裁切线 |
-| [`examples/series-theater.html`](./examples/series-theater.html) | 活动系列 06 · 暗黑剧场典籍风 | 丝绒暗红 + 鎏金与 `Cormorant Garamond`、双线剧目框、菱形幕次与台本/涂黑线索交互 |
+| [`examples/series-theater.html`](./examples/series-theater.html) | 活动系列 06 · 暗黑剧场典籍风 | 丝绒暗红 + 鎏金与 `Cormorant Garamond`、双线剧目框、直角幕次标与台本/涂黑线索交互 |
 | [`examples/endfield-boilerplate.html`](./examples/endfield-boilerplate.html) | Endfield 整页构图样板 | 左侧窄轨、镂空巨字叠加排版、Hero、信号黄色带、左竖线统计块、深色数据行带（含内嵌 Sparkline 走势图）、仓储物品格与完整 Footer/回到顶部 |
 | [`examples/endfield-components.html`](./examples/endfield-components.html) | Endfield 全组件对照与交互陈列 | 按钮族与展开条、三态页签、分页/步骤条、浅/强暗菜单、实色底点阵弹窗/抽屉、方圆↔菱形表单、Combobox/TagInput/文件上传/日历/排期/取景框 HUD/轮播与跑马灯 |
 

@@ -92,29 +92,29 @@
 
       <div class="ak-stat-row">
         <div class="ak-stat">
-          <span class="ak-stat__label">CONTRACT // 当前倍率</span>
+          <span class="ak-stat__label">当前倍率</span>
           <span class="ak-stat__value" id="reg-mult">×1.50</span>
           <span class="ak-stat__delta ak-stat__delta--up" id="reg-tier-label">▲ 规程等级 II 已激活</span>
         </div>
         <div class="ak-stat">
-          <span class="ak-stat__label">AVAILABILITY // SLA 达成</span>
+          <span class="ak-stat__label">SLA 达成</span>
           <span class="ak-stat__value">99.94<small>%</small></span>
           <span class="ak-stat__delta">P99 抖动 &lt; 38ms</span>
         </div>
         <div class="ak-stat">
-          <span class="ak-stat__label">ISOLATION // 隔离域</span>
+          <span class="ak-stat__label">隔离域</span>
           <span class="ak-stat__value">04<small>/ 04</small></span>
           <span class="ak-stat__delta">跨机房熔断生效</span>
         </div>
         <div class="ak-stat">
-          <span class="ak-stat__label">DRIFT // 规程偏移</span>
+          <span class="ak-stat__label">规程偏移</span>
           <span class="ak-stat__value" id="reg-drift">02</span>
           <span class="ak-stat__delta ak-stat__delta--down">▼ 边缘队列压测中</span>
         </div>
       </div>
 
       <div class="ak-heading" id="tiers">
-        <h2 class="ak-heading__title">规程等级推演与等距拓扑防线</h2>
+        <h2 class="ak-heading__title">规程等级推演与分层拓扑防线</h2>
         <span class="ak-heading__en" lang="en">SECTOR TOPOLOGY</span>
         <span class="ak-heading__aside"><span class="ak-tag ak-tag--accent" id="reg-status-badge">沙盒推演就绪</span></span>
       </div>
@@ -122,7 +122,7 @@
       <div class="ak-series-split">
         <section class="ak-panel">
           <header class="ak-panel__head">
-            <h3 class="ak-panel__title">规程阶梯选择 <span class="ak-en">REGULATION TIER</span></h3>
+            <h3 class="ak-panel__title">规程阶梯选择</h3>
             <span class="ak-code-id" id="reg-code">CODE // TIER-02</span>
           </header>
           <div class="ak-panel__body">
@@ -152,24 +152,28 @@
 
         <section class="ak-panel">
           <header class="ak-panel__head">
-            <h3 class="ak-panel__title">立体拓扑网格 <span class="ak-en">ISOMETRIC GRID</span></h3>
+            <h3 class="ak-panel__title">分层拓扑网格</h3>
             <span class="ak-code-id">ZONE 01–03</span>
           </header>
           <div class="ak-panel__body">
-            <svg class="ak-reg-map" viewBox="0 0 360 220" role="img" aria-label="等距沙盒扇区拓扑图">
+            <svg class="ak-reg-map" viewBox="0 0 360 220" role="img" aria-label="分层沙盒扇区拓扑图">
               <defs>
                 <pattern id="reg-grid" width="24" height="24" patternUnits="userSpaceOnUse">
                   <path d="M 24 0 L 0 0 0 24" fill="none" stroke="currentColor" stroke-opacity="0.1" stroke-width="1"/>
                 </pattern>
               </defs>
               <rect width="360" height="220" fill="url(#reg-grid)" style="color: var(--ak-fg);"/>
-              <g transform="translate(180,32)">
-                <polygon id="poly-0" points="0,12 110,56 0,100 -110,56" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5"/>
-                <polygon id="poly-1" points="0,58 110,102 0,146 -110,102" fill="var(--ak-accent-subtle)" stroke="var(--ak-accent)" stroke-width="2"/>
-                <polygon id="poly-2" points="0,104 110,148 0,192 -110,148" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5"/>
-                <text x="0" y="59" text-anchor="middle" fill="var(--ak-fg)" font-size="11" font-weight="700">INGRESS GATEWAY // L1</text>
-                <text x="0" y="105" text-anchor="middle" fill="var(--ak-accent)" font-size="11" font-weight="700">ARBITRATION CORE // L2</text>
-                <text x="0" y="151" text-anchor="middle" fill="var(--ak-fg-muted)" font-size="11" font-weight="700">STORAGE SHARD // L3</text>
+              <g stroke="var(--ak-border-strong)" stroke-width="1.5" aria-hidden="true">
+                <line x1="180" y1="58" x2="180" y2="88"/>
+                <line x1="180" y1="132" x2="180" y2="162"/>
+              </g>
+              <g>
+                <rect id="poly-0" x="40" y="14" width="280" height="44" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5"/>
+                <rect id="poly-1" x="40" y="88" width="280" height="44" fill="var(--ak-accent-subtle)" stroke="var(--ak-accent)" stroke-width="2"/>
+                <rect id="poly-2" x="40" y="162" width="280" height="44" fill="var(--ak-bg-surface)" stroke="var(--ak-border-strong)" stroke-width="1.5"/>
+                <text x="180" y="40" text-anchor="middle" fill="var(--ak-fg)" font-size="12" font-weight="700">INGRESS GATEWAY // L1</text>
+                <text x="180" y="114" text-anchor="middle" fill="var(--ak-accent)" font-size="12" font-weight="700">ARBITRATION CORE // L2</text>
+                <text x="180" y="188" text-anchor="middle" fill="var(--ak-fg-muted)" font-size="12" font-weight="700">STORAGE SHARD // L3</text>
               </g>
             </svg>
           </div>
