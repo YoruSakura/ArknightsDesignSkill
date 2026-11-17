@@ -1,0 +1,916 @@
+/*! PRTS Series Extensions · 明日方舟官方活动系列扩展样式层（v1.1）
+ *  在 prts-design.css 与 prts-addons.css 之后按需引入。
+ *  通过 [data-ak-series="regulation|anniversary|sui|exhibition|brawl|theater"]
+ *  切换 6 大官方活动系列视觉皮肤，并提供印章/条形码/路牌/回纹/绶带/阶梯卡等平面母题组件。
+ *  零外部位图依赖，同时兼容 [data-theme="light"] 与 [data-theme="dark"]。
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  1. 共享字体与排版辅助（扩展 Serif / 展示体角色，离线回退系统黑体/宋体）
+ * ═════════════════════════════════════════════════════════════════════════ */
+:root {
+  --ak-font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+  --ak-font-drama: "Cormorant Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --ak-series-bg-fx: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  2. 六大活动系列语义主题皮肤 [data-ak-series]
+ * ═════════════════════════════════════════════════════════════════════════ */
+
+/* ── 2.1 REGULATION · 卫戍协议 / 危机合约 / DOS（深枪灰 + 高敏战术青绿 + 琥珀橙） ── */
+[data-ak-series="regulation"] {
+  --ak-series-teal: #007e5d;
+  --ak-series-amber: #b86200;
+  --ak-series-crimson: #b92828;
+  --ak-theme-accent: #007e5d;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(0, 126, 93, 0.14);
+  --ak-accent: #007e5d;
+  --ak-accent-hover: #00664b;
+  --ak-accent-fg: #ffffff;
+  --ak-accent-subtle: rgba(0, 126, 93, 0.10);
+  --ak-accent-muted: rgba(0, 126, 93, 0.28);
+  --ak-accent-2: #b86200;
+  --ak-link: #006d50;
+  --ak-link-hover: #00523c;
+  --ak-border-accent: #007e5d;
+  --ak-focus: #007e5d;
+  --ak-bg-canvas: #eef2f1;
+  --ak-bg-surface: #ffffff;
+  --ak-bg-surface-2: #e6ecea;
+  --ak-bg-inset: #e2e8e6;
+  --ak-border: #c5d0cd;
+  --ak-border-strong: #8ea09b;
+}
+:root[data-theme="dark"][data-ak-series="regulation"],
+[data-theme="dark"] [data-ak-series="regulation"] {
+  --ak-series-teal: #00d8a0;
+  --ak-series-amber: #f59e0b;
+  --ak-series-crimson: #e04747;
+  --ak-theme-accent: #00d8a0;
+  --ak-theme-accent-fg: #041b15;
+  --ak-theme-accent-subtle: rgba(0, 216, 160, 0.14);
+  --ak-accent: #00d8a0;
+  --ak-accent-hover: #3be8b9;
+  --ak-accent-fg: #041b15;
+  --ak-accent-subtle: rgba(0, 216, 160, 0.12);
+  --ak-accent-muted: rgba(0, 216, 160, 0.34);
+  --ak-accent-2: #f59e0b;
+  --ak-link: #3be8b9;
+  --ak-link-hover: #7bf2d2;
+  --ak-border-accent: #00d8a0;
+  --ak-focus: #00d8a0;
+  --ak-bg-canvas: #0d1011;
+  --ak-bg-surface: #14191b;
+  --ak-bg-surface-2: #1b2225;
+  --ak-bg-surface-3: #242d31;
+  --ak-bg-inset: #0a0d0e;
+  --ak-border: #283236;
+  --ak-border-strong: #405056;
+}
+[data-ak-series="regulation"] .ak-header,
+[data-ak-series="regulation"] .ak-footer {
+  --ak-theme-accent: #00d8a0;
+  --ak-theme-accent-fg: #041b15;
+  --ak-chrome-bg: rgba(11, 15, 16, 0.94);
+}
+[data-ak-series="regulation"] .ak-hero {
+  background: linear-gradient(135deg, #101416 0%, #192124 62%, #241819 100%);
+  border-left: 4px solid var(--ak-series-crimson, #c82a36);
+}
+
+/* ── 2.2 ANNIVERSARY · 感谢庆典 / 周年礼仪（曜石黑 + 绯红绶带 + 暖金星芒） ── */
+[data-ak-series="anniversary"] {
+  --ak-series-crimson: #b91c1c;
+  --ak-series-gold: #8c6614;
+  --ak-theme-accent: #b91c1c;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(185, 28, 28, 0.12);
+  --ak-accent: #b91c1c;
+  --ak-accent-hover: #991b1b;
+  --ak-accent-fg: #ffffff;
+  --ak-accent-subtle: rgba(185, 28, 28, 0.09);
+  --ak-accent-muted: rgba(185, 28, 28, 0.28);
+  --ak-accent-2: #b8841a;
+  --ak-link: #a11717;
+  --ak-link-hover: #7f1212;
+  --ak-border-accent: #b91c1c;
+  --ak-focus: #b91c1c;
+  --ak-bg-canvas: #faf8f4;
+  --ak-bg-surface: #ffffff;
+  --ak-bg-surface-2: #f4efe8;
+  --ak-bg-inset: #eee8df;
+  --ak-border: #dcd3c6;
+  --ak-border-strong: #b0a390;
+}
+:root[data-theme="dark"][data-ak-series="anniversary"],
+[data-theme="dark"] [data-ak-series="anniversary"] {
+  --ak-series-crimson: #e03c4b;
+  --ak-series-gold: #e5b85c;
+  --ak-theme-accent: #e03c4b;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(224, 60, 75, 0.16);
+  --ak-accent: #e03c4b;
+  --ak-accent-hover: #f25c69;
+  --ak-accent-fg: #ffffff;
+  --ak-accent-subtle: rgba(224, 60, 75, 0.14);
+  --ak-accent-muted: rgba(224, 60, 75, 0.36);
+  --ak-accent-2: #e5b85c;
+  --ak-link: #f27480;
+  --ak-link-hover: #ffd180;
+  --ak-border-accent: #e5b85c;
+  --ak-focus: #e5b85c;
+  --ak-bg-canvas: #09090d;
+  --ak-bg-surface: #121219;
+  --ak-bg-surface-2: #191922;
+  --ak-bg-surface-3: #232330;
+  --ak-bg-inset: #07070a;
+  --ak-border: #2a2835;
+  --ak-border-strong: #4e4756;
+}
+[data-ak-series="anniversary"] .ak-header,
+[data-ak-series="anniversary"] .ak-footer {
+  --ak-theme-accent: #e03c4b;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-chrome-bg: rgba(9, 9, 13, 0.94);
+}
+[data-ak-series="anniversary"] .ak-hero {
+  background:
+    radial-gradient(64% 85% at 50% 0%, rgba(224, 60, 75, 0.18), transparent 70%),
+    linear-gradient(180deg, #100e14 0%, #09090d 100%);
+  border-top: 2px solid var(--ak-series-gold, #e5b85c);
+  border-bottom: 2px solid var(--ak-series-gold, #e5b85c);
+}
+
+/* ── 2.3 SUI · 炎国「岁」系列国风（宣纸底 + 朱砂红 + 墨靛 + 石青） ── */
+[data-ak-series="sui"] {
+  --ak-series-vermilion: #b82925;
+  --ak-series-jade: #1b7a78;
+  --ak-series-gold: #8e691e;
+  --ak-theme-accent: #b82925;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(184, 41, 37, 0.12);
+  --ak-accent: #b82925;
+  --ak-accent-hover: #961e1b;
+  --ak-accent-fg: #ffffff;
+  --ak-accent-subtle: rgba(184, 41, 37, 0.08);
+  --ak-accent-muted: rgba(184, 41, 37, 0.25);
+  --ak-accent-2: #8e691e;
+  --ak-link: #1b7a78;
+  --ak-link-hover: #135957;
+  --ak-border-accent: #b82925;
+  --ak-focus: #b82925;
+  --ak-bg-canvas: #f7f3eb;
+  --ak-bg-surface: #fdfbf7;
+  --ak-bg-surface-2: #efe8db;
+  --ak-bg-surface-3: #e4dbc9;
+  --ak-bg-inset: #eae2d3;
+  --ak-fg: #1d2229;
+  --ak-fg-secondary: #3b424c;
+  --ak-fg-muted: #66635b;
+  --ak-border: #d7cebe;
+  --ak-border-strong: #9f9482;
+}
+:root[data-theme="dark"][data-ak-series="sui"],
+[data-theme="dark"] [data-ak-series="sui"] {
+  --ak-series-vermilion: #e04a3f;
+  --ak-series-jade: #34bfa3;
+  --ak-series-gold: #ddb55e;
+  --ak-theme-accent: #e04a3f;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(224, 74, 63, 0.16);
+  --ak-accent: #e04a3f;
+  --ak-accent-hover: #f2685e;
+  --ak-accent-fg: #ffffff;
+  --ak-accent-subtle: rgba(224, 74, 63, 0.14);
+  --ak-accent-muted: rgba(224, 74, 63, 0.34);
+  --ak-accent-2: #ddb55e;
+  --ak-link: #4fd4b8;
+  --ak-link-hover: #8be6d3;
+  --ak-border-accent: #e04a3f;
+  --ak-focus: #ddb55e;
+  --ak-bg-canvas: #10141a;
+  --ak-bg-surface: #171d26;
+  --ak-bg-surface-2: #1f2733;
+  --ak-bg-surface-3: #283242;
+  --ak-bg-inset: #0b0e13;
+  --ak-fg: #f2ede3;
+  --ak-fg-secondary: #c9c3b6;
+  --ak-fg-muted: #8c8a82;
+  --ak-border: #2c3543;
+  --ak-border-strong: #4b5668;
+}
+[data-ak-series="sui"] .ak-header,
+[data-ak-series="sui"] .ak-footer {
+  --ak-theme-accent: #e04a3f;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-chrome-bg: rgba(16, 20, 26, 0.94);
+}
+[data-ak-series="sui"] .ak-hero {
+  background: linear-gradient(135deg, #161d29 0%, #24191e 55%, #192629 100%);
+}
+[data-ak-series="sui"] :is(h1, h2, .ak-hero__title .cn, .ak-heading__title) {
+  font-family: var(--ak-font-serif);
+}
+
+/* ── 2.4 EXHIBITION · 奇象巡展 / PFC（净白画布 + CMY 洋红/亮青/酸橙撞色） ── */
+[data-ak-series="exhibition"] {
+  --ak-pop-magenta: #ff2a85;
+  --ak-pop-cyan: #00b7e6;
+  --ak-pop-lime: #c8f000;
+  --ak-theme-accent: #ff2a85;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(255, 42, 133, 0.12);
+  --ak-accent: #d4146a;
+  --ak-accent-hover: #b50f59;
+  --ak-accent-fg: #ffffff;
+  --ak-accent-subtle: rgba(212, 20, 106, 0.08);
+  --ak-accent-muted: rgba(212, 20, 106, 0.28);
+  --ak-accent-2: #0092b8;
+  --ak-link: #007ea3;
+  --ak-link-hover: #005b78;
+  --ak-border-accent: #d4146a;
+  --ak-focus: #141518;
+  --ak-bg-canvas: #f4f5f7;
+  --ak-bg-surface: #ffffff;
+  --ak-bg-surface-2: #eceef2;
+  --ak-bg-inset: #e5e8ee;
+  --ak-border: #d5d9e2;
+  --ak-border-strong: #9ca4b3;
+}
+:root[data-theme="dark"][data-ak-series="exhibition"],
+[data-theme="dark"] [data-ak-series="exhibition"] {
+  --ak-pop-magenta: #ff4796;
+  --ak-pop-cyan: #00e5ff;
+  --ak-pop-lime: #d9ff00;
+  --ak-theme-accent: #ff4796;
+  --ak-theme-accent-fg: #12060c;
+  --ak-theme-accent-subtle: rgba(255, 71, 150, 0.16);
+  --ak-accent: #ff4796;
+  --ak-accent-hover: #ff70ae;
+  --ak-accent-fg: #12060c;
+  --ak-accent-subtle: rgba(255, 71, 150, 0.14);
+  --ak-accent-muted: rgba(255, 71, 150, 0.36);
+  --ak-accent-2: #00e5ff;
+  --ak-link: #00e5ff;
+  --ak-link-hover: #7cf2ff;
+  --ak-border-accent: #00e5ff;
+  --ak-focus: #d9ff00;
+  --ak-bg-canvas: #101216;
+  --ak-bg-surface: #181b22;
+  --ak-bg-surface-2: #20242e;
+  --ak-bg-surface-3: #2a2f3b;
+  --ak-bg-inset: #0b0d11;
+  --ak-border: #2c313f;
+  --ak-border-strong: #4d556b;
+}
+[data-ak-series="exhibition"] .ak-header,
+[data-ak-series="exhibition"] .ak-footer {
+  --ak-theme-accent: #ff4796;
+  --ak-theme-accent-fg: #12060c;
+  --ak-chrome-bg: rgba(15, 17, 22, 0.94);
+}
+[data-ak-series="exhibition"] .ak-hero {
+  background: linear-gradient(135deg, #16181f 0%, #1c1420 55%, #111e24 100%);
+}
+
+/* ── 2.5 BRAWL · 喧闹法则 / Vitafield（工业明黄 #FFD100 + 混凝土黑印刷大字报） ── */
+[data-ak-series="brawl"] {
+  --ak-series-yellow: #ffd100;
+  --ak-series-ink: #121212;
+  --ak-theme-accent: #ffd100;
+  --ak-theme-accent-fg: #121212;
+  --ak-theme-accent-subtle: rgba(255, 209, 0, 0.20);
+  --ak-accent: #141414;
+  --ak-accent-hover: #2c2c2c;
+  --ak-accent-fg: #ffd100;
+  --ak-accent-subtle: rgba(255, 209, 0, 0.24);
+  --ak-accent-muted: rgba(18, 18, 18, 0.25);
+  --ak-accent-2: #ffd100;
+  --ak-link: #121212;
+  --ak-link-hover: #006299;
+  --ak-border-accent: #121212;
+  --ak-focus: #121212;
+  --ak-bg-canvas: #f2efe4;
+  --ak-bg-surface: #ffffff;
+  --ak-bg-surface-2: #ebe6d5;
+  --ak-bg-surface-3: #e0dac4;
+  --ak-bg-inset: #e7e2d1;
+  --ak-border: #bdb69f;
+  --ak-border-strong: #181818;
+}
+:root[data-theme="dark"][data-ak-series="brawl"],
+[data-theme="dark"] [data-ak-series="brawl"] {
+  --ak-series-yellow: #ffd100;
+  --ak-series-ink: #121212;
+  --ak-theme-accent: #ffd100;
+  --ak-theme-accent-fg: #121212;
+  --ak-theme-accent-subtle: rgba(255, 209, 0, 0.18);
+  --ak-accent: #ffd100;
+  --ak-accent-hover: #ffe047;
+  --ak-accent-fg: #121212;
+  --ak-accent-subtle: rgba(255, 209, 0, 0.14);
+  --ak-accent-muted: rgba(255, 209, 0, 0.36);
+  --ak-accent-2: #ffd100;
+  --ak-link: #ffd100;
+  --ak-link-hover: #ffea75;
+  --ak-border-accent: #ffd100;
+  --ak-focus: #ffd100;
+  --ak-bg-canvas: #121210;
+  --ak-bg-surface: #1b1b17;
+  --ak-bg-surface-2: #24241e;
+  --ak-bg-surface-3: #2e2e26;
+  --ak-bg-inset: #0d0d0b;
+  --ak-border: #38372e;
+  --ak-border-strong: #ffd100;
+}
+[data-ak-series="brawl"] .ak-header,
+[data-ak-series="brawl"] .ak-footer {
+  --ak-theme-accent: #ffd100;
+  --ak-theme-accent-fg: #121212;
+  --ak-chrome-bg: rgba(16, 16, 14, 0.96);
+}
+[data-ak-series="brawl"] .ak-hero {
+  --ak-accent: #ffd100;
+  --ak-accent-hover: #ffe047;
+  --ak-accent-fg: #121212;
+  --ak-accent-subtle: rgba(255, 209, 0, 0.16);
+}
+
+/* ── 2.6 THEATER · 集成战略 / 暗黑剧场（丝绒深红 / 幽蓝 + 鎏金典籍衬线） ── */
+[data-ak-series="theater"] {
+  --ak-series-velvet: #8b1e2e;
+  --ak-series-gilt: #826227;
+  --ak-theme-accent: #8b1e2e;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(139, 30, 46, 0.12);
+  --ak-accent: #8b1e2e;
+  --ak-accent-hover: #6e1522;
+  --ak-accent-fg: #ffffff;
+  --ak-accent-subtle: rgba(139, 30, 46, 0.08);
+  --ak-accent-muted: rgba(139, 30, 46, 0.25);
+  --ak-accent-2: #826227;
+  --ak-link: #8b1e2e;
+  --ak-link-hover: #5c101b;
+  --ak-border-accent: #826227;
+  --ak-focus: #8b1e2e;
+  --ak-bg-canvas: #f3ede6;
+  --ak-bg-surface: #fcf9f4;
+  --ak-bg-surface-2: #eae2d8;
+  --ak-bg-surface-3: #dfd4c7;
+  --ak-bg-inset: #e4dbd0;
+  --ak-fg: #1f1719;
+  --ak-fg-secondary: #43373a;
+  --ak-fg-muted: #706266;
+  --ak-border: #d5c9bc;
+  --ak-border-strong: #8d7d6e;
+}
+:root[data-theme="dark"][data-ak-series="theater"],
+[data-theme="dark"] [data-ak-series="theater"] {
+  --ak-series-velvet: #c94658;
+  --ak-series-gilt: #d4af6a;
+  --ak-theme-accent: #c94658;
+  --ak-theme-accent-fg: #ffffff;
+  --ak-theme-accent-subtle: rgba(201, 70, 88, 0.16);
+  --ak-accent: #d4af6a;
+  --ak-accent-hover: #e5c68b;
+  --ak-accent-fg: #140d0f;
+  --ak-accent-subtle: rgba(212, 175, 106, 0.14);
+  --ak-accent-muted: rgba(212, 175, 106, 0.32);
+  --ak-accent-2: #c94658;
+  --ak-link: #e5c68b;
+  --ak-link-hover: #f5dfb2;
+  --ak-border-accent: #d4af6a;
+  --ak-focus: #d4af6a;
+  --ak-bg-canvas: #0f0b0d;
+  --ak-bg-surface: #181215;
+  --ak-bg-surface-2: #21191d;
+  --ak-bg-surface-3: #2b2026;
+  --ak-bg-inset: #0a0709;
+  --ak-fg: #f3ece4;
+  --ak-fg-secondary: #c9bfb5;
+  --ak-fg-muted: #908280;
+  --ak-border: #362930;
+  --ak-border-strong: #6b5650;
+}
+[data-ak-series="theater"] .ak-header,
+[data-ak-series="theater"] .ak-footer {
+  --ak-theme-accent: #d4af6a;
+  --ak-theme-accent-fg: #140d0f;
+  --ak-chrome-bg: rgba(12, 9, 11, 0.95);
+}
+[data-ak-series="theater"] .ak-hero {
+  background:
+    radial-gradient(75% 90% at 50% 0%, rgba(139, 30, 46, 0.28), transparent 72%),
+    linear-gradient(180deg, #160f13 0%, #0d090b 100%);
+  border: 1px solid var(--ak-series-gilt, #826227);
+}
+[data-ak-series="theater"] :is(.ak-hero__title, .ak-heading__title, .ak-playbill-frame__title) {
+  font-family: var(--ak-font-drama);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  3. 系列专属平面装帧与交互母题组件
+ * ═════════════════════════════════════════════════════════════════════════ */
+
+/* 3.1 通用双/三栏与展陈栅格（替代内联 grid，内置手机响应） */
+.ak-series-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ak-space-4); }
+.ak-series-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--ak-space-4); }
+.ak-series-split { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.85fr); gap: var(--ak-space-5); align-items: start; }
+@media (max-width: 1023px) {
+  .ak-series-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ak-series-split { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 639px) {
+  .ak-series-grid-2,
+  .ak-series-grid-3 { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 3.2 前导超大序号 & 分数角标 (喧闹法则 01- / MAY 1/4) */
+.ak-index-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--ak-space-3);
+  border-bottom: 2px solid var(--ak-border-strong);
+  padding-bottom: var(--ak-space-2);
+  margin-bottom: var(--ak-space-4);
+}
+.ak-index-no {
+  font: 800 clamp(2.25rem, 4.5vw, 3.5rem)/0.95 var(--ak-font-display);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ak-fg);
+}
+.ak-index-frac {
+  font: 700 var(--ak-fs-sm)/1 var(--ak-font-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ak-fg);
+}
+.ak-index-frac sup {
+  font-size: 0.72em;
+  margin-left: 2px;
+  color: var(--ak-fg-muted);
+}
+
+/* 3.3 黑白双拼录入印章 (新干员 | 信息已录入 RHODES ISLAND) */
+.ak-stamp-pair {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  border: 2px solid var(--ak-fg);
+  font: 700 clamp(10px, 2.7vw, 12px)/1.2 var(--ak-font-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ak-stamp-pair__left {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  background: var(--ak-bg-surface);
+  color: var(--ak-fg);
+  border-right: 2px solid var(--ak-fg);
+}
+.ak-stamp-pair__right {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px 12px;
+  background: var(--ak-fg);
+  color: var(--ak-bg-surface);
+}
+.ak-stamp-pair__right small {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  opacity: 0.8;
+}
+
+/* 3.4 纯 CSS 疏密条形码与票据卡 (.ak-barcode / .ak-ticket) */
+.ak-barcode {
+  display: block;
+  width: 100%;
+  height: var(--_h, 28px);
+  color: var(--ak-fg);
+  background: repeating-linear-gradient(
+    90deg,
+    currentColor 0 2px, transparent 2px 4px,
+    currentColor 4px 5px, transparent 5px 8px,
+    currentColor 8px 12px, transparent 12px 14px,
+    currentColor 14px 15px, transparent 15px 19px,
+    currentColor 19px 22px, transparent 22px 24px,
+    currentColor 24px 25px, transparent 25px 30px
+  );
+}
+.ak-ticket {
+  border: 2px solid var(--ak-border-strong);
+  background: var(--ak-bg-surface);
+}
+.ak-ticket__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--ak-bg-inverse);
+  color: var(--ak-fg-inverse);
+  font: 700 11px/1.2 var(--ak-font-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ak-ticket__body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 3.5 工业路牌贴纸 (.ak-signage) & 竖排边缘字带 (.ak-edge-strip) */
+.ak-signage {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  padding: 6px 12px;
+  background: var(--ak-bg-inverse);
+  color: var(--ak-fg-inverse);
+  border-left: 5px solid var(--ak-theme-accent);
+  font: 700 12px/1.3 var(--ak-font-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ak-signage__arrows {
+  color: var(--ak-theme-accent);
+  letter-spacing: 0.02em;
+}
+.ak-edge-strip {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font: 700 11px/1 var(--ak-font-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ak-fg-muted);
+  border-left: 2px solid var(--ak-accent);
+  padding-left: 6px;
+  user-select: none;
+}
+
+/* 3.6 四角 L 形裁切线 (.ak-crop-marks) & 战术菱形徽章 (.ak-emblem-diamond) */
+.ak-crop-marks {
+  position: relative;
+  padding: 20px;
+}
+.ak-crop-marks::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  --_c: var(--ak-fg);
+  --_t: 2px;
+  --_len: 16px;
+  background:
+    linear-gradient(var(--_c) 0 0) 0 0 / var(--_len) var(--_t),
+    linear-gradient(var(--_c) 0 0) 0 0 / var(--_t) var(--_len),
+    linear-gradient(var(--_c) 0 0) 100% 0 / var(--_len) var(--_t),
+    linear-gradient(var(--_c) 0 0) 100% 0 / var(--_t) var(--_len),
+    linear-gradient(var(--_c) 0 0) 0 100% / var(--_len) var(--_t),
+    linear-gradient(var(--_c) 0 0) 0 100% / var(--_t) var(--_len),
+    linear-gradient(var(--_c) 0 0) 100% 100% / var(--_len) var(--_t),
+    linear-gradient(var(--_c) 0 0) 100% 100% / var(--_t) var(--_len);
+  background-repeat: no-repeat;
+}
+.ak-emblem-diamond {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  color: var(--ak-fg);
+}
+.ak-emblem-diamond::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+.ak-emblem-diamond > span {
+  position: relative;
+  z-index: 1;
+  font: 700 11px/1 var(--ak-font-label);
+}
+
+/* 3.7 喧闹法则高饱和海报名片区 (.ak-brawl-poster) */
+.ak-brawl-poster {
+  background: var(--ak-series-yellow, #ffd100);
+  color: #121212;
+  padding: 28px;
+  border: 2px solid #121212;
+  --ak-fg: #121212;
+  --ak-fg-secondary: #222222;
+  --ak-fg-muted: #453c06;
+  --ak-bg-surface: #fff9d6;
+  --ak-bg-surface-2: #f2c300;
+  --ak-bg-surface-3: #e3b500;
+  --ak-bg-hover: rgba(18, 18, 18, 0.08);
+  --ak-bg-inverse: #121212;
+  --ak-fg-inverse: #ffd100;
+  --ak-accent: #121212;
+  --ak-accent-hover: #2c2c2c;
+  --ak-accent-fg: #ffd100;
+  --ak-accent-subtle: rgba(18, 18, 18, 0.14);
+  --ak-link: #121212;
+  --ak-link-hover: #000000;
+  --ak-focus: #121212;
+  --ak-border: #121212;
+  --ak-border-strong: #121212;
+}
+@media (max-width: 639px) { .ak-brawl-poster { padding: 18px 16px; } }
+
+/* 3.8 卫戍协议：等级阶梯选择卡 (.ak-tier-list / .ak-tier) & 水印结算行 (.ak-mission-item) */
+.ak-tier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ak-tier {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--ak-bg-surface);
+  color: var(--ak-fg);
+  border: 1px solid var(--ak-border);
+  border-left: 4px solid var(--ak-border-strong);
+  cursor: pointer;
+  font: inherit;
+  transition: background-color var(--ak-dur-fast) var(--ak-ease), border-color var(--ak-dur-fast) var(--ak-ease);
+}
+.ak-tier:hover:not(:disabled) {
+  background: var(--ak-bg-surface-2);
+  border-color: var(--ak-border-strong);
+}
+.ak-tier.is-active {
+  background: var(--ak-bg-surface-2);
+  border-color: var(--ak-series-amber, var(--ak-accent-2));
+  border-left-color: var(--ak-series-amber, var(--ak-accent-2));
+}
+.ak-tier:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+.ak-tier__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+.ak-tier__lv {
+  font: 700 12px/1 var(--ak-font-label);
+  padding: 3px 7px;
+  background: var(--ak-bg-inset);
+  border: 1px solid var(--ak-border-strong);
+  color: var(--ak-fg);
+}
+.ak-tier.is-active .ak-tier__lv {
+  background: var(--ak-series-amber, var(--ak-accent-2));
+  border-color: var(--ak-series-amber, var(--ak-accent-2));
+  color: #121212;
+}
+.ak-mission-item {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--ak-bg-surface);
+  border: 1px solid var(--ak-border);
+  border-left: 4px solid var(--ak-accent);
+}
+.ak-mission-item__wm {
+  position: absolute;
+  right: 92px;
+  top: 50%;
+  transform: translateY(-50%) skewX(-8deg);
+  font: 800 32px/1 var(--ak-font-display);
+  letter-spacing: 0.08em;
+  color: var(--ak-fg);
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
+}
+.ak-mission-item__main { position: relative; z-index: 1; min-width: 0; }
+.ak-mission-item__reward {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  padding: 4px 10px;
+  background: var(--ak-accent);
+  color: var(--ak-accent-fg);
+  font: 700 12px/1.2 var(--ak-font-label);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3.9 周年庆典：对称绶带头 (.ak-ribbon-head) */
+.ak-ribbon-head {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  padding: 10px 24px;
+  margin: 0 auto var(--ak-space-4);
+  background: linear-gradient(90deg, transparent, var(--ak-theme-accent) 18%, var(--ak-theme-accent) 82%, transparent);
+  color: var(--ak-theme-accent-fg);
+  font: 700 clamp(0.9rem, 1.8vw, 1.25rem)/1.25 var(--ak-font-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+}
+.ak-ribbon-head__mark { opacity: 0.85; font-size: 0.85em; }
+
+/* 3.10 炎国岁系列：传统回纹外框 (.ak-fret-box) & 注音拼字标题 (.ak-ruby-title) */
+.ak-fret-box {
+  position: relative;
+  padding: 24px 28px;
+  background: var(--ak-bg-surface);
+  border: 1px solid var(--ak-border-strong);
+  box-shadow: inset 0 0 0 4px var(--ak-bg-surface), inset 0 0 0 5px var(--ak-accent);
+}
+.ak-fret-box::before,
+.ak-fret-box::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ak-accent);
+  box-shadow: inset 0 0 0 2px var(--ak-bg-surface), inset 0 0 0 4px var(--ak-accent);
+  pointer-events: none;
+}
+.ak-fret-box::before { top: 8px; left: 8px; }
+.ak-fret-box::after { bottom: 8px; right: 8px; }
+.ak-ruby-title {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+  font-family: var(--ak-font-serif);
+}
+.ak-ruby-word {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.ak-ruby-word > strong {
+  font-size: clamp(1.75rem, 3.6vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1;
+}
+.ak-ruby-word > span {
+  font: 500 11px/1 var(--ak-font-mono);
+  letter-spacing: 0.06em;
+  color: var(--ak-fg-muted);
+}
+
+/* 3.11 奇象巡展：CMY 三色条圆角导览卡 (.ak-pop-card) & 空心描边大字 (.ak-title-outline) */
+.ak-pop-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--ak-bg-surface);
+  border: 1px solid var(--ak-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+:root[data-theme="dark"] .ak-pop-card {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.ak-pop-card__cmy {
+  height: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.ak-pop-card__cmy > i:nth-child(1) { background: var(--ak-pop-cyan, #00c2e0); }
+.ak-pop-card__cmy > i:nth-child(2) { background: var(--ak-pop-magenta, #ff2a85); }
+.ak-pop-card__cmy > i:nth-child(3) { background: var(--ak-pop-lime, #d9ff00); }
+.ak-pop-card__body {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ak-title-outline {
+  font: 800 clamp(2rem, 4.5vw, 3.5rem)/1 var(--ak-font-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ak-fg);
+}
+
+/* 3.12 暗黑剧场：双线剧目框 (.ak-playbill-frame) & 菱形分节线 */
+.ak-playbill-frame {
+  position: relative;
+  padding: 24px 28px;
+  background: var(--ak-bg-surface);
+  border: 1px solid var(--ak-border-strong);
+  box-shadow: inset 0 0 0 5px var(--ak-bg-surface), inset 0 0 0 6px var(--ak-border);
+}
+.ak-playbill-frame__title {
+  margin: 0 0 6px;
+  font-family: var(--ak-font-drama);
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+  font-weight: 700;
+  color: var(--ak-fg);
+}
+
+/* 3.13 年份步进胶囊 (.ak-year-stepper) & 展陈画廊 (.ak-gallery-masonry / .ak-gallery-card) */
+.ak-year-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px;
+  background: var(--ak-bg-surface-2);
+  border: 1px solid var(--ak-border-strong);
+}
+.ak-year-stepper__btn {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: var(--ak-bg-surface);
+  color: var(--ak-fg);
+  cursor: pointer;
+  font: 700 14px/1 var(--ak-font-label);
+}
+.ak-year-stepper__btn:hover { background: var(--ak-accent); color: var(--ak-accent-fg); }
+.ak-year-stepper__btn:focus-visible { outline: 2px solid var(--ak-focus); outline-offset: -2px; }
+.ak-year-stepper__val {
+  min-width: 56px;
+  text-align: center;
+  font: 700 15px/1 var(--ak-font-label);
+  font-variant-numeric: tabular-nums;
+}
+.ak-gallery-masonry {
+  display: grid;
+  grid-template-columns: repeat(var(--_cols, 3), minmax(0, 1fr));
+  gap: var(--ak-space-4);
+}
+@media (max-width: 1023px) { .ak-gallery-masonry { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 639px) { .ak-gallery-masonry { grid-template-columns: minmax(0, 1fr); } }
+.ak-gallery-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px;
+  background: var(--ak-bg-surface);
+  border: 1px solid var(--ak-border);
+}
+.ak-badge-tall {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  background: var(--ak-bg-inverse);
+  color: var(--ak-fg-inverse);
+  font: 700 10px/1.3 var(--ak-font-label);
+  letter-spacing: 0.08em;
+}
+
+/* 3.14 温和呼吸脉冲（用于活动协议状态点，遵从 reduced-motion） */
+@keyframes ak-series-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.38; }
+}
+.ak-series-pulse {
+  animation: ak-series-pulse 2.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ak-series-pulse { animation: none; }
+}
+
+/* 窄屏统一安全收口 */
+@media (max-width: 639px) {
+  .ak-fret-box,
+  .ak-playbill-frame,
+  .ak-crop-marks { padding: 16px; }
+  .ak-mission-item__wm { display: none; }
+  [data-ak-series] .ak-tabs--block { flex-wrap: wrap; overflow-x: visible; }
+  [data-ak-series] .ak-tabs--block .ak-tab { padding: 6px 10px; font-size: var(--ak-fs-xs); }
+  [data-ak-series] .ak-panel__head { flex-wrap: wrap; gap: 8px 12px; padding-block: 8px; }
+  [data-ak-series] .ak-panel__title { flex: 1 1 180px; }
+}

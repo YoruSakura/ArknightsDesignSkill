@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light" data-ak-series="brawl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NOISE.LAB // 独立设计年刊与街头音频索引（喧闹法则 / Vitafield 大字报风）</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap">
+  <link rel="stylesheet" href="../resources/prts-design.css">
+  <link rel="stylesheet" href="../resources/prts-addons.css">
+  <link rel="stylesheet" href="../resources/prts-series.css">
+  <style>
+    body { margin: 0; background: var(--ak-bg-canvas); min-height: 100vh; display: flex; flex-direction: column; }
+    .ak-brawl-title { font: 800 clamp(2.1rem, 5vw, 3.6rem)/0.96 var(--ak-font-display); text-transform: uppercase; letter-spacing: -0.02em; margin: 14px 0 8px; }
+  </style>
+</head>
+<body class="ak-scope">
+  <header class="ak-header">
+    <div class="ak-header__inner">
+      <a class="ak-header__logo" href="#">
+        <span class="ak-header__wordmark">
+          NOISE.LAB
+          <small>STREET PRESS // ISSUE 04</small>
+        </span>
+      </a>
+      <div class="ak-header__search">
+        <button type="button" class="ak-search-trigger">
+          <span class="ak-search-trigger__icon">⌕</span>
+          <span class="ak-search-trigger__label">检索街区采样合辑、ZINE 刊号与实体寄售站点…</span>
+          <kbd class="ak-search__kbd">/</kbd>
+        </button>
+      </div>
+      <div class="ak-header__tools">
+        <div class="ak-seg" role="group" aria-label="界面主题切换">
+          <button type="button" onclick="setTheme('light')" id="btn-light" class="is-active" aria-pressed="true">档案 (Light)</button>
+          <button type="button" onclick="setTheme('dark')" id="btn-dark" aria-pressed="false">终端 (Dark)</button>
+        </div>
+      </div>
+    </div>
+    <nav class="ak-local-nav" aria-label="页面菜单">
+      <button type="button" class="ak-local-nav__btn ak-local-nav__menu" id="ak-menu-btn" aria-controls="ak-sidebar" aria-expanded="false">
+        <svg class="ak-icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2 4h16v2H2zM2 9h16v2H2zM2 14h16v2H2z"/></svg>菜单
+      </button>
+    </nav>
+  </header>
+  <div class="ak-drawer-scrim" id="ak-scrim"></div>
+
+  <div class="ak-layout ak-layout--no-toc">
+    <aside class="ak-sidebar" id="ak-sidebar">
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">PRESS // 街区刊物</h3>
+        <ul>
+          <li class="is-active"><a href="#poster">高饱和海报名片区</a></li>
+          <li><a href="#catalog">分期索引与音轨包</a></li>
+          <li><a href="#ticket">配送单据与条形码</a></li>
+        </ul>
+      </div>
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">SERIES // 系列样板</h3>
+        <ul>
+          <li><a href="./series-regulation.html">01 · 战术规程</a></li>
+          <li><a href="./series-anniversary.html">02 · 周年礼仪庆典</a></li>
+          <li><a href="./series-sui.html">03 · 炎国岁系列国风</a></li>
+          <li><a href="./series-exhibition.html">04 · 矢量波普巡展</a></li>
+          <li class="is-active"><a href="./series-brawl.html">05 · 街头大字报 (当前)</a></li>
+          <li><a href="./series-theater.html">06 · 暗黑剧场典籍</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="ak-main ak-flex-col ak-gap-6">
+      <!-- 喧闹法则明黄大字报主区 -->
+      <section class="ak-brawl-poster" id="poster">
+        <div class="ak-index-row">
+          <span class="ak-index-no">01-</span>
+          <span class="ak-index-frac">VOL.04 <sup>1/4</sup></span>
+        </div>
+
+        <div class="ak-flex ak-wrap ak-justify-between ak-items-center ak-gap-3">
+          <div class="ak-stamp-pair">
+            <span class="ak-stamp-pair__left">AUDIO ZINE</span>
+            <span class="ak-stamp-pair__right">
+              <span>CATALOGUE INDEXED</span>
+              <small>PRESS NETWORK // 2026</small>
+            </span>
+          </div>
+          <div class="ak-signage">
+            <span class="ak-signage__arrows">&gt;&gt;&gt;</span>
+            <span>STREET ACOUSTICS</span>
+          </div>
+        </div>
+
+        <h1 class="ak-brawl-title">CITY NOISE ANNUAL</h1>
+        <p style="margin: 0; max-width: 62ch; font-weight: 500;">
+          明黄印刷大字报与混凝土炭黑碰撞出的极高张力街头出版语法：前导序号 <code>01-</code>、双拼印章、路牌箭头与纯 CSS 条形码。
+        </p>
+
+        <div class="ak-flex ak-wrap ak-gap-3 ak-mt-4 ak-mb-4">
+          <a class="ak-btn ak-btn--contrast ak-btn--lg" href="#catalog">翻阅全部刊号</a>
+          <button type="button" class="ak-btn ak-btn--primary ak-btn--lg" onclick="filterIssues('all', null)">重置筛选视图</button>
+        </div>
+
+        <div class="ak-barcode" style="--_h: 24px;" aria-hidden="true"></div>
+      </section>
+
+      <div class="ak-series-split">
+        <div class="ak-flex-col ak-gap-4" id="catalog">
+          <div class="ak-flex ak-wrap ak-gap-2" role="group" aria-label="刊物媒介筛选">
+            <button type="button" class="ak-chip is-active" aria-pressed="true" onclick="filterIssues('all', this)">全部期号</button>
+            <button type="button" class="ak-chip" aria-pressed="false" onclick="filterIssues('print', this)">实体印刷 ZINE</button>
+            <button type="button" class="ak-chip" aria-pressed="false" onclick="filterIssues('tape', this)">磁带 / 采样包</button>
+          </div>
+
+          <article class="ak-card" data-kind="print">
+            <div class="ak-card__body">
+              <div class="ak-index-row">
+                <span class="ak-index-no">02-</span>
+                <span class="ak-index-frac">PRINT <sup>2/4</sup></span>
+              </div>
+              <h2 class="ak-card__title">工业霓虹与夜班车路牌字体考</h2>
+              <p class="ak-mt-2" style="color: var(--ak-fg-secondary);">田野调查长三角六座工业港口的铝制指示牌字形比例与老化油墨斑驳轨迹。</p>
+              <details class="ak-details ak-mt-2">
+                <summary>查看收录音轨与版式参数</summary>
+                <div class="ak-details__body">开本：210 × 285mm · 纸张：140g 高松厚度再生新闻纸 · 附带 48 页孔版专色插页。</div>
+              </details>
+            </div>
+          </article>
+
+          <article class="ak-card" data-kind="tape">
+            <div class="ak-card__body">
+              <div class="ak-index-row">
+                <span class="ak-index-no">03-</span>
+                <span class="ak-index-frac">CASSETTE <sup>3/4</sup></span>
+              </div>
+              <h2 class="ak-card__title">凌晨地铁站场噪与刹车谐波采样集</h2>
+              <p class="ak-mt-2" style="color: var(--ak-fg-secondary);">使用接触式压电拾音器录制地下轨道震动频率，共 18 条无压缩 WAV / C60 铁粉磁带。</p>
+              <details class="ak-details ak-mt-2">
+                <summary>展开曲目表与采样率说明</summary>
+                <div class="ak-details__body">SIDE A：01 末班闸机 / 02 换乘长廊 · SIDE B：03 折返道岔 / 04 检修车库，24bit / 96kHz 采集。</div>
+              </details>
+            </div>
+          </article>
+        </div>
+
+        <!-- 裁切线 + 物流标签单 + 竖排字带 -->
+        <aside class="ak-crop-marks" id="ticket">
+          <div class="ak-flex ak-gap-3">
+            <div class="ak-ticket" style="flex: 1; min-width: 0;">
+              <div class="ak-ticket__head">
+                <span>DISPATCH PASS</span>
+                <span>#NL-2026-04</span>
+              </div>
+              <div class="ak-ticket__body">
+                <div class="ak-signage">
+                  <span class="ak-signage__arrows">&gt;&gt;&gt;</span>
+                  <span>PRIORITY PRESS</span>
+                </div>
+                <strong style="font-size: var(--ak-fs-body);">街头发行点速查票据</strong>
+                <div style="font-size: var(--ak-fs-xs); color: var(--ak-fg-secondary);">
+                  合作书店：上海莫干山路 50 号 · 深圳华侨城创意园 · 成都玉林西路独立刊物角
+                </div>
+                <div class="ak-barcode" style="--_h: 32px;" aria-hidden="true"></div>
+                <div class="ak-flex ak-justify-between" style="font: 700 11px/1 var(--ak-font-mono); color: var(--ak-fg-muted);">
+                  <span>WT 420G</span>
+                  <span>ISSUE 04 / 1000</span>
+                </div>
+              </div>
+            </div>
+            <div class="ak-edge-strip" aria-hidden="true">NOISE.LAB // STREET PRESS</div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <footer class="ak-footer">
+    <span class="ak-watermark">BRAWL</span>
+    <div class="ak-footer__inner">
+      <div class="ak-footer__brand">
+        <div class="ak-header__wordmark">NOISE.LAB</div>
+        <p>PRTS Series Preset 05 // 喧闹法则工业涂鸦大字报样板，高饱和明黄与黑白印刷单据语法。</p>
+      </div>
+      <div class="ak-footer__col">
+        <h4>SERIES // 系列导航</h4>
+        <ul>
+          <li><a href="./series-regulation.html">01 · 战术规程</a></li>
+          <li><a href="./series-anniversary.html">02 · 周年礼仪</a></li>
+          <li><a href="./series-sui.html">03 · 炎国岁系列</a></li>
+        </ul>
+      </div>
+      <div class="ak-footer__col">
+        <h4>MODULES // 更多样板</h4>
+        <ul>
+          <li><a href="./series-exhibition.html">04 · 矢量波普巡展</a></li>
+          <li><a href="./series-brawl.html">05 · 街头大字报</a></li>
+          <li><a href="./series-theater.html">06 · 暗黑剧场</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ak-footer__bottom">
+      <div class="ak-footer__bottom-text">
+        <span class="ak-en">BRAWL SERIES TEMPLATE</span>
+        <span>Street Poster &amp; Zine Dispatch</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('ak-menu-btn'), side = document.getElementById('ak-sidebar'), scrim = document.getElementById('ak-scrim');
+      function toggle(open) { side.classList.toggle('is-open', open); scrim.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); }
+      btn.addEventListener('click', function () { toggle(!side.classList.contains('is-open')); });
+      scrim.addEventListener('click', function () { toggle(false); });
+      side.addEventListener('click', function (e) { if (e.target.closest('a')) toggle(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggle(false); });
+    })();
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ak-series-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'light', false);
+    })();
+    function applyTheme(theme, persist) {
+      if (persist) { try { localStorage.setItem('ak-series-theme', theme); } catch (e) {} }
+      document.documentElement.dataset.theme = theme;
+      var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
+      if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
+      if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
+    }
+    function setTheme(theme) { applyTheme(theme, true); }
+
+    function filterIssues(kind, btn) {
+      var chips = document.querySelectorAll('#catalog .ak-chip');
+      chips.forEach(function (c, i) {
+        var on = btn ? c === btn : i === 0;
+        c.classList.toggle('is-active', on);
+        c.setAttribute('aria-pressed', String(on));
+      });
+      document.querySelectorAll('#catalog article[data-kind]').forEach(function (card) {
+        card.hidden = kind !== 'all' && card.dataset.kind !== kind;
+      });
+    }
+  </script>
+</body>
+</html>

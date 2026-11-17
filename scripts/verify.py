@@ -24,6 +24,7 @@ CSS_FILES = [
     "resources/prts-design.css",
     "resources/prts-tokens.css",
     "resources/prts-addons.css",
+    "resources/prts-series.css",
     "resources/endfield-standalone.css",
     "resources/endfield-theme.css",
 ]
@@ -39,6 +40,9 @@ def load_defined_classes() -> set[str]:
     return set(re.findall(r"\.([a-zA-Z_-][a-zA-Z0-9_-]*)", css))
 
 
+BANNED_SERIES_TERMS = ("PERLICA", "DIJIANG", "TALOS-N07", "北岭", "RHODES ISLAND", "罗德岛", "0x7F3A", "0xDEAD")
+
+
 def check_html_files(defined: set[str]) -> list[str]:
     errors: list[str] = []
     for hp in sorted((ROOT / "examples").glob("*.html")):
@@ -51,11 +55,14 @@ def check_html_files(defined: set[str]) -> list[str]:
             if (c.startswith(("ak-", "ef-")) or c in STATE_CLASSES) and c not in scoped
         )
         inline_grids = len(re.findall(r"grid-template-columns\s*:", txt))
+        leaks = [t for t in BANNED_SERIES_TERMS if t in txt] if hp.name.startswith("series-") else []
         if missing:
             errors.append(f"{hp.relative_to(ROOT)}: missing classes {missing}")
         if inline_grids:
             errors.append(f"{hp.relative_to(ROOT)}: found {inline_grids} inline grid-template-columns")
-        print(f"[HTML] {hp.name}: {len(used)} classes, missing={missing}, inline_grid={inline_grids}")
+        if leaks:
+            errors.append(f"{hp.relative_to(ROOT)}: leaked placeholder terms {leaks}")
+        print(f"[HTML] {hp.name}: {len(used)} classes, missing={missing}, inline_grid={inline_grids}, leaks={leaks}")
     return errors
 
 
@@ -88,7 +95,12 @@ def check_markdown_files(defined: set[str]) -> list[str]:
 
 def check_css_animations() -> list[str]:
     errors: list[str] = []
-    for rel, disallow_unused in [("resources/prts-design.css", False), ("resources/endfield-standalone.css", True)]:
+    targets = [
+        ("resources/prts-design.css", False),
+        ("resources/prts-series.css", True),
+        ("resources/endfield-standalone.css", True),
+    ]
+    for rel, disallow_unused in targets:
         txt = (ROOT / rel).read_text(encoding="utf-8")
         kfs = set(re.findall(r"@keyframes\s+([a-zA-Z0-9_-]+)", txt))
         used = set(re.findall(r"animation(?:-name)?\s*:\s*([a-zA-Z0-9_-]+)", txt))
@@ -115,6 +127,12 @@ def run_chrome_render_and_behavior(out_dir: pathlib.Path) -> list[str]:
     pages = [
         ("prts-bp", "examples/prts-boilerplate.html", 1600, 2400),
         ("prts-comp", "examples/prts-components.html", 3600, 5600),
+        ("sr-reg", "examples/series-regulation.html", 1700, 2600),
+        ("sr-anniv", "examples/series-anniversary.html", 1500, 2400),
+        ("sr-sui", "examples/series-sui.html", 1500, 2400),
+        ("sr-expo", "examples/series-exhibition.html", 1600, 2500),
+        ("sr-brawl", "examples/series-brawl.html", 1500, 2400),
+        ("sr-theater", "examples/series-theater.html", 1600, 2500),
         ("ef-bp", "examples/endfield-boilerplate.html", 1700, 2500),
         ("ef-comp", "examples/endfield-components.html", 4600, 7400),
     ]
@@ -138,7 +156,7 @@ def run_chrome_render_and_behavior(out_dir: pathlib.Path) -> list[str]:
                     check=True,
                     capture_output=True,
                 )
-    print(f"[RENDER] Rendered 16 screenshots into {out_dir}")
+    print(f"[RENDER] Rendered {len(pages) * 4} screenshots into {out_dir}")
 
     # Behavior + live animation audit on component showcases
     ef_probe = """
@@ -211,9 +229,76 @@ window.addEventListener('load', () => {
 });
 </script>
 """
+    series_reg_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = { seriesPulse: getComputedStyle(document.querySelector('.ak-series-pulse')).animationName };
+  document.querySelector('.ak-tier[data-tier="3"]').click();
+  const tierChanged = document.getElementById('reg-mult').textContent === '×2.25';
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({ anims, tierChanged, noOverflow }));
+});
+</script>
+"""
+    series_tabs_probe = """
+<script>
+window.addEventListener('load', () => {
+  const tabsOk = [...document.querySelectorAll('[role="tablist"]')].every(list => {
+    const tabs = [...list.querySelectorAll('[role="tab"]')];
+    tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    const r = tabs[1].getAttribute('aria-selected') === 'true' && tabs[1].tabIndex === 0;
+    tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+    return r && tabs[0].getAttribute('aria-selected') === 'true';
+  });
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, tabsOk, noOverflow }));
+});
+</script>
+"""
+    series_sui_probe = """
+<script>
+window.addEventListener('load', () => {
+  stepYear(-1);
+  const yearStepped = document.getElementById('sui-year').textContent === '2025';
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, yearStepped, noOverflow }));
+});
+</script>
+"""
+    series_expo_probe = """
+<script>
+window.addEventListener('load', () => {
+  selectBooth(1);
+  const boothSwitched = document.getElementById('booth-tag').textContent.includes('B02');
+  setCols(2);
+  const colsChanged = document.getElementById('expo-masonry').style.getPropertyValue('--_cols') === '2';
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, boothSwitched, colsChanged, noOverflow }));
+});
+</script>
+"""
+    series_brawl_probe = """
+<script>
+window.addEventListener('load', () => {
+  const tapeBtn = document.querySelectorAll('#catalog .ak-chip')[2];
+  filterIssues('tape', tapeBtn);
+  const filtered = document.querySelector('#catalog [data-kind="print"]').hidden === true
+    && document.querySelector('#catalog [data-kind="tape"]').hidden === false
+    && tapeBtn.getAttribute('aria-pressed') === 'true';
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, filtered, noOverflow }));
+});
+</script>
+"""
     for src_name, html_file, probe in [
         ("endfield-components", out_dir / "ef-comp-light.html", ef_probe),
         ("prts-components", out_dir / "prts-comp-dark.html", prts_probe),
+        ("series-regulation", out_dir / "sr-reg-dark.html", series_reg_probe),
+        ("series-anniversary", out_dir / "sr-anniv-dark.html", series_tabs_probe),
+        ("series-sui", out_dir / "sr-sui-light.html", series_sui_probe),
+        ("series-exhibition", out_dir / "sr-expo-light.html", series_expo_probe),
+        ("series-brawl", out_dir / "sr-brawl-light.html", series_brawl_probe),
+        ("series-theater", out_dir / "sr-theater-dark.html", series_tabs_probe),
     ]:
         probe_file = out_dir / f"probe-{src_name}.html"
         probe_file.write_text(html_file.read_text(encoding="utf-8").replace("</body>", probe + "</body>"), encoding="utf-8")
@@ -227,7 +312,7 @@ window.addEventListener('load', () => {
             continue
         data = json.loads(m.group(1).replace("&quot;", '"'))
         print(f"[PROBE] {src_name}: {json.dumps(data, ensure_ascii=False)}")
-        for k, v in data["anims"].items():
+        for k, v in data.get("anims", {}).items():
             if not v or v == "none":
                 errors.append(f"{src_name}: animation '{k}' resolved to '{v}'")
         for k, v in data.items():
