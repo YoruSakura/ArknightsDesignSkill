@@ -76,6 +76,7 @@
   --ak-chrome-bg: rgba(11, 15, 16, 0.94);
 }
 [data-ak-series="regulation"] .ak-hero {
+  --ak-theme-accent: #00d8a0;
   background: linear-gradient(135deg, #101416 0%, #192124 62%, #241819 100%);
   border-left: 4px solid var(--ak-series-crimson, #c82a36);
 }
@@ -136,9 +137,8 @@
   --ak-chrome-bg: rgba(9, 9, 13, 0.94);
 }
 [data-ak-series="anniversary"] .ak-hero {
-  background:
-    radial-gradient(64% 85% at 50% 0%, rgba(224, 60, 75, 0.18), transparent 70%),
-    linear-gradient(180deg, #100e14 0%, #09090d 100%);
+  --ak-theme-accent: #ee4a58;
+  background: linear-gradient(180deg, #1a0f16 0%, #100e14 46%, #09090d 100%);
   border-top: 2px solid var(--ak-series-gold, #e5b85c);
   border-bottom: 2px solid var(--ak-series-gold, #e5b85c);
 }
@@ -208,6 +208,7 @@
   --ak-chrome-bg: rgba(16, 20, 26, 0.94);
 }
 [data-ak-series="sui"] .ak-hero {
+  --ak-theme-accent: #ee5a4e;
   background: linear-gradient(135deg, #161d29 0%, #24191e 55%, #192629 100%);
 }
 [data-ak-series="sui"] :is(h1, h2, .ak-hero__title .cn, .ak-heading__title) {
@@ -272,6 +273,7 @@
   --ak-chrome-bg: rgba(15, 17, 22, 0.94);
 }
 [data-ak-series="exhibition"] .ak-hero {
+  --ak-theme-accent: #ff4796;
   background: linear-gradient(135deg, #16181f 0%, #1c1420 55%, #111e24 100%);
 }
 
@@ -401,9 +403,9 @@
   --ak-chrome-bg: rgba(12, 9, 11, 0.95);
 }
 [data-ak-series="theater"] .ak-hero {
-  background:
-    radial-gradient(75% 90% at 50% 0%, rgba(139, 30, 46, 0.28), transparent 72%),
-    linear-gradient(180deg, #160f13 0%, #0d090b 100%);
+  --ak-theme-accent: #d4af6a;
+  --ak-theme-accent-fg: #140d0f;
+  background: linear-gradient(180deg, #2a1119 0%, #160f13 48%, #0d090b 100%);
   border: 1px solid var(--ak-series-gilt, #826227);
 }
 [data-ak-series="theater"] :is(.ak-hero__title, .ak-heading__title, .ak-playbill-frame__title) {
@@ -558,7 +560,7 @@
   user-select: none;
 }
 
-/* 3.6 四角 L 形裁切线 (.ak-crop-marks) & 战术菱形徽章 (.ak-emblem-diamond) */
+/* 3.6 四角 L 形裁切线 (.ak-crop-marks) & 直角幕次标 (.ak-act-mark) */
 .ak-crop-marks {
   position: relative;
   padding: 20px;
@@ -582,26 +584,20 @@
     linear-gradient(var(--_c) 0 0) 100% 100% / var(--_t) var(--_len);
   background-repeat: no-repeat;
 }
-.ak-emblem-diamond {
-  position: relative;
+.ak-act-mark {
   display: inline-grid;
   place-items: center;
-  width: 34px;
+  min-width: 34px;
   height: 34px;
+  padding: 0 6px;
   flex: none;
   color: var(--ak-fg);
-}
-.ak-emblem-diamond::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
   border: 2px solid currentColor;
-  transform: rotate(45deg);
+  box-shadow: inset 0 0 0 2px var(--ak-bg-surface), inset 0 0 0 3px var(--ak-border-accent);
 }
-.ak-emblem-diamond > span {
-  position: relative;
-  z-index: 1;
-  font: 700 11px/1 var(--ak-font-label);
+.ak-act-mark > span {
+  font: 700 12px/1 var(--ak-font-label);
+  letter-spacing: 0.06em;
 }
 
 /* 3.7 喧闹法则高饱和海报名片区 (.ak-brawl-poster) */
@@ -696,20 +692,25 @@
   border: 1px solid var(--ak-border);
   border-left: 4px solid var(--ak-accent);
 }
+.ak-mission-item > * { order: 3; }
 .ak-mission-item__wm {
-  position: absolute;
-  right: 92px;
-  top: 50%;
-  transform: translateY(-50%) skewX(-8deg);
+  order: 2;
+  flex: 0 1 auto;
+  min-width: 0;
+  margin-left: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: skewX(-8deg); /* 仅文字斜体，非盒轮廓斜切 */
   font: 800 32px/1 var(--ak-font-display);
   letter-spacing: 0.08em;
   color: var(--ak-fg);
-  opacity: 0.06;
+  opacity: 0.08;
   pointer-events: none;
   user-select: none;
 }
-.ak-mission-item__main { position: relative; z-index: 1; min-width: 0; }
+.ak-mission-item__main { order: 1; flex: 0 1 auto; position: relative; z-index: 1; min-width: 0; }
 .ak-mission-item__reward {
+  order: 3;
   position: relative;
   z-index: 1;
   flex: none;

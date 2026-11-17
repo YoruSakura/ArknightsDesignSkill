@@ -62,6 +62,15 @@ def check_html_files(defined: set[str]) -> list[str]:
             errors.append(f"{hp.relative_to(ROOT)}: found {inline_grids} inline grid-template-columns")
         if leaks:
             errors.append(f"{hp.relative_to(ROOT)}: leaked placeholder terms {leaks}")
+        if hp.name.startswith("series-"):
+            shape_hits = [
+                name for name, pat in (
+                    ("polygon", r"<polygon\b"), ("rotate(45)", r"rotate\(\s*45"),
+                    ("clip-path", r"clip-path"), ("dev-jargon-label", r">[^<>]*WAI-ARIA[^<>]*<"),
+                ) if re.search(pat, txt)
+            ]
+            if shape_hits:
+                errors.append(f"{hp.relative_to(ROOT)}: PRTS shape/content red lines hit {shape_hits}")
         print(f"[HTML] {hp.name}: {len(used)} classes, missing={missing}, inline_grid={inline_grids}, leaks={leaks}")
     return errors
 
@@ -236,7 +245,11 @@ window.addEventListener('load', () => {
   document.querySelector('.ak-tier[data-tier="3"]').click();
   const tierChanged = document.getElementById('reg-mult').textContent === '×2.25';
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims, tierChanged, noOverflow }));
+  const wmClear = [...document.querySelectorAll('.ak-mission-item__wm')].every(w => {
+    const r = w.parentElement.querySelector('.ak-mission-item__reward');
+    return getComputedStyle(w).display === 'none' || !r || w.getBoundingClientRect().right <= r.getBoundingClientRect().left + 0.5;
+  });
+  document.body.setAttribute('data-verify', JSON.stringify({ anims, tierChanged, noOverflow, wmClear }));
 });
 </script>
 """

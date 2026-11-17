@@ -117,12 +117,20 @@
 | :-: | :--- | :--- | :--- | :--- |
 | 38 | 基于官网 2019–2026 海报档案扩展 6 套系列模板后，初轮 `verify.py` 暴露 4 处不存在工具类/文档类名（`ak-items-stretch`/`ak-mt-3`/`.ak-link`）；实看 390px 渲染图发现周年/剧场页 `.ak-tabs--block` 右侧裁切、波普页 `.ak-panel__head` 配 3 枚 `.ak-btn-group` 按钮时标题被挤压折行；暗色下 `.ak-brawl-poster` 内置 `--ak-accent` 原为亮黄需独立锁黑对比 | 样式未检查窄屏下 `.ak-tabs--block` 与带按钮组面板头换行；明黄海报区内部令牌未同时覆盖 `--ak-accent`/`--ak-bg-surface-2`；手写类名未对照 `prts-design.css` utilities | 新增 [`resources/prts-series.css`](./resources/prts-series.css)、[`references/series/event-series-templates.md`](./references/series/event-series-templates.md) 及 6 份脱敏交互样板 [`examples/series-*.html`](./examples/series-regulation.html)；锁死 `.ak-brawl-poster` 内部黑黄对比与 `[data-ak-series="exhibition"]` CMY 对比；`<640px` 为 `[data-ak-series]` 补 `.ak-tabs--block` 与 `.ak-panel__head` 换行；扩展 `verify.py` 覆盖 `prts-series.css` 动画/类、6 套样板脱敏黑名单、40 张亮暗渲染图及 Chrome 交互探针并重打 `release/`（全部通过） | 新增系列层必须在 `verify.py` 注册动画与 375/390/1440 渲染探针；带按钮组的 `.ak-panel__head` 与 3 项以上 `.ak-tabs--block` 窄屏默认允许换行 |
 
+### 2026-11-17 · 1.1 活动系列美学审查修复（`sr-*` 40 图复核）
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 39 | `series-regulation` / `series-exhibition` 用整块等距菱形 SVG 作拓扑/展位地图，节点标签相互压叠；`series-theater` 带框菱形幕次徽章、`series-anniversary` Hero 菱形线稿，均越过「源石菱形仅限 4 处」与 PRTS 形状铁律 | 系列扩展时按“海报感”引入了等距/菱形母题，未回对 `foundations.md` | 地图改为直角矩形节点 + 连线；`.ak-emblem-diamond` 改为直角 `.ak-act-mark`；Hero 线稿改矩形；展位页补操作按钮消除右栏空白；文档新增系列页形状红线 | `verify.py` 静态扫描 `series-*.html` 禁 `<polygon>`/`rotate(45`/`clip-path` |
+| 40 | 亮色模式下系列 Hero（恒深色）眉题用亮态强调色，对比度约 2–3:1；径向渐变近似“晕光” | `.ak-hero__eyebrow` 读 `--ak-theme-accent`，亮态值偏深 | 各系列 `.ak-hero` 内锁定暗态强调色；径向渐变改线性渐变 | 恒深色容器内必须覆盖主题强调令牌（同第 3 条） |
+| 41 | `COMPLETED` 水印被奖励 chip 压住截断；样板泄漏 `WAI-ARIA TABS/REPERTORY` 开发术语；面板头逐个双语；390px 统计标签孤字折行 | 水印写死 `right:92px`；标签借用实现名；文案未精简 | 水印改 flex 项；术语替换为业务文案；去掉多余英文副标并缩短统计标签；`verify.py` 增 `wmClear` 探针与术语扫描 | 绝对定位装饰必须相对真实兄弟元素让位 |
+
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
 - 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
 - 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
-- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 40 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并已完成 `v1.0` 基础四项盲测及二轮品牌换色/弹性边界复测（`SkillTest2`）；当前新增 6 大官方活动系列皮肤已通过全部静态、渲染与 `375px`/`390px` 零溢出校验，待确认版本策略（如 `v1.1`）后即可按需打 tag 发布或补充下游子系列细分烟测。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 40 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），已完成 `v1.0` 盲测验收及 `v1.1` 六大官方活动系列皮肤的全量审查修复（#39–#41）并正式归档发布；后续可按需在下游项目中补充单个活动子系列的细分演进与实测。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 
