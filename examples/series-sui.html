@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light" data-ak-series="sui">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SUI.FOLIO // 江南古建测绘与营造典籍特展馆（炎国岁系列国风）</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Noto+Serif+SC:wght@600;800&family=Oswald:wght@500;700&display=swap">
+  <link rel="stylesheet" href="../resources/prts-design.css">
+  <link rel="stylesheet" href="../resources/prts-addons.css">
+  <link rel="stylesheet" href="../resources/prts-series.css">
+  <style>
+    body { margin: 0; background: var(--ak-bg-canvas); min-height: 100vh; display: flex; flex-direction: column; }
+    .ak-sui-seal {
+      display: inline-grid; place-items: center; width: 42px; height: 42px; flex: none;
+      border: 2px solid var(--ak-accent); color: var(--ak-accent);
+      font: 800 18px/1 var(--ak-font-serif);
+    }
+    .ak-sui-svg { width: 100%; height: 100%; display: block; opacity: 0.78; }
+    .ak-sui-diagram { width: 100%; height: auto; display: block; border: 1px solid var(--ak-border); background: var(--ak-bg-inset); }
+  </style>
+</head>
+<body class="ak-scope">
+  <header class="ak-header">
+    <div class="ak-header__inner">
+      <a class="ak-header__logo" href="#">
+        <span class="ak-header__wordmark">
+          SUI.FOLIO
+          <small>HERITAGE ARCHIVE // 岁时记</small>
+        </span>
+      </a>
+      <div class="ak-header__search">
+        <button type="button" class="ak-search-trigger">
+          <span class="ak-search-trigger__icon">⌕</span>
+          <span class="ak-search-trigger__label">检索江南营造尺制、斗拱实测图卷与年度图录…</span>
+          <kbd class="ak-search__kbd">/</kbd>
+        </button>
+      </div>
+      <div class="ak-header__tools">
+        <div class="ak-seg" role="group" aria-label="界面主题切换">
+          <button type="button" onclick="setTheme('light')" id="btn-light" class="is-active" aria-pressed="true">档案 (Light)</button>
+          <button type="button" onclick="setTheme('dark')" id="btn-dark" aria-pressed="false">终端 (Dark)</button>
+        </div>
+      </div>
+    </div>
+    <nav class="ak-local-nav" aria-label="页面菜单">
+      <button type="button" class="ak-local-nav__btn ak-local-nav__menu" id="ak-menu-btn" aria-controls="ak-sidebar" aria-expanded="false">
+        <svg class="ak-icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2 4h16v2H2zM2 9h16v2H2zM2 14h16v2H2z"/></svg>菜单
+      </button>
+    </nav>
+  </header>
+  <div class="ak-drawer-scrim" id="ak-scrim"></div>
+
+  <div class="ak-layout ak-layout--no-toc">
+    <aside class="ak-sidebar" id="ak-sidebar">
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">FOLIO // 特展目录</h3>
+        <ul>
+          <li class="is-active"><a href="#pavilion">卷首特展宣言</a></li>
+          <li><a href="#year-archive">岁序年鉴步进器</a></li>
+          <li><a href="#plates">营造制式图版</a></li>
+        </ul>
+      </div>
+      <div class="ak-portlet">
+        <h3 class="ak-portlet__title">SERIES // 系列样板</h3>
+        <ul>
+          <li><a href="./series-regulation.html">01 · 战术规程</a></li>
+          <li><a href="./series-anniversary.html">02 · 周年礼仪庆典</a></li>
+          <li class="is-active"><a href="./series-sui.html">03 · 炎国岁系列 (当前)</a></li>
+          <li><a href="./series-exhibition.html">04 · 矢量波普巡展</a></li>
+          <li><a href="./series-brawl.html">05 · 街头大字报年刊</a></li>
+          <li><a href="./series-theater.html">06 · 暗黑剧场典籍</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="ak-main ak-flex-col ak-gap-6">
+      <section class="ak-hero" id="pavilion">
+        <div class="ak-hero__side">
+          <svg class="ak-sui-svg" viewBox="0 0 220 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <path d="M0 245 Q55 190 110 218 T220 205 L220 300 L0 300 Z" fill="#1b7a78" fill-opacity="0.32"/>
+            <path d="M0 268 Q75 215 140 242 T220 228 L220 300 L0 300 Z" fill="#e04a3f" fill-opacity="0.26"/>
+            <circle cx="152" cy="82" r="24" fill="#e04a3f" fill-opacity="0.55"/>
+          </svg>
+        </div>
+        <div class="ak-hero__eyebrow">CHINESE ARCHIVE // WATER-INK EDITION</div>
+        <h1 class="ak-hero__title">
+          SHAN SHUI FOLIO
+          <span class="cn">岁时营造 · 江南古建实测典籍特展</span>
+        </h1>
+        <div class="ak-hero__bar"></div>
+        <p class="ak-hero__desc">宣纸米白为卷、朱砂印章点睛、石青靛蓝勾勒山川留白，并嵌入回纹双框与注音汉字排版，呈现东方数字典籍的雅正气象。</p>
+        <div class="ak-flex ak-wrap ak-gap-3 ak-mt-4">
+          <a class="ak-btn ak-btn--contrast ak-btn--lg" href="#year-archive">调阅历年测绘卷宗</a>
+          <button type="button" class="ak-btn ak-btn--primary ak-btn--lg" onclick="stepYear(1)">翻阅下一年度</button>
+        </div>
+      </section>
+
+      <!-- 回纹框 + 注音拼字标题 + 年份步进 -->
+      <section class="ak-fret-box" id="year-archive">
+        <div class="ak-flex ak-wrap ak-justify-between ak-items-center ak-gap-4">
+          <div class="ak-flex ak-items-center ak-gap-4">
+            <span class="ak-sui-seal" aria-hidden="true">印</span>
+            <div class="ak-ruby-title" aria-label="岁序营造">
+              <div class="ak-ruby-word"><strong>岁</strong><span>SUÌ</span></div>
+              <div class="ak-ruby-word"><strong>序</strong><span>XÙ</span></div>
+              <div class="ak-ruby-word"><strong>营</strong><span>YÍNG</span></div>
+              <div class="ak-ruby-word"><strong>造</strong><span>ZÀO</span></div>
+            </div>
+          </div>
+
+          <div class="ak-year-stepper" role="group" aria-label="归档年份切换">
+            <button type="button" class="ak-year-stepper__btn" onclick="stepYear(-1)" aria-label="上一年">◀</button>
+            <span class="ak-year-stepper__val" id="sui-year">2026</span>
+            <button type="button" class="ak-year-stepper__btn" onclick="stepYear(1)" aria-label="下一年">▶</button>
+          </div>
+        </div>
+
+        <div class="ak-series-split ak-mt-6">
+          <div class="ak-flex-col ak-gap-4">
+            <div class="ak-flex ak-items-center ak-gap-3">
+              <span class="ak-tag ak-tag--accent" id="sui-vol-tag">卷六 · 丙午</span>
+              <h2 style="margin:0; font-size: var(--ak-fs-h3); font-family: var(--ak-font-serif);" id="sui-vol-title">吴门飞檐木构数字全息复原辑</h2>
+            </div>
+            <p id="sui-vol-desc" style="color: var(--ak-fg-secondary); margin: 0;">
+              基于亚毫米激光扫描采集苏州、徽州现存明代厅堂柱梁交角数据，建立斗拱荷载与雨水导流仿真模型，并附完整墨线平立剖面图集。
+            </p>
+            <div class="ak-series-grid-2">
+              <div class="ak-stat">
+                <span class="ak-stat__label">DRAWINGS // 实测图纸</span>
+                <span class="ak-stat__value" id="sui-drawings">128<small>张</small></span>
+                <span class="ak-stat__delta">矢量高精度线稿</span>
+              </div>
+              <div class="ak-stat">
+                <span class="ak-stat__label">SITES // 涵盖古建</span>
+                <span class="ak-stat__value" id="sui-sites">14<small>处</small></span>
+                <span class="ak-stat__delta">含砖雕石刻拓片</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ak-flex ak-gap-3">
+            <svg class="ak-sui-diagram" viewBox="0 0 240 170" role="img" aria-label="木构飞檐立面墨线简图">
+              <line x1="20" y1="145" x2="220" y2="145" stroke="var(--ak-border-strong)" stroke-width="2"/>
+              <path d="M36 92 Q120 68 204 92 L188 104 Q120 84 52 104 Z" fill="none" stroke="var(--ak-accent)" stroke-width="2"/>
+              <line x1="68" y1="100" x2="68" y2="145" stroke="var(--ak-fg)" stroke-width="2"/>
+              <line x1="120" y1="92" x2="120" y2="145" stroke="var(--ak-fg)" stroke-width="2"/>
+              <line x1="172" y1="100" x2="172" y2="145" stroke="var(--ak-fg)" stroke-width="2"/>
+              <text x="120" y="34" text-anchor="middle" fill="var(--ak-fg-muted)" font-size="11" letter-spacing="2">TIMBER ELEVATION // SECTION</text>
+            </svg>
+            <div class="ak-edge-strip" aria-hidden="true">JIANGNAN SURVEY // ARCHIVE</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="ak-heading" id="plates">
+        <h2 class="ak-heading__title">营造专题图版录</h2>
+        <span class="ak-heading__en" lang="en">ARCHITECTURAL PLATES</span>
+      </div>
+
+      <div class="ak-series-grid-3">
+        <article class="ak-card ak-card--accent-left">
+          <header class="ak-card__header">
+            <h3 class="ak-card__title">一 · 斗拱出跳力学谱</h3>
+            <span class="ak-tag ak-tag--accent">木作</span>
+          </header>
+          <div class="ak-card__body">
+            <p>梳理宋《营造法式》与江南厅堂减柱造法的榫卯受力差异，展示 12 组三维拆解剖视图。</p>
+          </div>
+        </article>
+        <article class="ak-card ak-card--accent-left">
+          <header class="ak-card__header">
+            <h3 class="ak-card__title">二 · 砖雕纹样与门楼</h3>
+            <span class="ak-tag">石砖</span>
+          </header>
+          <div class="ak-card__body">
+            <p>收录回纹、冰裂纹及云肩缠枝图样矢量描摹，提供高对比拓片反相视图与比例尺标注。</p>
+          </div>
+        </article>
+        <article class="ak-card ak-card--accent-left">
+          <header class="ak-card__header">
+            <h3 class="ak-card__title">三 · 水乡廊桥与石驳</h3>
+            <span class="ak-tag">水工</span>
+          </header>
+          <div class="ak-card__body">
+            <p>结合历代地方志水文碑刻记载，对照单孔石拱桥基础沉降数值与潮汐排水暗沟设计。</p>
+          </div>
+        </article>
+      </div>
+    </main>
+  </div>
+
+  <footer class="ak-footer">
+    <span class="ak-watermark">SUI</span>
+    <div class="ak-footer__inner">
+      <div class="ak-footer__brand">
+        <div class="ak-header__wordmark">SUI.FOLIO</div>
+        <p>PRTS Series Preset 03 // 炎国「岁」系列国风样板，宣纸底色与朱砂回纹典籍语法。</p>
+      </div>
+      <div class="ak-footer__col">
+        <h4>SERIES // 系列导航</h4>
+        <ul>
+          <li><a href="./series-regulation.html">01 · 战术规程</a></li>
+          <li><a href="./series-anniversary.html">02 · 周年礼仪</a></li>
+          <li><a href="./series-sui.html">03 · 炎国岁系列</a></li>
+        </ul>
+      </div>
+      <div class="ak-footer__col">
+        <h4>MODULES // 更多样板</h4>
+        <ul>
+          <li><a href="./series-exhibition.html">04 · 矢量波普巡展</a></li>
+          <li><a href="./series-brawl.html">05 · 街头大字报</a></li>
+          <li><a href="./series-theater.html">06 · 暗黑剧场</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ak-footer__bottom">
+      <div class="ak-footer__bottom-text">
+        <span class="ak-en">SUI ARCHIVE SERIES TEMPLATE</span>
+        <span>Cultural Preservation &amp; Calligraphy Edition</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('ak-menu-btn'), side = document.getElementById('ak-sidebar'), scrim = document.getElementById('ak-scrim');
+      function toggle(open) { side.classList.toggle('is-open', open); scrim.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); }
+      btn.addEventListener('click', function () { toggle(!side.classList.contains('is-open')); });
+      scrim.addEventListener('click', function () { toggle(false); });
+      side.addEventListener('click', function (e) { if (e.target.closest('a')) toggle(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggle(false); });
+    })();
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ak-series-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'light', false);
+    })();
+    function applyTheme(theme, persist) {
+      if (persist) { try { localStorage.setItem('ak-series-theme', theme); } catch (e) {} }
+      document.documentElement.dataset.theme = theme;
+      var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
+      if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
+      if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
+    }
+    function setTheme(theme) { applyTheme(theme, true); }
+
+    var years = [
+      { y: 2023, tag: '卷三 · 癸卯', title: '杭城石桥与水利护岸勘测录', desc: '收录钱塘支流八座清代条石平桥沉降数据、桥孔弧线方程及历代石刻水则记录。', drawings: '76', sites: '09' },
+      { y: 2024, tag: '卷四 · 甲辰', title: '姑苏园林漏窗纹样拓印全集', desc: '按几何编织、冰裂、海棠分类建库 42 扇古建花窗，并支持高对比线性坐标下载。', drawings: '94', sites: '11' },
+      { y: 2025, tag: '卷五 · 乙巳', title: '徽派马头墙与祠堂彩画谱系', desc: '还原矿物颜料色谱比例与封火墙高差防风曲线，完整存档 16 处古村落立面。', drawings: '112', sites: '12' },
+      { y: 2026, tag: '卷六 · 丙午', title: '吴门飞檐木构数字全息复原辑', desc: '基于亚毫米激光扫描采集苏州、徽州现存明代厅堂柱梁交角数据，建立斗拱荷载与雨水导流仿真模型，并附完整墨线平立剖面图集。', drawings: '128', sites: '14' }
+    ];
+    var yearIdx = years.length - 1;
+    function stepYear(delta) {
+      yearIdx = (yearIdx + delta + years.length) % years.length;
+      var item = years[yearIdx];
+      document.getElementById('sui-year').textContent = item.y;
+      document.getElementById('sui-vol-tag').textContent = item.tag;
+      document.getElementById('sui-vol-title').textContent = item.title;
+      document.getElementById('sui-vol-desc').textContent = item.desc;
+      document.getElementById('sui-drawings').innerHTML = item.drawings + '<small>张</small>';
+      document.getElementById('sui-sites').innerHTML = item.sites + '<small>处</small>';
+    }
+  </script>
+</body>
+</html>
