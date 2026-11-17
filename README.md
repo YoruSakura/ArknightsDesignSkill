@@ -25,25 +25,26 @@
 * **标准 ARIA 与状态钩子**：组件文档明确约定 `.is-active` / `.is-open` / `.is-selected`、`aria-pressed` / `aria-selected` / `aria-expanded`、`roving tabindex` 与原生 `<dialog>` / `<details>` 用法，AI 可按目标框架惯例直接封装为受控组件。
 * **Tailwind v4 支持**：同步附带 [`resources/endfield-theme.css`](./resources/endfield-theme.css)（含 `@theme`、`@theme inline` 与 `@utility`）。
 
-### 3. 渐进式披露 & 视觉防呆
+### 3. 渐进式披露、弹性边界与视觉防呆
 
 * [`SKILL.md`](./SKILL.md) 控制首屏上下文开销：先判别体系，再必读 `foundations` 与母题规范，仅在需要具体控件契约时按需读取 `components-catalog.md`。
-* 内置「交付前自检清单」与自动化校验脚本 [`scripts/verify.py`](./scripts/verify.py)（类名/链接/关键帧静态扫描 + Chrome 无头 1440px 桌面 & 390px 手机 × 亮/暗 16 图渲染与交互动画探针），历史真实视觉审查记录沉淀于 [`AGENTS.md`](./AGENTS.md)。
+* **弹性适配与品牌换色**：内置「工程底线不妥协（响应式 CSS 类 / 真实业务编号 / 复用基座）+ 业务拓展与局部衍生可控 + 语义令牌品牌换色（换强调不换骨）」，既保住风格识别度也适配真实网站 VI。
+* 内置「交付前自检清单」与自动化校验脚本 [`scripts/verify.py`](./scripts/verify.py)（类名/链接/关键帧静态扫描 + `release/` 一致性校验 + Chrome 无头 1440px 桌面 & 390px 手机 × 亮/暗 16 图渲染与交互动画探针），历史真实视觉审查记录沉淀于 [`AGENTS.md`](./AGENTS.md)。
 
 ---
 
 ## 快速开始
 
-### 在其他前端项目中接入本 Skill
+### 在其他前端项目中接入本 Skill（正式版 `v1.0`）
 
-可以直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链），或克隆整仓到目标项目的 Skill 目录：
+推荐直接下载 [GitHub Releases](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.0) 中的 `arknights-design-v1.0.zip` 解压，或复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
 
 ```bash
-# 方式一（推荐测试用）：直接复制已打包的 Skill 文件夹
+# 方式一（推荐正式接入）：直接复制已打包的 Skill 文件夹
 mkdir -p .agents/skills
 cp -r /path/to/ArknightsDesignSkill/release/arknights-design .agents/skills/arknights-design
 
-# 方式二：从 GitHub 克隆到目标项目 .agents 目录
+# 方式二：从 GitHub 克隆整仓到目标项目 .agents 目录
 git clone https://github.com/YoruSakura/ArknightsDesignSkill.git .agents/skills/arknights-design
 
 # Claude Code 项目级目录（如使用软链接复用同一份目录）

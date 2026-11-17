@@ -115,7 +115,7 @@
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
 - 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
 - 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
-- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并已使用 DeepSeek 4.1 flash 完成 4 个冷启动外部项目（PRTS / Endfield 整页 / 复杂组件 / 冲突压测）烟测；后续可按需对强模型再复跑一次 `test-04` 验证弹性边界约束效果。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并已完成 DeepSeek 4.1 flash 四项基础/压测 + 二轮品牌换色/弹性边界复测（`SkillTest2` 全通过），正式归档发布 `v1.0`；后续可按需补充 Vite/React 或 Endfield 深色品牌换色的真机项目烟测。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 
