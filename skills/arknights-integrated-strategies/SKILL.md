@@ -27,12 +27,12 @@ description: >-
 
 1. **注入样式与字体**：
    - 引入 `resources/is-design.css`，并在 `<html>` 设 `data-theme="dark|light"` 与 `data-is-theme="sarkaz|sui-garden|caerula|joklumarkar|blackflow"`。
-   - 加载 `Noto Serif SC`、`Cormorant Garamond`、`Chakra Petch`、`JetBrains Mono` 与 `Noto Sans SC`（离线可用 `@fontsource`，见规范文档）。
+   - 加载 `Noto Serif SC`、`Cormorant Garamond`、`Oswald`、`Chakra Petch`、`JetBrains Mono` 与 `Noto Sans SC`（离线可用 `@fontsource`，见规范文档）。
 2. **搭建典籍骨架**：
    - 使用 `.is-header` + `<1120px` 抽屉侧栏 `.is-sidebar`（配 `.is-menu-btn` / `.is-scrim`） + `.is-layout` + `.is-footer`；
-   - **禁止内联 `grid-template-columns`**，全部栏位使用 `.is-hud-strip` / `.is-split` / `.is-route-map` / `.is-commission-grid` / `.is-relic-grid`。
+   - **禁止内联 `grid-template-columns`**，全部栏位使用 `.is-hero__grid` / `.is-hud-strip` / `.is-split` / `.is-route-map` / `.is-commission-grid` / `.is-relic-grid`。
 3. **组装集成战略签名模块**：
-   - 顶区：`.is-hero`（带 `.is-hero__pillars` 光柱饰线）+ 可选 `.is-ruby-title` 括注拼音；
+   - 顶区：`.is-hero`（带 `.is-hero__pillars` 光柱饰线 + 右侧 `.is-hero__crest` 罗马数字编章碑牌）+ 可选 `.is-ruby-title` 括注拼音；
    - 中区交互：`.is-route-map` 3 列分支节点选择器联动右栏详情、`.is-commission-grid` 甲乙丙竖牌、`.is-relic-grid` 藏品图鉴卡及下方 `.is-relic-detail` 详述面板；
    - 底部记录：完整 WAI-ARIA `.is-tabs` 切换探索编年、`.is-redacted` 涂黑线索与 `.is-table-scroll > .is-table` 结算表。
 

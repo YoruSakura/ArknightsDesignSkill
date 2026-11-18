@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FOLIO.EX // 多维沙盒分支推演与典籍藏品馆</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;800&family=Oswald:wght@600;700&display=swap">
   <link rel="stylesheet" href="../resources/is-design.css">
 </head>
 <body class="is-scope">
@@ -68,17 +68,25 @@
       <!-- 主舞台 Hero -->
       <section class="is-hero" id="hero">
         <div class="is-hero__pillars" aria-hidden="true"></div>
-        <div class="is-hero__content">
-          <div class="is-hero__eyebrow"><span class="is-pulse" aria-hidden="true"></span> EXPEDITION LOG // CHAPTER V</div>
-          <h1 class="is-hero__title">
-            ABYSSAL ARCHIVES
-            <span class="cn">多维沙盒分支推演与长卷藏品档案库</span>
-          </h1>
-          <p class="is-hero__desc">还原五代集成战略从炉边暗金光柱、界园丹青与夜墨双极到黑流阴郁监视器的渐进气质：分支节点决策、甲乙丙竖牌委托、藏品鉴赏匣与结算清单。</p>
-          <div class="is-hero__actions">
-            <a class="is-btn is-btn--contrast" href="#routes">进入路径推演</a>
-            <a class="is-btn is-btn--primary" href="#relics">浏览藏品图鉴</a>
+        <div class="is-hero__grid">
+          <div class="is-hero__content">
+            <div class="is-hero__eyebrow"><span class="is-pulse" aria-hidden="true"></span> EXPEDITION LOG // CHAPTER V</div>
+            <h1 class="is-hero__title">
+              ABYSSAL ARCHIVES
+              <span class="cn">多维沙盒分支推演与长卷藏品档案库</span>
+            </h1>
+            <p class="is-hero__desc">还原五代集成战略从炉边暗金光柱、界园丹青与夜墨双极到黑流阴郁监视器的渐进气质：分支节点决策、甲乙丙竖牌委托、藏品鉴赏匣与结算清单。</p>
+            <div class="is-hero__actions">
+              <a class="is-btn is-btn--contrast" href="#routes">进入路径推演</a>
+              <a class="is-btn is-btn--primary" href="#relics">浏览藏品图鉴</a>
+            </div>
           </div>
+
+          <aside class="is-hero__crest" aria-label="当期典籍章印">
+            <div class="is-hero__stamp" id="is-hero-stamp">CHRONICLE FOLIO // V</div>
+            <div class="is-hero__roman" id="is-hero-roman">V</div>
+            <div class="is-hero__crest-meta" id="is-hero-era-note">双线鎏金裱框 · 垂直光柱建筑舞台</div>
+          </aside>
         </div>
       </section>
 
@@ -101,7 +109,7 @@
         </div>
         <div class="is-hud-item">
           <span class="is-hud-item__label">RELICS // 收录秘宝</span>
-          <span class="is-hud-item__val">22<small style="font-size:0.6em;"> 件</small></span>
+          <span class="is-hud-item__val">22<small class="is-unit"> 件</small></span>
           <span class="is-hud-item__note">含 3 件深层加密藏品</span>
         </div>
       </div>
@@ -113,7 +121,7 @@
       </div>
 
       <section class="is-folio-box">
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px;">
+        <div class="is-row-between is-row-between--lg">
           <div class="is-ruby-title" aria-label="推演路途">
             <div class="is-ruby-word"><strong>推</strong><span>[tuī]</span></div>
             <div class="is-ruby-word"><strong>演</strong><span>[yǎn]</span></div>
@@ -164,10 +172,10 @@
               <span class="is-tag is-tag--crimson" id="is-node-cost">消耗 1 步</span>
             </header>
             <div class="is-panel__body">
-              <p id="is-node-desc" style="margin:0 0 12px;color:var(--is-fg-secondary);">
+              <p id="is-node-desc" class="is-lead">
                 在静默存档间内发现未编目的手工纸质索引卡片，消耗少量通宝校验索引摘要可提升后段事件收益或解锁隐藏藏品线索。
               </p>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <div class="is-actions">
                 <button type="button" class="is-btn is-btn--primary" onclick="commitNode()">确认推进此节点</button>
                 <span class="is-tag" id="is-node-hint">推荐配置：高容错分支</span>
               </div>
@@ -245,11 +253,11 @@
             </div>
 
             <div class="is-relic-detail" aria-live="polite">
-              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;">
-                <strong id="is-relic-detail-title" style="font-family:var(--is-font-serif);font-size:16px;">黄铜经纬校准仪（NO.014）</strong>
+              <div class="is-row-between">
+                <strong id="is-relic-detail-title" class="is-detail-title">黄铜经纬校准仪（NO.014）</strong>
                 <span class="is-tag is-tag--accent" id="is-relic-effect">分支决策消耗 -20%</span>
               </div>
-              <p id="is-relic-detail-desc" style="margin:0;font-size:13px;color:var(--is-fg-secondary);">
+              <p id="is-relic-detail-desc" class="is-detail-desc">
                 经工匠三次淬火校正的双轴罗盘。批注残页记录：<span class="is-redacted" tabindex="0">凡经由古卷对校节点入网者，后段校验漂移归零。</span>（悬停或 Tab 聚焦可显露加密批注）
               </p>
             </div>
@@ -322,6 +330,13 @@
       joklumarkar: 'FROST FRONTIER // JOKLUMARKAR',
       blackflow: 'SUBMERGED CRT // BLACKFLOW'
     };
+    var eraMeta = {
+      sarkaz: { roman: 'V', stamp: 'CHRONICLE FOLIO // V', note: '双线鎏金裱框 · 垂直光柱建筑舞台' },
+      'sui-garden': { roman: 'VI', stamp: 'SCROLL EDITION // VI', note: '丹青石青双极 · 宋体印鉴卷轴' },
+      caerula: { roman: 'III', stamp: 'ABYSSAL EDITION // III', note: '深渊斜衬线 · 青紫渐变顶线' },
+      joklumarkar: { roman: 'IV', stamp: 'FRONTIER EDITION // IV', note: '冰原水平标尺 · 紧凑宽字距节头' },
+      blackflow: { roman: 'VII', stamp: 'MONITOR CRT // VII', note: '浸水扫描线 · 等宽电报字族' }
+    };
     function setMode(theme, persist) {
       if (persist !== false) { try { localStorage.setItem('is-mode', theme); } catch (e) {} }
       document.documentElement.dataset.theme = theme;
@@ -332,6 +347,10 @@
     function setEra(era) {
       document.documentElement.dataset.isTheme = era;
       document.getElementById('is-sub-brand').textContent = eraSub[era] || eraSub.sarkaz;
+      var meta = eraMeta[era] || eraMeta.sarkaz;
+      document.getElementById('is-hero-roman').textContent = meta.roman;
+      document.getElementById('is-hero-stamp').textContent = meta.stamp;
+      document.getElementById('is-hero-era-note').textContent = meta.note;
       document.querySelectorAll('[data-theme-preset]').forEach(function (b) {
         b.classList.toggle('is-active', b.dataset.themePreset === era);
       });
@@ -345,6 +364,7 @@
       var saved = null;
       try { saved = localStorage.getItem('is-mode'); } catch (e) {}
       setMode(saved || document.documentElement.dataset.theme || 'dark', false);
+      setEra(document.documentElement.dataset.isTheme || 'sarkaz');
     })();
 
     var nodes = [

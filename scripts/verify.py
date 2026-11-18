@@ -538,6 +538,33 @@ def check_release_bundle() -> list[str]:
     return errors
 
 
+def check_skill_design_rules() -> list[str]:
+    """子 Skill 审美红线：亮色状态语义色覆盖、样板无内联色值、涂黑条暗色适配、路径图连线。"""
+    errors: list[str] = []
+    cc = (ROOT / "skills/arknights-contingency-contract/resources/cc-design.css").read_text(encoding="utf-8")
+    for theme in ("regulation", "vector", "dos"):
+        pat = re.compile(r':root\[data-theme="light"\]\[data-cc-theme="%s"\][^{]*\{([^}]*)\}' % theme)
+        blocks = pat.findall(cc)
+        joined = "\n".join(blocks)
+        # 允许独立覆盖块（含逗号分组选择器）；任一块声明 --cc-success 即视为通过
+        grouped = re.findall(r'((?::root\[data-theme="light"\]\[data-cc-theme="[a-z]+"\],?\s*)+)\{([^}]*)\}', cc)
+        ok = "--cc-success" in joined or any(('data-cc-theme="%s"' % theme) in sel and "--cc-success" in body for sel, body in grouped)
+        if not ok:
+            errors.append(f"cc-design.css: light/{theme} 未覆写 --cc-success（亮底对比度不足）")
+    is_css = (ROOT / "skills/arknights-integrated-strategies/resources/is-design.css").read_text(encoding="utf-8")
+    if "--is-redact" not in is_css:
+        errors.append("is-design.css: .is-redacted 缺少暗色适配（暗色下为刺眼白条）")
+    if ".is-route-node::before" not in is_css:
+        errors.append("is-design.css: .is-route-map 缺少节点连线")
+    for p in ("skills/arknights-contingency-contract/examples/index.html", "skills/arknights-integrated-strategies/examples/index.html"):
+        txt = (ROOT / p).read_text(encoding="utf-8")
+        hits = re.findall(r'style="[^"]*#[0-9a-fA-F]{3,8}[^"]*"', txt)
+        if hits:
+            errors.append(f"{p}: 内联写死色值 {hits[:2]}")
+    print(f"[SKILLS] design rule check, errors={len(errors)}")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--render", action="store_true", help="Run headless Chrome screenshots and DOM/animation probes")
@@ -549,6 +576,7 @@ def main() -> int:
     errors.extend(check_html_files(defined))
     errors.extend(check_markdown_files(defined))
     errors.extend(check_css_animations())
+    errors.extend(check_skill_design_rules())
     errors.extend(check_release_bundle())
     if args.render:
         errors.extend(run_chrome_render_and_behavior(pathlib.Path(args.out)))

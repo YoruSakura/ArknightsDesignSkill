@@ -13,18 +13,25 @@
 
 ## 二、 核心集成战略组件 DOM 蓝图
 
-### 1. 光柱主舞台 Hero & 注音标题（`.is-hero` / `.is-ruby-title`）
+### 1. 光柱主舞台 Hero + 编章碑牌（`.is-hero` / `.is-hero__grid` / `.is-hero__crest`）& 注音标题
 ```html
 <section class="is-hero">
   <div class="is-hero__pillars" aria-hidden="true"></div>
-  <div class="is-hero__content">
-    <div class="is-hero__eyebrow"><span class="is-pulse" aria-hidden="true"></span> EXPEDITION FOLIO // LAYER 05</div>
-    <h1 class="is-hero__title">ABYSSAL EXPEDITION <span class="cn">多维路径沙盒与典籍推演卷宗</span></h1>
-    <p class="is-hero__desc">支持五代主题实时切换的分支路径决策、月度委托牌及藏品图鉴系统。</p>
-    <div class="is-hero__actions">
-      <a class="is-btn is-btn--contrast" href="#routes">进入节点推演</a>
-      <a class="is-btn is-btn--primary" href="#relics">检视藏品图鉴</a>
+  <div class="is-hero__grid">
+    <div class="is-hero__content">
+      <div class="is-hero__eyebrow"><span class="is-pulse" aria-hidden="true"></span> EXPEDITION FOLIO // LAYER 05</div>
+      <h1 class="is-hero__title">ABYSSAL EXPEDITION <span class="cn">多维路径沙盒与典籍推演卷宗</span></h1>
+      <p class="is-hero__desc">支持五代主题实时切换的分支路径决策、月度委托牌及藏品图鉴系统。</p>
+      <div class="is-hero__actions">
+        <a class="is-btn is-btn--contrast" href="#routes">进入节点推演</a>
+        <a class="is-btn is-btn--primary" href="#relics">检视藏品图鉴</a>
+      </div>
     </div>
+    <aside class="is-hero__crest" aria-label="当期典籍章印">
+      <div class="is-hero__stamp">CHRONICLE FOLIO // V</div>
+      <div class="is-hero__roman">V</div>
+      <div class="is-hero__crest-meta">双线鎏金裱框 · 垂直光柱建筑舞台</div>
+    </aside>
   </div>
 </section>
 
