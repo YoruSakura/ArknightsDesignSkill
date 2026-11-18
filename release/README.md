@@ -1,14 +1,14 @@
-# Release Bundles — ArknightsDesignSkill Ecosystem (v1.2-beta.1)
+# Release Bundles — ArknightsDesignSkill Ecosystem (v1.2)
 
-本目录由 [`scripts/package-release.py`](../scripts/package-release.py) 生成，包含可直接复制或解压接入下游前端项目的 **3 个测试版（Pre-release · 待审查）纯运行时 Skill 独立包**（版本 `v1.2-beta.1`），已剔除维护文档（`AGENTS.md`）与同步/校验脚本（`scripts/`）。
+本目录由 [`scripts/package-release.py`](../scripts/package-release.py) 生成，包含可直接复制或解压接入下游前端项目的 **3 个正式版纯运行时 Skill 独立包**（版本 `v1.2`），已剔除维护文档（`AGENTS.md`）与同步/校验脚本（`scripts/`）。
 
 ## 包含产物
 
 | Skill 包名 | 定位与覆盖内容 | 文件数 | ZIP 体积 | ZIP SHA-256 |
 | :--- | :--- | :-: | :-: | :--- |
-| `arknights-design` | 主双体系（PRTS 本家 + Endfield UI）与六大官方活动系列预设 | 26 | 276.2 KB | `10aade390d620e9a294d20ab280fe351f1a0a6672a93c8422c511b2a8ae70978` |
-| `arknights-contingency-contract` | 高难危机合约 / 行动协议 / 卫戍规程 / 矢量突破 / DOS 独立 Skill（.cc-*） | 7 | 21.1 KB | `bad2025ce549d38d84b3c3d438c39e4bd51fac8a6f587aa6ee6aa5ad6e94f19f` |
-| `arknights-integrated-strategies` | 集成战略五代主题（萨卡兹 / 岁界园 / 水月 / 银凇 / 黑流）独立 Skill（.is-*） | 7 | 21.7 KB | `bca6bc5726b09ef992f44ea5991f00fd2fba785c8fcd290b779fa2bfd16e952e` |
+| `arknights-design` | 主双体系（PRTS 本家 + Endfield UI）与六大官方活动系列预设 | 26 | 276.5 KB | `0fdc917ad22ebf11a36170027148dbc062e36c0c3d5d701c8998250715d9173a` |
+| `arknights-contingency-contract` | 高难危机合约 / 行动协议 / 卫戍规程 / 矢量突破 / DOS 独立 Skill（.cc-*） | 7 | 22.3 KB | `1b37a6c130c473278d306b2a39cae0bc1650b66f30cbcd3d578ff836d8b96b68` |
+| `arknights-integrated-strategies` | 集成战略五代主题（萨卡兹 / 岁界园 / 水月 / 银凇 / 黑流）独立 Skill（.is-*） | 7 | 23.6 KB | `57f868ae5cc93fcca01c480857e69a7209dd1ca4865d23ccf13eb270ce53f9e9` |
 
 ## 快速安装到项目
 

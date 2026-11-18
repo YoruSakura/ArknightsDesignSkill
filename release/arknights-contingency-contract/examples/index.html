@@ -85,9 +85,9 @@
               <span class="cc-dots-3x3" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
             </div>
             <div class="cc-hero__score" id="cc-total-score">665</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+            <div class="cc-flex-between">
               <span class="cc-tag cc-tag--accent" id="cc-risk-rank">GRADE A · RISK +7</span>
-              <span id="cc-audit-state" style="font-size:12px;color:#d0dce7;">已启用 3 条活跃契约</span>
+              <span id="cc-audit-state" class="cc-hero__state">已启用 3 条活跃契约</span>
             </div>
           </div>
         </div>
@@ -96,22 +96,22 @@
       <!-- 核心 HUD 读数 -->
       <div class="cc-stat-row">
         <div class="cc-stat">
-          <span class="cc-stat__label">CONTRACTS // 启用词条</span>
+          <span class="cc-stat__label">启用词条</span>
           <span class="cc-stat__val" id="cc-stat-count">03</span>
           <span class="cc-stat__note">同组高等级自动互斥</span>
         </div>
         <div class="cc-stat">
-          <span class="cc-stat__label">EQUIV LEVEL // 压力危级</span>
+          <span class="cc-stat__label">压力危级</span>
           <span class="cc-stat__val" id="cc-stat-risk">RISK 07</span>
           <span class="cc-stat__note">S 级及格门槛 ≥ 10</span>
         </div>
         <div class="cc-stat">
-          <span class="cc-stat__label">THROUGHPUT // 基准衰减</span>
+          <span class="cc-stat__label">基准衰减</span>
           <span class="cc-stat__val" id="cc-stat-drop">-28%</span>
           <span class="cc-stat__note">模拟边界背压影响</span>
         </div>
         <div class="cc-stat">
-          <span class="cc-stat__label">VERIFIED // 通过波次</span>
+          <span class="cc-stat__label">通过波次</span>
           <span class="cc-stat__val">04 / 05</span>
           <span class="cc-stat__note">LV.15–LV.18 已归档</span>
         </div>
@@ -207,7 +207,7 @@
               </button>
             </div>
 
-            <div class="cc-wave-grid" style="margin-top:16px;">
+            <div class="cc-wave-grid cc-mt-4">
               <article class="cc-wave-card is-cleared">
                 <span class="cc-wave-card__code">VEC-01</span>
                 <span class="cc-wave-card__lv">LV.15</span>
@@ -276,11 +276,11 @@
           </div>
 
           <div class="cc-tabpanel" role="tabpanel" id="cc-panel-0" aria-labelledby="cc-tab-0" tabindex="0">
-            <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="cc-stack">
               <div class="cc-mission-item">
                 <div class="cc-mission-item__main">
                   <strong>M-01 // 单区断链后 350ms 内完成零丢包重选路由</strong>
-                  <div style="font-size:12px;color:var(--cc-fg-muted);">华东核心接入池实测耗时 284ms</div>
+                  <div class="cc-note">华东核心接入池实测耗时 284ms</div>
                 </div>
                 <span class="cc-mission-item__wm" aria-hidden="true">COMPLETED</span>
                 <span class="cc-mission-item__reward">+240 PTS</span>
@@ -288,7 +288,7 @@
               <div class="cc-mission-item">
                 <div class="cc-mission-item__main">
                   <strong>M-02 // 缩减 30% 容器配额下 P99 响应不高于 45ms</strong>
-                  <div style="font-size:12px;color:var(--cc-fg-muted);">峰值压力期稳态保持 39.2ms</div>
+                  <div class="cc-note">峰值压力期稳态保持 39.2ms</div>
                 </div>
                 <span class="cc-mission-item__wm" aria-hidden="true">COMPLETED</span>
                 <span class="cc-mission-item__reward">+310 PTS</span>
@@ -389,6 +389,7 @@
       var saved = null;
       try { saved = localStorage.getItem('cc-mode'); } catch (e) {}
       setMode(saved || document.documentElement.dataset.theme || 'dark', false);
+      setPreset(document.documentElement.dataset.ccTheme || 'arclight');
       recalcContracts();
     })();
 

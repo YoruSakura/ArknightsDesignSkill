@@ -35,14 +35,16 @@
 
 ## 快速开始
 
-### 在其他前端项目中接入本 Skill（正式版 `v1.1` / 测试版 `v1.2-beta.1`）
+### 在其他前端项目中接入本 Skill（正式版 `v1.2`）
 
-生产环境推荐下载 [GitHub Releases · v1.1](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.1) 中的 `arknights-design-v1.1.zip` 解压，或直接复制仓库内 [`release/arknights-design`](./release/arknights-design)；如需评测按官网档案细化的 **「危机合约 (`arknights-contingency-contract`)」与「集成战略 (`arknights-integrated-strategies`)」独立专题 Skill 测试版**，可下载 [Pre-release · v1.2-beta.1](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.2-beta.1) 或复制 `release/` 下对应独立文件夹（均已剔除维护文档与脚本，零断链）：
+推荐下载 [GitHub Releases · v1.2](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.2) 中的对应压缩包解压，或直接复制仓库内 [`release/`](./release/README.md) 下的 3 个纯运行时独立 Skill（已剔除 `AGENTS.md` 与维护脚本，零断链：主体系 [`arknights-design`](./release/arknights-design)、危机合约 [`arknights-contingency-contract`](./release/arknights-contingency-contract) 与集成战略 [`arknights-integrated-strategies`](./release/arknights-integrated-strategies)）：
 
 ```bash
-# 方式一（推荐正式接入）：直接复制已打包的 Skill 文件夹
+# 方式一（推荐正式接入）：按需复制已打包的纯运行时 Skill 文件夹
 mkdir -p .agents/skills
-cp -r /path/to/ArknightsDesignSkill/release/arknights-design .agents/skills/arknights-design
+cp -r /path/to/ArknightsDesignSkill/release/arknights-design .agents/skills/
+cp -r /path/to/ArknightsDesignSkill/release/arknights-contingency-contract .agents/skills/
+cp -r /path/to/ArknightsDesignSkill/release/arknights-integrated-strategies .agents/skills/
 
 # 方式二：从 GitHub 克隆整仓到目标项目 .agents 目录
 git clone https://github.com/YoruSakura/ArknightsDesignSkill.git .agents/skills/arknights-design
