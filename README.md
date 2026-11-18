@@ -35,16 +35,14 @@
 
 ## 快速开始
 
-### 在其他前端项目中接入本 Skill（正式版 `v1.2`）
+### 在其他前端项目中接入本 Skill（正式版 `v1.1`）
 
-推荐下载 [GitHub Releases · v1.2](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.2) 中的对应压缩包解压，或直接复制仓库内 [`release/`](./release/README.md) 下的 3 个纯运行时独立 Skill（已剔除 `AGENTS.md` 与维护脚本，零断链：主体系 [`arknights-design`](./release/arknights-design)、危机合约 [`arknights-contingency-contract`](./release/arknights-contingency-contract) 与集成战略 [`arknights-integrated-strategies`](./release/arknights-integrated-strategies)）：
+推荐下载 [GitHub Releases · v1.1](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.1) 中的 `arknights-design-v1.1.zip` 解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链；含双正交设计体系及 6 大官方活动系列皮肤）：
 
 ```bash
-# 方式一（推荐正式接入）：按需复制已打包的纯运行时 Skill 文件夹
+# 方式一（推荐正式接入）：直接复制已打包的 Skill 文件夹
 mkdir -p .agents/skills
-cp -r /path/to/ArknightsDesignSkill/release/arknights-design .agents/skills/
-cp -r /path/to/ArknightsDesignSkill/release/arknights-contingency-contract .agents/skills/
-cp -r /path/to/ArknightsDesignSkill/release/arknights-integrated-strategies .agents/skills/
+cp -r /path/to/ArknightsDesignSkill/release/arknights-design .agents/skills/arknights-design
 
 # 方式二：从 GitHub 克隆整仓到目标项目 .agents 目录
 git clone https://github.com/YoruSakura/ArknightsDesignSkill.git .agents/skills/arknights-design
@@ -88,8 +86,6 @@ python3 -m http.server 8080
 | [`examples/series-theater.html`](./examples/series-theater.html) | 活动系列 06 · 暗黑剧场典籍风 | 丝绒暗红 + 鎏金与 `Cormorant Garamond`、双线剧目框、直角幕次标与台本/涂黑线索交互 |
 | [`examples/endfield-boilerplate.html`](./examples/endfield-boilerplate.html) | Endfield 整页构图样板 | 左侧窄轨、镂空巨字叠加排版、Hero、信号黄色带、左竖线统计块、深色数据行带（含内嵌 Sparkline 走势图）、仓储物品格与完整 Footer/回到顶部 |
 | [`examples/endfield-components.html`](./examples/endfield-components.html) | Endfield 全组件对照与交互陈列 | 按钮族与展开条、三态页签、分页/步骤条、浅/强暗菜单、实色底点阵弹窗/抽屉、方圆↔菱形表单、Combobox/TagInput/文件上传/日历/排期/取景框 HUD/轮播与跑马灯 |
-| [`skills/arknights-contingency-contract/examples/index.html`](./skills/arknights-contingency-contract/examples/index.html) | **独立 Skill · 危机合约** (`arknights-contingency-contract`) | 弧光行动 / 卫戍规程 / 矢量突破 / DOS 四主题切换、巨型风险评分 Hero、互斥契约词条矩阵、规程等级与波次列阵 |
-| [`skills/arknights-integrated-strategies/examples/index.html`](./skills/arknights-integrated-strategies/examples/index.html) | **独立 Skill · 集成战略** (`arknights-integrated-strategies`) | 萨卡兹 / 岁界园 / 水月 / 银凇 / 黑流五代切换、光柱典籍 Hero、分支探索节点图、甲乙丙委托牌、秘宝陈列匣与结算总表 |
 
 > **字体与离线环境说明**：原版规范提及的商业字体 `Bender`、`Novecento Sans Wide` 未随本仓库分发，样式表默认回退至 `Oswald`、`Chakra Petch`、`Archivo`、`Outfit`、`Space Grotesk`、`JetBrains Mono` 与 `Noto Sans SC`（国内网络可用 `@fontsource` 或本地 `@font-face` 自托管，两份 `components-catalog.md` 均附完整引入代码）。
 
@@ -135,17 +131,12 @@ ArknightsDesignSkill/
 │   └── endfield-components.html
 ├── release/                                  # 【即用型 Skill 发布产物】（由 scripts/package-release.py 生成）
 │   ├── README.md
-│   ├── arknights-design/                     # 主双体系独立纯净 Skill 文件夹（无维护脚手架）
-│   ├── arknights-contingency-contract/       # 危机合约 / 行动协议独立纯净 Skill 文件夹
-│   ├── arknights-integrated-strategies/      # 集成战略五代主题独立纯净 Skill 文件夹
-│   └── *.zip                                 # 对应三大独立 Skill 的便携归档包
-├── skills/                                   # 【按专题细化的独立子 Skill 源码包】
-│   ├── arknights-contingency-contract/       # 危机合约（弧光/规程/矢量突破/DOS 四主题，.cc-*）
-│   └── arknights-integrated-strategies/      # 集成战略（萨卡兹/岁界园/水月/银凇/黑流五代，.is-*）
+│   ├── arknights-design/                     # 独立纯净 Skill 文件夹（无维护脚手架，含 SKILL/规范/CSS/样板）
+│   └── arknights-design.zip                  # 同内容便携归档包
 └── scripts/
-    ├── package-release.py                    # 打包生成全部三大 Skill 发布目录及 zip 并校验包内零断链
+    ├── package-release.py                    # 生成 release/arknights-design/ 及 zip 并校验包内断链与越界引用
     ├── sync-upstream.py                      # 从本地上游仓库同步生成 prts-tokens.css / prts-design.css / endfield-theme.css
-    └── verify.py                             # 静态一致性、动画审计与全仓 12 页 48 图 Chrome 渲染/交互探针脚本
+    └── verify.py                             # 静态一致性、动画关键帧审计与无头 Chrome 16 图渲染/交互探针校验脚本
 ```
 
 ---

@@ -25,7 +25,6 @@
 | `references/**` | 规范文档 | ✅ 规则变更必须同步改文档，文档与 CSS/样板不得矛盾 |
 | `examples/**` | 整页样板 | ✅ 必须通过第三节的渲染验证 |
 | `SKILL.md` | Skill 总入口 | ✅ 保持精炼；新增硬规则放“第四步/第五步” |
-| `skills/**` | 独立细化子 Skill 源码 | ✅ 可改；含 `arknights-contingency-contract/` 与 `arknights-integrated-strategies/`，内部路径保持自包含 |
 | `scripts/verify.py` | 校验与回归门禁 | ✅ 新增/修改组件、动效或文档类名时须同步扩展探针与校验 |
 | `scripts/package-release.py` | Skill 发布打包脚本 | ✅ 修改 Skill 资源/规范后重跑以更新 `release/` |
 | `release/**` | **打包脚本生成** | ❌ 不要直接手改包内副本；统一改根目录源文件后重新运行 `package-release.py` |
@@ -126,20 +125,12 @@
 | 40 | 亮色模式下系列 Hero（恒深色）眉题用亮态强调色，对比度约 2–3:1；径向渐变近似“晕光” | `.ak-hero__eyebrow` 读 `--ak-theme-accent`，亮态值偏深 | 各系列 `.ak-hero` 内锁定暗态强调色；径向渐变改线性渐变 | 恒深色容器内必须覆盖主题强调令牌（同第 3 条） |
 | 41 | `COMPLETED` 水印被奖励 chip 压住截断；样板泄漏 `WAI-ARIA TABS/REPERTORY` 开发术语；面板头逐个双语；390px 统计标签孤字折行 | 水印写死 `right:92px`；标签借用实现名；文案未精简 | 水印改 flex 项；术语替换为业务文案；去掉多余英文副标并缩短统计标签；`verify.py` 增 `wmClear` 探针与术语扫描 | 绝对定位装饰必须相对真实兄弟元素让位 |
 
-### 2026-11-18 · 独立拆分「危机合约」与「集成战略」两大专题设计 Skill（`skills/`）
-
-| # | 现象 | 根因 | 处理 | 防再犯 |
-| :-: | :--- | :--- | :--- | :--- |
-| 42 | 实图巡检 `ignoredone.space` 后，发现集成战略覆盖 5 代（#5/#6 全量 UI + #3/#4/#7 封面）且危机合约主栏缺失、由 `coverdesign` 弧光行动 + 卫戍规程「契约调整」/ 矢量突破 / DOS 互补；初版 390px 实图显示 `is-skill` 顶栏 `.is-seg` 因设了 `flex-wrap` 在窄屏折成两行，`cc-skill` 静态初始分 `645` 未在加载时与脚本公式 `665` 同步 | `.is-seg` 未区分顶栏与工具条换行；静态初始分与动态词条总和 `7` 未同步初始化 | 新建独立子包 `skills/arknights-contingency-contract/`（4 主题 `.cc-*` + 互斥词条计分矩）与 `skills/arknights-integrated-strategies/`（5 代主题 `.is-*` + 分支节点图 + 委托牌 + 秘宝匣），并在文档透明标注原站取材/CDN 状态；`.is-seg` 恢复单行不折行（仅工具栏允许折行）；`cc-skill` 同步初始分 `665` 并启动调用 `recalcContracts()`；扩展 `package-release.py` 与 `verify.py` 覆盖 3 大发布包及 48 张图/10 组探针/`375px` 零溢出校验 | 顶栏主题分段开关严禁折行；动态公式分值须在页面初始化立即与预设选中项对齐 |
-| 43 | CC 子 Skill 的 regulation / vector / dos 三个亮色主题，`CLEARED` / `PASSED` 等状态标签在浅底对比度仅约 2:1；IS 暗色下 `.is-redacted` 成刺眼奶白条（同 #25 回归）；IS 路径图只有卡片无连线 | 状态语义色仅在 arclight 亮色块覆写，其余亮色主题继承暗态基线；涂黑条直读 `--is-fg`；路径图缺连线实现 | `cc-design.css` 补三主题亮色 `--cc-success/warning/danger`；`is-design.css` 引入 `--is-redact` 暗色深灰条与 `.is-route-node` 直角连线；样板内联样式抽成工具类并精简统计标签；`NOTICE.md` 补素材溯源说明 | `verify.py` 新增 `check_skill_design_rules()`：校验三主题 `--cc-success`、`--is-redact`、路径连线与样板无内联色值 |
-| 44 | 审查遗留两项 P2 设计取舍：① 4 套 CC / 5 套 IS 子主题此前仅换色而版式纹理一致；② `sarkaz` 暗色 Hero 右半区空旷偏平；另工作区残留 5 份临时 `n-*.html` 渲染缓存 | 单一配色切皮未充分表达各代际印刷线型/网格肌理/字族特征；`sarkaz` Hero 缺少右侧焦点实体模块且光柱透明度偏弱 | 清理 5 份残留临时文件；判断 P2 两项均有高性价比视觉收益并实装：**CC 四主题差异化**（`regulation` 顶斜纹与红边头 / `vector` 28px 工程格纹与顶划线标题 / `dos` 下划线标题与等宽统计）、**IS 五代差异化 + Hero 升维**（`.is-hero__grid` 双栏配右侧 `.is-hero__crest` 罗马数字编章牌与多宽金光柱；`sui-garden` 宋体朱砂顶 / `caerula` 斜衬线渐变条 / `joklumarkar` 冰原上下标尺与 `Oswald` / `blackflow` 扫描线与等宽字族）；同步文档与重打 `release/` 并经 48 图/探针验证 | 新增多主题时须兼顾至少一项版式/线型/纹理或字族区分度，而非纯调色板替换；清理临时 HTML 渲染缓存后再打包提交 |
-
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
-- 仓库不内置 `.woff2` 商业/开源字体二进制，但已在各规范 `components-*.md` 补充 `@fontsource` 离线自托管安装与引入片段。
+- 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
 - 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
-- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 48 张 1440px/390px 亮暗截图 + 10 组 Chrome 实时动效/交互探针），已涵盖 `v1.1` 主体系及 `skills/arknights-contingency-contract`、`skills/arknights-integrated-strategies` 两大独立专题包。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 40 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），已完成 `v1.0` 盲测验收及 `v1.1` 六大官方活动系列皮肤的全量审查修复（#39–#41）并正式归档发布；后续可按需在下游项目中补充单个活动子系列的细分演进与实测。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 
