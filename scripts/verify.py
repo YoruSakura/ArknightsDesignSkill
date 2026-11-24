@@ -247,12 +247,13 @@ window.addEventListener('load', () => {
   voiceBtn.click();
   const heroVoiceOk = voiceBtn.getAttribute('aria-pressed') === 'true'
     && document.getElementById('ef-orbital-sync').textContent.includes('VOICE LOG');
+  const initialRailFirst = document.querySelector('.ef-side-rail__item[href="#hero"]').classList.contains('is-current');
   const railPipe = document.querySelector('.ef-side-rail__item[href="#pipeline"]');
   railPipe.click();
   const railSyncOk = railPipe.classList.contains('is-current');
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, depotFilterOk, depotSlotOk, heroVoiceOk, railSyncOk, noOverflow
+    anims, depotFilterOk, depotSlotOk, heroVoiceOk, initialRailFirst, railSyncOk, noOverflow
   }));
 });
 </script>
@@ -319,9 +320,12 @@ window.addEventListener('load', () => {
   cbi.dispatchEvent(new Event('input', { bubbles: true }));
   moveCar(1);
   const carouselOk = document.getElementById('ef-car-count').textContent === '2 / 3';
+  const loaderCs = getComputedStyle(document.getElementById('ef-loader-demo'));
+  const bodyBg = getComputedStyle(document.body).backgroundColor;
+  const loaderFramedOk = loaderCs.borderTopWidth !== '0px' && loaderCs.backgroundColor !== bodyBg;
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, closedByOutsideClick, tabsOk, toolbarCompactOk, paginationOk, navigatorOk, avatarOk, otpAdvanceOk, calMonthOk, replayMotionOk, comboArrowOk, comboEscOk, carouselOk, noOverflow
+    anims, closedByOutsideClick, tabsOk, toolbarCompactOk, paginationOk, navigatorOk, avatarOk, otpAdvanceOk, calMonthOk, replayMotionOk, comboArrowOk, comboEscOk, carouselOk, loaderFramedOk, noOverflow
   }));
 });
 </script>
@@ -392,7 +396,8 @@ window.addEventListener('load', () => {
         ("prts-components-dark", out_dir / "prts-comp-dark.html", prts_probe),
         ("prts-components-light", out_dir / "prts-comp-light.html", prts_probe),
         ("endfield-boilerplate", out_dir / "ef-bp-light.html", ef_bp_probe),
-        ("endfield-components", out_dir / "ef-comp-light.html", ef_probe),
+        ("endfield-components-light", out_dir / "ef-comp-light.html", ef_probe),
+        ("endfield-components-dark", out_dir / "ef-comp-dark.html", ef_probe),
     ]:
         probe_file = out_dir / f"probe-{src_name}.html"
         probe_file.write_text(html_file.read_text(encoding="utf-8").replace("</body>", probe + "</body>"), encoding="utf-8")
