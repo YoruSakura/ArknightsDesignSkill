@@ -3354,8 +3354,13 @@ dialog.ef-dialog[open] { animation: ef-shift-in var(--duration-base) var(--ease-
   padding: 28px;
   background: #141414;
   color: #fafafa;
+  border: 1px solid var(--ef-line);
 }
-.ef-loader--fullscreen { position: fixed; inset: 0; z-index: var(--z-loader); min-height: 100vh; }
+:root[data-theme="dark"] .ef-loader:not(.ef-loader--fullscreen) {
+  background: #0c0c0c;
+  border-color: #383838;
+}
+.ef-loader--fullscreen { position: fixed; inset: 0; z-index: var(--z-loader); min-height: 100vh; border: 0; }
 .ef-loader__pct { font-family: var(--font-tech); font-size: var(--text-4xl); font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; }
 .ef-loader__pct small { font-size: 0.65em; font-weight: 400; color: #b3b3b3; margin-left: 4px; }
 .ef-loader__tag { font-size: var(--text-base); color: #b3b3b3; }
@@ -3498,11 +3503,27 @@ dialog.ef-dialog[open] { animation: ef-shift-in var(--duration-base) var(--ease-
 @media (max-width: 1023px) { .ef-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 767px) { .ef-grid-2, .ef-grid-3 { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
 
-/* 开关与可交互头像/表格密度/隐藏语义补齐 */
+/* 开关与可交互头像/表格密度/反转头按钮/括号留白/隐藏语义补齐 */
 .ef-scope [hidden] { display: none !important; }
 button.ef-avatar { border: 0; padding: 0; cursor: pointer; }
 .ef-avatar:focus-visible { outline: 2px solid var(--ef-focus); outline-offset: 3px; }
 .ef-table--compact th, .ef-table--compact td { padding-block: 6px; }
+.ef-btn--head {
+  height: 24px;
+  min-width: 0;
+  padding: 0 10px;
+  font-size: var(--text-xs);
+  background: transparent;
+  color: var(--ef-ink);
+  border: 1px solid var(--ef-line-strong);
+  box-shadow: none;
+}
+.ef-btn--head:hover {
+  background: var(--ef-ink);
+  color: var(--ef-surface);
+  border-color: var(--ef-ink);
+}
+.ef-row--bracket-pad { padding: 4px 4px 0; }
 
 /* Steps 窄屏竖排 + 禁用状态补齐 */
 .ef-menu__item:disabled, .ef-menu__item[aria-disabled="true"] { color: var(--ef-ink-disabled); cursor: not-allowed; }
