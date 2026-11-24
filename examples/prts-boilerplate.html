@@ -60,10 +60,10 @@
         <span>NAVIGATION // PRTS</span>
         <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" id="ak-drawer-close" aria-label="关闭菜单">✕</button>
       </div>
-      <a class="ak-drawer-nav__link is-active" href="#index"><span>首页概览</span><small>01 // INDEX</small></a>
-      <a class="ak-drawer-nav__link" href="#information"><span>作战情报</span><small>02 // INFO</small></a>
-      <a class="ak-drawer-nav__link" href="#archive"><span>设定与编队</span><small>03 // DATA</small></a>
-      <a class="ak-drawer-nav__link" href="#extensions"><span>延伸系统</span><small>04 // MORE</small></a>
+      <a class="ak-drawer-nav__link is-active" href="#index" data-sec="01" data-sec-en="INDEX"><span>首页概览</span><small>01 // INDEX</small></a>
+      <a class="ak-drawer-nav__link" href="#information" data-sec="02" data-sec-en="INFORMATION"><span>作战情报</span><small>02 // INFO</small></a>
+      <a class="ak-drawer-nav__link" href="#archive" data-sec="03" data-sec-en="DIRECTORY"><span>设定与编队</span><small>03 // DATA</small></a>
+      <a class="ak-drawer-nav__link" href="#extensions" data-sec="04" data-sec-en="MORE CONTENT"><span>延伸系统</span><small>04 // MORE</small></a>
       <a class="ak-drawer-nav__link" href="./prts-components.html"><span>全组件交互目录</span><small>CATALOG</small></a>
       <a class="ak-drawer-nav__link" href="./endfield-boilerplate.html"><span>Endfield 对照样板</span><small>ENDFIELD</small></a>
     </nav>
@@ -91,8 +91,8 @@
               去边框化工业架构、极简 1px 建筑标尺线、非对称错位情报流与纯直角交互矩阵。支持「终端 (Dark) / 档案 (Light)」双正典极性瞬切与全宽幅响应式降维。
             </p>
             <div class="ak-flex ak-wrap ak-gap-3 ak-mt-6">
-              <a class="ak-btn ak-btn--contrast ak-btn--lg" href="#archive">检视作战矩阵</a>
-              <a class="ak-btn ak-btn--primary ak-btn--lg" href="#information">最新调度简报</a>
+              <a class="ak-btn ak-btn--contrast ak-btn--lg" href="#archive" data-sec="03" data-sec-en="DIRECTORY">检视作战矩阵</a>
+              <a class="ak-btn ak-btn--primary ak-btn--lg" href="#information" data-sec="02" data-sec-en="INFORMATION">最新调度简报</a>
               <a class="ak-btn ak-btn--ghost ak-btn--lg ak-chevrons" href="./prts-components.html">全组件目录</a>
             </div>
           </div>
@@ -504,18 +504,23 @@
   </footer>
 
   <script>
-    // 主题持久化同步（Dark 默认 / Light 档案模式）
+    // 主题持久化同步（Dark 默认 / Light 档案模式 + View Transition 平滑切换）
     (function () {
       var saved = null;
       try { saved = localStorage.getItem('ak-theme'); } catch (e) {}
       applyTheme(saved || document.documentElement.dataset.theme || 'dark', false);
     })();
     function applyTheme(theme, persist) {
+      var run = function () {
+        document.documentElement.dataset.theme = theme;
+        var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
+        if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
+        if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
+      };
+      if (persist && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.startViewTransition(run);
+      } else { run(); }
       if (persist) { try { localStorage.setItem('ak-theme', theme); } catch (e) {} }
-      document.documentElement.dataset.theme = theme;
-      var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
-      if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
-      if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
     }
     function setTheme(theme) { applyTheme(theme, true); }
 
@@ -544,10 +549,12 @@
       });
     })();
 
-    // Hero 焦点缩略卡切换 + 底部进度滑轨同步
-    document.querySelectorAll('.ak-thumb-card').forEach(function (card) {
-      card.addEventListener('click', function () {
-        document.querySelectorAll('.ak-thumb-card').forEach(function (c) {
+    // Hero 焦点缩略卡切换 + 键盘方向键 + 简报重扫动效 + 底部进度滑轨同步
+    (function () {
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.ak-thumb-card'));
+      var brief = document.querySelector('.ak-brief');
+      function selectCard(card, moveFocus) {
+        cards.forEach(function (c) {
           c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false');
         });
         card.classList.add('is-active');
@@ -558,50 +565,114 @@
         document.getElementById('brief-desc').textContent = card.dataset.desc;
         var thumb = document.getElementById('ak-scrub-thumb');
         if (thumb) thumb.style.setProperty('--_thumb-x', (Number(card.dataset.idx) * 25) + '%');
+        if (brief) {
+          brief.classList.remove('is-updating');
+          void brief.offsetWidth;
+          brief.classList.add('is-updating');
+        }
+        if (moveFocus) card.focus();
+      }
+      cards.forEach(function (card, i) {
+        card.addEventListener('click', function () { selectCard(card, false); });
+        card.addEventListener('keydown', function (e) {
+          var next = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % cards.length;
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + cards.length) % cards.length;
+          else if (e.key === 'Home') next = 0;
+          else if (e.key === 'End') next = cards.length - 1;
+          if (next !== null) { e.preventDefault(); selectCard(cards[next], true); }
+        });
+      });
+    })();
+
+    // 情报分类筛选与条目点选激活
+    var feedItems = Array.prototype.slice.call(document.querySelectorAll('#ak-feed-list .ak-folio-item'));
+    feedItems.forEach(function (item) {
+      item.addEventListener('click', function () {
+        feedItems.forEach(function (x) { x.classList.remove('is-active'); });
+        item.classList.add('is-active');
       });
     });
-
-    // 情报分类筛选
     function filterFeed(cat, btn) {
       document.querySelectorAll('.ak-filter-strip__btn').forEach(function (b) {
         b.classList.toggle('is-active', b === btn);
         b.setAttribute('aria-pressed', String(b === btn));
       });
-      document.querySelectorAll('#ak-feed-list .ak-folio-item').forEach(function (item) {
-        item.hidden = !(cat === 'all' || item.dataset.cat === cat);
+      var firstVis = null, activeVis = false;
+      feedItems.forEach(function (item) {
+        var show = (cat === 'all' || item.dataset.cat === cat);
+        item.hidden = !show;
+        if (show && !firstVis) firstVis = item;
+        if (show && item.classList.contains('is-active')) activeVis = true;
       });
+      if (!activeVis && firstVis) {
+        feedItems.forEach(function (x) { x.classList.remove('is-active'); });
+        firstVis.classList.add('is-active');
+      }
     }
 
-    // 设定无边框索引列表交互
-    document.querySelectorAll('#ak-world-list .ak-folio-item').forEach(function (opt) {
-      opt.addEventListener('click', function () {
-        document.querySelectorAll('#ak-world-list .ak-folio-item').forEach(function (x) {
+    // 设定无边框索引列表交互（点击 + 上下方向键 / Home / End）
+    (function () {
+      var opts = Array.prototype.slice.call(document.querySelectorAll('#ak-world-list .ak-folio-item'));
+      function selectWorld(opt, focus) {
+        opts.forEach(function (x) {
           x.classList.remove('is-active'); x.setAttribute('aria-selected', 'false');
         });
         opt.classList.add('is-active');
         opt.setAttribute('aria-selected', 'true');
         document.getElementById('ak-world-note').textContent = opt.dataset.note;
+        if (focus) opt.focus();
+      }
+      opts.forEach(function (opt, i) {
+        opt.addEventListener('click', function () { selectWorld(opt, false); });
+        opt.addEventListener('keydown', function (e) {
+          var next = null;
+          if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (i + 1) % opts.length;
+          else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = (i - 1 + opts.length) % opts.length;
+          else if (e.key === 'Home') next = 0;
+          else if (e.key === 'End') next = opts.length - 1;
+          if (next !== null) { e.preventDefault(); selectWorld(opts[next], true); }
+        });
       });
-    });
+    })();
 
-    // 顶栏与右侧序号窄轨联动
+    // 顶栏、移动抽屉与右侧序号窄轨三端联动 + 滚动监听
     function syncSectionNav(sec, en) {
       document.getElementById('rail-num').textContent = sec;
       document.getElementById('rail-sub').textContent = sec + ' / 04';
       document.getElementById('rail-label').textContent = en;
-      document.querySelectorAll('.ak-topbar__link').forEach(function (a) {
+      document.querySelectorAll('.ak-topbar__link, .ak-rail-nav__item, .ak-drawer-nav__link[data-sec]').forEach(function (a) {
         var on = a.dataset.sec === sec;
         a.classList.toggle('is-active', on);
-        if (on) a.setAttribute('aria-current', 'page');
-        else a.removeAttribute('aria-current');
-      });
-      document.querySelectorAll('.ak-rail-nav__item').forEach(function (a) {
-        a.classList.toggle('is-active', a.dataset.sec === sec);
+        if (a.classList.contains('ak-topbar__link')) {
+          if (on) a.setAttribute('aria-current', 'page');
+          else a.removeAttribute('aria-current');
+        }
       });
     }
     document.querySelectorAll('[data-sec]').forEach(function (el) {
       el.addEventListener('click', function () { syncSectionNav(el.dataset.sec, el.dataset.secEn); });
     });
+    if ('IntersectionObserver' in window) {
+      var secMeta = {
+        index: ['01', 'INDEX'],
+        information: ['02', 'INFORMATION'],
+        archive: ['03', 'DIRECTORY'],
+        extensions: ['04', 'MORE CONTENT']
+      };
+      var secObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && secMeta[entry.target.id]) {
+            var m = secMeta[entry.target.id];
+            syncSectionNav(m[0], m[1]);
+          }
+        });
+      }, { rootMargin: '-32% 0px -52% 0px', threshold: 0 });
+      Object.keys(secMeta).forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) secObs.observe(el);
+      });
+    }
   </script>
 </body>
 </html>

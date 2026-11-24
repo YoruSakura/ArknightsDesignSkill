@@ -209,17 +209,17 @@
               <button type="button" class="ak-pagination__item">›</button>
             </nav>
             <div class="ak-phase-tabs" role="group" aria-label="精英阶段切换">
-              <button type="button">E0</button>
-              <button type="button">E1</button>
-              <button type="button" class="is-active">E2</button>
+              <button type="button" aria-pressed="false">E0</button>
+              <button type="button" aria-pressed="false">E1</button>
+              <button type="button" class="is-active" aria-pressed="true">E2</button>
             </div>
             <div class="ak-skill-levels" role="group" aria-label="技能等级">
-              <button type="button">5</button>
-              <button type="button">6</button>
-              <button type="button" class="is-active">7</button>
-              <button type="button" class="is-mastery">M1</button>
-              <button type="button" class="is-mastery">M2</button>
-              <button type="button" class="is-mastery is-active">M3</button>
+              <button type="button" aria-pressed="false">5</button>
+              <button type="button" aria-pressed="false">6</button>
+              <button type="button" aria-pressed="false">7</button>
+              <button type="button" class="is-mastery" aria-pressed="false">M1</button>
+              <button type="button" class="is-mastery" aria-pressed="false">M2</button>
+              <button type="button" class="is-mastery is-active" aria-pressed="true">M3</button>
             </div>
           </div>
         </div>
@@ -300,6 +300,16 @@
             <button type="button" class="ak-btn ak-btn--primary" onclick="document.getElementById('ak-modal').showModal()">打开弹窗 (Dialog)</button>
             <button type="button" class="ak-btn" onclick="openAkDrawer(true)">打开右侧抽屉 (Drawer)</button>
             <button type="button" class="ak-btn ak-btn--outline" onclick="pushAkToast()">触发 Toast 轻提示</button>
+            <span class="ak-tip-anchor" id="demo-pop">
+              <button type="button" class="ak-btn ak-btn--outline" id="demo-pop-btn" aria-expanded="false" aria-controls="demo-pop-card">气泡卡片 (Popover) ▾</button>
+              <div class="ak-popover ak-popover--bottom-start" id="demo-pop-card" role="dialog" aria-label="节点参数概览">
+                <div class="ak-popover__title">中继节点 #07 · 运行概览</div>
+                <div>链路延迟 14ms · 负载率 42% · 协议版本 v4.2</div>
+                <div class="ak-mt-2">
+                  <button type="button" class="ak-btn ak-btn--xs" id="demo-pop-close">关闭气泡</button>
+                </div>
+              </div>
+            </span>
             <button type="button" class="ak-btn" data-ak-tip="快捷键：按 / 开启全局档案搜索">悬停查看 Tooltip <kbd class="ak-kbd">/</kbd></button>
             <span class="ak-term" data-ak-tip="法术伤害无视目标物理防御力，按法术抗性百分比结算">术语：法术伤害</span>
           </div>
@@ -395,7 +405,7 @@
                 <div class="ak-attr"><span class="ak-attr__label">DEF <span class="cn">防御力</span></span><span class="ak-attr__value">402</span></div>
               </div>
               <dl class="ak-kv ak-kv--boxed">
-                <dt>干员代号</dt><dd>陈 (Ch'en) · <span class="ak-redacted" tabindex="0">前龙门近卫局特别督察组组长</span>（悬停显示屏蔽词）</dd>
+                <dt>干员代号</dt><dd>陈 (Ch'en) · <span class="ak-redacted" role="button" tabindex="0" aria-pressed="false" title="点击或键盘回车显示屏蔽词">前龙门近卫局特别督察组组长</span>（点击或悬停显示屏蔽词）</dd>
                 <dt>阻挡攻击范围</dt>
                 <dd>
                   <div class="ak-range ak-range--sm" style="--cols: 3;" aria-label="1x3 攻击范围">
@@ -408,7 +418,7 @@
             <div class="ak-empty">
               <div class="ak-empty__code">EMPTY</div>
               <p class="ak-empty__title">暂无匹配的敌人图鉴档案</p>
-              <button type="button" class="ak-btn ak-btn--sm">查看全大陆图鉴</button>
+              <button type="button" class="ak-btn ak-btn--sm" onclick="pushAkToast('图鉴检索已触发', '正在加载泰拉全大陆敌方资料库…')">查看全大陆图鉴</button>
             </div>
           </div>
 
@@ -462,7 +472,7 @@
               </dl>
 
               <div class="ak-voice" style="border-top: 1px solid var(--ak-border-subtle);">
-                <button type="button" class="ak-voice__play is-playing" onclick="this.classList.toggle('is-playing')" aria-label="播放/暂停语音"></button>
+                <button type="button" class="ak-voice__play is-playing" onclick="this.setAttribute('aria-pressed', String(this.classList.toggle('is-playing')))" aria-pressed="true" aria-label="播放/暂停语音"></button>
                 <div>
                   <div class="ak-voice__title">作战中 1（声波动画演示）<span class="ak-voice__wave" aria-hidden="true"><i></i><i></i><i></i></span></div>
                   <div class="ak-voice__text">拔刀要快，收刀要稳——点击左侧按钮可实时启停声波。</div>
@@ -485,10 +495,13 @@
               <h3 class="ak-rule__title ak-anim-scan">1px 标尺分割线 (.ak-rule)</h3>
               <span class="ak-rule__en">ARCHITECTURAL RULE</span>
             </div>
-            <button type="button" class="ak-wave-btn is-playing" onclick="this.setAttribute('aria-pressed', String(this.classList.toggle('is-playing')))" aria-pressed="true" aria-label="切换声波指示">
-              <span class="ak-wave-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-              <span>SIGNAL WAVE</span>
-            </button>
+            <div class="ak-flex ak-wrap ak-gap-2 ak-items-center ak-justify-end" style="flex: none;">
+              <button type="button" class="ak-btn ak-btn--xs ak-btn--outline" id="ak-replay-editorial">重播硬切动效</button>
+              <button type="button" class="ak-wave-btn is-playing" onclick="this.setAttribute('aria-pressed', String(this.classList.toggle('is-playing')))" aria-pressed="true" aria-label="切换声波指示">
+                <span class="ak-wave-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                <span>SIGNAL WAVE</span>
+              </button>
+            </div>
           </div>
 
           <div class="ak-stat-row--open ak-m-0">
@@ -593,15 +606,20 @@
       applyTheme(saved || document.documentElement.dataset.theme || 'dark', false);
     })();
     function applyTheme(theme, persist) {
+      var run = function () {
+        document.documentElement.dataset.theme = theme;
+        var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
+        if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
+        if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
+      };
+      if (persist && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.startViewTransition(run);
+      } else { run(); }
       if (persist) { try { localStorage.setItem('ak-theme', theme); } catch (e) {} }
-      document.documentElement.dataset.theme = theme;
-      var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
-      if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
-      if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
     }
     function setTheme(t) { applyTheme(t, true); }
 
-    // 侧栏与右侧抽屉联动
+    // 侧栏与右侧抽屉联动 + 侧栏导航激活
     var btn = document.getElementById('ak-menu-btn'), side = document.getElementById('ak-sidebar'), scrim = document.getElementById('ak-scrim'), rdrawer = document.getElementById('ak-right-drawer');
     function openSide(open) { side.classList.toggle('is-open', open); scrim.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open); }
     var drawerOpener = null;
@@ -613,17 +631,49 @@
     }
     btn.addEventListener('click', function () { openSide(!side.classList.contains('is-open')); });
     scrim.addEventListener('click', function () { openSide(false); openAkDrawer(false); });
+    side.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        side.querySelectorAll('li').forEach(function (li) { li.classList.remove('is-active'); });
+        if (a.parentElement) a.parentElement.classList.add('is-active');
+        if (side.classList.contains('is-open')) openSide(false);
+      });
+    });
 
-    // 下拉菜单受控 + 点击外部关闭 + 菜单内方向键移动 + Esc 归还焦点
+    // 下拉菜单 / 气泡 Popover 受控 + 点击外部关闭 + 菜单内方向键移动 + Esc 归还焦点
     var dd = document.getElementById('demo-dd'), ddb = document.getElementById('demo-dd-btn');
-    ddb.addEventListener('click', function (e) { e.stopPropagation(); var o = dd.classList.toggle('is-open'); ddb.setAttribute('aria-expanded', String(o)); });
+    var pop = document.getElementById('demo-pop'), popBtn = document.getElementById('demo-pop-btn'), popClose = document.getElementById('demo-pop-close');
+    function closePop(restoreFocus) {
+      if (pop && pop.classList.contains('is-open')) {
+        pop.classList.remove('is-open');
+        if (popBtn) { popBtn.setAttribute('aria-expanded', 'false'); if (restoreFocus) popBtn.focus(); }
+      }
+    }
+    ddb.addEventListener('click', function (e) { e.stopPropagation(); closePop(false); var o = dd.classList.toggle('is-open'); ddb.setAttribute('aria-expanded', String(o)); });
+    if (pop && popBtn) {
+      popBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (dd.classList.contains('is-open')) { dd.classList.remove('is-open'); ddb.setAttribute('aria-expanded', 'false'); }
+        var o = pop.classList.toggle('is-open');
+        popBtn.setAttribute('aria-expanded', String(o));
+      });
+    }
+    if (popClose) popClose.addEventListener('click', function () { closePop(true); });
+    dd.querySelectorAll('.ak-menu__item:not([aria-disabled="true"])').forEach(function (item) {
+      item.addEventListener('click', function () {
+        dd.querySelectorAll('.ak-menu__item').forEach(function (x) { x.classList.remove('is-active'); });
+        item.classList.add('is-active');
+        dd.classList.remove('is-open'); ddb.setAttribute('aria-expanded', 'false'); ddb.focus();
+      });
+    });
     document.addEventListener('click', function (e) {
       if (dd.classList.contains('is-open') && !dd.contains(e.target)) { dd.classList.remove('is-open'); ddb.setAttribute('aria-expanded', 'false'); }
+      if (pop && pop.classList.contains('is-open') && !pop.contains(e.target)) { closePop(false); }
       document.querySelectorAll('.ak-dropdown details[open]').forEach(function (el) { if (!el.contains(e.target)) el.removeAttribute('open'); });
     });
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         openSide(false); openAkDrawer(false);
+        closePop(true);
         if (dd.classList.contains('is-open')) { dd.classList.remove('is-open'); ddb.setAttribute('aria-expanded', 'false'); ddb.focus(); }
         document.querySelectorAll('.ak-dropdown details[open]').forEach(function (el) { el.removeAttribute('open'); });
       }
@@ -665,7 +715,70 @@
     }
     initTabs('[data-tabs]', 'data-tabs', 'data-tabpanel');
 
-    // Chip & 按钮组切换
+    // 分页 / 精英阶段 / 技能等级 / Chip / 按钮组 / 屏蔽词 / 官网清单 / 动效重播
+    document.querySelectorAll('.ak-pagination').forEach(function (nav) {
+      var btns = Array.prototype.slice.call(nav.querySelectorAll('button.ak-pagination__item'));
+      var prev = btns[0], next = btns[btns.length - 1], pages = btns.slice(1, -1);
+      function setIdx(idx) {
+        pages.forEach(function (p, j) {
+          p.classList.toggle('is-active', j === idx);
+          if (j === idx) p.setAttribute('aria-current', 'page');
+          else p.removeAttribute('aria-current');
+        });
+        prev.disabled = idx === 0; prev.classList.toggle('is-disabled', idx === 0);
+        next.disabled = idx === pages.length - 1; next.classList.toggle('is-disabled', idx === pages.length - 1);
+      }
+      pages.forEach(function (p, j) { p.addEventListener('click', function () { setIdx(j); }); });
+      prev.addEventListener('click', function () {
+        var cur = pages.findIndex(function (p) { return p.classList.contains('is-active'); });
+        if (cur > 0) setIdx(cur - 1);
+      });
+      next.addEventListener('click', function () {
+        var cur = pages.findIndex(function (p) { return p.classList.contains('is-active'); });
+        if (cur < pages.length - 1) setIdx(cur + 1);
+      });
+    });
+
+    document.querySelectorAll('.ak-phase-tabs, .ak-skill-levels').forEach(function (group) {
+      var btns = Array.prototype.slice.call(group.querySelectorAll('button'));
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () {
+          btns.forEach(function (x) { x.classList.remove('is-active'); x.setAttribute('aria-pressed', 'false'); });
+          b.classList.add('is-active'); b.setAttribute('aria-pressed', 'true');
+        });
+      });
+    });
+
+    document.querySelectorAll('.ak-redacted').forEach(function (el) {
+      function toggleReveal() {
+        var on = el.classList.toggle('is-revealed');
+        el.setAttribute('aria-pressed', String(on));
+      }
+      el.addEventListener('click', toggleReveal);
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleReveal(); }
+      });
+    });
+
+    document.querySelectorAll('#editorial .ak-folio-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        item.parentElement.querySelectorAll('.ak-folio-item').forEach(function (x) { x.classList.remove('is-active'); });
+        item.classList.add('is-active');
+      });
+    });
+
+    var replayBtn = document.getElementById('ak-replay-editorial');
+    if (replayBtn) {
+      replayBtn.addEventListener('click', function () {
+        document.querySelectorAll('#editorial .ak-anim-scan, #editorial .ak-anim-wipe').forEach(function (el) {
+          var cls = el.classList.contains('ak-anim-scan') ? 'ak-anim-scan' : 'ak-anim-wipe';
+          el.classList.remove(cls);
+          void el.offsetWidth;
+          el.classList.add(cls);
+        });
+      });
+    }
+
     document.querySelectorAll('[data-chip-group] .ak-chip').forEach(function (c) {
       c.addEventListener('click', function () { var on = c.classList.toggle('is-active'); c.setAttribute('aria-pressed', on); });
     });
@@ -678,12 +791,14 @@
       var el = document.getElementById('ak-num-val');
       el.value = Math.min(10, Math.max(1, (parseInt(el.value, 10) || 1) + d));
     }
-    function pushAkToast() {
+    function pushAkToast(title, desc) {
       var wrap = document.getElementById('ak-toasts');
       var t = document.createElement('div');
       t.className = 'ak-toast ak-toast--success';
       t.setAttribute('role', 'status');
-      t.innerHTML = '<div class="ak-toast__body"><div class="ak-toast__title">操作已同步</div><div>PRTS 终端队列写入完成。</div></div><button type="button" class="ak-btn ak-btn--ghost ak-btn--xs" aria-label="关闭">✕</button><div class="ak-toast__progress"></div>';
+      t.innerHTML = '<div class="ak-toast__body"><div class="ak-toast__title"></div><div></div></div><button type="button" class="ak-btn ak-btn--ghost ak-btn--xs" aria-label="关闭">✕</button><div class="ak-toast__progress"></div>';
+      t.querySelector('.ak-toast__title').textContent = title || '操作已同步';
+      t.querySelector('.ak-toast__body').lastElementChild.textContent = desc || 'PRTS 终端队列写入完成。';
       t.querySelector('button').onclick = function () { t.remove(); };
       wrap.appendChild(t);
       setTimeout(function () { if (t.parentNode) t.remove(); }, 4500);

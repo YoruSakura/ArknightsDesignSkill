@@ -148,10 +148,10 @@ def run_chrome_render_and_behavior(out_dir: pathlib.Path) -> list[str]:
     errors: list[str] = []
     out_dir.mkdir(parents=True, exist_ok=True)
     pages = [
-        ("prts-bp", "examples/prts-boilerplate.html", 2250, 3550),
-        ("prts-comp", "examples/prts-components.html", 3950, 6150),
-        ("ef-bp", "examples/endfield-boilerplate.html", 1700, 2500),
-        ("ef-comp", "examples/endfield-components.html", 4600, 7400),
+        ("prts-bp", "examples/prts-boilerplate.html", 2420, 3550),
+        ("prts-comp", "examples/prts-components.html", 3950, 6200),
+        ("ef-bp", "examples/endfield-boilerplate.html", 1750, 2600),
+        ("ef-comp", "examples/endfield-components.html", 4950, 7900),
     ]
     for tag, src, dh, mh in pages:
         for theme in ("light", "dark"):
@@ -182,15 +182,29 @@ window.addEventListener('load', () => {
     heroScan: getComputedStyle(document.querySelector('.ak-hero--editorial__title')).animationName,
     heroWipe: getComputedStyle(document.querySelector('.ak-hero--editorial__rule')).animationName,
     waveBar: getComputedStyle(document.querySelector('.ak-wave-btn.is-playing .ak-wave-bars i')).animationName,
+    thumbLock: getComputedStyle(document.querySelector('.ak-thumb-card.is-active'), '::before').animationName,
   };
   document.querySelectorAll('.ak-thumb-card')[2].click();
   const focalSwitched = document.getElementById('brief-cn').textContent === '陈'
     && document.getElementById('ak-scrub-thumb').style.getPropertyValue('--_thumb-x') === '50%';
+  anims.briefScan = getComputedStyle(document.querySelector('.ak-brief.is-updating .ak-brief__head')).animationName;
+  const activeCard = document.querySelector('.ak-thumb-card.is-active');
+  activeCard.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  const thumbArrowOk = document.getElementById('brief-cn').textContent === '德克萨斯'
+    && document.activeElement.dataset.idx === '3';
   document.querySelectorAll('.ak-filter-strip__btn')[1].click();
   const feedFiltered = [...document.querySelectorAll('#ak-feed-list .ak-folio-item')]
-    .every(el => el.dataset.cat === 'notice' ? !el.hidden : el.hidden);
+    .every(el => el.dataset.cat === 'notice'
+      ? (!el.hidden && getComputedStyle(el).display !== 'none')
+      : (el.hidden && getComputedStyle(el).display === 'none'));
+  const visFeeds = [...document.querySelectorAll('#ak-feed-list .ak-folio-item:not([hidden])')];
+  if (visFeeds[1]) visFeeds[1].click();
+  const feedClickOk = !!(visFeeds[1] && visFeeds[1].classList.contains('is-active'));
   document.querySelectorAll('#ak-world-list .ak-folio-item')[2].click();
   const worldSwitched = document.getElementById('ak-world-note').textContent.includes('NOMADIC CITY');
+  document.querySelector('#ak-world-list .ak-folio-item.is-active')
+    .dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+  const worldArrowOk = document.getElementById('ak-world-note').textContent.includes('RHODES ISLAND');
   const audioBtn = document.getElementById('ak-audio-toggle');
   audioBtn.click();
   const audioToggled = audioBtn.getAttribute('aria-pressed') === 'false' && !audioBtn.classList.contains('is-playing');
@@ -207,7 +221,38 @@ window.addEventListener('load', () => {
   const statsClearOfWatermark = statRect.top >= heroRect.bottom - 1;
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, focalSwitched, feedFiltered, worldSwitched, audioToggled, railSynced, secLabelsMatch, statsClearOfWatermark, noOverflow
+    anims, focalSwitched, thumbArrowOk, feedFiltered, feedClickOk, worldSwitched, worldArrowOk, audioToggled, railSynced, secLabelsMatch, statsClearOfWatermark, noOverflow
+  }));
+});
+</script>
+"""
+    ef_bp_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = {
+    heroFlicker: getComputedStyle(document.getElementById('ef-dijiang-panel')).animationName,
+    sparkline: getComputedStyle(document.querySelector('#pipeline .ef-sparkline')).animationName,
+    slotBracket: getComputedStyle(document.querySelector('#depot .ef-item-slot.corner-brackets'), '::after').animationName,
+  };
+  document.querySelector('#depot .ef-filter-chip[data-filter="rare"]').click();
+  const depotFilterOk = document.getElementById('ef-slot-count').textContent === 'SLOT // 02'
+    && [...document.querySelectorAll('#depot .ef-item-slot')].every(s =>
+      s.dataset.cat === 'rare' ? getComputedStyle(s).display !== 'none' : getComputedStyle(s).display === 'none');
+  const prismBtn = [...document.querySelectorAll('#depot .ef-item-slot')].find(s => s.dataset.name === '协议棱镜');
+  prismBtn.click();
+  const depotSlotOk = prismBtn.classList.contains('corner-brackets')
+    && prismBtn.getAttribute('aria-pressed') === 'true'
+    && document.getElementById('ef-depot-readout').textContent.includes('协议棱镜');
+  const voiceBtn = document.getElementById('ef-btn-voice');
+  voiceBtn.click();
+  const heroVoiceOk = voiceBtn.getAttribute('aria-pressed') === 'true'
+    && document.getElementById('ef-orbital-sync').textContent.includes('VOICE LOG');
+  const railPipe = document.querySelector('.ef-side-rail__item[href="#pipeline"]');
+  railPipe.click();
+  const railSyncOk = railPipe.classList.contains('is-current');
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, depotFilterOk, depotSlotOk, heroVoiceOk, railSyncOk, noOverflow
   }));
 });
 </script>
@@ -227,6 +272,9 @@ window.addEventListener('load', () => {
     marquee: getComputedStyle(document.querySelector('.ef-marquee__track')).animationName,
     scrollHint: getComputedStyle(document.querySelector('.ef-scroll-hint__line'), '::after').animationName,
     bracketCorner: getComputedStyle(document.querySelector('.ef-viewfinder__corners')).animationName,
+    loaderFill: getComputedStyle(document.getElementById('ef-loader-fill')).animationName,
+    motionFlicker: getComputedStyle(document.getElementById('ef-motion-flicker')).animationName,
+    motionBreathe: getComputedStyle(document.getElementById('ef-motion-breathe')).animationName,
     menuBar: (() => {
       document.getElementById('ef-dd-strong-btn').click();
       return getComputedStyle(document.querySelector('#ef-dd-strong .ef-menu'), '::before').animationName;
@@ -241,6 +289,23 @@ window.addEventListener('load', () => {
     tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
     return r && tabs[0].getAttribute('aria-selected') === 'true';
   });
+  document.querySelector('#ef-toolbar [data-density="compact"]').click();
+  const toolbarCompactOk = document.querySelector('.ef-table').classList.contains('ef-table--compact');
+  document.getElementById('ef-pg-next').click();
+  const paginationOk = document.getElementById('ef-pg-counter').textContent.includes('02 / 12');
+  document.getElementById('ef-nav-next').click();
+  const navigatorOk = document.getElementById('ef-nav-idx').textContent === '03 / 04'
+    && document.querySelectorAll('#ef-nav-dashes i')[2].classList.contains('is-active');
+  document.querySelectorAll('#ef-avatars .ef-avatar')[0].click();
+  const avatarOk = document.querySelectorAll('#ef-avatars .ef-avatar')[0].classList.contains('is-selected');
+  const otpCells = document.querySelectorAll('.ef-otp__cell');
+  otpCells[3].value = '7';
+  otpCells[3].dispatchEvent(new Event('input', { bubbles: true }));
+  const otpAdvanceOk = document.activeElement === otpCells[4];
+  document.querySelectorAll('#ef-cal .ef-cal__head button')[1].click();
+  const calMonthOk = document.querySelector('#ef-cal .ef-cal__title').textContent === '2026年12月';
+  document.getElementById('btn-replay-motion').click();
+  const replayMotionOk = getComputedStyle(document.getElementById('ef-loader-fill')).animationName !== 'none';
   const cbi = document.getElementById('ef-combo-in');
   cbi.value = 'E03';
   cbi.dispatchEvent(new Event('input', { bubbles: true }));
@@ -255,7 +320,9 @@ window.addEventListener('load', () => {
   moveCar(1);
   const carouselOk = document.getElementById('ef-car-count').textContent === '2 / 3';
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims, closedByOutsideClick, tabsOk, comboArrowOk, comboEscOk, carouselOk, noOverflow }));
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, closedByOutsideClick, tabsOk, toolbarCompactOk, paginationOk, navigatorOk, avatarOk, otpAdvanceOk, calMonthOk, replayMotionOk, comboArrowOk, comboEscOk, carouselOk, noOverflow
+  }));
 });
 </script>
 """
@@ -274,7 +341,31 @@ window.addEventListener('load', () => {
   const ddOpened = document.getElementById('demo-dd').classList.contains('is-open');
   document.body.click();
   const ddClosed = !document.getElementById('demo-dd').classList.contains('is-open');
+  const popBtn = document.getElementById('demo-pop-btn');
+  const popCard = document.getElementById('demo-pop-card');
+  const popInitiallyHidden = getComputedStyle(popCard).display === 'none';
+  popBtn.click();
+  const popOpened = document.getElementById('demo-pop').classList.contains('is-open')
+    && getComputedStyle(popCard).display !== 'none';
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  const popEscClosed = !document.getElementById('demo-pop').classList.contains('is-open')
+    && getComputedStyle(popCard).display === 'none'
+    && document.activeElement === popBtn;
   const drawerHidden = getComputedStyle(document.getElementById('ak-right-drawer')).visibility === 'hidden';
+  document.querySelectorAll('.ak-pagination button.ak-pagination__item')[2].click();
+  const paginationOk = document.querySelectorAll('.ak-pagination button.ak-pagination__item')[2].classList.contains('is-active');
+  document.querySelectorAll('.ak-phase-tabs button')[1].click();
+  const phaseTabOk = document.querySelectorAll('.ak-phase-tabs button')[1].classList.contains('is-active');
+  document.querySelectorAll('.ak-skill-levels button')[3].click();
+  const skillLevelOk = document.querySelectorAll('.ak-skill-levels button')[3].classList.contains('is-active')
+    && document.querySelectorAll('.ak-skill-levels button.is-active').length === 1;
+  const redacted = document.querySelector('.ak-redacted');
+  redacted.click();
+  const redactedOk = redacted.classList.contains('is-revealed') && redacted.getAttribute('aria-pressed') === 'true';
+  document.querySelectorAll('#editorial .ak-folio-item')[1].click();
+  const editorialFolioOk = document.querySelectorAll('#editorial .ak-folio-item')[1].classList.contains('is-active');
+  document.getElementById('ak-replay-editorial').click();
+  const editorialReplayOk = getComputedStyle(document.querySelector('#editorial .ak-anim-wipe')).animationName === 'ak-wipe-x';
   const metaEl = document.querySelector('#editorial .ak-folio-item__meta');
   const metaTitleEl = metaEl && metaEl.nextElementSibling;
   const folioMetaStacked = !!(metaEl && metaTitleEl && metaEl.getBoundingClientRect().bottom <= metaTitleEl.getBoundingClientRect().top + 1);
@@ -288,7 +379,11 @@ window.addEventListener('load', () => {
   waveBtn.style.transition = '';
   const waveContrastOk = waveAriaSynced && (!isLight || (wavePlayColor === 'rgb(0, 114, 168)' && waveIdleColor === 'rgb(69, 70, 71)'));
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims, ddOpened, ddClosed, drawerHidden, folioMetaStacked, waveContrastOk, noOverflow }));
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, ddOpened, ddClosed, popInitiallyHidden, popOpened, popEscClosed, drawerHidden,
+    paginationOk, phaseTabOk, skillLevelOk, redactedOk, editorialFolioOk, editorialReplayOk,
+    folioMetaStacked, waveContrastOk, noOverflow
+  }));
 });
 </script>
 """
@@ -296,6 +391,7 @@ window.addEventListener('load', () => {
         ("prts-boilerplate", out_dir / "prts-bp-dark.html", prts_bp_probe),
         ("prts-components-dark", out_dir / "prts-comp-dark.html", prts_probe),
         ("prts-components-light", out_dir / "prts-comp-light.html", prts_probe),
+        ("endfield-boilerplate", out_dir / "ef-bp-light.html", ef_bp_probe),
         ("endfield-components", out_dir / "ef-comp-light.html", ef_probe),
     ]:
         probe_file = out_dir / f"probe-{src_name}.html"

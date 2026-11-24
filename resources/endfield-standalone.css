@@ -866,6 +866,8 @@ body[data-ef-scope] {
 .ef-tag {
   display: inline-flex;
   align-items: center;
+  flex: none;
+  white-space: nowrap;
   height: 24px;
   padding: 0 8px;
   font-size: var(--text-xs);
@@ -3484,8 +3486,8 @@ dialog.ef-dialog[open] { animation: ef-shift-in var(--duration-base) var(--ease-
 /* 互斥切换按钮（主题开关等带 aria-pressed 属性的按钮）视觉同步 */
 .ef-btn[aria-pressed="true"] { background: var(--ef-surface-inverse); color: var(--ef-ink-inverse); box-shadow: none; }
 .ef-btn[aria-pressed="true"]:hover { background: var(--ef-surface-inverse); color: var(--ef-ink-inverse); }
-.ef-btn[aria-pressed="false"] { background: var(--ef-surface-sunken); color: var(--ef-ink-secondary); border: 1px solid var(--ef-line); box-shadow: none; }
-.ef-btn[aria-pressed="false"]:hover { background: var(--ef-surface-muted); color: var(--ef-ink); }
+.ef-btn[aria-pressed="false"]:not(.ef-btn--light) { background: var(--ef-surface-sunken); color: var(--ef-ink-secondary); border: 1px solid var(--ef-line); box-shadow: none; }
+.ef-btn[aria-pressed="false"]:not(.ef-btn--light):hover { background: var(--ef-surface-muted); color: var(--ef-ink); }
 
 /* 通用响应式网格与排布助手（禁止写死内联 grid-template-columns） */
 .ef-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
@@ -3495,6 +3497,12 @@ dialog.ef-dialog[open] { animation: ef-shift-in var(--duration-base) var(--ease-
 .ef-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 @media (max-width: 1023px) { .ef-grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 767px) { .ef-grid-2, .ef-grid-3 { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+
+/* 开关与可交互头像/表格密度/隐藏语义补齐 */
+.ef-scope [hidden] { display: none !important; }
+button.ef-avatar { border: 0; padding: 0; cursor: pointer; }
+.ef-avatar:focus-visible { outline: 2px solid var(--ef-focus); outline-offset: 3px; }
+.ef-table--compact th, .ef-table--compact td { padding-block: 6px; }
 
 /* Steps 窄屏竖排 + 禁用状态补齐 */
 .ef-menu__item:disabled, .ef-menu__item[aria-disabled="true"] { color: var(--ef-ink-disabled); cursor: not-allowed; }

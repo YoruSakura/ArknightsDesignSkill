@@ -96,21 +96,21 @@
 
             <!-- 行动按钮组：一屏仅限一个信号黄主行动 -->
             <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-              <button type="button" class="ef-btn ef-btn--action">调阅拓荒日志</button>
-              <button type="button" class="ef-btn">
+              <button type="button" class="ef-btn ef-btn--action" id="ef-btn-log">调阅拓荒日志</button>
+              <button type="button" class="ef-btn" id="ef-btn-matrix">
                 <span>◈</span>
                 <span class="ef-btn__sep" aria-hidden="true"></span>
                 <span>装备矩阵预览</span>
               </button>
-              <button type="button" class="ef-btn ef-btn--light">声纹记录</button>
+              <button type="button" class="ef-btn ef-btn--light" id="ef-btn-voice" aria-pressed="false">声纹记录</button>
             </div>
           </div>
 
-          <!-- 右侧：带刻度圆环与取景角的展示焦点区 (局部暗色面板) -->
-          <div data-theme="dark" class="ef-scope corner-brackets" style="position: relative; padding: 32px 24px; min-height: 320px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--ef-line);">
+          <!-- 右侧：带刻度圆环与取景角的展示焦点区 (局部暗色面板 · 通电闪烁入场 animate-flicker) -->
+          <div data-theme="dark" id="ef-dijiang-panel" class="ef-scope corner-brackets animate-flicker" style="position: relative; padding: 32px 24px; min-height: 320px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--ef-line);">
             <div style="display: flex; justify-content: space-between; font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-ink-secondary);">
               <span>SECTOR // N-07</span>
-              <span style="color: var(--ef-accent-ink);">● TELEMETRY ACTIVE</span>
+              <span style="color: var(--ef-accent-ink);" id="ef-telemetry-state">● TELEMETRY ACTIVE</span>
             </div>
 
             <div style="display: grid; place-items: center; margin: 16px 0; position: relative;">
@@ -122,7 +122,7 @@
               </svg>
               <div style="position: absolute; text-align: center;">
                 <div style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800;">DIJIANG</div>
-                <div style="font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-accent-ink);">ORBITAL SYNC 99.4%</div>
+                <div style="font-family: var(--font-tech); font-size: var(--text-xs); color: var(--ef-accent-ink);" id="ef-orbital-sync">ORBITAL SYNC 99.4%</div>
               </div>
             </div>
 
@@ -221,43 +221,48 @@
           <section class="ef-panel">
             <header class="ef-panel__head" data-theme="inverse">
               <h3 class="ef-panel__title">四号仓储矩阵</h3>
-              <span style="font-family: var(--font-tech); font-size: var(--text-xs); opacity: .8;">SLOT // 06</span>
+              <span style="font-family: var(--font-tech); font-size: var(--text-xs); opacity: .8;" id="ef-slot-count">SLOT // 06</span>
             </header>
             <div class="ef-panel__body" style="display: flex; flex-direction: column; gap: 16px;">
               <!-- 胶囊筛选器 -->
-              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                <button type="button" class="ef-filter-chip is-selected" aria-pressed="true">全部物资</button>
-                <button type="button" class="ef-filter-chip" aria-pressed="false">T4 珍稀</button>
-                <button type="button" class="ef-filter-chip" aria-pressed="false">工业合成</button>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;" role="group" aria-label="仓储分类筛选">
+                <button type="button" class="ef-filter-chip is-selected" aria-pressed="true" data-filter="all">全部物资</button>
+                <button type="button" class="ef-filter-chip" aria-pressed="false" data-filter="rare">T4 珍稀</button>
+                <button type="button" class="ef-filter-chip" aria-pressed="false" data-filter="industrial">工业合成</button>
               </div>
 
               <!-- 物品矩阵：底部稀有度渐变 + 选中项四角括号落位 -->
               <div class="ef-item-grid" role="group" aria-label="仓储物品">
-                <button type="button" class="ef-item-slot corner-brackets" data-rarity="4" aria-pressed="true">
+                <button type="button" class="ef-item-slot corner-brackets" data-rarity="4" data-cat="rare" data-name="源石核心" data-tier="T4 珍稀 // 库存 16 件" aria-pressed="true">
                   <span class="ef-item-slot__new">NEW</span>
                   <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">源石核心</span>
                   <span class="ef-item-slot__count">16</span>
                 </button>
-                <button type="button" class="ef-item-slot" data-rarity="4" aria-pressed="false">
+                <button type="button" class="ef-item-slot" data-rarity="4" data-cat="rare" data-name="协议棱镜" data-tier="T4 珍稀 // 库存 08 件" aria-pressed="false">
                   <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">协议棱镜</span>
                   <span class="ef-item-slot__count">08</span>
                 </button>
-                <button type="button" class="ef-item-slot" data-rarity="3" aria-pressed="false">
+                <button type="button" class="ef-item-slot" data-rarity="3" data-cat="industrial" data-name="紫晶构件" data-tier="T3 工业 // 库存 142 件" aria-pressed="false">
                   <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">紫晶构件</span>
                   <span class="ef-item-slot__count">142</span>
                 </button>
-                <button type="button" class="ef-item-slot" data-rarity="2" aria-pressed="false">
+                <button type="button" class="ef-item-slot" data-rarity="2" data-cat="industrial" data-name="精炼铁锭" data-tier="T2 工业 // 库存 640 件" aria-pressed="false">
                   <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">精炼铁锭</span>
                   <span class="ef-item-slot__count">640</span>
                 </button>
-                <button type="button" class="ef-item-slot" data-rarity="1" aria-pressed="false">
+                <button type="button" class="ef-item-slot" data-rarity="1" data-cat="industrial" data-name="粗制矿渣" data-tier="T1 基础 // 库存 999 件" aria-pressed="false">
                   <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">粗制矿渣</span>
                   <span class="ef-item-slot__count">999</span>
                 </button>
-                <button type="button" class="ef-item-slot" data-rarity="3" aria-pressed="false">
+                <button type="button" class="ef-item-slot" data-rarity="3" data-cat="industrial" data-name="高能电池" data-tier="T3 能源 // 库存 54 件" aria-pressed="false">
                   <span style="font-family: var(--font-tech); font-size: var(--text-xs); font-weight: 700;">高能电池</span>
                   <span class="ef-item-slot__count">54</span>
                 </button>
+              </div>
+
+              <div class="ef-prop-row" id="ef-depot-readout" aria-live="polite">
+                <span class="ef-prop-row__k">选中物资 · 源石核心</span>
+                <span class="ef-prop-row__v">T4 珍稀 // 库存 16 件</span>
               </div>
 
               <!-- 灰轨 + 信号黄填充进度条 -->
@@ -296,6 +301,8 @@
     </main>
   </div>
 
+  <div class="ef-toast-region" id="ef-bp-toasts" aria-live="polite"></div>
+
   <script>
     (function () {
       var saved = null;
@@ -316,6 +323,142 @@
       if (persist) { try { localStorage.setItem('ef-theme', theme); } catch (e) {} }
     }
     function toggleTheme(theme) { applyTheme(theme, true); }
+
+    function pushEfBpToast(msg) {
+      var wrap = document.getElementById('ef-bp-toasts');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      var t = document.createElement('div');
+      t.className = 'ef-toast ef-toast--success';
+      t.setAttribute('role', 'status');
+      t.innerHTML = '<span class="ef-toast__tone" aria-hidden="true"></span><span></span>';
+      t.querySelector('span:last-child').textContent = msg;
+      wrap.appendChild(t);
+      setTimeout(function () { if (t.parentNode) t.remove(); }, 3200);
+    }
+
+    // Hero 主行动按钮联动 + DIJIANG 遥测重播
+    (function () {
+      var btnLog = document.getElementById('ef-btn-log');
+      var btnMatrix = document.getElementById('ef-btn-matrix');
+      var btnVoice = document.getElementById('ef-btn-voice');
+      var syncEl = document.getElementById('ef-orbital-sync');
+      var stateEl = document.getElementById('ef-telemetry-state');
+      var dijiang = document.getElementById('ef-dijiang-panel');
+
+      if (btnLog) {
+        btnLog.addEventListener('click', function () {
+          var pipe = document.getElementById('pipeline');
+          if (pipe) pipe.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          document.querySelectorAll('#pipeline .ef-sparkline').forEach(function (s) {
+            s.style.animation = 'none';
+            void s.getBoundingClientRect();
+            s.style.animation = '';
+          });
+          pushEfBpToast('已定位至集成工业监控 · 产线趋势图已刷新');
+        });
+      }
+      if (btnMatrix) {
+        btnMatrix.addEventListener('click', function () {
+          var depot = document.getElementById('depot');
+          if (depot) depot.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (dijiang) {
+            dijiang.classList.remove('animate-flicker');
+            void dijiang.offsetWidth;
+            dijiang.classList.add('animate-flicker');
+          }
+          pushEfBpToast('已跳转至四号仓储矩阵预览');
+        });
+      }
+      if (btnVoice) {
+        btnVoice.addEventListener('click', function () {
+          var on = btnVoice.getAttribute('aria-pressed') === 'true';
+          var next = !on;
+          btnVoice.setAttribute('aria-pressed', String(next));
+          if (syncEl) syncEl.textContent = next ? 'VOICE LOG // PERLICA · PLAYING' : 'ORBITAL SYNC 99.4%';
+          if (stateEl) stateEl.textContent = next ? '● VOICE CHANNEL OPEN' : '● TELEMETRY ACTIVE';
+          pushEfBpToast(next ? '正在播放声纹记录 // PERLICA_01' : '声纹记录频道已收起');
+        });
+      }
+    })();
+
+    // 侧轨导航高亮联动 + 滚动定位
+    (function () {
+      var navLinks = Array.prototype.slice.call(document.querySelectorAll('.ef-side-rail__item[href^="#"]'));
+      function setRailActive(hash) {
+        navLinks.forEach(function (a) {
+          var match = a.getAttribute('href') === hash;
+          a.classList.toggle('is-current', match);
+          if (match) a.setAttribute('aria-current', 'page');
+          else a.removeAttribute('aria-current');
+        });
+      }
+      navLinks.forEach(function (a) {
+        a.addEventListener('click', function () { setRailActive(a.getAttribute('href')); });
+      });
+      var navAction = document.querySelector('.ef-nav-action[href^="#"]');
+      if (navAction) {
+        navAction.addEventListener('click', function () { setRailActive(navAction.getAttribute('href')); });
+      }
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) setRailActive('#' + entry.target.id);
+          });
+        }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
+        ['hero', 'pipeline', 'depot'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) obs.observe(el);
+        });
+      }
+    })();
+
+    // 四号仓储矩阵：分类筛选 + 物品格四角括号选定与属性联动
+    (function () {
+      var chips = Array.prototype.slice.call(document.querySelectorAll('#depot .ef-filter-chip'));
+      var slots = Array.prototype.slice.call(document.querySelectorAll('#depot .ef-item-slot'));
+      var countEl = document.getElementById('ef-slot-count');
+      var readout = document.getElementById('ef-depot-readout');
+
+      function selectSlot(slot) {
+        if (!slot || slot.hidden) return;
+        slots.forEach(function (s) {
+          s.classList.remove('corner-brackets');
+          s.setAttribute('aria-pressed', 'false');
+        });
+        slot.classList.add('corner-brackets');
+        slot.setAttribute('aria-pressed', 'true');
+        if (readout) {
+          readout.querySelector('.ef-prop-row__k').textContent = '选中物资 · ' + (slot.dataset.name || '');
+          readout.querySelector('.ef-prop-row__v').textContent = slot.dataset.tier || '';
+        }
+      }
+
+      slots.forEach(function (slot) {
+        slot.addEventListener('click', function () { selectSlot(slot); });
+      });
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          var filter = chip.dataset.filter || 'all';
+          chips.forEach(function (c) {
+            c.classList.toggle('is-selected', c === chip);
+            c.setAttribute('aria-pressed', String(c === chip));
+          });
+          var vis = [], hasActive = false;
+          slots.forEach(function (s) {
+            var show = filter === 'all' || s.dataset.cat === filter;
+            s.hidden = !show;
+            if (show) {
+              vis.push(s);
+              if (s.getAttribute('aria-pressed') === 'true') hasActive = true;
+            }
+          });
+          if (countEl) countEl.textContent = 'SLOT // ' + (vis.length < 10 ? '0' : '') + vis.length;
+          if (!hasActive && vis.length) selectSlot(vis[0]);
+        });
+      });
+    })();
   </script>
 </body>
 </html>

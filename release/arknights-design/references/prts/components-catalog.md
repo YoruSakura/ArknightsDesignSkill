@@ -214,10 +214,10 @@
 <button type="button" class="ak-btn" data-ak-tip="按 / 快捷键可快速检索档案">快捷键说明 <kbd class="ak-kbd">/</kbd></button>
 <span class="ak-term" data-ak-tip="攻击回复：每次普通攻击积累 1 点技力">技力机制</span>
 
-<!-- 气泡卡片（需锚点 .ak-tip-anchor，点击显示） -->
+<!-- 气泡卡片（需锚点 .ak-tip-anchor，JS 切换 .is-open 控制显隐与 Scan 入场并同步 aria-expanded，需 prts-addons.css） -->
 <span class="ak-tip-anchor">
-  <button type="button" class="ak-btn ak-btn--sm">查看节点参数</button>
-  <div class="ak-popover ak-popover--bottom-start">
+  <button type="button" class="ak-btn ak-btn--sm" aria-expanded="false">查看节点参数</button>
+  <div class="ak-popover ak-popover--bottom-start" role="dialog" aria-label="中继节点参数">
     <div class="ak-popover__title">中继节点 #07</div>
     <div>延迟 14ms · 在线负载 42%</div>
   </div>

@@ -8,6 +8,9 @@
  *  PART A · 上游 Wiki/终端底座补丁层（保留向后兼容）
  * ═══════════════════════════════════════════════════════════════════════════ */
 
+/* 0. 确保显式设置了 display 的组件同样服从 HTML [hidden] 隐藏语义 */
+.ak-scope [hidden] { display: none !important; }
+
 /* 1. 黑色 Hero 内的 contrast 按钮：Hero 恒为黑底，按钮必须恒为白底黑字 */
 .ak-hero .ak-btn--contrast { --_bg: #fff; --_fg: #0f0f10; --_bd: #fff; }
 .ak-hero .ak-btn--contrast:hover { --_bg: rgba(255,255,255,.82); --_bd: rgba(255,255,255,.82); }
@@ -92,9 +95,15 @@
   0%, 100% { transform: scaleY(0.32); }
   50% { transform: scaleY(1); }
 }
+@keyframes ak-corner-lock {
+  from { opacity: 0; transform: scale(0.35); transform-origin: top right; }
+  to { opacity: 1; transform: scale(1); }
+}
 
 .ak-anim-wipe { animation: ak-wipe-x 320ms cubic-bezier(0.2, 0, 0, 1) both; }
 .ak-anim-scan { animation: ak-scan-in 340ms cubic-bezier(0.2, 0, 0, 1) var(--ak-delay, 0ms) both; }
+.ak-tip-anchor:not(.is-open) > .ak-popover { display: none; }
+.ak-tip-anchor.is-open > .ak-popover { animation: ak-scan-in 200ms cubic-bezier(0.2, 0, 0, 1) both; }
 
 /* 12. 氛围三角网格画布（零外部图片 · 内联矢量 SVG 锐利三角暗格 + 斜光束 + 半调角阵） */
 .ak-bg-lattice {
@@ -616,6 +625,11 @@
   border-style: solid;
   border-width: 0 12px 12px 0;
   border-color: transparent var(--ak-accent) transparent transparent;
+  animation: ak-corner-lock 180ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+.ak-brief.is-updating .ak-brief__head,
+.ak-brief.is-updating .ak-brief__copy {
+  animation: ak-scan-in 220ms cubic-bezier(0.2, 0, 0, 1) both;
 }
 .ak-scrub-bar {
   position: relative;
@@ -922,13 +936,20 @@
   background: #ffffff;
   color: #111214;
 }
-.ak-news-card:hover .ak-news-card__head::after {
+.ak-news-card__head::after {
   content: "";
   position: absolute;
   inset: 0;
   border: 1px solid var(--ak-theme-accent, var(--ak-cyan-500));
+  opacity: 0;
   pointer-events: none;
+  transition: opacity var(--ak-dur-fast) var(--ak-ease);
 }
+.ak-news-card:hover .ak-news-card__head::after,
+.ak-news-card:focus-visible .ak-news-card__head::after {
+  opacity: 1;
+}
+.ak-news-card:focus-visible { outline: 2px solid var(--ak-focus); outline-offset: 4px; }
 .ak-news-card__body {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -1121,12 +1142,17 @@
 @media (prefers-reduced-motion: reduce) {
   .ak-anim-wipe,
   .ak-anim-scan,
-  .ak-wave-btn.is-playing .ak-wave-bars i {
+  .ak-wave-btn.is-playing .ak-wave-bars i,
+  .ak-thumb-card.is-active::before,
+  .ak-brief.is-updating .ak-brief__head,
+  .ak-brief.is-updating .ak-brief__copy,
+  .ak-tip-anchor.is-open > .ak-popover {
     animation: none !important;
   }
   .ak-scrub-bar > i,
   .ak-folio-item,
   .ak-folio-item__arrow,
+  .ak-news-card__head::after,
   .ak-showcase-col__more::after {
     transition: none !important;
   }

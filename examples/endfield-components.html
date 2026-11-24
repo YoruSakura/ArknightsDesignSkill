@@ -73,40 +73,40 @@
               </div>
             </div>
             <div class="ef-btn-group ef-btn-group--sm">
-              <button type="button" class="ef-btn ef-btn--light">重置演示</button>
-              <button type="button" class="ef-btn ef-btn--action">主行动按钮</button>
+              <button type="button" class="ef-btn ef-btn--light" id="ef-reset-demo">重置演示</button>
+              <button type="button" class="ef-btn ef-btn--action" onclick="pushEfToast('主行动触发 · 参数已提交至调度队列')">主行动按钮</button>
             </div>
           </div>
         </header>
 
         <div class="ef-row">
-          <button type="button" class="ef-btn ef-btn--cut">切角行动 (::before)</button>
-          <button type="button" class="ef-btn"><span>◈</span><span class="ef-btn__sep" aria-hidden="true"></span><span>默认 control</span></button>
-          <button type="button" class="ef-btn ef-btn--light">浅色点阵</button>
-          <button type="button" class="ef-btn ef-btn--back">返回斜纹</button>
-          <button type="button" class="ef-btn ef-btn--danger">危险操作</button>
-          <a href="#sec-actions" class="ef-btn ef-btn--text">行内文字行动</a>
+          <button type="button" class="ef-btn ef-btn--cut" onclick="pushEfToast('切角核心行动已响应')">切角行动 (::before)</button>
+          <button type="button" class="ef-btn" onclick="pushEfToast('默认 control 按钮已确认')"><span>◈</span><span class="ef-btn__sep" aria-hidden="true"></span><span>默认 control</span></button>
+          <button type="button" class="ef-btn ef-btn--light" onclick="pushEfToast('浅色点阵次级行动触发')">浅色点阵</button>
+          <a href="#sec-actions" class="ef-btn ef-btn--back">返回斜纹</a>
+          <button type="button" class="ef-btn ef-btn--danger" onclick="pushEfToast('危险确认信号已记录（演示模式）')">危险操作</button>
+          <a href="#sec-nav" class="ef-btn ef-btn--text">行内文字行动</a>
           <button type="button" class="ef-btn" disabled>禁用态</button>
         </div>
 
         <div class="ef-row">
-          <button type="button" class="ef-icon-btn" aria-label="同步" data-ef-tip="普通方形图标钮">↻</button>
-          <button type="button" class="ef-icon-btn ef-icon-btn--accent" aria-label="下一节">›</button>
-          <button type="button" class="ef-icon-btn ef-icon-btn--inverse" aria-pressed="true" aria-label="固定视图">⌖</button>
-          <button type="button" class="ef-icon-btn ef-icon-btn--floating" aria-label="圆形翻页">←</button>
-          <button type="button" class="ef-icon-btn ef-icon-btn--close" aria-label="关闭悬停旋转"><span>✕</span></button>
+          <button type="button" class="ef-icon-btn" id="ef-sync-btn" aria-label="同步" data-ef-tip="普通方形图标钮" onclick="pushEfToast('链路遥测参数已同步')">↻</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--accent" aria-label="下一节" onclick="document.getElementById('sec-nav').scrollIntoView({behavior:'smooth'})">›</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--inverse" id="ef-pin-btn" aria-pressed="true" aria-label="固定视图">⌖</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--floating" aria-label="圆形翻页" onclick="moveCar(-1)">←</button>
+          <button type="button" class="ef-icon-btn ef-icon-btn--close" aria-label="关闭悬停旋转" onclick="document.getElementById('ef-toasts').innerHTML=''; pushEfToast('已清理当前浮层提示')"><span>✕</span></button>
 
-          <div class="ef-toolbar" role="toolbar" aria-label="密级视图切换">
-            <button type="button" class="ef-toolbar__btn is-active" aria-pressed="true"><span class="ef-toolbar__icon">▤</span><span>标准行高</span></button>
-            <button type="button" class="ef-toolbar__btn" aria-pressed="false"><span>▥</span><span>紧凑模式</span></button>
+          <div class="ef-toolbar" id="ef-toolbar" role="toolbar" aria-label="密级视图切换">
+            <button type="button" class="ef-toolbar__btn is-active" aria-pressed="true" data-density="normal"><span class="ef-toolbar__icon">▤</span><span>标准行高</span></button>
+            <button type="button" class="ef-toolbar__btn" aria-pressed="false" data-density="compact"><span>▥</span><span>紧凑模式</span></button>
             <span class="ef-toolbar__sep" aria-hidden="true"></span>
-            <button type="button" class="ef-toolbar__btn">导出</button>
+            <button type="button" class="ef-toolbar__btn" data-action="export">导出</button>
           </div>
 
-          <div class="ef-flyout" role="toolbar" aria-label="快捷工具展开条">
-            <button type="button" class="ef-flyout__item" data-ef-tip="复制调度链路">⌘</button>
-            <button type="button" class="ef-flyout__item" data-ef-tip="打印图纸">◫</button>
-            <button type="button" class="ef-flyout__item" data-ef-tip="分享快照">↗</button>
+          <div class="ef-flyout" id="ef-flyout" role="toolbar" aria-label="快捷工具展开条">
+            <button type="button" class="ef-flyout__item" data-ef-tip="复制调度链路" onclick="pushEfToast('已复制当前调度链路地址')">⌘</button>
+            <button type="button" class="ef-flyout__item" data-ef-tip="打印图纸" onclick="pushEfToast('已生成当前组件清单打印视图')">◫</button>
+            <button type="button" class="ef-flyout__item" data-ef-tip="分享快照" onclick="pushEfToast('组件状态快照链接已生成')">↗</button>
           </div>
         </div>
 
@@ -202,25 +202,25 @@
         </div>
 
         <div class="ef-row" style="justify-content: space-between;">
-          <nav class="ef-pagination" aria-label="列表分页">
-            <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--accent" disabled aria-label="上一页">‹</button>
-            <span class="ef-pagination__counter"><strong>01</strong> / 12</span>
-            <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--accent" aria-label="下一页">›</button>
+          <nav class="ef-pagination" id="ef-pagination" aria-label="列表分页">
+            <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--accent" id="ef-pg-prev" disabled aria-label="上一页">‹</button>
+            <span class="ef-pagination__counter" id="ef-pg-counter"><strong>01</strong> / 12</span>
+            <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--accent" id="ef-pg-next" aria-label="下一页">›</button>
           </nav>
 
           <div class="ef-row">
-            <div class="ef-navigator" role="group" aria-label="站点快速翻页">
-              <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--floating" aria-label="上一项">‹</button>
-              <span class="ef-navigator__body"><span class="ef-navigator__index">02 / 04</span><span>北岭精炼工段</span></span>
-              <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--floating" aria-label="下一项">›</button>
+            <div class="ef-navigator" id="ef-navigator" role="group" aria-label="站点快速翻页">
+              <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--floating" id="ef-nav-prev" aria-label="上一项">‹</button>
+              <span class="ef-navigator__body"><span class="ef-navigator__index" id="ef-nav-idx">02 / 04</span><span id="ef-nav-name">北岭精炼工段</span></span>
+              <button type="button" class="ef-icon-btn ef-icon-btn--sm ef-icon-btn--floating" id="ef-nav-next" aria-label="下一项">›</button>
             </div>
-            <div class="ef-dash-indicator" role="img" aria-label="第 2 项，共 4 项"><i></i><i class="is-active"></i><i></i><i></i></div>
+            <div class="ef-dash-indicator" id="ef-nav-dashes" role="img" aria-label="第 2 项，共 4 项"><i></i><i class="is-active"></i><i></i><i></i></div>
           </div>
 
-          <div class="ef-avatar-switcher">
-            <span class="ef-avatar ef-avatar--sm">佩</span>
-            <span class="ef-avatar is-selected">管</span>
-            <span class="ef-avatar ef-avatar--sm">陈</span>
+          <div class="ef-avatar-switcher" id="ef-avatars" role="group" aria-label="干员切换">
+            <button type="button" class="ef-avatar ef-avatar--sm" aria-pressed="false" aria-label="切换至佩丽卡">佩</button>
+            <button type="button" class="ef-avatar is-selected" aria-pressed="true" aria-label="切换至管理员">管</button>
+            <button type="button" class="ef-avatar ef-avatar--sm" aria-pressed="false" aria-label="切换至陈千语">陈</button>
           </div>
         </div>
 
@@ -638,13 +638,41 @@
           </div>
         </div>
 
-        <!-- Marquee with Pause Toggle -->
-        <div class="ef-row" style="padding: 10px 14px; border: 1px solid var(--ef-line); background: var(--ef-surface-raised);">
-          <button type="button" class="ef-btn ef-btn--sm ef-btn--light" id="btn-marquee" onclick="toggleMarquee()">暂停跑马灯</button>
-          <div class="ef-marquee" id="ef-marquee" style="flex: 1; min-width: 0; font-family: var(--font-tech); font-size: var(--text-sm);">
-            <div class="ef-marquee__track">
-              <span>ARKNIGHTS: ENDFIELD // TALOS-II AUTOMATED PIPELINE TELEMETRY // 80%-100% MECHANICAL PAUSE</span>
-              <span class="ef-marquee__clone" aria-hidden="true">ARKNIGHTS: ENDFIELD // TALOS-II AUTOMATED PIPELINE TELEMETRY // 80%-100% MECHANICAL PAUSE</span>
+        <!-- Loader / Keyframe Motion Showcase + Marquee with Pause Toggle -->
+        <div class="ef-grid-2">
+          <div class="ef-loader" id="ef-loader-demo" data-theme="dark">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 12px;">
+              <span class="ef-loader__tag">CORE SYNC // 通电闪烁与进度拉伸</span>
+              <span class="ef-tag ef-tag--accent animate-flicker" id="ef-motion-flicker">FLICKER</span>
+            </div>
+            <div class="ef-loader__pct" id="ef-loader-pct">100<small>%</small></div>
+            <div class="ef-loader__bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="启动加载进度">
+              <div class="ef-loader__fill animate-fill" id="ef-loader-fill"></div>
+            </div>
+          </div>
+
+          <div class="ef-panel">
+            <header class="ef-panel__head" data-theme="inverse">
+              <h3 class="ef-panel__title">入场与关键帧动效控制</h3>
+              <button type="button" class="ef-btn ef-btn--sm" id="btn-replay-motion" style="height: 24px; min-width: 0; padding: 0 10px;">重播入场动效</button>
+            </header>
+            <div class="ef-panel__body ef-stack">
+              <div class="ef-row" style="justify-content: space-between;">
+                <span class="ef-tag corner-brackets" id="ef-motion-bracket">CORNER BRACKETS · 200ms</span>
+                <span class="ef-tag ef-tag--gain animate-breathe" id="ef-motion-breathe">BREATHE // 2.4S</span>
+              </div>
+              <p style="margin: 0; font-size: var(--text-sm); color: var(--ef-ink-secondary);">
+                点击右上按钮可立即重播本页全部 <code>ef-slide-in</code>、<code>ef-turn-in</code>、<code>ef-fade-in</code>、<code>ef-wipe-in</code>、<code>ef-fill</code>、<code>ef-flicker</code> 与四角括号落位动效。
+              </p>
+              <div class="ef-row" style="padding: 8px 12px; border: 1px solid var(--ef-line); background: var(--ef-surface-sunken);">
+                <button type="button" class="ef-btn ef-btn--sm ef-btn--light" id="btn-marquee" onclick="toggleMarquee()">暂停跑马灯</button>
+                <div class="ef-marquee" id="ef-marquee" style="flex: 1; min-width: 0; font-family: var(--font-tech); font-size: var(--text-xs);">
+                  <div class="ef-marquee__track">
+                    <span>ARKNIGHTS: ENDFIELD // TALOS-II AUTOMATED PIPELINE TELEMETRY // 80%-100% MECHANICAL PAUSE</span>
+                    <span class="ef-marquee__clone" aria-hidden="true">ARKNIGHTS: ENDFIELD // TALOS-II AUTOMATED PIPELINE TELEMETRY // 80%-100% MECHANICAL PAUSE</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -802,8 +830,180 @@
       }
     });
 
-    // Combobox / TagInput / Calendar / FileUpload / Carousel / Marquee 交互
+    // Combobox / TagInput / Calendar / FileUpload / Pagination / Navigator / Avatars / OTP / Toolbar / SideRail / Replay 交互
     (function () {
+      // SideRail 点击与滚动联动
+      var railLinks = Array.prototype.slice.call(document.querySelectorAll('.ef-side-rail__item[href^="#"]'));
+      function setRail(hash) {
+        railLinks.forEach(function (a) {
+          var on = a.getAttribute('href') === hash;
+          a.classList.toggle('is-current', on);
+          if (on) a.setAttribute('aria-current', 'page');
+          else a.removeAttribute('aria-current');
+        });
+      }
+      railLinks.forEach(function (a) { a.addEventListener('click', function () { setRail(a.getAttribute('href')); }); });
+      if ('IntersectionObserver' in window) {
+        var rObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) { if (entry.isIntersecting) setRail('#' + entry.target.id); });
+        }, { rootMargin: '-28% 0px -58% 0px', threshold: 0 });
+        ['sec-actions', 'sec-nav', 'sec-forms', 'sec-overlays', 'sec-data', 'sec-advanced'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) rObs.observe(el);
+        });
+      }
+
+      // 下拉菜单项点选同步 .is-active 并收起
+      document.querySelectorAll('.ef-dropdown .ef-menu, #ef-dd-strong .ef-menu').forEach(function (menu) {
+        menu.querySelectorAll('.ef-menu__item:not(:disabled):not([aria-disabled="true"])').forEach(function (item) {
+          item.addEventListener('click', function () {
+            menu.querySelectorAll('.ef-menu__item').forEach(function (x) { x.classList.remove('is-active'); });
+            item.classList.add('is-active');
+            var dd = menu.closest('details.ef-dropdown');
+            if (dd) dd.removeAttribute('open');
+            var anc = menu.closest('.ef-menu-anchor');
+            if (anc) {
+              anc.classList.remove('is-open');
+              var btn = anc.querySelector('[aria-expanded]');
+              if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+            }
+            pushEfToast('菜单选择：' + item.textContent.trim().replace(/\s+G$/, ''));
+          });
+        });
+      });
+
+      // 固定视图按钮与视图密度工具栏
+      var pinBtn = document.getElementById('ef-pin-btn');
+      if (pinBtn) {
+        pinBtn.addEventListener('click', function () {
+          var next = pinBtn.getAttribute('aria-pressed') !== 'true';
+          pinBtn.setAttribute('aria-pressed', String(next));
+          pushEfToast(next ? '当前控制台视图已固定' : '已解除视图固定');
+        });
+      }
+      var toolbar = document.getElementById('ef-toolbar');
+      if (toolbar) {
+        var tbl = document.querySelector('.ef-table');
+        toolbar.querySelectorAll('[data-density]').forEach(function (b) {
+          b.addEventListener('click', function () {
+            toolbar.querySelectorAll('[data-density]').forEach(function (x) {
+              x.classList.toggle('is-active', x === b);
+              x.setAttribute('aria-pressed', String(x === b));
+            });
+            if (tbl) tbl.classList.toggle('ef-table--compact', b.dataset.density === 'compact');
+          });
+        });
+        var expBtn = toolbar.querySelector('[data-action="export"]');
+        if (expBtn) expBtn.addEventListener('click', function () { pushEfToast('导出完成 · 遥测明细表 CSV 已准备就绪'); });
+      }
+
+      // 分页条 (01..12)
+      var pg = document.getElementById('ef-pagination'), pgPrev = document.getElementById('ef-pg-prev'),
+          pgNext = document.getElementById('ef-pg-next'), pgCounter = document.getElementById('ef-pg-counter');
+      var curPg = 1, maxPg = 12;
+      function setPage(p) {
+        curPg = Math.min(maxPg, Math.max(1, p));
+        if (pgCounter) pgCounter.innerHTML = '<strong>' + (curPg < 10 ? '0' : '') + curPg + '</strong> / ' + maxPg;
+        if (pgPrev) pgPrev.disabled = curPg === 1;
+        if (pgNext) pgNext.disabled = curPg === maxPg;
+      }
+      if (pgPrev && pgNext) {
+        pgPrev.addEventListener('click', function () { setPage(curPg - 1); });
+        pgNext.addEventListener('click', function () { setPage(curPg + 1); });
+      }
+
+      // 站点导航器与进度短横联动 (01..04)
+      var stations = ['四号谷地主仓', '北岭精炼工段', '三号管廊枢纽', '东区晶体采掘点'];
+      var navIdx = 1;
+      var navIdxEl = document.getElementById('ef-nav-idx'), navNameEl = document.getElementById('ef-nav-name'),
+          navDashes = document.getElementById('ef-nav-dashes'), navPrev = document.getElementById('ef-nav-prev'), navNext = document.getElementById('ef-nav-next');
+      function setStation(idx) {
+        navIdx = (idx + stations.length) % stations.length;
+        if (navIdxEl) navIdxEl.textContent = '0' + (navIdx + 1) + ' / 0' + stations.length;
+        if (navNameEl) navNameEl.textContent = stations[navIdx];
+        if (navDashes) {
+          navDashes.setAttribute('aria-label', '第 ' + (navIdx + 1) + ' 项，共 ' + stations.length + ' 项');
+          navDashes.querySelectorAll('i').forEach(function (dot, j) { dot.classList.toggle('is-active', j === navIdx); });
+        }
+      }
+      if (navPrev && navNext) {
+        navPrev.addEventListener('click', function () { setStation(navIdx - 1); });
+        navNext.addEventListener('click', function () { setStation(navIdx + 1); });
+      }
+
+      // 干员头像切换
+      var avWrap = document.getElementById('ef-avatars');
+      if (avWrap) {
+        var avBtns = Array.prototype.slice.call(avWrap.querySelectorAll('.ef-avatar'));
+        avBtns.forEach(function (a) {
+          a.addEventListener('click', function () {
+            avBtns.forEach(function (x) { x.classList.remove('is-selected'); x.setAttribute('aria-pressed', 'false'); });
+            a.classList.add('is-selected'); a.setAttribute('aria-pressed', 'true');
+          });
+        });
+      }
+
+      // 6 位口令框自动跳格、退格回退、粘贴填充
+      var otpCells = Array.prototype.slice.call(document.querySelectorAll('.ef-otp__cell'));
+      otpCells.forEach(function (cell, idx) {
+        cell.addEventListener('input', function () {
+          var v = cell.value.trim();
+          if (v.length >= 1) {
+            cell.value = v.slice(-1);
+            if (idx < otpCells.length - 1) otpCells[idx + 1].focus();
+          }
+        });
+        cell.addEventListener('keydown', function (e) {
+          if (e.key === 'Backspace' && !cell.value && idx > 0) {
+            otpCells[idx - 1].value = '';
+            otpCells[idx - 1].focus();
+          }
+        });
+        cell.addEventListener('paste', function (e) {
+          var clip = (e.clipboardData || window.clipboardData).getData('text').replace(/\s+/g, '');
+          if (!clip) return;
+          e.preventDefault();
+          for (var j = 0; j < clip.length && idx + j < otpCells.length; j++) {
+            otpCells[idx + j].value = clip[j];
+          }
+          var last = Math.min(otpCells.length - 1, idx + clip.length - 1);
+          otpCells[last].focus();
+        });
+      });
+
+      // 表格选中行切换
+      document.querySelectorAll('.ef-table tbody tr').forEach(function (row) {
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', function () {
+          row.parentElement.querySelectorAll('tr').forEach(function (r) { r.classList.remove('is-selected'); });
+          row.classList.add('is-selected');
+        });
+      });
+
+      // 重置演示按钮
+      var resetBtn = document.getElementById('ef-reset-demo');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          setPage(1);
+          setStation(1);
+          var zone = document.getElementById('ef-choice-zone');
+          if (zone) zone.removeAttribute('data-choice');
+          var bd = document.getElementById('btn-diamond');
+          if (bd) bd.textContent = '切换菱形方案';
+          var st = document.getElementById('ef-step-in');
+          if (st) st.value = '12';
+          var sl = document.querySelector('.ef-slider'), slv = document.getElementById('ef-sl-val');
+          if (sl) sl.value = '68';
+          if (slv) slv.textContent = '68%';
+          var defAv = avWrap && avWrap.querySelectorAll('.ef-avatar')[1];
+          if (defAv) defAv.click();
+          var defDense = toolbar && toolbar.querySelector('[data-density="normal"]');
+          if (defDense) defDense.click();
+          if (pinBtn) pinBtn.setAttribute('aria-pressed', 'true');
+          pushEfToast('演示状态已恢复默认');
+        });
+      }
+
       var cb = document.getElementById('ef-combobox'), cbi = document.getElementById('ef-combo-in'), cbb = document.getElementById('ef-combo-btn');
       if (cb && cbi) {
         var opts = Array.prototype.slice.call(cb.querySelectorAll('[role="option"]'));
@@ -860,11 +1060,57 @@
 
       var cal = document.getElementById('ef-cal');
       if (cal) {
+        var months = ['2026年10月', '2026年11月', '2026年12月'], mIdx = 1;
+        var calTitle = cal.querySelector('.ef-cal__title'), calBtns = cal.querySelectorAll('.ef-cal__head button');
+        function setMonth(nextIdx) {
+          mIdx = (nextIdx + months.length) % months.length;
+          if (calTitle) calTitle.textContent = months[mIdx];
+          cal.setAttribute('aria-label', months[mIdx]);
+          cal.querySelectorAll('.ef-cal__day').forEach(function (d) {
+            if (d.textContent.trim() === '16') d.classList.toggle('is-today', mIdx === 1);
+          });
+        }
+        if (calBtns.length >= 2) {
+          calBtns[0].addEventListener('click', function () { setMonth(mIdx - 1); });
+          calBtns[1].addEventListener('click', function () { setMonth(mIdx + 1); });
+        }
         cal.querySelectorAll('.ef-cal__day:not(:disabled)').forEach(function (d) {
           d.addEventListener('click', function () {
             cal.querySelectorAll('.ef-cal__day').forEach(function (x) { x.classList.remove('is-selected'); x.setAttribute('aria-selected', 'false'); });
             d.classList.add('is-selected'); d.setAttribute('aria-selected', 'true');
           });
+        });
+      }
+
+      // 班表行点击激活切换
+      document.querySelectorAll('.ef-schedule .ef-schedule__item').forEach(function (item) {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function () {
+          item.parentElement.querySelectorAll('.ef-schedule__item').forEach(function (x) { x.classList.remove('is-active'); });
+          item.classList.add('is-active');
+        });
+      });
+
+      // 重播全页关键帧动效
+      var replayMotionBtn = document.getElementById('btn-replay-motion');
+      if (replayMotionBtn) {
+        replayMotionBtn.addEventListener('click', function () {
+          var targets = document.querySelectorAll(
+            '.ef-section-title__block, .ef-section-title__block > span, .ef-section-title__en, ' +
+            '.ef-sparkline, .ef-completion-banner, #ef-loader-fill, #ef-motion-flicker'
+          );
+          targets.forEach(function (el) {
+            el.style.animation = 'none';
+            void el.getBoundingClientRect();
+            el.style.animation = '';
+          });
+          var br = document.getElementById('ef-motion-bracket');
+          if (br) {
+            br.classList.remove('corner-brackets');
+            void br.offsetWidth;
+            br.classList.add('corner-brackets');
+          }
+          pushEfToast('已重播全部入场与机械关键帧动效');
         });
       }
 
@@ -953,13 +1199,14 @@
       var el = document.getElementById('ef-step-in');
       el.value = Math.max(0, (parseInt(el.value, 10) || 0) + d);
     }
-    function pushEfToast() {
+    function pushEfToast(msg) {
       var wrap = document.getElementById('ef-toasts');
       wrap.innerHTML = '';
       var t = document.createElement('div');
       t.className = 'ef-toast ef-toast--success';
       t.setAttribute('role', 'status');
-      t.innerHTML = '<span class="ef-toast__tone" aria-hidden="true"></span><span>操作参数已写入调度队列</span>';
+      t.innerHTML = '<span class="ef-toast__tone" aria-hidden="true"></span><span></span>';
+      t.querySelector('span:last-child').textContent = msg || '操作参数已写入调度队列';
       wrap.appendChild(t);
       setTimeout(function () { if (t.parentNode) t.remove(); }, 3500);
     }
