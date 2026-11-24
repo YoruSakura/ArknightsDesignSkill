@@ -1,15 +1,18 @@
-/*! PRTS Design · 本 Skill 自有补丁层（addons）
+/*! PRTS Design · 本 Skill 自有补丁与官网架构升级层（addons）
  *  与 prts-design.css 配套加载（放在其后）。prts-design.css 由 scripts/sync-upstream.py 覆盖生成，
- *  所以对上游样式的一切修正都写在这里，不要直接改 prts-design.css。
- *  规则依然遵守：纯直角、无辉光、无 45° 切角。
+ *  所以对上游样式的一切修正与官网展示载体（Editorial Showcase）扩展都写在这里，不要直接改 prts-design.css。
+ *  严格遵守 PRTS 铁律：纯直角 border-radius: 0、无 45° 切角、无霓虹辉光、黑框白纸 / 黑框黑纸。
  */
 
-/* 1. 黑色 Hero 内的 contrast 按钮：Hero 恒为黑底，按钮必须恒为白底黑字（上游 contrast 跟随主题，亮色模式下会黑底黑字） */
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  PART A · 上游 Wiki/终端底座补丁层（保留向后兼容）
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 1. 黑色 Hero 内的 contrast 按钮：Hero 恒为黑底，按钮必须恒为白底黑字 */
 .ak-hero .ak-btn--contrast { --_bg: #fff; --_fg: #0f0f10; --_bd: #fff; }
 .ak-hero .ak-btn--contrast:hover { --_bg: rgba(255,255,255,.82); --_bd: rgba(255,255,255,.82); }
 
-/* 2. Hero 右侧色面：不再是一整块实心青色（像占位图）——只留右缘 8px 强调竖条 + 向左渐隐的半调网点，随 --ak-theme-accent 品牌换色联动。
- *    需要放干员立绘/插图时，把图片放进 .ak-hero__side 里即可（img 自动铺满且不盖住色条）。 */
+/* 2. Hero 右侧色面：右缘 8px 强调竖条 + 向左渐隐半调网点，随 --ak-theme-accent 联动 */
 .ak-hero__eyebrow { color: var(--ak-theme-accent, var(--ak-cyan-500)); }
 .ak-switch > input:checked { background: var(--ak-accent); }
 .ak-hero__bar { background: var(--ak-theme-accent, var(--ak-cyan-500)); }
@@ -19,33 +22,29 @@
 .ak-hero__side > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ak-hero > :not(.ak-hero__side) { position: relative; z-index: 1; }
 
-/* 3. 窄屏：Hero 色面让位给文字；宽表格走横向滚动，不允许把单元格挤成逐字竖排 */
+/* 3. 窄屏 Hero & 宽表格横向滚动 */
 @media (max-width: 639px) {
   .ak-hero { padding: 28px 20px; }
   .ak-hero__side { display: none; }
 }
 .ak-table-scroll { overflow-x: auto; max-width: 100%; }
-.ak-table-scroll > table { min-width: 640px; }
+.ak-table-scroll > table { width: 100%; min-width: 560px; }
 .ak-table-scroll th, .ak-table-scroll td { white-space: nowrap; }
 
-/* 4. 抽屉遮罩：所有宽度都生效（<1120 的侧栏抽屉 与 任意宽度的 .ak-drawer 共用；点遮罩关闭） */
+/* 4. 抽屉遮罩与关闭态焦点安全 */
 .ak-drawer-scrim { display: none; }
 .ak-drawer-scrim.is-open { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: calc(var(--ak-z-modal) - 1); }
-
-/* 4b. .ak-drawer 关闭态：必须 visibility:hidden —— 否则键盘 Tab 能进入屏幕外的抽屉，阴影也会漏到视口边缘
- *     （与上游侧栏抽屉同一处理；展开时 visibility 立即恢复，收起时等动画结束再隐藏） */
 .ak-drawer:not(.is-open) { visibility: hidden; box-shadow: none; transition: transform var(--ak-dur-normal) var(--ak-ease), visibility 0s var(--ak-dur-normal), box-shadow 0s var(--ak-dur-normal); }
 .ak-drawer.is-open { visibility: visible; }
 
-/* 5. 窄屏：统计标签换行时不与数值重叠 */
+/* 5. 窄屏统计标签防重叠 */
 .ak-stat__label { line-height: 1.5; }
 
-/* 6. 搜索触发器内的 `/` 快捷键徽标：上游 .ak-search__kbd 用绝对定位（预设父级 .ak-search 有 position:relative），
- *    放到 inline-flex 的 .ak-search-trigger 内会跳到整行 .ak-header__inner 最右侧，改为流式贴右对齐 */
+/* 6. 搜索触发器内 `/` 快捷键流式贴右对齐 */
 .ak-search-trigger { position: relative; }
 .ak-search-trigger .ak-search__kbd { position: static; transform: none; flex: none; }
 
-/* 7. 手机窄屏页眉与分页适配：防止极窄屏（≤360px）品牌词与分段按钮或长分页栏横向溢出 */
+/* 7. 极窄屏页眉与分页防溢出 */
 @media (max-width: 639px) {
   .ak-header .ak-header__logo { flex: 0 1 auto; min-width: 0; }
   .ak-header .ak-header__wordmark { overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
@@ -56,19 +55,1040 @@
 }
 .ak-pagination { flex-wrap: wrap; }
 
-/* 8. 独立环境下 <button class="ak-menu__item"> 去掉 scope.css 裸 button 默认边框与底色 */
+/* 8. <button class="ak-menu__item"> 去裸控件默认框 */
 .ak-menu button.ak-menu__item { width: 100%; border-top: 0; border-right: 0; border-bottom: 0; background: transparent; text-align: left; font-weight: 400; border-radius: 0; }
 .ak-menu button.ak-menu__item:hover { border-top: 0; border-right: 0; border-bottom: 0; }
 .ak-menu button.ak-menu__item:focus-visible { outline: 2px solid var(--ak-focus); outline-offset: -2px; }
 
-/* 9. 面板标题：长中文标题 + 右侧编号在窄屏换行时均衡断行，不留“孤字”；英文副标整体换行；编号不折行 */
+/* 9. 面板标题均衡断行 */
 .ak-panel__head { padding-block: 6px; }
 .ak-panel__title { min-width: 0; text-wrap: balance; }
 .ak-panel__title .ak-en { white-space: nowrap; }
 .ak-panel__head > .ak-code-id { flex: none; white-space: nowrap; }
 
-/* 10. 屏蔽词（.ak-redacted）暗色模式：上游用 --ak-fg 作遮盖条，暗色下是刺眼的白条；改为深灰条，悬停/聚焦显出白字 */
+/* 10. 屏蔽词暗色适配 */
 :root[data-theme="dark"] .ak-redacted { background: #4a4a4e; }
 :root[data-theme="dark"] .ak-redacted:hover,
 :root[data-theme="dark"] .ak-redacted:focus-visible,
 :root[data-theme="dark"] .ak-redacted.is-revealed { color: #fff; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  PART B · 官网架构升级层（Carrier 1 · Editorial / Command Showcase）
+ *  依据 ak.hypergryph.com 实机美学：斜光三角暗格画布 · 极简漂浮双语顶栏 ·
+ *  右侧数字标尺窄轨 · 去边框 1px 建筑分割线与实块语法 · 错位双列情报流
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 11. 动效关键帧与硬切扫描语言（无弹簧、无辉光、遵循 prefers-reduced-motion） */
+@keyframes ak-wipe-x {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+@keyframes ak-scan-in {
+  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(8px); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; }
+}
+@keyframes ak-wave-eq {
+  0%, 100% { transform: scaleY(0.32); }
+  50% { transform: scaleY(1); }
+}
+
+.ak-anim-wipe { animation: ak-wipe-x 320ms cubic-bezier(0.2, 0, 0, 1) both; }
+.ak-anim-scan { animation: ak-scan-in 340ms cubic-bezier(0.2, 0, 0, 1) var(--ak-delay, 0ms) both; }
+
+/* 12. 氛围三角网格画布（零外部图片 · 暗底带微光斜束与半调角阵，亮底呈制图灰白纸感） */
+.ak-bg-lattice {
+  --_lat-line: rgba(0, 0, 0, 0.045);
+  --_lat-beam: rgba(0, 0, 0, 0.025);
+  --_lat-dot: rgba(0, 0, 0, 0.08);
+  position: relative;
+  background-color: var(--ak-bg-canvas);
+  background-image:
+    linear-gradient(122deg, transparent 18%, var(--_lat-beam) 38%, transparent 56%),
+    linear-gradient(to right, var(--_lat-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--_lat-line) 1px, transparent 1px),
+    linear-gradient(135deg, transparent 49.3%, var(--_lat-line) 49.7%, var(--_lat-line) 50.3%, transparent 50.7%),
+    linear-gradient(45deg, transparent 49.3%, var(--_lat-line) 49.7%, var(--_lat-line) 50.3%, transparent 50.7%);
+  background-size: 100% 100%, 112px 112px, 112px 112px, 112px 112px, 112px 112px;
+  background-attachment: fixed, scroll, scroll, scroll, scroll;
+}
+:root[data-theme="dark"] .ak-bg-lattice,
+.ak-scope[data-theme="dark"] .ak-bg-lattice {
+  --_lat-line: rgba(255, 255, 255, 0.036);
+  --_lat-beam: rgba(255, 255, 255, 0.038);
+  --_lat-dot: rgba(255, 255, 255, 0.14);
+}
+.ak-bg-lattice::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: min(56vw, 720px);
+  height: min(44vh, 420px);
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(var(--_lat-dot) 1.3px, transparent 1.6px);
+  background-size: 8px 8px;
+  -webkit-mask-image: linear-gradient(35deg, #000 0%, transparent 64%);
+  mask-image: linear-gradient(35deg, #000 0%, transparent 64%);
+}
+
+/* 13. 极简漂浮双语顶栏（对应 ak.hypergryph.com 全局单行导航，恒为深黑玻璃 + 1px 底线） */
+.ak-topbar {
+  --ak-fg: var(--ak-chrome-fg);
+  --ak-fg-secondary: var(--ak-chrome-fg-2);
+  --ak-fg-muted: var(--ak-chrome-fg-muted);
+  --ak-accent: var(--ak-theme-accent);
+  --ak-accent-fg: var(--ak-theme-accent-fg);
+  --ak-border: var(--ak-chrome-line);
+  --ak-border-strong: var(--ak-chrome-line-strong);
+  --ak-bg-hover: var(--ak-chrome-hover);
+  --ak-focus: var(--ak-theme-accent);
+  color-scheme: dark;
+  position: sticky;
+  top: 0;
+  z-index: var(--ak-z-header);
+  color: var(--ak-chrome-fg);
+  background: rgba(14, 15, 17, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+.ak-topbar__inner {
+  max-width: 1680px;
+  height: 60px;
+  margin: 0 auto;
+  padding: 0 var(--ak-gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-sizing: border-box;
+}
+.ak-topbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ak-chrome-fg);
+  text-decoration: none;
+  flex: none;
+  min-width: 0;
+}
+.ak-topbar__brand:hover { color: var(--ak-chrome-fg); text-decoration: none; }
+.ak-topbar__mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--ak-chrome-fg);
+  font: 800 13px/1 var(--ak-font-display);
+  letter-spacing: 0.04em;
+  flex: none;
+}
+.ak-topbar__wordmark {
+  font: 800 18px/1 var(--ak-font-display);
+  font-variant-numeric: lining-nums;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ak-topbar__wordmark small {
+  display: block;
+  margin-top: 3px;
+  font: 600 9px/1 var(--ak-font-label);
+  letter-spacing: 0.16em;
+  color: var(--ak-chrome-fg-muted);
+}
+.ak-topbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-width: 0;
+}
+.ak-topbar__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  height: 60px;
+  padding: 0 4px;
+  text-decoration: none;
+  color: var(--ak-chrome-fg-2);
+  transition: color var(--ak-dur-fast) var(--ak-ease);
+  white-space: nowrap;
+}
+.ak-topbar__link strong {
+  font: 700 14px/1 var(--ak-font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ak-topbar__link span {
+  font: 500 10px/1 var(--ak-font-body);
+  color: var(--ak-chrome-fg-muted);
+  transition: color var(--ak-dur-fast) var(--ak-ease);
+}
+.ak-topbar__link:hover { color: var(--ak-chrome-fg); text-decoration: none; }
+.ak-topbar__link.is-active,
+.ak-topbar__link[aria-current="page"] {
+  color: var(--ak-theme-accent);
+}
+.ak-topbar__link.is-active span,
+.ak-topbar__link[aria-current="page"] span {
+  color: var(--ak-theme-accent);
+}
+.ak-topbar__link.is-active::after,
+.ak-topbar__link[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--ak-theme-accent);
+}
+.ak-topbar__tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+.ak-topbar__menu {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: transparent;
+  color: var(--ak-chrome-fg);
+  font: 600 12px/1 var(--ak-font-body);
+  cursor: pointer;
+}
+.ak-topbar__menu:hover { border-color: var(--ak-theme-accent); color: var(--ak-theme-accent); }
+
+/* 官网右上角声波开关钮 */
+.ak-wave-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ak-chrome-fg-2);
+  font: 600 10px/1 var(--ak-font-label);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+.ak-wave-btn:hover { color: var(--ak-chrome-fg); border-color: rgba(255, 255, 255, 0.22); }
+.ak-wave-btn.is-playing { color: var(--ak-theme-accent); }
+.ak-wave-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+.ak-wave-bars i {
+  display: block;
+  width: 2px;
+  height: 12px;
+  background: currentColor;
+  transform-origin: center;
+  transform: scaleY(0.42);
+}
+.ak-wave-btn.is-playing .ak-wave-bars i {
+  animation: ak-wave-eq 920ms ease-in-out infinite;
+}
+.ak-wave-btn.is-playing .ak-wave-bars i:nth-child(2) { animation-delay: 140ms; }
+.ak-wave-btn.is-playing .ak-wave-bars i:nth-child(3) { animation-delay: 280ms; }
+.ak-wave-btn.is-playing .ak-wave-bars i:nth-child(4) { animation-delay: 90ms; }
+.ak-wave-btn.is-playing .ak-wave-bars i:nth-child(5) { animation-delay: 210ms; }
+
+@media (max-width: 1023px) {
+  .ak-topbar__nav { display: none; }
+  .ak-topbar__menu { display: inline-flex; }
+}
+@media (max-width: 639px) {
+  .ak-topbar__inner { height: 54px; padding: 0 14px; gap: 8px; }
+  .ak-topbar__mark { width: 24px; height: 24px; font-size: 11px; }
+  .ak-topbar__wordmark { font-size: 15px; }
+  .ak-topbar__wordmark small { display: none; }
+  .ak-wave-btn > span:not(.ak-wave-bars) { display: none; }
+  .ak-topbar .ak-seg > button, .ak-topbar .ak-seg > label { min-width: 30px; padding: 0 6px; font-size: 11px; }
+}
+@media (max-width: 420px) {
+  .ak-topbar__wordmark { max-width: 112px; overflow: hidden; text-overflow: ellipsis; }
+  .ak-topbar__menu { padding: 0 8px; }
+}
+
+/* 14. 官网双栏主舞台骨架 + 右侧竖直编号轨道（无侧栏遮挡主舞台） */
+.ak-stage-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1680px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 216px;
+  flex: 1;
+  box-sizing: border-box;
+}
+.ak-stage-main {
+  min-width: 0;
+  padding: 0 var(--ak-gutter) 56px;
+  box-sizing: border-box;
+}
+.ak-index-rail {
+  border-left: 1px solid var(--ak-border);
+  padding: 40px 24px;
+  box-sizing: border-box;
+}
+.ak-index-rail__sticky {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.ak-index-rail__counter {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.ak-index-rail__num {
+  font: 800 54px/0.86 var(--ak-font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--ak-accent);
+  letter-spacing: -0.02em;
+}
+.ak-index-rail__meta {
+  padding-top: 4px;
+  font: 700 11px/1.3 var(--ak-font-label);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ak-fg);
+}
+.ak-index-rail__meta span {
+  display: block;
+  color: var(--ak-fg-muted);
+  margin-top: 2px;
+}
+.ak-rail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-top: 1px solid var(--ak-border);
+  padding-top: 14px;
+}
+.ak-rail-nav__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 10px 9px 12px;
+  border-left: 2px solid transparent;
+  font: 600 12px/1.3 var(--ak-font-body);
+  color: var(--ak-fg-muted);
+  text-decoration: none;
+  transition: color var(--ak-dur-fast), background var(--ak-dur-fast), border-color var(--ak-dur-fast);
+}
+.ak-rail-nav__item span:first-child {
+  font-family: var(--ak-font-label);
+  letter-spacing: 0.08em;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+.ak-rail-nav__item:hover {
+  color: var(--ak-fg);
+  background: var(--ak-bg-hover);
+  text-decoration: none;
+}
+.ak-rail-nav__item.is-active {
+  color: var(--ak-fg);
+  border-left-color: var(--ak-accent);
+  background: var(--ak-accent-subtle);
+}
+.ak-rail-nav__item.is-active span:first-child { color: var(--ak-link); opacity: 1; }
+.ak-index-rail__status {
+  border-top: 1px solid var(--ak-border);
+  padding-top: 14px;
+  font: 600 11px/1.6 var(--ak-font-label);
+  color: var(--ak-fg-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+@media (max-width: 1023px) {
+  .ak-stage-shell { grid-template-columns: minmax(0, 1fr); }
+  .ak-stage-main { padding: 0 18px 40px; }
+  .ak-index-rail { display: none; }
+}
+@media (max-width: 639px) {
+  .ak-stage-main { padding: 0 14px 32px; }
+}
+
+/* 15. 贴边极低透明巨字水印 + 无边框官网 Hero（彻底取代黑盒子占位） */
+.ak-ghost-word {
+  position: absolute;
+  left: -0.03em;
+  bottom: -0.14em;
+  font: 800 clamp(4.2rem, 11.5vw, 10.5rem)/0.82 var(--ak-font-display);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.045);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+:root[data-theme="dark"] .ak-ghost-word,
+.ak-scope[data-theme="dark"] .ak-ghost-word {
+  color: rgba(255, 255, 255, 0.042);
+}
+
+.ak-hero--editorial {
+  position: relative;
+  overflow: clip;
+  padding: 52px 0 44px;
+  border-bottom: 1px solid var(--ak-border);
+}
+.ak-hero--editorial__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.95fr);
+  gap: 48px;
+  align-items: center;
+}
+.ak-hero--editorial__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 700 11px/1 var(--ak-font-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ak-fg-muted);
+}
+.ak-hero--editorial__eyebrow i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--ak-accent);
+  flex: none;
+}
+.ak-hero--editorial__title {
+  margin: 14px 0 0;
+  border: 0;
+  padding: 0;
+  font: 800 clamp(2.5rem, 5.2vw, 4.5rem)/0.94 var(--ak-font-display);
+  font-variant-numeric: lining-nums;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--ak-fg);
+}
+.ak-hero--editorial__title::after { display: none; }
+.ak-hero--editorial__title .cn {
+  display: block;
+  margin-top: 10px;
+  font: 800 clamp(1.35rem, 2.4vw, 2rem)/1.25 var(--ak-font-body);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ak-fg);
+}
+.ak-hero--editorial__rule {
+  display: flex;
+  align-items: center;
+  margin: 22px 0;
+}
+.ak-hero--editorial__rule::before {
+  content: "";
+  width: 88px;
+  height: 5px;
+  background: var(--ak-theme-accent, var(--ak-accent));
+  flex: none;
+}
+.ak-hero--editorial__rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ak-border);
+}
+.ak-hero--editorial__desc {
+  max-width: 52ch;
+  margin: 0;
+  font-size: var(--ak-fs-sm);
+  line-height: 1.75;
+  color: var(--ak-fg-secondary);
+}
+
+/* 官网 #operator 同款：微透简洁简介块 + 4 格干员/单元缩略卡 + 滑轨条 */
+.ak-hero__focal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.ak-brief {
+  position: relative;
+  padding: 18px 20px;
+  background: rgba(18, 19, 22, 0.92);
+  color: #f0f0f0;
+  border-left: 3px solid var(--ak-theme-accent, var(--ak-cyan-500));
+}
+.ak-brief__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.ak-brief__name {
+  font: 800 22px/1.15 var(--ak-font-body);
+  color: #ffffff;
+}
+.ak-brief__en {
+  font: 700 13px/1 var(--ak-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-theme-accent, var(--ak-cyan-500));
+}
+.ak-brief__voice {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-left: 2px solid #ffffff;
+  font: 600 11px/1 var(--ak-font-label);
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.85);
+}
+.ak-brief__copy {
+  margin: 0;
+  font-size: var(--ak-fs-xs);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.72);
+}
+.ak-thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.ak-thumb-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 82px;
+  padding: 10px;
+  background: var(--ak-bg-surface);
+  border: 1px solid var(--ak-border);
+  color: var(--ak-fg-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--ak-dur-fast), color var(--ak-dur-fast), background var(--ak-dur-fast);
+}
+.ak-thumb-card:hover {
+  border-color: var(--ak-border-strong);
+  color: var(--ak-fg);
+}
+.ak-thumb-card:focus-visible { outline: 2px solid var(--ak-focus); outline-offset: 1px; }
+.ak-thumb-card__code {
+  font: 700 10px/1 var(--ak-font-label);
+  letter-spacing: 0.12em;
+  color: var(--ak-fg-muted);
+}
+.ak-thumb-card__name {
+  font: 700 13px/1.2 var(--ak-font-body);
+  color: var(--ak-fg);
+}
+.ak-thumb-card.is-active,
+.ak-thumb-card[aria-pressed="true"] {
+  border-color: var(--ak-fg);
+  background: var(--ak-bg-surface-2);
+}
+.ak-thumb-card.is-active::before,
+.ak-thumb-card[aria-pressed="true"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 0;
+  border-color: transparent var(--ak-accent) transparent transparent;
+}
+.ak-scrub-bar {
+  position: relative;
+  height: 2px;
+  background: var(--ak-border);
+}
+.ak-scrub-bar > i {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 4px;
+  width: var(--_thumb-w, 25%);
+  margin-left: var(--_thumb-x, 0%);
+  background: var(--ak-fg);
+  border-right: 4px solid var(--ak-accent);
+  transition: margin-left var(--ak-dur-normal) var(--ak-ease);
+}
+@media (max-width: 1023px) {
+  .ak-hero--editorial { padding: 32px 0 36px; }
+  .ak-hero--editorial__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
+@media (max-width: 639px) {
+  .ak-thumb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 16. 官网 1px 建筑标尺分割线（左端实心 4px 块，源自 /news/3029）与去框化统计区 */
+.ak-rule {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  margin: 44px 0 24px;
+  border-bottom: 1px solid var(--ak-border);
+}
+.ak-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 48px;
+  height: 4px;
+  background: var(--ak-fg);
+}
+.ak-rule__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  min-width: 0;
+}
+.ak-rule__title {
+  margin: 0;
+  font: 800 clamp(1.25rem, 2.2vw, 1.65rem)/1.15 var(--ak-font-body);
+  color: var(--ak-fg);
+}
+.ak-rule__en {
+  font: 700 13px/1 var(--ak-font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ak-fg-muted);
+}
+.ak-rule__aside {
+  flex: none;
+  font-size: var(--ak-fs-xs);
+  color: var(--ak-fg-muted);
+  white-space: nowrap;
+}
+
+.ak-stat-row--open {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px 32px;
+  margin-top: 32px;
+}
+.ak-stat--minimal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 0 4px;
+  border: 0;
+  border-top: 1px solid var(--ak-border);
+  background: transparent;
+  min-width: 0;
+}
+.ak-stat--minimal::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 28px;
+  height: 3px;
+  background: var(--ak-accent);
+}
+.ak-stat--minimal .ak-stat__value {
+  font: 700 clamp(1.75rem, 3vw, 2.4rem)/1.05 var(--ak-font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 17. 非对称两栏助手 & 无边框清单（源自 ak.hypergryph.com/#world 与 #information） */
+.ak-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+  gap: 32px 44px;
+  align-items: start;
+}
+@media (max-width: 1023px) {
+  .ak-split { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
+
+.ak-folio-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ak-folio-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 16px;
+  width: 100%;
+  padding: 14px 10px 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--ak-border-strong);
+  background: transparent;
+  text-align: left;
+  color: var(--ak-fg);
+  cursor: pointer;
+  transition: padding-left var(--ak-dur-fast) var(--ak-ease), border-color var(--ak-dur-fast);
+}
+.ak-folio-item:hover,
+.ak-folio-item.is-active {
+  padding-left: 12px;
+  border-bottom-color: var(--ak-fg);
+}
+.ak-folio-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 3px;
+  background: var(--ak-accent);
+  opacity: 0;
+  transition: opacity var(--ak-dur-fast);
+}
+.ak-folio-item:hover::before,
+.ak-folio-item.is-active::before { opacity: 1; }
+.ak-folio-item:focus-visible { outline: 2px solid var(--ak-focus); outline-offset: 2px; }
+.ak-folio-item__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  min-width: 0;
+}
+.ak-folio-item__title {
+  font: 700 18px/1.3 var(--ak-font-body);
+  color: var(--ak-fg);
+}
+.ak-folio-item__en {
+  font: 700 12px/1 var(--ak-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fg-muted);
+}
+.ak-folio-item__meta {
+  font: 600 11px/1 var(--ak-font-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--ak-link);
+  white-space: nowrap;
+}
+.ak-folio-item__arrow {
+  font: 700 14px/1 var(--ak-font-label);
+  color: var(--ak-fg-muted);
+  transition: transform var(--ak-dur-fast), color var(--ak-dur-fast);
+}
+.ak-folio-item:hover .ak-folio-item__arrow,
+.ak-folio-item.is-active .ak-folio-item__arrow {
+  transform: translateX(3px);
+  color: var(--ak-link);
+}
+
+/* 18. 错位双列新闻/情报卡（直接复刻 ak.hypergryph.com/news） */
+.ak-news-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 32px;
+  align-items: start;
+}
+.ak-news-grid--staggered > :nth-child(2n) {
+  margin-top: 40px;
+}
+@media (max-width: 767px) {
+  .ak-news-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .ak-news-grid--staggered > :nth-child(2n) { margin-top: 0; }
+}
+.ak-news-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--ak-fg);
+}
+.ak-news-card__head {
+  position: relative;
+  min-height: 112px;
+  padding: 18px 20px 16px;
+  background-color: #16171a;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1.3px),
+    repeating-linear-gradient(-45deg, transparent 0 18px, rgba(255, 255, 255, 0.025) 18px 19px);
+  background-size: 9px 9px, 100% 100%;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  transition: transform var(--ak-dur-fast) var(--ak-ease);
+}
+.ak-news-card__head::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 8px;
+  height: 8px;
+  background: var(--ak-theme-accent, var(--ak-cyan-500));
+}
+.ak-news-card__en {
+  font: 800 32px/0.92 var(--ak-font-display);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+.ak-news-card__sub {
+  margin-top: 4px;
+  font: 700 13px/1.2 var(--ak-font-body);
+  color: rgba(255, 255, 255, 0.78);
+}
+.ak-news-card__seal {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font: 700 10px/1 var(--ak-font-label);
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.65);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 8px;
+}
+.ak-news-card__band {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 4px 12px;
+  background: var(--ak-theme-accent, var(--ak-cyan-500));
+  color: var(--ak-theme-accent-fg, #000000);
+  font: 700 10px/1 var(--ak-font-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.ak-news-card:hover .ak-news-card__head::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--ak-theme-accent, var(--ak-cyan-500));
+  pointer-events: none;
+}
+.ak-news-card__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 14px;
+  align-items: baseline;
+}
+.ak-news-card__cat {
+  font: 700 12px/1.2 var(--ak-font-body);
+  color: var(--ak-link);
+}
+.ak-news-card__date {
+  font: 600 11px/1.2 var(--ak-font-label);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--ak-fg-muted);
+}
+.ak-news-card__title {
+  grid-column: 2;
+  margin: 0;
+  font: 600 14px/1.45 var(--ak-font-body);
+  color: var(--ak-fg);
+}
+
+/* 19. 四列通栏无框暗幕切割区（源自 ak.hypergryph.com/#more） */
+.ak-showcase-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--ak-border);
+  background: #111214;
+}
+.ak-showcase-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 220px;
+  padding: 24px 20px;
+  color: #ffffff;
+  text-decoration: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, rgba(0, 0, 0, 0.55) 100%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 28px);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background var(--ak-dur-normal) var(--ak-ease);
+}
+.ak-showcase-col:nth-child(even) { background-color: #16181c; }
+.ak-showcase-col:last-child { border-right: 0; }
+.ak-showcase-col:hover {
+  background-color: #1c1f24;
+  text-decoration: none;
+  color: #ffffff;
+}
+.ak-showcase-col__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-bottom: auto;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font: 700 12px/1 var(--ak-font-label);
+  color: var(--ak-theme-accent, var(--ak-cyan-500));
+}
+.ak-showcase-col__title {
+  margin: 24px 0 4px;
+  font: 800 20px/1.2 var(--ak-font-body);
+  color: #ffffff;
+}
+.ak-showcase-col__en {
+  font: 700 11px/1.2 var(--ak-font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+.ak-showcase-col__more {
+  position: relative;
+  margin-top: 14px;
+  padding-bottom: 10px;
+  font: 700 10px/1 var(--ak-font-label);
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.85);
+}
+.ak-showcase-col__more::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 32px;
+  height: 2px;
+  background: #ffffff;
+  transition: width var(--ak-dur-normal) var(--ak-ease), background var(--ak-dur-fast);
+}
+.ak-showcase-col:hover .ak-showcase-col__more::after {
+  width: 100%;
+  background: var(--ak-theme-accent, var(--ak-cyan-500));
+}
+@media (max-width: 1023px) {
+  .ak-showcase-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ak-showcase-col:nth-child(2n) { border-right: 0; }
+  .ak-showcase-col { min-height: 170px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+}
+@media (max-width: 639px) {
+  .ak-showcase-strip { grid-template-columns: minmax(0, 1fr); }
+  .ak-showcase-col { min-height: 132px; border-right: 0; }
+}
+
+/* 20. 官网情报精简筛选条（源自 ak.hypergryph.com/#information 左上：无外框 · 激活项实底 + >） */
+.ak-filter-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ak-border);
+}
+.ak-filter-strip__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ak-fg-muted);
+  font: 600 12px/1 var(--ak-font-body);
+  cursor: pointer;
+  transition: color var(--ak-dur-fast), background var(--ak-dur-fast);
+}
+.ak-filter-strip__btn:hover { color: var(--ak-fg); }
+.ak-filter-strip__btn:focus-visible { outline: 2px solid var(--ak-focus); outline-offset: 2px; }
+.ak-filter-strip__btn.is-active,
+.ak-filter-strip__btn[aria-pressed="true"] {
+  background: var(--ak-accent);
+  color: var(--ak-accent-fg);
+  font-weight: 700;
+}
+.ak-filter-strip__btn.is-active::after,
+.ak-filter-strip__btn[aria-pressed="true"]::after {
+  content: "›";
+  font-weight: 800;
+}
+
+/* 21. 官网极简页脚 & 移动导航抽屉列表 */
+.ak-footer--editorial {
+  border-top: 1px solid var(--ak-chrome-line);
+}
+.ak-footer--editorial::before {
+  height: 3px;
+  width: 72px;
+  right: auto;
+  background: var(--ak-theme-accent, var(--ak-cyan-500));
+  opacity: 1;
+}
+.ak-drawer-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+}
+.ak-drawer-nav__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 14px;
+  border-bottom: 1px solid var(--ak-border);
+  font: 700 13px/1 var(--ak-font-display);
+  letter-spacing: 0.1em;
+}
+.ak-drawer-nav__link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid var(--ak-border-subtle);
+  color: var(--ak-fg);
+  text-decoration: none;
+  font: 600 14px/1.2 var(--ak-font-body);
+}
+.ak-drawer-nav__link small {
+  font: 700 11px/1 var(--ak-font-display);
+  letter-spacing: 0.08em;
+  color: var(--ak-fg-muted);
+}
+.ak-drawer-nav__link.is-active,
+.ak-drawer-nav__link:hover {
+  border-left-color: var(--ak-accent);
+  background: var(--ak-accent-subtle);
+  text-decoration: none;
+}
+
+/* 22. 简化 Reduced Motion 保护（覆盖新增动效与交互） */
+@media (prefers-reduced-motion: reduce) {
+  .ak-anim-wipe,
+  .ak-anim-scan,
+  .ak-wave-btn.is-playing .ak-wave-bars i {
+    animation: none !important;
+  }
+  .ak-scrub-bar > i,
+  .ak-folio-item,
+  .ak-folio-item__arrow,
+  .ak-showcase-col__more::after {
+    transition: none !important;
+  }
+}
