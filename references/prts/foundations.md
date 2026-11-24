@@ -101,7 +101,7 @@ UI 的本质是**《明日方舟》官网的冷峻建筑感与罗德岛 PRTS 指
 | `--ak-border` | `#d9dbdc` | `#2f3133` | 1px 建筑分隔线、竖轨边线、常规细边框 |
 | `--ak-info` / `--ak-success` / `--ak-warning` / `--ak-danger` | `#0072a8` / `#1f8f5f` / `#b86f00` / `#c8102e` | `#5ddcff` / `#4fd18f` / `#ffb340` / `#ff5c5c` | 四态语义文字/色条色 |
 
-> **项目品牌换色接口**：保留黑白灰基底（`--ak-bg-*` / `--ak-fg-*`）与纯直角骨架，只需覆盖 `--ak-theme-accent` / `--ak-theme-accent-fg` / `--ak-theme-accent-subtle`（联动顶栏 `.ak-topbar` / `.ak-header`、`.ak-hero--editorial__rule`、`.ak-brief` 左竖条、`.ak-news-card__band` 及 `.ak-showcase-col`）与亮暗两态下的 `--ak-accent` / `--ak-accent-hover` / `--ak-accent-fg` / `--ak-link` / `--ak-focus`，即可切入网站自有品牌色。
+> **项目品牌换色接口**：保留黑白灰基底（`--ak-bg-*` / `--ak-fg-*`）与纯直角骨架，只需覆盖 `--ak-theme-accent` / `--ak-theme-accent-fg` / `--ak-theme-accent-subtle`（联动深黑容器：顶栏 `.ak-topbar` / `.ak-header`、`.ak-brief`、`.ak-news-card__band`、`.ak-showcase-col` 与页脚）与亮暗两态下的 `--ak-accent` / `--ak-accent-hover` / `--ak-accent-fg` / `--ak-link` / `--ak-focus`（联动画布主体：`.ak-hero--editorial__rule`、主按钮、去框指标短条、正文 `.ak-wave-btn` 与链接），即可切入网站自有品牌色。
 
 ### 2. 方舟专属领域令牌
 

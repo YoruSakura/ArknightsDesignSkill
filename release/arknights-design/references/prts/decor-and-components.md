@@ -159,16 +159,17 @@
         <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
       </button>
     </div>
+    <a class="ak-folio-more ak-chevrons" href="#archive">VIEW ALL DISPATCHES</a>
   </div>
 
-  <!-- D. 错位双列新闻卡（右列自动下沉错位，黑底颗粒横幅 + 右下青底反白条） -->
+  <!-- D. 错位双列新闻卡（右列自动下沉错位，头部可选 --grid / --halftone 底纹与 --inverse 角标） -->
   <div class="ak-news-grid ak-news-grid--staggered">
     <a class="ak-news-card" href="#archive">
-      <div class="ak-news-card__head">
+      <div class="ak-news-card__head ak-news-card__head--grid">
         <span class="ak-news-card__seal">RI // 01</span>
         <span class="ak-news-card__en">DISPATCH</span>
         <span class="ak-news-card__sub">战术调度</span>
-        <span class="ak-news-card__band">— TERMINAL</span>
+        <span class="ak-news-card__band ak-news-card__band--inverse">— TERMINAL</span>
       </div>
       <div class="ak-news-card__body">
         <span class="ak-news-card__cat">新闻</span>

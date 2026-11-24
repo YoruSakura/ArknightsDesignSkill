@@ -485,7 +485,7 @@
               <h3 class="ak-rule__title ak-anim-scan">1px 标尺分割线 (.ak-rule)</h3>
               <span class="ak-rule__en">ARCHITECTURAL RULE</span>
             </div>
-            <button type="button" class="ak-wave-btn is-playing" onclick="this.classList.toggle('is-playing')" aria-pressed="true" aria-label="切换声波指示">
+            <button type="button" class="ak-wave-btn is-playing" onclick="this.setAttribute('aria-pressed', String(this.classList.toggle('is-playing')))" aria-pressed="true" aria-label="切换声波指示">
               <span class="ak-wave-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
               <span>SIGNAL WAVE</span>
             </button>

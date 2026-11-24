@@ -33,7 +33,7 @@
         <a class="ak-topbar__link" href="#archive" data-sec="03" data-sec-en="DIRECTORY">
           <strong>DIRECTORY</strong><span>设定与编队</span>
         </a>
-        <a class="ak-topbar__link" href="#extensions" data-sec="04" data-sec-en="MODULES">
+        <a class="ak-topbar__link" href="#extensions" data-sec="04" data-sec-en="MORE CONTENT">
           <strong>MODULES</strong><span>延伸系统</span>
         </a>
       </nav>
@@ -93,7 +93,7 @@
             <div class="ak-flex ak-wrap ak-gap-3 ak-mt-6">
               <a class="ak-btn ak-btn--contrast ak-btn--lg" href="#archive">检视作战矩阵</a>
               <a class="ak-btn ak-btn--primary ak-btn--lg" href="#information">最新调度简报</a>
-              <a class="ak-chevrons ak-flex ak-items-center" href="./prts-components.html" style="padding: 0 8px;">全组件目录</a>
+              <a class="ak-btn ak-btn--ghost ak-btn--lg ak-chevrons" href="./prts-components.html">全组件目录</a>
             </div>
           </div>
 
@@ -143,31 +143,31 @@
             <div class="ak-scrub-bar" aria-hidden="true"><i id="ak-scrub-thumb"></i></div>
           </div>
         </div>
-
-        <!-- 去边框化数字指标（无 1px 方框包围，仅靠顶线 + 短色块立住） -->
-        <div class="ak-stat-row--open">
-          <div class="ak-stat--minimal">
-            <span class="ak-stat__label">DEPLOYED // 现役编队</span>
-            <span class="ak-stat__value">12<small>/ 12</small></span>
-            <span class="ak-stat__delta ak-stat__delta--up">▲ 核心编队满员待命</span>
-          </div>
-          <div class="ak-stat--minimal">
-            <span class="ak-stat__label">SANITY // 理智储备</span>
-            <span class="ak-stat__value">132<small>/ 135</small></span>
-            <span class="ak-stat__delta">自动回复 · 18:00 满溢</span>
-          </div>
-          <div class="ak-stat--minimal">
-            <span class="ak-stat__label">ORIGINIUM // 精炼纯度</span>
-            <span class="ak-stat__value">98.4<small>%</small></span>
-            <span class="ak-stat__delta ak-stat__delta--down">▼ 核心城边缘活性升高</span>
-          </div>
-          <div class="ak-stat--minimal">
-            <span class="ak-stat__label">ROUTES // 监控航线</span>
-            <span class="ak-stat__value">08<small>/ ACT</small></span>
-            <span class="ak-stat__delta">主线外环全时在线</span>
-          </div>
-        </div>
       </section>
+
+      <!-- 去边框化数字指标（独立于 Hero 水印之外，仅靠顶线 + 短色块立住） -->
+      <div class="ak-stat-row--open" aria-label="核心运行指标">
+        <div class="ak-stat--minimal">
+          <span class="ak-stat__label">DEPLOYED // 现役编队</span>
+          <span class="ak-stat__value">12<small>/ 12</small></span>
+          <span class="ak-stat__delta ak-stat__delta--up">▲ 核心编队满员待命</span>
+        </div>
+        <div class="ak-stat--minimal">
+          <span class="ak-stat__label">SANITY // 理智储备</span>
+          <span class="ak-stat__value">132<small>/ 135</small></span>
+          <span class="ak-stat__delta">自动回复 · 18:00 满溢</span>
+        </div>
+        <div class="ak-stat--minimal">
+          <span class="ak-stat__label">ORIGINIUM // 精炼纯度</span>
+          <span class="ak-stat__value">98.4<small>%</small></span>
+          <span class="ak-stat__delta ak-stat__delta--down">▼ 核心城边缘活性升高</span>
+        </div>
+        <div class="ak-stat--minimal">
+          <span class="ak-stat__label">ROUTES // 监控航线</span>
+          <span class="ak-stat__value">08<small>/ ACT</small></span>
+          <span class="ak-stat__delta">主线外环全时在线</span>
+        </div>
+      </div>
 
       <!-- 版块 02 · 情报中心（去边框 1px 列表 + 错位双列公告卡） -->
       <section id="information">
@@ -217,10 +217,25 @@
                 </span>
                 <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
               </button>
+              <button type="button" class="ak-folio-item" data-cat="event">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__meta">活动 · 2026 // 11 / 09</span>
+                  <span class="ak-folio-item__title">龙门外环夜间清扫联合演练战报归档</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item" data-cat="notice">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__meta">公告 · 2026 // 11 / 05</span>
+                  <span class="ak-folio-item__title">干员战术模组与后勤加工站权限分级修订</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
             </div>
+            <a class="ak-folio-more ak-chevrons" href="./prts-components.html">VIEW ALL DISPATCHES</a>
           </div>
 
-          <!-- 错位双列新闻卡片（右列自动下沉错开，无整圈卡片框） -->
+          <!-- 错位双列新闻卡片（右列自动下沉错开，无整圈卡片框，克制区分底纹与角标极性） -->
           <div class="ak-news-grid ak-news-grid--staggered">
             <a class="ak-news-card" href="#archive">
               <div class="ak-news-card__head">
@@ -237,7 +252,7 @@
             </a>
 
             <a class="ak-news-card" href="#archive">
-              <div class="ak-news-card__head">
+              <div class="ak-news-card__head ak-news-card__head--grid">
                 <span class="ak-news-card__seal">RI // 02</span>
                 <span class="ak-news-card__en">OPERATION</span>
                 <span class="ak-news-card__sub">特别行动</span>
@@ -251,11 +266,11 @@
             </a>
 
             <a class="ak-news-card" href="#archive">
-              <div class="ak-news-card__head">
+              <div class="ak-news-card__head ak-news-card__head--halftone">
                 <span class="ak-news-card__seal">RI // 03</span>
                 <span class="ak-news-card__en">NOTICE</span>
                 <span class="ak-news-card__sub">系统公告</span>
-                <span class="ak-news-card__band">— PRTS</span>
+                <span class="ak-news-card__band ak-news-card__band--inverse">— PRTS</span>
               </div>
               <div class="ak-news-card__body">
                 <span class="ak-news-card__cat">公告</span>
@@ -265,11 +280,11 @@
             </a>
 
             <a class="ak-news-card" href="./prts-components.html">
-              <div class="ak-news-card__head">
+              <div class="ak-news-card__head ak-news-card__head--grid">
                 <span class="ak-news-card__seal">RI // 04</span>
                 <span class="ak-news-card__en">CATALOG</span>
                 <span class="ak-news-card__sub">体系目录</span>
-                <span class="ak-news-card__band">— COMPONENTS</span>
+                <span class="ak-news-card__band ak-news-card__band--inverse">— COMPONENTS</span>
               </div>
               <div class="ak-news-card__body">
                 <span class="ak-news-card__cat">文档</span>

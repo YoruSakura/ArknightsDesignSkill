@@ -198,9 +198,16 @@ window.addEventListener('load', () => {
   railNavBtn.click();
   const railSynced = document.getElementById('rail-num').textContent === '02'
     && document.querySelector('.ak-topbar__link[data-sec="02"]').classList.contains('is-active');
+  const secLabelsMatch = [...document.querySelectorAll('.ak-topbar__link[data-sec]')].every(a => {
+    const r = document.querySelector(`.ak-rail-nav__item[data-sec="${a.dataset.sec}"]`);
+    return r && r.dataset.secEn === a.dataset.secEn;
+  });
+  const heroRect = document.querySelector('.ak-hero--editorial').getBoundingClientRect();
+  const statRect = document.querySelector('.ak-stat-row--open').getBoundingClientRect();
+  const statsClearOfWatermark = statRect.top >= heroRect.bottom - 1;
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, focalSwitched, feedFiltered, worldSwitched, audioToggled, railSynced, noOverflow
+    anims, focalSwitched, feedFiltered, worldSwitched, audioToggled, railSynced, secLabelsMatch, statsClearOfWatermark, noOverflow
   }));
 });
 </script>
@@ -268,14 +275,27 @@ window.addEventListener('load', () => {
   document.body.click();
   const ddClosed = !document.getElementById('demo-dd').classList.contains('is-open');
   const drawerHidden = getComputedStyle(document.getElementById('ak-right-drawer')).visibility === 'hidden';
+  const metaEl = document.querySelector('#editorial .ak-folio-item__meta');
+  const metaTitleEl = metaEl && metaEl.nextElementSibling;
+  const folioMetaStacked = !!(metaEl && metaTitleEl && metaEl.getBoundingClientRect().bottom <= metaTitleEl.getBoundingClientRect().top + 1);
+  const waveBtn = document.querySelector('#editorial .ak-wave-btn');
+  const isLight = document.documentElement.dataset.theme === 'light';
+  const wavePlayColor = getComputedStyle(waveBtn).color;
+  waveBtn.style.transition = 'none';
+  waveBtn.click();
+  const waveIdleColor = getComputedStyle(waveBtn).color;
+  const waveAriaSynced = waveBtn.getAttribute('aria-pressed') === 'false';
+  waveBtn.style.transition = '';
+  const waveContrastOk = waveAriaSynced && (!isLight || (wavePlayColor === 'rgb(0, 114, 168)' && waveIdleColor === 'rgb(69, 70, 71)'));
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims, ddOpened, ddClosed, drawerHidden, noOverflow }));
+  document.body.setAttribute('data-verify', JSON.stringify({ anims, ddOpened, ddClosed, drawerHidden, folioMetaStacked, waveContrastOk, noOverflow }));
 });
 </script>
 """
     for src_name, html_file, probe in [
         ("prts-boilerplate", out_dir / "prts-bp-dark.html", prts_bp_probe),
-        ("prts-components", out_dir / "prts-comp-dark.html", prts_probe),
+        ("prts-components-dark", out_dir / "prts-comp-dark.html", prts_probe),
+        ("prts-components-light", out_dir / "prts-comp-light.html", prts_probe),
         ("endfield-components", out_dir / "ef-comp-light.html", ef_probe),
     ]:
         probe_file = out_dir / f"probe-{src_name}.html"
