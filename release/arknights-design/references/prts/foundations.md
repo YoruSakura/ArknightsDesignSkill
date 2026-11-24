@@ -1,102 +1,123 @@
 # PRTS Design（明日方舟本家）基础设计规范
 
-> 来源依据：`MooncellWiki/prts-design`（MIT 协议）· `prts.wiki` 新版皮肤与明日方舟官网 / 游戏内 UI 实测规范。
+> 来源依据：`ak.hypergryph.com` 明日方舟官网实测设计语言 × `MooncellWiki/prts-design`（MIT 协议）组件基座与游戏内 PRTS 终端规范。
 
 ---
 
-## 一、 核心设计理念（六条铁律）
+## 一、 一句话定位与两种宏观载体
 
-**一句话总结**：**黑白为体、青为用；直角、斜纹、网点；拉丁大写字作装饰层，中文思源做正文；终端（暗）/ 档案（亮）双正典主题。**
-UI 的本质是**「罗德岛档案 / PRTS 终端」**，而不是科幻驾驶舱。
+**一句话定位**：**黑白灰炭为体、冰青为用；纯直角无切角、无辉光；以“开放三角暗格画布 + 极简 1px 建筑标尺线 + 极限排版对比”替代套娃边框。**
+UI 的本质是**《明日方舟》官网的冷峻建筑感与罗德岛 PRTS 指挥终端**，**绝对不要一上来就把它做成“四面带边框的 Wiki 百科侧栏”**。
 
-| 维度 | PRTS Design 规范 |
-| :--- | :--- |
-| **世界观母体** | 泰拉 · PRTS 终端（暗色） / 罗德岛人事档案（亮色） |
-| **母色体系** | 黑白灰为主体 + 官网青 `#18D1FF`（暗色主强调）/ 游戏蓝 `#0098DC`（亮色主强调）+ 次强调黄 `#FFD800` + 危险红 `#C82A36` / `#A40000` |
-| **形状铁律** | **纯直角 `border-radius: 0`**；角标直角三角、45° 警示斜纹填充、半调网点。**严禁 45° 切角（chamfer）/ 斜切平行四边形 / 斜带**——整套系统盒轮廓不出现 45° 斜边 |
-| **光效铁律** | **无辉光（No Glow）**；层级与选中靠**色条、黑白明度反转、角标三角**表达，不用霓虹发光 |
-| **字体分工** | 中文正文永远用 `Noto Sans SC` / `Source Han Sans SC`（行高 `1.7`）；大写拉丁展示字（`Novecento Sans Wide` / `Bender` / `Oswald`）仅作装饰、编号、面板级 HUD 数值 |
-| **双正典主题** | 档案模式（亮，`data-theme="light"`）与终端模式（暗，`data-theme="dark"`）完全等价；页眉 `.ak-header` 与页脚 `.ak-footer` 永远保持「黑框」（无论页面亮暗，顶栏和底栏恒为深黑玻璃框） |
+开始写页面前，先根据业务形态选定宏观载体：
 
----
-
-## 二、 严格 DO / DON'T 审查清单
-
-### ✅ DO（必须做到）
-1. **黑框白纸 / 黑框黑纸**：顶部导航栏（`.ak-header`）和页脚（`.ak-footer`）在亮暗主题下**恒为深黑背景**（`--ak-chrome-bg`），右侧带半调网点渐隐，配青色选中态与白色线稿图标。
-2. **色条 + 1px 细框直角拼接**：标题、面板头、消息框、代码块最常见的强调是「左侧 4px 粗色条（或顶部 3px 色条）+ 1px 细框」。直接写 `border-left: 4px` + `border: 1px` 会被浏览器在转角处斜接（miter）出一道小斜边，**必须使用 `border-image` 直角拼接**：
-   ```css
-   border: 1px solid var(--ak-border);
-   border-left-width: 4px;
-   border-image: linear-gradient(to right, var(--ak-accent) 4px, var(--ak-border) 4px) 1 1 1 4;
-   ```
-3. **黑白反转做强动作**：游戏内「开始行动」这类强动作使用 `.ak-btn--contrast` 或 `.ak-inverse`（亮色下黑底白字、暗色下白底黑字），主色实底 `.ak-btn--primary` 一屏只放一处。
-4. **源石菱形（`◆`）的克制使用**：虽然盒子轮廓严禁斜切，但**独立的小菱形**（正方形转 45°）是有意致敬「源石」的母题，仅限用于四处：
-   - 无序列表项目符号（5px 旋转正方形）
-   - 加载指示器 `.ak-spinner`（中央空心菱形 + 扩散涟漪菱形）
-   - 时间线 `.ak-timeline` 节点（空心未到 / 主色实心已到）
-   - 敌人威胁度评级（点亮的红色小菱形）
-5. **整块链接组件标 `.ak-not-prose`**：当卡片（`a.ak-card` / `a.ak-op-card` / `a.ak-stage`）整体是 `<a>` 时，必须在最外层加上 `ak-not-prose`，防止正文 `a:visited` 将卡片文字染成褪色链接色。
-
-### ❌ DON'T（绝对禁止）
-1. **禁止圆角卡片、玻璃拟态、发光阴影**：除单选框（正圆）、徽标胶囊（`.ak-badge`）、环形进度（`.ak-ring`）和输入框的 `2px` 微圆角外，所有卡片、面板、按钮、标签一律 `border-radius: 0`。
-2. **禁止切角（Corner Cut）与平行四边形斜切**：切角属于《终末地》游戏 HUD，**不属于明日方舟本家 PRTS Design**。
-3. **禁止滥用青色给不可点击的小标签**：青色（`--ak-accent`）专属于**链接、选中态、焦点、主动作按钮、标题色条**。卡片眉题（`.ak-card__eyebrow`）、章节英文副标（`.ak-heading__en`）、属性名（`.ak-attr__label`）、统计标签（`.ak-stat__label`）必须用灰色 `--ak-fg-muted`，绝不用青色！
-4. **禁止在表格数字列使用 Bender 字体**：`Bender`（`--ak-font-label`）数字是比例宽度且 14px 下笔画过细，**只用于面板级大号粗体独立数值（`.ak-num`、`.ak-stat__value`、`.ak-attr__value`）**。所有 `<table>`、`.ak-table`、`.ak-kv` 里的数字必须使用正文字体（`--ak-font-body`）+ `font-variant-numeric: tabular-nums`。
-5. **禁止给成排的标题逐个配英文副标**：双语标题（中文 + 大写英文）一页只出现 1～2 处（如页面主标题、Hero 横幅、一级大章节头）。并排的卡片标题、成组的面板标题只写中文，避免满屏灰色英文造成视觉噪音。
+| 维度 | 载体 1：官网展示 / 概念门户（默认，师法 `ak.hypergryph.com`） | 载体 2：PRTS 百科 / 档案控制台（`MooncellWiki/prts-design`） |
+| :--- | :--- | :--- |
+| **适用场景** | 产品官网、品牌落地页、智能调度台主页、情报简报站 | 百科图鉴、文档站、高密度筛选表单、干员数值矩阵表 |
+| **顶栏导航** | 极简漂浮深黑玻璃条 `.ak-topbar`（双语上下叠排导航 `EN / 中文` + 右侧声波与主题开关） | 三列终端页眉 `.ak-header`（Logo + `/` 快捷键检索触发器 + 主题开关） |
+| **主体骨架** | 开放大气画布 `.ak-bg-lattice` + `.ak-stage-shell`（左开放舞台 + 右侧 1px 竖轨 `.ak-index-rail` 大号序号 `01 // 01 / 04`） | `.ak-layout` 两列布局（左侧 `.ak-sidebar` / `.ak-portlet` 导航树 + 主内容 `.ak-main`，<1120px 自动折叠为抽屉） |
+| **边框纪律** | **去边框化（能划线的绝不画框）**：`.ak-rule` 1px 标尺配实块、`.ak-stat--minimal` 顶线指标、`.ak-folio-list` 无框清单、`.ak-news-grid--staggered` 错位无框下文字 | 按功能克制分组使用 `.ak-panel` / `.ak-table`（`1px` 细框 + `border-image` 4px 色条直角拼接） |
+| **Hero 构图** | 开放 `.ak-hero--editorial`（左下贴边低透巨字 `.ak-ghost-word` + 左侧大标题 + 右侧 `.ak-brief` & 4 格 `.ak-thumb-card` 缩略选卡与滑轨） | 经典 `.ak-hero` 或紧接任务状态条进入数据矩阵 |
 
 ---
 
-## 三、 色彩令牌速查表（`--ak-*`）
+## 二、 六条核心构图原则（判断“像不像真方舟”的唯一标准）
 
-直接引入本 Skill 的 [`resources/prts-design.css`](../../resources/prts-design.css) 即可获得全部令牌与组件样式。
+### 1. 黑白灰炭为体，冰青仅作锋利点睛
+* **大面积永远是克制的黑炭灰阶或制图灰白**：暗色主题下用 `#0f0f10`–`#1a1b1c` + 微弱三角网格暗格与斜光束（`.ak-bg-lattice`），亮色主题用 `#f5f5f5` / `#ffffff` 档案制图白。
+* **主强调色克制且分明**：终端（暗）下用官网冰青 `--ak-cyan-500` (`#18D1FF`)；档案（亮）下用游戏蓝 `--ak-blue-500` (`#0098DC`，小字可点击标签用 `--ak-link` `#0072A8` 保证 5:1+ 对比度）；次强调黄 `#FFD800` 仅用于计数/关键提示。
+* **不滥用工业警戒条纹**：黄黑斜纹 `.ak-stripes` **只留给明确的危险操作、施工占位或告警提示**，严禁当成常规页脚或页面装饰条满屏贴。
+* **黑框顶栏与页脚**：无论页面处在档案（Light）还是终端（Dark），顶栏（`.ak-topbar` / `.ak-header`）与页脚（`.ak-footer`）永远保持深黑底，构成「黑框白纸 / 黑框黑纸」。
 
-### 1. 语义令牌（随 `data-theme="light | dark"` 自动切换，组件只用这一层）
+### 2. 反“套娃边框”：能用一根 1px 线解决，绝不画四边方框
+* 官网高级感的第一来源是**大量留白与极简建筑标尺线**，而不是把每个统计数字、每条新闻、每张卡片都框在 `1px solid` 方盒里再叠一层方盒：
+  * 分节分隔优先使用 `.ak-rule`（一条 `1px` 细横线 + 左端一块 `4px × 48px` 纯实心短块）；
+  * 统计数字在展示页优先使用 `.ak-stat-row--open > .ak-stat--minimal`（只留顶线 + 左端 `28px` 青色短条，**零左右底边框**）；
+  * 条目列表、设定索引、情报流优先使用 `.ak-folio-list > .ak-folio-item`（无背景框、仅靠 `1px` 底分隔线、字阶落差与左缘 `3px` 悬停/激活细条）；
+  * 数据表外层如无需分组标题栏，直接 `<div class="ak-table-scroll"><table class="ak-table">…</table></div>`，不再外面硬套一层 `.ak-panel` 框。
 
-| 语义令牌 | 档案模式（Light 默认） | 终端模式（Dark） | 用途说明 |
+### 3. 三层景深与不对称错位节奏
+* **背景层（极低透明、绝不压字）**：`.ak-bg-lattice` 三角分割网格 + 对角斜光 + 左下角半调圆点渐隐，以及 `.ak-ghost-word` / `.ak-watermark` 贴边截断巨字（`rgba(255,255,255,0.042)` / `rgba(0,0,0,0.045)`），允许越界被容器裁切，不可干扰前景阅读。
+* **内容层（破除齐头对称网格）**：采用 `.ak-split`（`0.9fr : 1.35fr` 不等宽分栏）和 `.ak-news-grid--staggered`（错位双列卡片，右列桌面端视觉下沉 40px），以及 `.ak-showcase-strip`（四列垂直无间隙暗幕切分）。
+* **前景层**：仅保留漂浮双语顶栏 `.ak-topbar`（或 `.ak-header`）与右侧 `1px` 竖轨索引 `.ak-index-rail`。
+
+### 4. 三种字体分工与双斜杠语法
+* **字族职责严明**：
+  * `--ak-font-display`（`Oswald` / `Novecento Sans Wide`，必配 `font-variant-numeric: lining-nums`）：Hero 大号全大写英文字、错位序号 `01`、情报卡 `NEWS / DISPATCH`、去边框指标大数字。
+  * `--ak-font-label`（`Chakra Petch` / `Bender`）：双斜杠眉题 `RHODES ISLAND ://`、状态代号 `RI // 01`、等宽时间戳 **`YYYY // MM / DD`**（如 `2026 // 11 / 18`）。
+  * `--ak-font-body`（`Noto Sans SC` / 思源黑体，行高 `1.7`）：中文正文、界面控件与**全部 `<table>` 表格数字**（表格内禁止用 Bender，必开 `tabular-nums`）。
+* **双语克制律**：双语主标题在一页中保持重点聚焦（Hero、`.ak-topbar`、主章节 `.ak-rule`）；成组列出的普通子标题或表格项不再逐行硬配灰色英文，避免满屏英文噪音。
+
+### 5. 纯直角 `0px` 铁律、无辉光与极微选中标记
+* **形状底线**：除正圆进度环（`.ak-ring`）、单选框、徽标胶囊（`.ak-badge`）与输入框 `2px` 极微倒角外，所有卡片、按钮、菜单、抽屉与焦点框一律 **`border-radius: 0`**；**严禁 45° 切角（`cut-tr`/`wedge-r`）与斜切平行四边形**（切角属于终末地）。
+* **无辉光（No Glow）**：禁用霓虹外发光与大面积毛玻璃卡片；选中态靠**黑白反转（`.ak-btn--contrast` / `.ak-tabs--block`）、右上/左上小青色直角三角（`.ak-corner` / `.ak-thumb-card.is-active::before`）或左缘/底边实条**表达。
+* **源石菱形（`◆`）仅限四处**：无序列表符号、加载指示器 `.ak-spinner`、时间线 `.ak-timeline` 节点、敌人威胁度评级。
+
+### 6. 动效人格：硬切扫描（Scan & Wipe），禁用弹簧回弹
+* 过渡短促干脆（`180ms–340ms`，`cubic-bezier(0.2, 0, 0, 1)`），悬停只做边框显影、箭头发梢位移或短实块延展，**不上浮、不放大、无弹性过冲**。
+* 核心动效类（内置于 [`resources/prts-addons.css`](../../resources/prts-addons.css) 并遵守 `prefers-reduced-motion`）：
+  * `.ak-anim-wipe`（`ak-wipe-x`）：左向右硬切擦入，用于 `.ak-hero--editorial__rule` 等标志性色条；
+  * `.ak-anim-scan`（`ak-scan-in`）：自上而下硬朗揭示，用于展示标题与分节标尺；
+  * `.ak-wave-btn.is-playing`（`ak-wave-eq`）：官网右上角 5 竖条终端信号声波指示动画。
+
+---
+
+## 三、 严格 DO / DON'T 审查清单
+
+### ✅ DO
+1. **黑框顶栏 + 亮暗双正典**：载体 1 用 `.ak-topbar`、载体 2 用 `.ak-header`；切换 `data-theme="dark | light"` 时，暗底不粘死黑、亮底保证文字/强调对比（小字标签用 `var(--ak-link)` `#0072A8`）。
+2. **直角拼接 `border-image`**：需要做传统左 4px 色条 + 1px 细框面板或消息条时，沿用 `prts-design.css` 内置的 `border-image` 直角拼接，不产生浏览器 miter 斜角。
+3. **整卡链接标 `.ak-not-prose`**：整块 `<a>` 的卡片/列表项避免正文 `a:visited` 染色污染。
+
+### ❌ DON'T
+1. **禁止未看需求就一律套 Wiki 侧栏 + 四框卡片**：非百科网站优先用载体 1 官网展示壳（`.ak-topbar` + `.ak-stage-shell` + `.ak-rule` / `.ak-folio-list`），告别套娃边框。
+2. **禁止不可点击小标签用亮青色 `#18D1FF`**：眉题、属性名、英文副标用灰色 `--ak-fg-muted`，亮色下的小号强调文字用 `--ak-link` (`#0072a8`)。
+3. **禁止表格内用 Bender 与伪造十六进制乱码**：微标行、版本号与日期必须真实可读（严禁 `0x7F3A` / `0xDEAD`）。
+
+---
+
+## 四、 色彩令牌速查表（`--ak-*`）
+
+直接引入 [`resources/prts-design.css`](../../resources/prts-design.css) 与 [`resources/prts-addons.css`](../../resources/prts-addons.css) 即可获得全部令牌与双载体样式。
+
+### 1. 语义令牌（随 `data-theme="light | dark"` 自动切换）
+
+| 语义令牌 | 档案模式（Light） | 终端模式（Dark 默认） | 用途说明 |
 | :--- | :--- | :--- | :--- |
-| `--ak-bg-canvas` | `#f5f5f5` | `#0f0f10` | 页面画布底色（`body` 背景） |
-| `--ak-bg-surface` | `#ffffff` | `#1a1b1c` | 卡片、面板、表格、弹窗表面 |
-| `--ak-bg-surface-2` | `#f5f5f5` | `#232425` | 面板头部、表头、卡片页脚、次级按钮底 |
+| `--ak-bg-canvas` | `#f5f5f5` | `#0f0f10` | 页面画布底色（`.ak-bg-lattice` 在此基础上叠加三角网格与微光） |
+| `--ak-bg-surface` | `#ffffff` | `#1a1b1c` | 卡片、表格、弹窗、缩略选卡表面 |
+| `--ak-bg-surface-2` | `#f5f5f5` | `#232425` | 面板头部、表头、次级表面 |
 | `--ak-bg-surface-3` | `#ebebeb` | `#2d2e30` | 按钮悬停、默认标签底、进度条轨道 |
 | `--ak-bg-inset` | `#eef0f1` | `#141516` | 凹陷区域、只读输入框 |
 | `--ak-bg-inverse` | `#1d1f20` | `#ffffff` | 黑白反转块底（强动作按钮、选中阶段页签） |
-| `--ak-fg` | `#1d1f20` | `#f0f0f0` | 主文字颜色 |
-| `--ak-fg-secondary` | `#454647` | `#c9c9c9` | 次要正文、表格表头字、默认筛选芯片字 |
-| `--ak-fg-muted` | `#626262` | `#8d8d8d` | 辅助说明、overline 小标签、英文副题 |
+| `--ak-fg` | `#1d1f20` | `#f0f0f0` | 主文字颜色与核心建筑标尺实块色 |
+| `--ak-fg-secondary` | `#454647` | `#c9c9c9` | 次要正文、导语、表头字 |
+| `--ak-fg-muted` | `#626262` | `#8d8d8d` | 辅助说明、overline 小标签、英文副题、时间戳 |
 | `--ak-fg-inverse` | `#ffffff` | `#181818` | 黑白反转块上的文字颜色 |
-| `--ak-accent` | `#0098dc`（游戏蓝） | `#18d1ff`（官网青） | 主强调色：主按钮、选中边条、激活项 |
-| `--ak-accent-fg` | `#ffffff` | `#000000` | 主强调色块上的文字颜色 |
-| `--ak-accent-subtle` | `rgba(0,152,220,.10)` | `rgba(24,209,255,.10)` | 选中行淡青底、高亮块底 |
-| `--ak-accent-2` | `#ffd800` | `#ffd800` | 次强调黄：通知计数徽标、星级、警示 |
-| `--ak-border` | `#d9dbdc` | `#2f3133` | 常规 1px 边框与分隔线 |
-| `--ak-border-strong` | `#b1b1b1` | `#4a4c4f` | 按钮、输入框、表头底边强边框 |
-| `--ak-info` / `--ak-success` / `--ak-warning` / `--ak-danger` | `#0072a8` / `#1f8f5f` / `#b86f00` / `#c8102e` | `#5ddcff` / `#4fd18f` / `#ffb340` / `#ff5c5c` | 四态语义文字/色条色（另有对应 `-bg` 淡底） |
+| `--ak-accent` | `#0098dc`（游戏蓝） | `#18d1ff`（官网青） | 主强调色：主按钮、选中边条、激活项、右轨大序号 |
+| `--ak-accent-fg` | `#ffffff` | `#000000` | 主强调色块上的反色文字 |
+| `--ak-link` | `#0072a8` | `#5ddcff` | 链接、情报分类小字、清单激活箭头（亮色保障 5:1+ 对比度） |
+| `--ak-accent-2` | `#ffd800` | `#ffd800` | 次强调黄：通知计数徽标、星级、局部警示 |
+| `--ak-border` | `#d9dbdc` | `#2f3133` | 1px 建筑分隔线、竖轨边线、常规细边框 |
+| `--ak-info` / `--ak-success` / `--ak-warning` / `--ak-danger` | `#0072a8` / `#1f8f5f` / `#b86f00` / `#c8102e` | `#5ddcff` / `#4fd18f` / `#ffb340` / `#ff5c5c` | 四态语义文字/色条色 |
 
-> **项目品牌换色接口**：保留黑白灰基底（`--ak-bg-*` / `--ak-fg-*`）与纯直角骨架，只需覆盖 `--ak-theme-accent` / `--ak-theme-accent-fg` / `--ak-theme-accent-subtle`（联动顶栏、侧栏分组、页脚斜纹及 `.ak-hero` 眉题/网点）与亮暗两态下的 `--ak-accent` / `--ak-accent-hover` / `--ak-accent-fg` / `--ak-link` / `--ak-focus`，即可切入网站自有品牌色。
+> **项目品牌换色接口**：保留黑白灰基底（`--ak-bg-*` / `--ak-fg-*`）与纯直角骨架，只需覆盖 `--ak-theme-accent` / `--ak-theme-accent-fg` / `--ak-theme-accent-subtle`（联动顶栏 `.ak-topbar` / `.ak-header`、`.ak-hero--editorial__rule`、`.ak-brief` 左竖条、`.ak-news-card__band` 及 `.ak-showcase-col`）与亮暗两态下的 `--ak-accent` / `--ak-accent-hover` / `--ak-accent-fg` / `--ak-link` / `--ak-focus`，即可切入网站自有品牌色。
 
 ### 2. 方舟专属领域令牌
 
-* **稀有度色阶（1★ ～ 6★）**：
-  * 填充色：`--ak-rarity-1` (`#bababa`)、`--ak-rarity-2` (`#d3dc35`)、`--ak-rarity-3` (`#82c5f5`)、`--ak-rarity-4` (`#bf96ed`)、`--ak-rarity-5` (`#efd691`)、`--ak-rarity-6` (`#ff9433`)
-  * 亮暗自适应文字色：`--ak-rarity-1-text` ～ `--ak-rarity-6-text`
-  * 容器加 `data-rarity="6"` 后，内部自动注入 `--ak-r` 与 `--ak-r-text`，可直接配合 `.ak-r-chip`、`.ak-r-bar`、`.ak-r-text` 使用。
-* **技能技力（SP）回复色**：
-  * `--ak-sp-auto` (`#8ec31f` 自动回复)、`--ak-sp-attack` (`#fc793e` 攻击回复)、`--ak-sp-hit` (`#f4af09` 受击回复)、`--ak-sp-passive-recovery` (`#c289e3`)、`--ak-sp-passive` (`#808080` 被动)
-* **游戏内富文本着色（`.ak-rt-*`）**：
-  * `.ak-rt-vup`（增益蓝）、`.ak-rt-vdown`（减益橙红）、`.ak-rt-rem`（提醒橙）、`.ak-rt-kw`（关键词青蓝）、`.ak-rt-imp`（警告红）、`.ak-rt-enemy`（敌方红）、`.ak-rt-gild`（镀层绿）、`.ak-rt-term`（带虚线下划线的术语提示）
+* **稀有度色阶（1★ ～ 6★）**：`--ak-rarity-1` (`#bababa`) ～ `--ak-rarity-6` (`#ff9433`)，配 `--ak-rarity-1-text` ～ `--ak-rarity-6-text` 与 `data-rarity="6"` 自动注入。
+* **技能技力（SP）回复色**：`--ak-sp-auto` (`#8ec31f`)、`--ak-sp-attack` (`#fc793e`)、`--ak-sp-hit` (`#f4af09`)、`--ak-sp-passive-recovery` (`#c289e3`)、`--ak-sp-passive` (`#808080`)。
+* **游戏内富文本着色（`.ak-rt-*`）**：`.ak-rt-vup` / `.ak-rt-vdown` / `.ak-rt-rem` / `.ak-rt-kw` / `.ak-rt-imp` / `.ak-rt-enemy` / `.ak-rt-gild` / `.ak-rt-term`。
 
 ---
 
-## 四、 字体与排版令牌
+## 五、 字体与排版令牌
 
 ```html
-<!-- 推荐在 <head> 引入开源替代字体 Oswald 与 Chakra Petch -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap">
 ```
 
-* `--ak-font-body`：思源黑体 / Noto Sans SC（正文、标题、表格数字）
-* `--ak-font-display`：Novecento Sans Wide / Oswald（拉丁大写展示字，**必配 `font-variant-numeric: lining-nums`**）
-* `--ak-font-label`：Bender / Chakra Petch（HUD 标签、overline、面板大数字）
+* `--ak-font-body`：思源黑体 / Noto Sans SC（正文、中文标题、表格数字）
+* `--ak-font-display`：Novecento Sans Wide / Oswald（拉丁大写展示字、错位序号、去边框大指标数字，**必配 `font-variant-numeric: lining-nums`**）
+* `--ak-font-label`：Bender / Chakra Petch（微标、日期 `2026 // 11 / 18`、代号）
 * `--ak-font-mono`：系统等宽字体（代码、键帽 `.ak-kbd`）
-* 字阶：`--ak-fs-display-xl` (56px) · `--ak-fs-display` (40px) · `--ak-fs-h1` (32px) · `--ak-fs-h2` (24px) · `--ak-fs-h3` (20px) · `--ak-fs-body` (16px) · `--ak-fs-sm` (14px) · `--ak-fs-xs` (12px) · `--ak-fs-overline` (11px)

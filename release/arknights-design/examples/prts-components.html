@@ -52,6 +52,7 @@
           <li><a href="#forms">表单与输入控件</a></li>
           <li><a href="#overlays">弹窗、抽屉与轻提示</a></li>
           <li><a href="#feedback">进度、时间线与档案</a></li>
+          <li><a href="#editorial">官网建筑化组件扩展</a></li>
         </ul>
       </div>
       <div class="ak-portlet">
@@ -467,6 +468,72 @@
                   <div class="ak-voice__text">拔刀要快，收刀要稳——点击左侧按钮可实时启停声波。</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. 官网建筑化组件扩展（去边框 · 标尺分割 · 情报卡片 · 声波按钮 · 硬切动效） -->
+      <section class="ak-panel" id="editorial">
+        <header class="ak-panel__head">
+          <h2 class="ak-panel__title">六、官网建筑化组件与硬切动效扩展 <span class="ak-en">EDITORIAL SYSTEM</span></h2>
+          <span class="ak-code-id">SEC // 06</span>
+        </header>
+        <div class="ak-panel__body ak-flex-col ak-gap-4">
+          <div class="ak-rule ak-m-0">
+            <div class="ak-rule__head">
+              <h3 class="ak-rule__title ak-anim-scan">1px 标尺分割线 (.ak-rule)</h3>
+              <span class="ak-rule__en">ARCHITECTURAL RULE</span>
+            </div>
+            <button type="button" class="ak-wave-btn is-playing" onclick="this.classList.toggle('is-playing')" aria-pressed="true" aria-label="切换声波指示">
+              <span class="ak-wave-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+              <span>SIGNAL WAVE</span>
+            </button>
+          </div>
+
+          <div class="ak-stat-row--open ak-m-0">
+            <div class="ak-stat--minimal">
+              <span class="ak-stat__label">UNBOXED STAT // 无框统计</span>
+              <span class="ak-stat__value ak-anim-wipe">4,096</span>
+              <span class="ak-stat__delta ak-stat__delta--up">▲ 仅靠顶线与短色块立住</span>
+            </div>
+            <div class="ak-stat--minimal">
+              <span class="ak-stat__label">UPTIME // 链路在线率</span>
+              <span class="ak-stat__value">99.9<small>%</small></span>
+              <span class="ak-stat__delta">零卡片外框叠加</span>
+            </div>
+          </div>
+
+          <div class="ak-news-grid">
+            <a class="ak-news-card" href="./prts-boilerplate.html">
+              <div class="ak-news-card__head">
+                <span class="ak-news-card__seal">PRTS // 01</span>
+                <span class="ak-news-card__en">DISPATCH</span>
+                <span class="ak-news-card__sub">情报卡样板</span>
+                <span class="ak-news-card__band">— TERMINAL</span>
+              </div>
+              <div class="ak-news-card__body">
+                <span class="ak-news-card__cat">简报</span>
+                <span class="ak-news-card__date">2026 // 11 / 24</span>
+                <h4 class="ak-news-card__title">无边框错位卡片：黑底颗粒横幅 + 右下实底反白条 + 极简日期</h4>
+              </div>
+            </a>
+
+            <div class="ak-folio-list">
+              <button type="button" class="ak-folio-item is-active">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__title">去边框目录条目</span>
+                  <span class="ak-folio-item__en">FOLIO ITEM</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__meta">公告 · 2026 // 11 / 24</span>
+                  <span class="ak-folio-item__title">1px 底分隔线与左缘 3px 悬停指示</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
             </div>
           </div>
         </div>

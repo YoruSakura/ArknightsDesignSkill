@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repository consistency, animation integrity, and headless Chrome render/behavior verifier.
+"""Repository consistency, animation integrity, release sync, and headless Chrome render/behavior verifier.
 
 Run static & animation checks:
   python3 scripts/verify.py
@@ -24,13 +24,12 @@ CSS_FILES = [
     "resources/prts-design.css",
     "resources/prts-tokens.css",
     "resources/prts-addons.css",
-    "resources/prts-series.css",
     "resources/endfield-standalone.css",
     "resources/endfield-theme.css",
 ]
 STATE_CLASSES = {
     "corner-brackets", "hazard", "is-open", "is-selected", "is-invalid",
-    "is-done", "is-current", "is-expanded", "is-active", "num",
+    "is-done", "is-current", "is-expanded", "is-active", "is-playing", "num",
 }
 DOC_CLASS_WHITELIST = {"ak-rt-"}
 
@@ -38,9 +37,6 @@ DOC_CLASS_WHITELIST = {"ak-rt-"}
 def load_defined_classes() -> set[str]:
     css = "\n".join((ROOT / p).read_text(encoding="utf-8") for p in CSS_FILES)
     return set(re.findall(r"\.([a-zA-Z_-][a-zA-Z0-9_-]*)", css))
-
-
-BANNED_SERIES_TERMS = ("PERLICA", "DIJIANG", "TALOS-N07", "北岭", "RHODES ISLAND", "罗德岛", "0x7F3A", "0xDEAD")
 
 
 def check_html_files(defined: set[str]) -> list[str]:
@@ -55,30 +51,21 @@ def check_html_files(defined: set[str]) -> list[str]:
             if (c.startswith(("ak-", "ef-")) or c in STATE_CLASSES) and c not in scoped
         )
         inline_grids = len(re.findall(r"grid-template-columns\s*:", txt))
-        leaks = [t for t in BANNED_SERIES_TERMS if t in txt] if hp.name.startswith("series-") else []
+        fake_hex = [t for t in ("0x7F3A", "0xDEAD") if t in txt]
         if missing:
-            errors.append(f"{hp.relative_to(ROOT)}: missing classes {missing}")
+            errors.append(f"{hp.name}: missing classes {missing}")
         if inline_grids:
-            errors.append(f"{hp.relative_to(ROOT)}: found {inline_grids} inline grid-template-columns")
-        if leaks:
-            errors.append(f"{hp.relative_to(ROOT)}: leaked placeholder terms {leaks}")
-        if hp.name.startswith("series-"):
-            shape_hits = [
-                name for name, pat in (
-                    ("polygon", r"<polygon\b"), ("rotate(45)", r"rotate\(\s*45"),
-                    ("clip-path", r"clip-path"), ("dev-jargon-label", r">[^<>]*WAI-ARIA[^<>]*<"),
-                ) if re.search(pat, txt)
-            ]
-            if shape_hits:
-                errors.append(f"{hp.relative_to(ROOT)}: PRTS shape/content red lines hit {shape_hits}")
-        print(f"[HTML] {hp.name}: {len(used)} classes, missing={missing}, inline_grid={inline_grids}, leaks={leaks}")
+            errors.append(f"{hp.name}: found {inline_grids} inline grid-template-columns")
+        if fake_hex:
+            errors.append(f"{hp.name}: leaked fake hex tokens {fake_hex}")
+        print(f"[HTML] {hp.name}: {len(used)} classes, missing={missing}, inline_grid={inline_grids}")
     return errors
 
 
 def check_markdown_files(defined: set[str]) -> list[str]:
     errors: list[str] = []
-    mds = sorted([ROOT / "SKILL.md", ROOT / "README.md", *(ROOT / "references").rglob("*.md")])
-    for mp in mds:
+    mds = [ROOT / "SKILL.md", ROOT / "README.md", *(ROOT / "references").rglob("*.md")]
+    for mp in sorted(mds):
         txt = mp.read_text(encoding="utf-8")
         classes = (
             {c for m in re.findall(r'class="([^"]+)"', txt) for c in m.split()}
@@ -88,7 +75,6 @@ def check_markdown_files(defined: set[str]) -> list[str]:
             c for c in classes
             if c.startswith(("ak-", "ef-")) and c not in defined and c not in DOC_CLASS_WHITELIST
         )
-        # Verify relative file links (excluding anchor fragments)
         broken_links: list[str] = []
         for target in re.findall(r"\]\(((?:\.\.?/)[^)#]+)", txt):
             resolved = (mp.parent / target).resolve()
@@ -104,12 +90,11 @@ def check_markdown_files(defined: set[str]) -> list[str]:
 
 def check_css_animations() -> list[str]:
     errors: list[str] = []
-    targets = [
+    for rel, disallow_unused in (
         ("resources/prts-design.css", False),
-        ("resources/prts-series.css", True),
+        ("resources/prts-addons.css", True),
         ("resources/endfield-standalone.css", True),
-    ]
-    for rel, disallow_unused in targets:
+    ):
         txt = (ROOT / rel).read_text(encoding="utf-8")
         kfs = set(re.findall(r"@keyframes\s+([a-zA-Z0-9_-]+)", txt))
         used = set(re.findall(r"animation(?:-name)?\s*:\s*([a-zA-Z0-9_-]+)", txt))
@@ -130,18 +115,41 @@ def check_css_animations() -> list[str]:
     return errors
 
 
+def check_release_bundle() -> list[str]:
+    """Ensure release/arknights-design/ is strictly synced with canonical Skill assets."""
+    errors: list[str] = []
+    bundle = ROOT / "release" / "arknights-design"
+    if not bundle.is_dir():
+        return ["release/arknights-design directory is missing (run scripts/package-release.py)"]
+
+    expected: dict[str, pathlib.Path] = {}
+    for rel in ("SKILL.md", "LICENSE", "NOTICE.md"):
+        expected[rel] = ROOT / rel
+    for d in ("references", "resources", "examples"):
+        for f in sorted((ROOT / d).rglob("*")):
+            if f.is_file():
+                expected[str(f.relative_to(ROOT))] = f
+
+    actual = {str(p.relative_to(bundle)): p for p in sorted(bundle.rglob("*")) if p.is_file()}
+    stale = sorted(set(actual) - set(expected))
+    if stale:
+        errors.append(f"release/arknights-design has stale files: {stale}")
+    for rel, src in sorted(expected.items()):
+        dst = bundle / rel
+        if not dst.exists():
+            errors.append(f"release/arknights-design/{rel}: missing")
+        elif src.read_bytes() != dst.read_bytes():
+            errors.append(f"release/arknights-design/{rel}: out of sync (run scripts/package-release.py)")
+    print(f"[RELEASE] Checked {len(expected)} files in release/arknights-design (stale={len(stale)})")
+    return errors
+
+
 def run_chrome_render_and_behavior(out_dir: pathlib.Path) -> list[str]:
     errors: list[str] = []
     out_dir.mkdir(parents=True, exist_ok=True)
     pages = [
-        ("prts-bp", "examples/prts-boilerplate.html", 1600, 2400),
-        ("prts-comp", "examples/prts-components.html", 3600, 5600),
-        ("sr-reg", "examples/series-regulation.html", 1700, 2600),
-        ("sr-anniv", "examples/series-anniversary.html", 1500, 2400),
-        ("sr-sui", "examples/series-sui.html", 1500, 2400),
-        ("sr-expo", "examples/series-exhibition.html", 1600, 2500),
-        ("sr-brawl", "examples/series-brawl.html", 1500, 2400),
-        ("sr-theater", "examples/series-theater.html", 1600, 2500),
+        ("prts-bp", "examples/prts-boilerplate.html", 2250, 3550),
+        ("prts-comp", "examples/prts-components.html", 3950, 6150),
         ("ef-bp", "examples/endfield-boilerplate.html", 1700, 2500),
         ("ef-comp", "examples/endfield-components.html", 4600, 7400),
     ]
@@ -167,7 +175,36 @@ def run_chrome_render_and_behavior(out_dir: pathlib.Path) -> list[str]:
                 )
     print(f"[RENDER] Rendered {len(pages) * 4} screenshots into {out_dir}")
 
-    # Behavior + live animation audit on component showcases
+    prts_bp_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = {
+    heroScan: getComputedStyle(document.querySelector('.ak-hero--editorial__title')).animationName,
+    heroWipe: getComputedStyle(document.querySelector('.ak-hero--editorial__rule')).animationName,
+    waveBar: getComputedStyle(document.querySelector('.ak-wave-btn.is-playing .ak-wave-bars i')).animationName,
+  };
+  document.querySelectorAll('.ak-thumb-card')[2].click();
+  const focalSwitched = document.getElementById('brief-cn').textContent === '陈'
+    && document.getElementById('ak-scrub-thumb').style.getPropertyValue('--_thumb-x') === '50%';
+  document.querySelectorAll('.ak-filter-strip__btn')[1].click();
+  const feedFiltered = [...document.querySelectorAll('#ak-feed-list .ak-folio-item')]
+    .every(el => el.dataset.cat === 'notice' ? !el.hidden : el.hidden);
+  document.querySelectorAll('#ak-world-list .ak-folio-item')[2].click();
+  const worldSwitched = document.getElementById('ak-world-note').textContent.includes('NOMADIC CITY');
+  const audioBtn = document.getElementById('ak-audio-toggle');
+  audioBtn.click();
+  const audioToggled = audioBtn.getAttribute('aria-pressed') === 'false' && !audioBtn.classList.contains('is-playing');
+  const railNavBtn = document.querySelector('.ak-rail-nav__item[data-sec="02"]');
+  railNavBtn.click();
+  const railSynced = document.getElementById('rail-num').textContent === '02'
+    && document.querySelector('.ak-topbar__link[data-sec="02"]').classList.contains('is-active');
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, focalSwitched, feedFiltered, worldSwitched, audioToggled, railSynced, noOverflow
+  }));
+});
+</script>
+"""
     ef_probe = """
 <script>
 window.addEventListener('load', () => {
@@ -188,10 +225,8 @@ window.addEventListener('load', () => {
       return getComputedStyle(document.querySelector('#ef-dd-strong .ef-menu'), '::before').animationName;
     })(),
   };
-  document.body.click(); // outside-click should close #ef-dd-strong
+  document.body.click();
   const closedByOutsideClick = !document.getElementById('ef-dd-strong').classList.contains('is-open');
-
-  // Test Tabs keyboard + ARIA
   const tabsOk = [...document.querySelectorAll('[data-ef-tabs]')].every(list => {
     const tabs = [...list.querySelectorAll('[role="tab"]')];
     tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
@@ -199,7 +234,6 @@ window.addEventListener('load', () => {
     tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
     return r && tabs[0].getAttribute('aria-selected') === 'true';
   });
-  // Verify Combobox ArrowDown/filter keyboard focus, Escape focus restore & Carousel sync
   const cbi = document.getElementById('ef-combo-in');
   cbi.value = 'E03';
   cbi.dispatchEvent(new Event('input', { bubbles: true }));
@@ -227,6 +261,7 @@ window.addEventListener('load', () => {
     skeleton: getComputedStyle(document.querySelector('.ak-skeleton')).animationName,
     indeterminate: getComputedStyle(document.querySelector('.ak-progress--indeterminate'), '::before').animationName,
     voiceWave: getComputedStyle(document.querySelector('.is-playing ~ * .ak-voice__wave > i')).animationName,
+    editorialRuleScan: getComputedStyle(document.querySelector('#editorial .ak-anim-scan')).animationName,
   };
   document.getElementById('demo-dd-btn').click();
   const ddOpened = document.getElementById('demo-dd').classList.contains('is-open');
@@ -238,80 +273,10 @@ window.addEventListener('load', () => {
 });
 </script>
 """
-    series_reg_probe = """
-<script>
-window.addEventListener('load', () => {
-  const anims = { seriesPulse: getComputedStyle(document.querySelector('.ak-series-pulse')).animationName };
-  document.querySelector('.ak-tier[data-tier="3"]').click();
-  const tierChanged = document.getElementById('reg-mult').textContent === '×2.25';
-  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  const wmClear = [...document.querySelectorAll('.ak-mission-item__wm')].every(w => {
-    const r = w.parentElement.querySelector('.ak-mission-item__reward');
-    return getComputedStyle(w).display === 'none' || !r || w.getBoundingClientRect().right <= r.getBoundingClientRect().left + 0.5;
-  });
-  document.body.setAttribute('data-verify', JSON.stringify({ anims, tierChanged, noOverflow, wmClear }));
-});
-</script>
-"""
-    series_tabs_probe = """
-<script>
-window.addEventListener('load', () => {
-  const tabsOk = [...document.querySelectorAll('[role="tablist"]')].every(list => {
-    const tabs = [...list.querySelectorAll('[role="tab"]')];
-    tabs[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-    const r = tabs[1].getAttribute('aria-selected') === 'true' && tabs[1].tabIndex === 0;
-    tabs[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
-    return r && tabs[0].getAttribute('aria-selected') === 'true';
-  });
-  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, tabsOk, noOverflow }));
-});
-</script>
-"""
-    series_sui_probe = """
-<script>
-window.addEventListener('load', () => {
-  stepYear(-1);
-  const yearStepped = document.getElementById('sui-year').textContent === '2025';
-  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, yearStepped, noOverflow }));
-});
-</script>
-"""
-    series_expo_probe = """
-<script>
-window.addEventListener('load', () => {
-  selectBooth(1);
-  const boothSwitched = document.getElementById('booth-tag').textContent.includes('B02');
-  setCols(2);
-  const colsChanged = document.getElementById('expo-masonry').style.getPropertyValue('--_cols') === '2';
-  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, boothSwitched, colsChanged, noOverflow }));
-});
-</script>
-"""
-    series_brawl_probe = """
-<script>
-window.addEventListener('load', () => {
-  const tapeBtn = document.querySelectorAll('#catalog .ak-chip')[2];
-  filterIssues('tape', tapeBtn);
-  const filtered = document.querySelector('#catalog [data-kind="print"]').hidden === true
-    && document.querySelector('#catalog [data-kind="tape"]').hidden === false
-    && tapeBtn.getAttribute('aria-pressed') === 'true';
-  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ anims: {}, filtered, noOverflow }));
-});
-</script>
-"""
     for src_name, html_file, probe in [
-        ("endfield-components", out_dir / "ef-comp-light.html", ef_probe),
+        ("prts-boilerplate", out_dir / "prts-bp-dark.html", prts_bp_probe),
         ("prts-components", out_dir / "prts-comp-dark.html", prts_probe),
-        ("series-regulation", out_dir / "sr-reg-dark.html", series_reg_probe),
-        ("series-anniversary", out_dir / "sr-anniv-dark.html", series_tabs_probe),
-        ("series-sui", out_dir / "sr-sui-light.html", series_sui_probe),
-        ("series-exhibition", out_dir / "sr-expo-light.html", series_expo_probe),
-        ("series-brawl", out_dir / "sr-brawl-light.html", series_brawl_probe),
-        ("series-theater", out_dir / "sr-theater-dark.html", series_tabs_probe),
+        ("endfield-components", out_dir / "ef-comp-light.html", ef_probe),
     ]:
         probe_file = out_dir / f"probe-{src_name}.html"
         probe_file.write_text(html_file.read_text(encoding="utf-8").replace("</body>", probe + "</body>"), encoding="utf-8")
@@ -340,7 +305,8 @@ def check_mobile_viewports() -> list[str]:
     """Verify exact 375px and 390px layout width via same-origin iframes (avoids headless window min-width clamp)."""
     errors: list[str] = []
     pages = sorted((ROOT / "examples").glob("*.html"))
-    names = [p.name for p in pages]
+    rels = ["/" + str(p.relative_to(ROOT)).replace("\\", "/") for p in pages]
+    names = [str(p.relative_to(ROOT)) for p in pages]
 
     class QuietHandler(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *a, **kw):
@@ -354,8 +320,8 @@ def check_mobile_viewports() -> list[str]:
             if m:
                 w = int(m.group(1))
                 frames = "".join(
-                    f'<iframe id="f{i}" src="/examples/{p.name}" style="width:{w}px;height:900px;border:0;display:block"></iframe>'
-                    for i, p in enumerate(pages)
+                    f'<iframe id="f{i}" src="{rel}" style="width:{w}px;height:900px;border:0;display:block"></iframe>'
+                    for i, rel in enumerate(rels)
                 )
                 body = (
                     f"<!doctype html><html><body>{frames}<script>"
@@ -366,7 +332,10 @@ def check_mobile_viewports() -> list[str]:
                     "const de = d.documentElement;"
                     "const ro = d.querySelector('.ef-viewfinder__ro');"
                     "const cor = d.querySelector('.ef-viewfinder__corners');"
-                    "return { name, cw: de.clientWidth, sw: de.scrollWidth, ok: de.scrollWidth <= de.clientWidth,"
+                    "const tbBrand = d.querySelector('.ak-topbar__brand');"
+                    "const tbTools = d.querySelector('.ak-topbar__tools');"
+                    "const topbarClear = tbBrand && tbTools ? (tbBrand.getBoundingClientRect().right <= tbTools.getBoundingClientRect().left + 1) : true;"
+                    "return { name, cw: de.clientWidth, sw: de.scrollWidth, ok: de.scrollWidth <= de.clientWidth, topbarClear,"
                     " vfVisible: ro && cor ? (getComputedStyle(ro).display !== 'none' && getComputedStyle(cor).display !== 'none') : true };"
                     "}); document.body.setAttribute('data-mverify', JSON.stringify(res)); });</script></body></html>"
                 ).encode("utf-8")
@@ -396,34 +365,12 @@ def check_mobile_viewports() -> list[str]:
             for row in rows:
                 if not row["ok"]:
                     errors.append(f"{row['name']} @ {w}px (cw={row['cw']}): scrollWidth {row['sw']} > clientWidth {row['cw']}")
+                if not row["topbarClear"]:
+                    errors.append(f"{row['name']} @ {w}px: ak-topbar brand overlaps right tools")
                 if not row["vfVisible"]:
                     errors.append(f"{row['name']} @ {w}px: viewfinder corners/readout hidden")
     finally:
         httpd.shutdown()
-    return errors
-
-
-
-
-def check_release_bundle() -> list[str]:
-    """Ensure release/arknights-design/ is up-to-date with canonical root files."""
-    errors: list[str] = []
-    bundle = ROOT / "release" / "arknights-design"
-    if not bundle.is_dir():
-        return ["release/arknights-design directory is missing (run scripts/package-release.py)"]
-    expected_rels = ["SKILL.md", "LICENSE", "NOTICE.md"]
-    for d in ("references", "resources", "examples"):
-        for f in sorted((ROOT / d).rglob("*")):
-            if f.is_file():
-                expected_rels.append(str(f.relative_to(ROOT)))
-    for rel in expected_rels:
-        src = ROOT / rel
-        dst = bundle / rel
-        if not dst.exists():
-            errors.append(f"release/arknights-design/{rel}: missing")
-        elif src.read_bytes() != dst.read_bytes():
-            errors.append(f"release/arknights-design/{rel}: out of sync with root {rel} (run scripts/package-release.py)")
-    print(f"[RELEASE] Checked {len(expected_rels)} files in release/arknights-design, out_of_sync={len(errors)}")
     return errors
 
 

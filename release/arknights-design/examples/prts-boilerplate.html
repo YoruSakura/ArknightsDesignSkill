@@ -3,258 +3,480 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PRTS.TERMINAL // 罗德岛战术神经终端样板</title>
+  <title>PRTS // 罗德岛战术情报门户与指挥终端样板</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap">
   <link rel="stylesheet" href="../resources/prts-design.css">
   <link rel="stylesheet" href="../resources/prts-addons.css">
   <style>
-    body { margin: 0; background: var(--ak-bg-canvas); min-height: 100vh; display: flex; flex-direction: column; }
+    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
   </style>
 </head>
-<body class="ak-scope">
-  <!-- 顶部黑色终端栏（亮暗主题下恒为黑框） -->
-  <header class="ak-header">
-    <div class="ak-header__inner">
-      <a class="ak-header__logo" href="#">
-        <span class="ak-header__wordmark">
+<body class="ak-scope ak-bg-lattice">
+  <!-- 1. 官网级极简漂浮双语顶栏（恒深黑玻璃 + 1px 底线 · 无百科搜索大框） -->
+  <header class="ak-topbar">
+    <div class="ak-topbar__inner">
+      <a class="ak-topbar__brand" href="#index">
+        <span class="ak-topbar__mark" aria-hidden="true">RI</span>
+        <span class="ak-topbar__wordmark">
           PRTS.TERMINAL
-          <small>RHODES ISLAND NEURAL NETWORK</small>
+          <small>RHODES ISLAND NETWORK</small>
         </span>
       </a>
-      <div class="ak-header__search">
-        <button type="button" class="ak-search-trigger">
-          <span class="ak-search-trigger__icon">⌕</span>
-          <span class="ak-search-trigger__label">检索干员档案、主线作战、模组终端…</span>
-          <kbd class="ak-search__kbd">/</kbd>
+
+      <nav class="ak-topbar__nav" aria-label="主导航">
+        <a class="ak-topbar__link is-active" href="#index" data-sec="01" data-sec-en="INDEX" aria-current="page">
+          <strong>INDEX</strong><span>首页概览</span>
+        </a>
+        <a class="ak-topbar__link" href="#information" data-sec="02" data-sec-en="INFORMATION">
+          <strong>INFORMATION</strong><span>作战情报</span>
+        </a>
+        <a class="ak-topbar__link" href="#archive" data-sec="03" data-sec-en="DIRECTORY">
+          <strong>DIRECTORY</strong><span>设定与编队</span>
+        </a>
+        <a class="ak-topbar__link" href="#extensions" data-sec="04" data-sec-en="MODULES">
+          <strong>MODULES</strong><span>延伸系统</span>
+        </a>
+      </nav>
+
+      <div class="ak-topbar__tools">
+        <button type="button" class="ak-wave-btn is-playing" id="ak-audio-toggle" aria-pressed="true" aria-label="切换终端信号声波">
+          <span class="ak-wave-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+          <span>SIGNAL</span>
         </button>
-      </div>
-      <div class="ak-header__tools">
         <div class="ak-seg" role="group" aria-label="界面主题切换">
-          <button type="button" onclick="setTheme('light')" id="btn-light" aria-pressed="false">档案 (Light)</button>
-          <button type="button" onclick="setTheme('dark')" id="btn-dark" class="is-active" aria-pressed="true">终端 (Dark)</button>
+          <button type="button" onclick="setTheme('light')" id="btn-light" aria-pressed="false">档案</button>
+          <button type="button" onclick="setTheme('dark')" id="btn-dark" class="is-active" aria-pressed="true">终端</button>
         </div>
+        <button type="button" class="ak-topbar__menu" id="ak-menu-btn" aria-controls="ak-nav-drawer" aria-expanded="false">菜单</button>
       </div>
     </div>
-    <!-- <1120 时侧栏变抽屉，此入口才显示（桌面 display:none） -->
-    <nav class="ak-local-nav" aria-label="页面菜单">
-      <button type="button" class="ak-local-nav__btn ak-local-nav__menu" id="ak-menu-btn" aria-controls="ak-sidebar" aria-expanded="false">
-        <svg class="ak-icon" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2 4h16v2H2zM2 9h16v2H2zM2 14h16v2H2z"/></svg>菜单
-      </button>
-    </nav>
   </header>
-  <div class="ak-drawer-scrim" id="ak-scrim"></div>
 
-  <!-- 主体两栏骨架 -->
-  <div class="ak-layout ak-layout--no-toc">
-    <aside class="ak-sidebar" id="ak-sidebar">
-      <div class="ak-portlet">
-        <h3 class="ak-portlet__title">COMMAND // 终端</h3>
-        <ul>
-          <li class="is-active"><a href="#overview">作战中枢总览</a></li>
-          <li><a href="#roster">干员战术编队</a></li>
-          <li><a href="#stages">切尔诺伯格航线</a></li>
-        </ul>
+  <!-- 窄屏导航抽屉与遮罩 -->
+  <div class="ak-drawer-scrim" id="ak-scrim"></div>
+  <aside class="ak-drawer ak-drawer--left" id="ak-nav-drawer" role="dialog" aria-modal="true" aria-label="页面章节导航">
+    <nav class="ak-drawer-nav">
+      <div class="ak-drawer-nav__head">
+        <span>NAVIGATION // PRTS</span>
+        <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" id="ak-drawer-close" aria-label="关闭菜单">✕</button>
       </div>
-      <div class="ak-portlet">
-        <h3 class="ak-portlet__title">DATABASE // 档案</h3>
-        <ul>
-          <li><a href="#dossier">人事绝密纪要</a></li>
-          <li><a href="#riic">基建后勤排班</a></li>
-        </ul>
+      <a class="ak-drawer-nav__link is-active" href="#index"><span>首页概览</span><small>01 // INDEX</small></a>
+      <a class="ak-drawer-nav__link" href="#information"><span>作战情报</span><small>02 // INFO</small></a>
+      <a class="ak-drawer-nav__link" href="#archive"><span>设定与编队</span><small>03 // DATA</small></a>
+      <a class="ak-drawer-nav__link" href="#extensions"><span>延伸系统</span><small>04 // MORE</small></a>
+      <a class="ak-drawer-nav__link" href="./prts-components.html"><span>全组件交互目录</span><small>CATALOG</small></a>
+      <a class="ak-drawer-nav__link" href="./endfield-boilerplate.html"><span>Endfield 对照样板</span><small>ENDFIELD</small></a>
+    </nav>
+  </aside>
+
+  <!-- 2. 主舞台 + 右侧 1px 竖轨索引栏 -->
+  <div class="ak-stage-shell">
+    <main class="ak-stage-main">
+      <!-- 版块 01 · 无边框开放 Hero（三角暗格 + 截断巨字水印 + 干员缩略交互组） -->
+      <section class="ak-hero--editorial" id="index">
+        <span class="ak-ghost-word" aria-hidden="true">RHODES // PRTS</span>
+
+        <div class="ak-hero--editorial__grid">
+          <div>
+            <div class="ak-hero--editorial__eyebrow">
+              <i aria-hidden="true"></i>
+              <span>RHODES ISLAND :// TACTICAL COMMAND v4.2</span>
+            </div>
+            <h1 class="ak-hero--editorial__title ak-anim-scan">
+              ARKNIGHTS PRTS
+              <span class="cn">罗德岛战术情报门户</span>
+            </h1>
+            <div class="ak-hero--editorial__rule ak-anim-wipe" aria-hidden="true"></div>
+            <p class="ak-hero--editorial__desc">
+              去边框化工业架构、极简 1px 建筑标尺线、非对称错位情报流与纯直角交互矩阵。支持「终端 (Dark) / 档案 (Light)」双正典极性瞬切与全宽幅响应式降维。
+            </p>
+            <div class="ak-flex ak-wrap ak-gap-3 ak-mt-6">
+              <a class="ak-btn ak-btn--contrast ak-btn--lg" href="#archive">检视作战矩阵</a>
+              <a class="ak-btn ak-btn--primary ak-btn--lg" href="#information">最新调度简报</a>
+              <a class="ak-chevrons ak-flex ak-items-center" href="./prts-components.html" style="padding: 0 8px;">全组件目录</a>
+            </div>
+          </div>
+
+          <!-- 右侧焦点：微透简报框 + 4 格可交互缩略选卡（右上青角标 + 滑轨条） -->
+          <div class="ak-hero__focal">
+            <div class="ak-brief" aria-live="polite">
+              <div class="ak-brief__head">
+                <span class="ak-brief__name" id="brief-cn">凯尔希</span>
+                <span class="ak-brief__en" id="brief-en">KAL'TSIT // SW03</span>
+              </div>
+              <div class="ak-brief__voice" id="brief-role">医疗部门总负责人 · VOICE: 日笠阳子</div>
+              <p class="ak-brief__copy" id="brief-desc">
+                罗德岛最高管理者之一，直接督导外勤战术编队调度与极端环境应急救援协议，在切尔诺伯格航线任务中担任中枢医疗协调员。
+              </p>
+            </div>
+
+            <div class="ak-thumb-grid" role="group" aria-label="核心干员焦点切换">
+              <button type="button" class="ak-thumb-card is-active" aria-pressed="true"
+                data-idx="0" data-cn="凯尔希" data-en="KAL'TSIT // SW03"
+                data-role="医疗部门总负责人 · VOICE: 日笠阳子"
+                data-desc="罗德岛最高管理者之一，直接督导外勤战术编队调度与极端环境应急救援协议，在切尔诺伯格航线任务中担任中枢医疗协调员。">
+                <span class="ak-thumb-card__code">01 // MED</span>
+                <span class="ak-thumb-card__name">凯尔希</span>
+              </button>
+              <button type="button" class="ak-thumb-card" aria-pressed="false"
+                data-idx="1" data-cn="阿米娅" data-en="AMIYA // R001"
+                data-role="罗德岛公开领袖 · VOICE: 黑泽朋世"
+                data-desc="负责协调外勤干员与各移动城邦之间的行动许可，具备高阶源石技艺适配资质与核心指挥链路最高授权。">
+                <span class="ak-thumb-card__code">02 // CMD</span>
+                <span class="ak-thumb-card__name">阿米娅</span>
+              </button>
+              <button type="button" class="ak-thumb-card" aria-pressed="false"
+                data-idx="2" data-cn="陈" data-en="CH'EN // LM04"
+                data-role="突击前锋协同 · VOICE: 石上静香"
+                data-desc="龙门近卫局前督察，擅长高爆发斩击突破坚固防线，目前作为特别行动顾问配属至第一突击梯队。">
+                <span class="ak-thumb-card__code">03 // GRD</span>
+                <span class="ak-thumb-card__name">陈</span>
+              </button>
+              <button type="button" class="ak-thumb-card" aria-pressed="false"
+                data-idx="3" data-cn="德克萨斯" data-en="TEXAS // PL02"
+                data-role="快速部署联络 · VOICE: 田所梓"
+                data-desc="企鹅物流骨干信使与外勤联络专员，负责高危航线前线情报投送与先锋先遣接应，适应复杂城邦地形。">
+                <span class="ak-thumb-card__code">04 // VAN</span>
+                <span class="ak-thumb-card__name">德克萨斯</span>
+              </button>
+            </div>
+            <div class="ak-scrub-bar" aria-hidden="true"><i id="ak-scrub-thumb"></i></div>
+          </div>
+        </div>
+
+        <!-- 去边框化数字指标（无 1px 方框包围，仅靠顶线 + 短色块立住） -->
+        <div class="ak-stat-row--open">
+          <div class="ak-stat--minimal">
+            <span class="ak-stat__label">DEPLOYED // 现役编队</span>
+            <span class="ak-stat__value">12<small>/ 12</small></span>
+            <span class="ak-stat__delta ak-stat__delta--up">▲ 核心编队满员待命</span>
+          </div>
+          <div class="ak-stat--minimal">
+            <span class="ak-stat__label">SANITY // 理智储备</span>
+            <span class="ak-stat__value">132<small>/ 135</small></span>
+            <span class="ak-stat__delta">自动回复 · 18:00 满溢</span>
+          </div>
+          <div class="ak-stat--minimal">
+            <span class="ak-stat__label">ORIGINIUM // 精炼纯度</span>
+            <span class="ak-stat__value">98.4<small>%</small></span>
+            <span class="ak-stat__delta ak-stat__delta--down">▼ 核心城边缘活性升高</span>
+          </div>
+          <div class="ak-stat--minimal">
+            <span class="ak-stat__label">ROUTES // 监控航线</span>
+            <span class="ak-stat__value">08<small>/ ACT</small></span>
+            <span class="ak-stat__delta">主线外环全时在线</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 版块 02 · 情报中心（去边框 1px 列表 + 错位双列公告卡） -->
+      <section id="information">
+        <div class="ak-rule">
+          <div class="ak-rule__head">
+            <h2 class="ak-rule__title">情报中心与战区简报</h2>
+            <span class="ak-rule__en" lang="en">INFORMATION &amp; DISPATCH</span>
+          </div>
+          <span class="ak-rule__aside">02 // LIVE FEED</span>
+        </div>
+
+        <div class="ak-split">
+          <div>
+            <div class="ak-filter-strip" role="group" aria-label="情报分类筛选">
+              <button type="button" class="ak-filter-strip__btn is-active" aria-pressed="true" onclick="filterFeed('all', this)">最新</button>
+              <button type="button" class="ak-filter-strip__btn" aria-pressed="false" onclick="filterFeed('notice', this)">公告</button>
+              <button type="button" class="ak-filter-strip__btn" aria-pressed="false" onclick="filterFeed('event', this)">活动</button>
+              <button type="button" class="ak-filter-strip__btn" aria-pressed="false" onclick="filterFeed('news', this)">新闻</button>
+            </div>
+
+            <div class="ak-folio-list" id="ak-feed-list">
+              <button type="button" class="ak-folio-item is-active" data-cat="news">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__meta">新闻 · 2026 // 11 / 18</span>
+                  <span class="ak-folio-item__title">第 71 期战区后勤与航线调度通讯纪要</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item" data-cat="event">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__meta">活动 · 2026 // 11 / 17</span>
+                  <span class="ak-folio-item__title">「怒号光明」高危区域复刻与突袭链路开放</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item" data-cat="notice">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__meta">公告 · 2026 // 11 / 16</span>
+                  <span class="ak-folio-item__title">PRTS 神经终端协议版本 v4.2 例行校验说明</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item" data-cat="news">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__meta">新闻 · 2026 // 11 / 12</span>
+                  <span class="ak-folio-item__title">罗德岛医疗部门完成切尔诺伯格采样入库</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 错位双列新闻卡片（右列自动下沉错开，无整圈卡片框） -->
+          <div class="ak-news-grid ak-news-grid--staggered">
+            <a class="ak-news-card" href="#archive">
+              <div class="ak-news-card__head">
+                <span class="ak-news-card__seal">RI // 01</span>
+                <span class="ak-news-card__en">DISPATCH</span>
+                <span class="ak-news-card__sub">战术调度</span>
+                <span class="ak-news-card__band">— TERMINAL</span>
+              </div>
+              <div class="ak-news-card__body">
+                <span class="ak-news-card__cat">新闻</span>
+                <span class="ak-news-card__date">2026 // 11 / 18</span>
+                <h3 class="ak-news-card__title">切尔诺伯格核心城外环观测站完成神经网重连与干员轮换部署</h3>
+              </div>
+            </a>
+
+            <a class="ak-news-card" href="#archive">
+              <div class="ak-news-card__head">
+                <span class="ak-news-card__seal">RI // 02</span>
+                <span class="ak-news-card__en">OPERATION</span>
+                <span class="ak-news-card__sub">特别行动</span>
+                <span class="ak-news-card__band">— ARCHIVE</span>
+              </div>
+              <div class="ak-news-card__body">
+                <span class="ak-news-card__cat">活动</span>
+                <span class="ak-news-card__date">2026 // 11 / 17</span>
+                <h3 class="ak-news-card__title">「怒号光明」主题作战复刻开启：JT8-2 至 H8-4 绝境航线记录同步</h3>
+              </div>
+            </a>
+
+            <a class="ak-news-card" href="#archive">
+              <div class="ak-news-card__head">
+                <span class="ak-news-card__seal">RI // 03</span>
+                <span class="ak-news-card__en">NOTICE</span>
+                <span class="ak-news-card__sub">系统公告</span>
+                <span class="ak-news-card__band">— PRTS</span>
+              </div>
+              <div class="ak-news-card__body">
+                <span class="ak-news-card__cat">公告</span>
+                <span class="ak-news-card__date">2026 // 11 / 16</span>
+                <h3 class="ak-news-card__title">基建电力中枢与自动化加工站夜间维护窗口通告</h3>
+              </div>
+            </a>
+
+            <a class="ak-news-card" href="./prts-components.html">
+              <div class="ak-news-card__head">
+                <span class="ak-news-card__seal">RI // 04</span>
+                <span class="ak-news-card__en">CATALOG</span>
+                <span class="ak-news-card__sub">体系目录</span>
+                <span class="ak-news-card__band">— COMPONENTS</span>
+              </div>
+              <div class="ak-news-card__body">
+                <span class="ak-news-card__cat">文档</span>
+                <span class="ak-news-card__date">2026 // 11 / 15</span>
+                <h3 class="ak-news-card__title">PRTS Design 通用交互与领域组件全量目录查阅入口</h3>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 版块 03 · 世界观式无边框档案索引 + 编队矩阵 -->
+      <section id="archive">
+        <div class="ak-rule">
+          <div class="ak-rule__head">
+            <h2 class="ak-rule__title">泰拉索引与编队数据矩阵</h2>
+            <span class="ak-rule__en" lang="en">WORLD INDEX &amp; MATRIX</span>
+          </div>
+          <span class="ak-rule__aside">03 // DATA ARCHIVE</span>
+        </div>
+
+        <div class="ak-split">
+          <!-- 左栏：复刻官网 WORLD 的纯字体 1px 底线词条 -->
+          <div>
+            <div class="ak-folio-list" id="ak-world-list" role="listbox" aria-label="世界观档案索引">
+              <button type="button" class="ak-folio-item is-active" role="option" aria-selected="true"
+                data-note="ORIGINIUMS // 伴随天灾落于大地的高能量结晶矿物，既驱动移动城邦工业，亦导致矿石病扩散。">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__title">源石</span>
+                  <span class="ak-folio-item__en">ORIGINIUMS</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item" role="option" aria-selected="false"
+                data-note="ORIGINIUM ARTS // 通过特定介质干涉物理现象的能量应用技术，受个人生理适应性与训练深度影响。">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__title">源石技艺</span>
+                  <span class="ak-folio-item__en">ORIGINIUM ARTS</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item" role="option" aria-selected="false"
+                data-note="NOMADIC CITY // 为躲避高频周期性天灾而搭载履带与核芯迁徙的大型可移动城邦聚集区。">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__title">移动城邦</span>
+                  <span class="ak-folio-item__en">NOMADIC CITY</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+              <button type="button" class="ak-folio-item" role="option" aria-selected="false"
+                data-note="RHODES ISLAND // 注册为制药公司的高机动医疗研究组织，在各大城邦危机边缘开展救援与协作。">
+                <span class="ak-folio-item__main">
+                  <span class="ak-folio-item__title">罗德岛</span>
+                  <span class="ak-folio-item__en">RHODES ISLAND</span>
+                </span>
+                <span class="ak-folio-item__arrow" aria-hidden="true">›</span>
+              </button>
+            </div>
+
+            <div class="ak-message ak-message--accent ak-mt-4">
+              <div class="ak-message__body">
+                <div class="ak-message__title">设定词条摘要</div>
+                <div id="ak-world-note">ORIGINIUMS // 伴随天灾落于大地的高能量结晶矿物，既驱动移动城邦工业，亦导致矿石病扩散。</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右栏：无外框嵌套表格（正文字体 + tabular-nums，1440px 完整显示零裁切） -->
+          <div>
+            <div class="ak-table-scroll">
+              <table class="ak-table">
+                <thead>
+                  <tr>
+                    <th>干员代号</th>
+                    <th>职业分支</th>
+                    <th>稀有度</th>
+                    <th>主力技能 / 技力</th>
+                    <th class="num">生命</th>
+                    <th class="num">攻击</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="is-selected">
+                    <td><b>陈 (Ch'en)</b> <span class="ak-code-id">LM04</span></td>
+                    <td>近卫 · 剑豪</td>
+                    <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
+                    <td><span class="ak-fw-700">赤霄·绝影</span> <span class="ak-sp ak-sp--attack">攻击回复</span> <span class="ak-sp-cost">32</span></td>
+                    <td class="num">2,880</td>
+                    <td class="num">660</td>
+                  </tr>
+                  <tr>
+                    <td><b>阿米娅 (Amiya)</b> <span class="ak-code-id">R001</span></td>
+                    <td>术师 · 中坚</td>
+                    <td><span data-rarity="5" class="ak-r-chip">★5</span></td>
+                    <td><span class="ak-fw-700">奇美拉</span> <span class="ak-sp">自动回复</span> <span class="ak-sp-cost">120</span></td>
+                    <td class="num">1,680</td>
+                    <td class="num">682</td>
+                  </tr>
+                  <tr>
+                    <td><b>凯尔希 (Kal'tsit)</b> <span class="ak-code-id">SW03</span></td>
+                    <td>医疗 · 医师</td>
+                    <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
+                    <td><span class="ak-fw-700">指令：熔毁</span> <span class="ak-sp">自动回复</span> <span class="ak-sp-cost">15</span></td>
+                    <td class="num">2,033</td>
+                    <td class="num">490</td>
+                  </tr>
+                  <tr>
+                    <td><b>德克萨斯 (Texas)</b> <span class="ak-code-id">PL02</span></td>
+                    <td>先锋 · 尖兵</td>
+                    <td><span data-rarity="5" class="ak-r-chip">★5</span></td>
+                    <td><span class="ak-fw-700">剑雨</span> <span class="ak-sp">自动回复</span> <span class="ak-sp-cost">40</span></td>
+                    <td class="num">1,950</td>
+                    <td class="num">570</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 版块 04 · 四列通栏无框暗幕入口（复刻 ak.hypergryph.com/#more） -->
+      <section id="extensions">
+        <div class="ak-rule">
+          <div class="ak-rule__head">
+            <h2 class="ak-rule__title">延伸系统与专题资料域</h2>
+            <span class="ak-rule__en" lang="en">MORE CONTENT</span>
+          </div>
+          <span class="ak-rule__aside">04 // ARCHITECTURE</span>
+        </div>
+
+        <div class="ak-showcase-strip">
+          <a class="ak-showcase-col" href="./prts-components.html">
+            <span class="ak-showcase-col__mark" aria-hidden="true">01</span>
+            <h3 class="ak-showcase-col__title">通用组件百科</h3>
+            <span class="ak-showcase-col__en">PRTS COMPONENT CATALOG</span>
+            <span class="ak-showcase-col__more">VIEW MORE ›</span>
+          </a>
+          <a class="ak-showcase-col" href="./endfield-boilerplate.html">
+            <span class="ak-showcase-col__mark" aria-hidden="true">02</span>
+            <h3 class="ak-showcase-col__title">终末地体系</h3>
+            <span class="ak-showcase-col__en">ENDFIELD INDUSTRIAL UI</span>
+            <span class="ak-showcase-col__more">VIEW MORE ›</span>
+          </a>
+          <a class="ak-showcase-col" href="./prts-components.html#feedback">
+            <span class="ak-showcase-col__mark" aria-hidden="true">03</span>
+            <h3 class="ak-showcase-col__title">密录与对话</h3>
+            <span class="ak-showcase-col__en">DOSSIER &amp; VOICE</span>
+            <span class="ak-showcase-col__more">VIEW MORE ›</span>
+          </a>
+          <a class="ak-showcase-col" href="./endfield-components.html">
+            <span class="ak-showcase-col__mark" aria-hidden="true">04</span>
+            <h3 class="ak-showcase-col__title">Endfield 组件目录</h3>
+            <span class="ak-showcase-col__en">STANDALONE KIT</span>
+            <span class="ak-showcase-col__more">VIEW MORE ›</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- 右侧极简数字标尺窄轨 -->
+    <aside class="ak-index-rail" aria-label="章节索引">
+      <div class="ak-index-rail__sticky">
+        <div class="ak-index-rail__counter">
+          <span class="ak-index-rail__num" id="rail-num">01</span>
+          <div class="ak-index-rail__meta">
+            // <span id="rail-sub">01 / 04</span>
+            <span id="rail-label">INDEX</span>
+          </div>
+        </div>
+
+        <nav class="ak-rail-nav" aria-label="右侧章节跳转">
+          <a class="ak-rail-nav__item is-active" href="#index" data-sec="01" data-sec-en="INDEX"><span>01</span><span>首页概览</span></a>
+          <a class="ak-rail-nav__item" href="#information" data-sec="02" data-sec-en="INFORMATION"><span>02</span><span>作战情报</span></a>
+          <a class="ak-rail-nav__item" href="#archive" data-sec="03" data-sec-en="DIRECTORY"><span>03</span><span>设定与编队</span></a>
+          <a class="ak-rail-nav__item" href="#extensions" data-sec="04" data-sec-en="MORE CONTENT"><span>04</span><span>延伸系统</span></a>
+        </nav>
+
+        <div class="ak-index-rail__status">
+          <div>LINK // ONLINE</div>
+          <div>GEOMETRY // 0PX SHARP</div>
+          <div>REV // 2026.11</div>
+        </div>
       </div>
     </aside>
-
-    <main class="ak-main ak-flex-col ak-gap-6">
-      <!-- Breaking News 横幅 -->
-      <div class="ak-news">
-        <span class="ak-news__label">BREAKING NEWS</span>
-        <span class="ak-news__text">「怒号光明」核心城突入指令已下达 · 罗德岛精英干员编队待命完毕 · <a href="#stages">查阅作战简报</a></span>
-      </div>
-
-      <!-- 官网风 Hero 横幅 -->
-      <section class="ak-hero" id="overview">
-        <div class="ak-hero__side"></div>
-        <div class="ak-hero__eyebrow">OPERATION // ROARING FLARE</div>
-        <h1 class="ak-hero__title">
-          RHODES ISLAND
-          <span class="cn">罗德岛战术指挥系统 v4.2</span>
-        </h1>
-        <div class="ak-hero__bar"></div>
-        <p class="ak-hero__desc">黑白为体、青为用；全直角无辉光几何设计语言。当前连接节点：切尔诺伯格核心城外环观测站。</p>
-        <div class="ak-flex ak-gap-3 ak-mt-4">
-          <button type="button" class="ak-btn ak-btn--contrast ak-btn--lg">开始行动</button>
-          <button type="button" class="ak-btn ak-btn--primary ak-btn--lg">同步神经连接</button>
-        </div>
-      </section>
-
-      <!-- 面板级 HUD 统计读数 -->
-      <div class="ak-stat-row">
-        <div class="ak-stat">
-          <span class="ak-stat__label">DEPLOYED // 编队</span>
-          <span class="ak-stat__value">12<small>/ 12</small></span>
-          <span class="ak-stat__delta ak-stat__delta--up">▲ 编队满员</span>
-        </div>
-        <div class="ak-stat">
-          <span class="ak-stat__label">SANITY // 理智储备</span>
-          <span class="ak-stat__value">132<small>/ 135</small></span>
-          <span class="ak-stat__delta">恢复倒计时 18:00</span>
-        </div>
-        <div class="ak-stat">
-          <span class="ak-stat__label">ORIGINIUM // 纯度</span>
-          <span class="ak-stat__value">98.4<small>%</small></span>
-          <span class="ak-stat__delta ak-stat__delta--down">▼ 活性偏高</span>
-        </div>
-        <div class="ak-stat">
-          <span class="ak-stat__label">THREAT // 威胁评级</span>
-          <span class="ak-stat__value">LV.08</span>
-          <span class="ak-stat__delta">高危感染区</span>
-        </div>
-      </div>
-
-      <!-- 一级章节标题（一页仅 1~2 处带英文副标） -->
-      <div class="ak-heading" id="roster">
-        <h2 class="ak-heading__title">核心编队与数据矩阵</h2>
-        <span class="ak-heading__en" lang="en">SQUADRON MATRIX</span>
-        <span class="ak-heading__aside"><a class="ak-chevrons" href="#">完整人事名册</a></span>
-      </div>
-
-      <!-- 面板 + 表格（表格数字严禁用 Bender，使用正文字体 + tabular-nums） -->
-      <section class="ak-panel">
-        <header class="ak-panel__head">
-          <h3 class="ak-panel__title">第一突击梯队</h3>
-          <div class="ak-flex ak-gap-2">
-            <span class="ak-tag ak-tag--accent">精英二阶</span>
-            <span class="ak-tag ak-tag--new">READY</span>
-          </div>
-        </header>
-        <div class="ak-panel__body">
-          <div class="ak-flex ak-gap-2 ak-wrap ak-mb-4">
-            <button type="button" class="ak-chip is-active" aria-pressed="true">全部职业</button>
-            <button type="button" class="ak-chip" aria-pressed="false">近卫</button>
-            <button type="button" class="ak-chip" aria-pressed="false">狙击</button>
-            <button type="button" class="ak-chip" aria-pressed="false">术师</button>
-            <button type="button" class="ak-chip" aria-pressed="false">医疗</button>
-          </div>
-
-          <div class="ak-table-scroll">
-          <table class="ak-table">
-            <thead>
-              <tr>
-                <th>干员代号</th>
-                <th>职业分支</th>
-                <th>稀有度</th>
-                <th>主力技能 / 技力</th>
-                <th class="num">生命上限</th>
-                <th class="num">攻击力</th>
-                <th class="num">防御力</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="is-selected">
-                <td><b>陈 (Ch'en)</b> <span class="ak-code-id">LM04</span></td>
-                <td>近卫 · 剑豪</td>
-                <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
-                <td>
-                  <span class="ak-fw-700">赤霄·绝影</span>
-                  <span class="ak-sp ak-sp--attack" style="margin-left: 6px;">攻击回复</span>
-                  <span class="ak-sp-cost" style="margin-left: 4px;">32</span>
-                </td>
-                <td class="num">2,880</td>
-                <td class="num">660</td>
-                <td class="num">402</td>
-              </tr>
-              <tr>
-                <td><b>阿米娅 (Amiya)</b> <span class="ak-code-id">R001</span></td>
-                <td>术师 · 中坚术师</td>
-                <td><span data-rarity="5" class="ak-r-chip">★5</span></td>
-                <td>
-                  <span class="ak-fw-700">奇美拉</span>
-                  <span class="ak-sp" style="margin-left: 6px;">自动回复</span>
-                  <span class="ak-sp-cost" style="margin-left: 4px;">120</span>
-                </td>
-                <td class="num">1,680</td>
-                <td class="num">682</td>
-                <td class="num">121</td>
-              </tr>
-              <tr>
-                <td><b>凯尔希 (Kal'tsit)</b> <span class="ak-code-id">SW03</span></td>
-                <td>医疗 · 医师</td>
-                <td><span data-rarity="6" class="ak-r-chip">★6</span></td>
-                <td>
-                  <span class="ak-fw-700">指令：熔毁</span>
-                  <span class="ak-sp" style="margin-left: 6px;">自动回复</span>
-                  <span class="ak-sp-cost" style="margin-left: 4px;">15</span>
-                </td>
-                <td class="num">2,033</td>
-                <td class="num">490</td>
-                <td class="num">255</td>
-              </tr>
-            </tbody>
-          </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- 作战关卡与加密档案卡片 -->
-      <div class="ak-grid ak-grid-2 ak-gap-4" id="stages">
-        <div class="ak-card ak-card--accent-left">
-          <div class="ak-card__header">
-            <h3 class="ak-card__title">切尔诺伯格航线关卡</h3>
-            <span class="ak-tag ak-tag--danger-solid">突袭开放</span>
-          </div>
-          <div class="ak-card__body ak-flex-col ak-gap-2">
-            <a href="#" class="ak-stage ak-stage--story ak-not-prose">
-              <div class="ak-stage__code">JT8-2<small>MAIN STORY</small></div>
-              <div>
-                <div class="ak-stage__name">日落即逝</div>
-                <div class="ak-stage__meta"><span>推荐等级 <b>精英2 LV.40</b></span><span>理智 <b>21</b></span></div>
-              </div>
-            </a>
-            <a href="#" class="ak-stage ak-stage--hard ak-not-prose">
-              <div class="ak-stage__code">H8-4<small>HELL STAGE</small></div>
-              <div>
-                <div class="ak-stage__name">火光不熄</div>
-                <div class="ak-stage__meta"><span>推荐等级 <b>精英2 LV.70</b></span><span>理智 <b>30</b></span></div>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div class="ak-dossier is-locked" data-unlock="需要信赖值达到 200% 解锁绝密人事记录" id="dossier">
-          <div class="ak-dossier__title">
-            <span>干员密录 · 第四卷</span>
-            <span class="ak-dossier__unlock">CLASSIFIED // LEVEL 4</span>
-          </div>
-          <p>【档案记录员】凯尔希
-【加密摘要】有关巴别塔时期的历史遗留档案与「魔王」继承权的底层协议记录，未经授权严禁调阅。</p>
-        </div>
-      </div>
-
-      <!-- 45° 警示斜纹分隔带 -->
-      <div class="ak-stripes ak-stripes--hazard ak-stripe-bar"></div>
-    </main>
   </div>
 
-  <!-- 底部黑色页脚 -->
-  <footer class="ak-footer">
-    <span class="ak-watermark">RHODES</span>
+  <!-- 3. 极简黑色建筑页脚 -->
+  <footer class="ak-footer ak-footer--editorial">
+    <span class="ak-watermark" aria-hidden="true">RHODES</span>
     <div class="ak-footer__inner">
       <div class="ak-footer__brand">
         <div class="ak-header__wordmark">PRTS.DESIGN</div>
-        <p>明日方舟本家网页设计系统样板 · 黑白为体、青为用、全直角无切角。</p>
+        <p>明日方舟本家前端设计系统样板 · 黑白灰炭为体、冰青为用、全直角零辉光 · 兼顾官网编辑展示与档案终端。</p>
       </div>
       <div class="ak-footer__col">
-        <h4>SYSTEM // 规范</h4>
+        <h4>ARCHITECTURE // 载体</h4>
         <ul>
-          <li><a href="#">色彩与双主题令牌</a></li>
-          <li><a href="#">装饰几何语言</a></li>
+          <li><a href="#index">官网展示骨架</a></li>
+          <li><a href="./prts-components.html">Wiki 与领域组件目录</a></li>
         </ul>
       </div>
       <div class="ak-footer__col">
-        <h4>TERMINAL // 节点</h4>
+        <h4>ORTHOGONAL // 对照</h4>
         <ul>
-          <li><a href="#">罗德岛本舰</a></li>
-          <li><a href="#">龙门近卫局</a></li>
+          <li><a href="./endfield-boilerplate.html">Endfield UI 整页样板</a></li>
+          <li><a href="./endfield-components.html">Endfield 全组件参考</a></li>
         </ul>
       </div>
     </div>
@@ -267,16 +489,7 @@
   </footer>
 
   <script>
-    // 侧栏抽屉（<1120）开合
-    (function () {
-      var btn = document.getElementById('ak-menu-btn'), side = document.getElementById('ak-sidebar'), scrim = document.getElementById('ak-scrim');
-      function toggle(open) { side.classList.toggle('is-open', open); scrim.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open); }
-      btn.addEventListener('click', function () { toggle(!side.classList.contains('is-open')); });
-      scrim.addEventListener('click', function () { toggle(false); });
-      side.addEventListener('click', function (e) { if (e.target.closest('a')) toggle(false); });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggle(false); });
-    })();
-    // 主题：启动时与当前 data-theme / localStorage 同步，记住用户选择
+    // 主题持久化同步（Dark 默认 / Light 档案模式）
     (function () {
       var saved = null;
       try { saved = localStorage.getItem('ak-theme'); } catch (e) {}
@@ -290,6 +503,90 @@
       if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
     }
     function setTheme(theme) { applyTheme(theme, true); }
+
+    // 声波开关按钮
+    document.getElementById('ak-audio-toggle').addEventListener('click', function () {
+      var on = this.classList.toggle('is-playing');
+      this.setAttribute('aria-pressed', String(on));
+    });
+
+    // 窄屏导航抽屉开合与焦点管理
+    (function () {
+      var btn = document.getElementById('ak-menu-btn'), closeBtn = document.getElementById('ak-drawer-close'),
+          drawer = document.getElementById('ak-nav-drawer'), scrim = document.getElementById('ak-scrim');
+      function toggle(open) {
+        drawer.classList.toggle('is-open', open);
+        scrim.classList.toggle('is-open', open);
+        btn.setAttribute('aria-expanded', String(open));
+        if (open) closeBtn.focus();
+      }
+      btn.addEventListener('click', function () { toggle(!drawer.classList.contains('is-open')); });
+      closeBtn.addEventListener('click', function () { toggle(false); btn.focus(); });
+      scrim.addEventListener('click', function () { toggle(false); });
+      drawer.addEventListener('click', function (e) { if (e.target.closest('a')) toggle(false); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && drawer.classList.contains('is-open')) { toggle(false); btn.focus(); }
+      });
+    })();
+
+    // Hero 焦点缩略卡切换 + 底部进度滑轨同步
+    document.querySelectorAll('.ak-thumb-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        document.querySelectorAll('.ak-thumb-card').forEach(function (c) {
+          c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('is-active');
+        card.setAttribute('aria-pressed', 'true');
+        document.getElementById('brief-cn').textContent = card.dataset.cn;
+        document.getElementById('brief-en').textContent = card.dataset.en;
+        document.getElementById('brief-role').textContent = card.dataset.role;
+        document.getElementById('brief-desc').textContent = card.dataset.desc;
+        var thumb = document.getElementById('ak-scrub-thumb');
+        if (thumb) thumb.style.setProperty('--_thumb-x', (Number(card.dataset.idx) * 25) + '%');
+      });
+    });
+
+    // 情报分类筛选
+    function filterFeed(cat, btn) {
+      document.querySelectorAll('.ak-filter-strip__btn').forEach(function (b) {
+        b.classList.toggle('is-active', b === btn);
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      document.querySelectorAll('#ak-feed-list .ak-folio-item').forEach(function (item) {
+        item.hidden = !(cat === 'all' || item.dataset.cat === cat);
+      });
+    }
+
+    // 设定无边框索引列表交互
+    document.querySelectorAll('#ak-world-list .ak-folio-item').forEach(function (opt) {
+      opt.addEventListener('click', function () {
+        document.querySelectorAll('#ak-world-list .ak-folio-item').forEach(function (x) {
+          x.classList.remove('is-active'); x.setAttribute('aria-selected', 'false');
+        });
+        opt.classList.add('is-active');
+        opt.setAttribute('aria-selected', 'true');
+        document.getElementById('ak-world-note').textContent = opt.dataset.note;
+      });
+    });
+
+    // 顶栏与右侧序号窄轨联动
+    function syncSectionNav(sec, en) {
+      document.getElementById('rail-num').textContent = sec;
+      document.getElementById('rail-sub').textContent = sec + ' / 04';
+      document.getElementById('rail-label').textContent = en;
+      document.querySelectorAll('.ak-topbar__link').forEach(function (a) {
+        var on = a.dataset.sec === sec;
+        a.classList.toggle('is-active', on);
+        if (on) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      });
+      document.querySelectorAll('.ak-rail-nav__item').forEach(function (a) {
+        a.classList.toggle('is-active', a.dataset.sec === sec);
+      });
+    }
+    document.querySelectorAll('[data-sec]').forEach(function (el) {
+      el.addEventListener('click', function () { syncSectionNav(el.dataset.sec, el.dataset.secEn); });
+    });
   </script>
 </body>
 </html>

@@ -98,8 +98,8 @@ def write_release_readme(files: list[pathlib.Path], version: str) -> None:
     zip_bytes = ARCHIVE_PATH.read_bytes()
     zip_kb = len(zip_bytes) / 1024
     sha256 = hashlib.sha256(zip_bytes).hexdigest()
-    is_pre = any(k in version.lower() for k in ("beta", "alpha", "rc"))
-    stage_label = "测试版（Pre-release · 待审查）" if is_pre else "正式版"
+    is_pre = any(k in version.lower() for k in ("beta", "alpha", "rc", "dev"))
+    stage_label = "开发测试版（Pre-release · 待审查）" if "dev" in version.lower() else ("测试版（Pre-release · 待审查）" if is_pre else "正式版")
     content = f"""# Release Bundle — `arknights-design` ({version})
 
 本目录由 [`scripts/package-release.py`](../scripts/package-release.py) 生成，包含可直接复制或解压接入下游前端项目的**{stage_label}纯运行时 Skill 包**（版本 `{version}`，共 {len(files)} 个文件，未压缩 {total_kb:.1f} KB；压缩包 {zip_kb:.1f} KB），已剔除维护文档（`AGENTS.md`）与同步/校验脚本（`scripts/`）。
