@@ -19,8 +19,7 @@
 | 路径 | 性质 | 规则 |
 | :--- | :--- | :--- |
 | `resources/prts-design.css` `prts-tokens.css` `endfield-theme.css` | **上游同步生成** | ❌ 不要手改；由 `scripts/sync-upstream.py` 覆盖 |
-| `resources/prts-addons.css` | 本仓库自有补丁层 | ✅ 对 PRTS 上游的一切修正写这里，紧随 `prts-design.css` 引入 |
-| `resources/prts-series.css` | **手工维护**（活动系列扩展层） | ✅ 可改；在 `prts-addons.css` 之后按需引入，承载 6 大官方活动系列主题与平面母题 |
+| `resources/prts-addons.css` | 本仓库自有升级与补丁层 | ✅ 对 PRTS 上游修正及官网展示载体扩展均写这里，紧随 `prts-design.css` 引入 |
 | `resources/endfield-standalone.css` | **手工维护** | ✅ 可改；末尾“Skill 补丁层”区块为本仓库自有，同步/合并时勿丢 |
 | `references/**` | 规范文档 | ✅ 规则变更必须同步改文档，文档与 CSS/样板不得矛盾 |
 | `examples/**` | 整页样板 | ✅ 必须通过第三节的渲染验证 |
@@ -125,12 +124,18 @@
 | 40 | 亮色模式下系列 Hero（恒深色）眉题用亮态强调色，对比度约 2–3:1；径向渐变近似“晕光” | `.ak-hero__eyebrow` 读 `--ak-theme-accent`，亮态值偏深 | 各系列 `.ak-hero` 内锁定暗态强调色；径向渐变改线性渐变 | 恒深色容器内必须覆盖主题强调令牌（同第 3 条） |
 | 41 | `COMPLETED` 水印被奖励 chip 压住截断；样板泄漏 `WAI-ARIA TABS/REPERTORY` 开发术语；面板头逐个双语；390px 统计标签孤字折行 | 水印写死 `right:92px`；标签借用实现名；文案未精简 | 水印改 flex 项；术语替换为业务文案；去掉多余英文副标并缩短统计标签；`verify.py` 增 `wmClear` 探针与术语扫描 | 绝对定位装饰必须相对真实兄弟元素让位 |
 
+### 2026-11-24 · 清理独立皮肤模板并依据 `ak.hypergryph.com` 实测重塑本家主体系
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 42 | 对比 Endfield UI 与开启 SwiftShader WebGL 后的明日方舟官网 [`ak.hypergryph.com`](https://ak.hypergryph.com/#index) 全 8 屏实机画面后，确认此前的 6 套 `series-*` 活动皮肤与独立专题 `cc-*` 模板均陷于“拿单张海报封面硬拼 CSS 框/SVG 道具、全套同质化盒状结构”，且主 PRTS 样板锁定在 MediaWiki 侧栏与套娃边框中（“只能看但缺少建筑感”） | PRTS 上游源于 `MooncellWiki/prts-design` 百科皮肤，缺失 `ak.hypergryph.com` 官网的去边框、斜光三角暗格、漂浮双语顶栏与不对称节奏；单独皮肤项目则强行用 CSS 框模拟平面插画 | ① **彻底做减法**：清空未提交的 `skills/arknights-contingency-contract/` 及 `release/arknights-contingency-contract*`，并移除 6 套 `examples/series-*.html`、`resources/prts-series.css` 与 `references/series/`；② **爆改升级主体系 PRTS Design**：在 [`resources/prts-addons.css`](./resources/prts-addons.css) 沉淀 **Carrier 1（官网展示与门户骨架）**（`.ak-bg-lattice` 三角暗格斜光画布、`.ak-topbar` 漂浮双语顶栏 + `.ak-wave-btn` 声波钮、`.ak-stage-shell` + `.ak-index-rail` 右侧竖轨序号、`.ak-hero--editorial` + `.ak-brief` & `.ak-thumb-grid` 焦点滑轨、`.ak-rule` 1px 标尺实块、`.ak-stat--minimal` 去框指标、`.ak-folio-list` 无框清单、`.ak-news-grid--staggered` 错位无框双列情报卡、`.ak-showcase-strip` 四列暗幕竖切与 `ak-wipe-x` / `ak-scan-in` / `ak-wave-eq` 硬切动效）；③ 重写 [`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html)、扩展 [`examples/prts-components.html`](./examples/prts-components.html) 并同步升级 [`references/prts/foundations.md`](./references/prts/foundations.md)、[`decor-and-components.md`](./references/prts/decor-and-components.md)、[`SKILL.md`](./SKILL.md)、[`README.md`](./README.md) 与 `verify.py` / `package-release.py` | 禁止拿单张海报/封面插画强拼独立皮肤模板；本家网页默认走官网建筑去框化展示载体或克制使用百科终端面板，改后须跑 `verify.py --render` 并实看 1440px/390px 亮暗双极截图 |
+
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
 - 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
 - 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
-- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 40 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），已完成 `v1.0` 盲测验收及 `v1.1` 六大官方活动系列皮肤的全量审查修复（#39–#41）并正式归档发布；后续可按需在下游项目中补充单个活动子系列的细分演进与实测。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并由 [`scripts/package-release.py`](./scripts/package-release.py) 输出纯净单包 [`release/arknights-design/`](./release/arknights-design/)。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 
