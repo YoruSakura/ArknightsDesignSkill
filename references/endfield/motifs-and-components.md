@@ -322,8 +322,8 @@
       <a class="ef-site-header__link" href="#catalog">画廊</a>
     </nav>
     <div class="ef-site-header__actions">
-      <button type="button" class="ef-btn ef-btn--action ef-btn--sm ef-site-header__cta">预约体验</button>
-      <button type="button" class="ef-btn ef-btn--light ef-btn--sm ef-site-header__menu">菜单</button>
+      <button type="button" class="ef-btn ef-btn--sm ef-site-header__cta">预约体验</button>
+      <button type="button" class="ef-btn ef-btn--sm ef-site-header__menu">菜单</button>
     </div>
   </div>
 </header>

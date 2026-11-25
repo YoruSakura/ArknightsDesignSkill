@@ -13,7 +13,7 @@
 | 维度 | 体系 A · 明日方舟本家 (`PRTS Design`) | 体系 B · 明日方舟：终末地 (`Endfield UI`) |
 | :--- | :--- | :--- |
 | **类/令牌前缀** | `.ak-*` / `--ak-*` | `.ef-*` / `--ef-*` |
-| **双载体架构** | **载体 1 · 官网概念展示**（`ak.hypergryph.com`：漂浮双语顶栏 + 三角暗格画布 + 右侧序号窄轨 + 去框标尺/错位情报流）<br>**载体 2 · PRTS 资料百科终端**（`.ak-header` + `.ak-layout` + `.ak-sidebar`） | **载体 1 · 纸白工业编辑画册**（`.ef-side-rail` + `ghost-hatch` + 信号黄色带 + 偏心分栏）<br>**载体 2 · 游戏实机 HUD 七大家族**（深色行带 `Sparkline` / `TickRing` / `Viewfinder`） |
+| **多原型与双载体架构** | **通用非控制台骨架**（`.ak-topbar` + `.ak-site-shell` / `.ak-prose-shell` / `.ak-gallery-grid` / `.ak-auth-shell`）<br>**官网概念门户**（`.ak-stage-shell` + `.ak-index-rail`）与 **PRTS 资料百科终端**（`.ak-header` + `.ak-layout` + `.ak-sidebar`） | **通用非控制台官网/画册骨架**（`.ef-site-header` + `.ef-site-main` + `.ef-landing-hero` / `.ef-article-shell` / `.ef-auth-shell`）<br>**工业调度控制台与实机 HUD 七大家族**（`.ef-app-shell` + `.ef-side-rail` / `Sparkline` / `TickRing` / `Viewfinder`） |
 | **色彩哲学** | **黑白灰炭为体、冰青为用**：暗底配官网冰青 `#18D1FF`，亮底配游戏蓝 `#0098DC`（小字 `#0072A8`）；黄黑条纹仅限警示 | **纸与墨是主体，信号黄是唯一焦点**：13 级纯中性灰 + `#FFFA00`（单屏面积 ≤ 10%，白底字改用 `#6B5D00`） |
 | **形状铁律** | **纯直角 `border-radius: 0`，严禁任何 45° 切角/斜切**；独立小装饰仅 4 处用源石菱形 | **形状即语义**：面板直角、按钮 4px 微圆角、核心行动/机械件单角切角或斜楔、筛选用胶囊 |
 | **装饰与动效** | 三角网格暗格 `.ak-bg-lattice`、贴边巨字 `.ak-ghost-word`、`.ak-rule` 1px 标尺配实块、错位双列卡片、硬切扫描（`.ak-anim-wipe`/`.ak-anim-scan`）与 `.ak-wave-btn` 声波条 | 斜纹镂空巨字（`ghost-hatch`）、滑块分节标题（三步揭示）、方括号姓名、CMY 注册条、四角括号与 16 个关键帧硬切动效 |

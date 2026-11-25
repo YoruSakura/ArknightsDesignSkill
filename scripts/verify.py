@@ -428,8 +428,17 @@ window.addEventListener('load', () => {
     return animOk && baseOpaque;
   });
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  const ghostClearOfHeader = document.querySelector('.ef-landing-hero > .ef-hero__ghost').getBoundingClientRect().top
+    >= document.querySelector('.ef-site-header').getBoundingClientRect().bottom + 4;
+  const galleryArtPresent = document.querySelectorAll('#ef-gallery-grid .ef-showcase-card__art').length === 6;
+  const authProbe = document.createElement('div');
+  authProbe.className = 'ef-auth-brand';
+  authProbe.innerHTML = '<span style="color:var(--ef-accent-ink)"></span>';
+  document.body.appendChild(authProbe);
+  const authDarkTokensOk = getComputedStyle(authProbe.firstChild).color === 'rgb(255, 250, 0)';
+  authProbe.remove();
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, noSidebar, initialNavFirst, galleryFilterOk, detailOpened, detailEscClosed, billingSwitchOk, bookingDialogOk, revealVisibleOk, noOverflow
+    anims, noSidebar, initialNavFirst, galleryFilterOk, detailOpened, detailEscClosed, billingSwitchOk, bookingDialogOk, revealVisibleOk, ghostClearOfHeader, galleryArtPresent, authDarkTokensOk, noOverflow
   }));
 });
 </script>
@@ -442,6 +451,17 @@ window.addEventListener('load', () => {
   };
   const noSidebar = !document.querySelector('.ak-sidebar') && !document.querySelector('.ak-index-rail');
   const initialTocFirst = document.querySelector('.ak-article-toc__link[href="#sec-debox"]').classList.contains('is-active');
+  const kickerMutedOk = getComputedStyle(document.querySelector('.ak-article-head__kicker')).color
+    === getComputedStyle(document.querySelector('.ak-article-toc__title')).color;
+  const leadMetaGapOk = (document.querySelector('.ak-article-meta').getBoundingClientRect().top
+    - document.querySelector('.ak-article-head__lead').getBoundingClientRect().bottom) >= 12;
+  const workArtPresent = document.querySelectorAll('#ak-work-grid .ak-work-card__art').length === 3;
+  const authProbe = document.createElement('div');
+  authProbe.className = 'ak-auth-visual';
+  authProbe.innerHTML = '<span style="color:var(--ak-fg)"></span>';
+  document.body.appendChild(authProbe);
+  const authDarkTokensOk = getComputedStyle(authProbe.firstChild).color === 'rgb(240, 240, 240)';
+  authProbe.remove();
   const tab0 = document.getElementById('ak-pc-t0');
   tab0.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
   const tabsArrowOk = document.getElementById('ak-pc-t1').getAttribute('aria-selected') === 'true'
@@ -462,7 +482,7 @@ window.addEventListener('load', () => {
     && document.querySelectorAll('#ak-toasts .ak-toast').length > 0;
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, noSidebar, initialTocFirst, tabsArrowOk, redactedOk, workFilterOk, workDrawerOpened, workDrawerEscClosed, subFormOk, noOverflow
+    anims, noSidebar, initialTocFirst, kickerMutedOk, leadMetaGapOk, workArtPresent, authDarkTokensOk, tabsArrowOk, redactedOk, workFilterOk, workDrawerOpened, workDrawerEscClosed, subFormOk, noOverflow
   }));
 });
 </script>
@@ -535,8 +555,10 @@ def check_mobile_viewports() -> list[str]:
                     "const cor = d.querySelector('.ef-viewfinder__corners');"
                     "const tbBrand = d.querySelector('.ak-topbar__brand, .ef-site-header__brand');"
                     "const tbTools = d.querySelector('.ak-topbar__tools, .ef-site-header__actions');"
+                    "const wm = d.querySelector('.ak-topbar__wordmark');"
                     "const topbarClear = tbBrand && tbTools ? (tbBrand.getBoundingClientRect().right <= tbTools.getBoundingClientRect().left + 1) : true;"
-                    "return { name, cw: de.clientWidth, sw: de.scrollWidth, ok: de.scrollWidth <= de.clientWidth, topbarClear,"
+                    "const wordmarkFull = wm ? (wm.scrollWidth <= wm.clientWidth + 1) : true;"
+                    "return { name, cw: de.clientWidth, sw: de.scrollWidth, ok: de.scrollWidth <= de.clientWidth, topbarClear, wordmarkFull,"
                     " vfVisible: ro && cor ? (getComputedStyle(ro).display !== 'none' && getComputedStyle(cor).display !== 'none') : true };"
                     "}); document.body.setAttribute('data-mverify', JSON.stringify(res)); });</script></body></html>"
                 ).encode("utf-8")
@@ -568,6 +590,8 @@ def check_mobile_viewports() -> list[str]:
                     errors.append(f"{row['name']} @ {w}px (cw={row['cw']}): scrollWidth {row['sw']} > clientWidth {row['cw']}")
                 if not row["topbarClear"]:
                     errors.append(f"{row['name']} @ {w}px: ak-topbar brand overlaps right tools")
+                if not row["wordmarkFull"]:
+                    errors.append(f"{row['name']} @ {w}px: ak-topbar wordmark truncated needlessly")
                 if not row["vfVisible"]:
                     errors.append(f"{row['name']} @ {w}px: viewfinder corners/readout hidden")
     finally:

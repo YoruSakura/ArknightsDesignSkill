@@ -293,10 +293,14 @@
     </aside>
   </div>
 
-  <!-- 2. 作品集 / 商品画廊（3 列纯直角卡片，悬停显边与右上角锁入，配合 .ak-reveal 渐进动效） -->
+  <!-- 2. 作品集 / 商品画廊（3 列纯直角卡片，支持 --halftone / --diagonal 肌理与 .ak-work-card__art 矢量图槽） -->
   <div class="ak-gallery-grid">
     <button type="button" class="ak-work-card ak-reveal">
-      <div class="ak-work-card__media"><span class="ak-work-card__tag">WORK // 01</span><span class="ak-work-card__fig">GRID</span></div>
+      <div class="ak-work-card__media">
+        <span class="ak-work-card__tag">WORK // 01</span>
+        <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true"></svg>
+        <span class="ak-work-card__fig">GRID</span>
+      </div>
       <div class="ak-work-card__body">
         <div class="ak-work-card__meta"><span>分类</span><span>2026 // 11 / 25</span></div>
         <h3 class="ak-work-card__title">作品名称</h3>
