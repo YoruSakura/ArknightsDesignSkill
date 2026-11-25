@@ -14,10 +14,13 @@
 
 入口：[SKILL.md](./SKILL.md)。结构说明：[README.md](./README.md)。
 
+> **当前分支定位（`suite/arknights`）**：本分支基于 `main`（`v1.2` 通用基座）独立演进**《明日方舟》本家特色活动/玩法专题子 Skill 套组**（位于 [`suites/arknights/`](./suites/arknights/README.md)）。**不动 `main` 通用基座的核心铁律**；每个专题子 Skill 必须完全自包含、采风先行并遵守 [`suites/arknights/SUITE_SPEC.md`](./suites/arknights/SUITE_SPEC.md)。
+
 ## 二、目录职责与“谁能改什么”
 
 | 路径 | 性质 | 规则 |
 | :--- | :--- | :--- |
+| `suites/arknights/**` | **本家专题子 Skill 套组** | ✅ 本分支主力工作区；遵循 [`suites/arknights/SUITE_SPEC.md`](./suites/arknights/SUITE_SPEC.md)，`_template/` 仅作脚手架不打包 |
 | `resources/prts-design.css` `prts-tokens.css` `endfield-theme.css` | **上游同步生成** | ❌ 不要手改；由 `scripts/sync-upstream.py` 覆盖 |
 | `resources/prts-addons.css` | 本仓库自有升级与补丁层 | ✅ 对 PRTS 上游修正及官网展示载体扩展均写这里，紧随 `prts-design.css` 引入 |
 | `resources/endfield-standalone.css` | **手工维护** | ✅ 可改；末尾“Skill 补丁层”区块为本仓库自有，同步/合并时勿丢 |

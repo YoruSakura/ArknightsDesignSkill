@@ -1,0 +1,91 @@
+/*! Arknights Theme Sub-Skill Template (.ak-<slug>-*)
+ *  新建专题时将所有 <slug> 替换为简短唯一标识，并按 foundations.md 实现真实视觉系统。
+ *  本模板文件仅作结构脚手架，不参与正式发布打包。
+ */
+
+:root {
+  --ak-tpl-bg: #111214;
+  --ak-tpl-surface: #181a1e;
+  --ak-tpl-fg: #f2f4f7;
+  --ak-tpl-fg-muted: #9aa3ad;
+  --ak-tpl-border: rgba(255, 255, 255, 0.14);
+  --ak-tpl-accent: #18d1ff;
+  --ak-tpl-accent-fg: #090b0d;
+  --ak-tpl-font-body: "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --ak-tpl-font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.ak-tpl-scope {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ak-tpl-bg);
+  color: var(--ak-tpl-fg);
+  font-family: var(--ak-tpl-font-body);
+  line-height: 1.6;
+}
+
+.ak-tpl-scope *,
+.ak-tpl-scope *::before,
+.ak-tpl-scope *::after {
+  box-sizing: border-box;
+}
+
+/* 保障显式 display 组件同样服从 HTML [hidden] 语义 */
+.ak-tpl-scope [hidden] {
+  display: none !important;
+}
+
+.ak-tpl-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.ak-tpl-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ak-tpl-border);
+}
+
+.ak-tpl-code {
+  font-family: var(--ak-tpl-font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ak-tpl-accent);
+}
+
+.ak-tpl-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.ak-tpl-card {
+  padding: 20px;
+  background: var(--ak-tpl-surface);
+  border: 1px solid var(--ak-tpl-border);
+}
+
+@media (max-width: 767px) {
+  .ak-tpl-shell {
+    padding: 24px 16px;
+  }
+  .ak-tpl-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ak-tpl-scope *,
+  .ak-tpl-scope *::before,
+  .ak-tpl-scope *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
