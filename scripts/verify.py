@@ -418,7 +418,189 @@ window.addEventListener('load', () => {
             if k != "anims" and not v:
                 errors.append(f"{src_name}: assertion '{k}' failed")
 
+    for sd in discover_suite_skills():
+        for hp in sorted((sd / "examples").glob("*.html")):
+            rel_hp = str(hp.relative_to(ROOT))
+            tag = f"suite-{sd.name}-{hp.stem}"
+            raw = hp.read_text(encoding="utf-8")
+            m_theme = re.search(r'<html[^>]*data-theme="([^"]+)"', raw)
+            theme_list = ("light", "dark") if 'data-theme="light"' in raw and 'data-theme="dark"' in raw else ((m_theme.group(1),) if m_theme else ("dark",))
+            res_base = f"file://{(sd / 'resources').resolve()}/"
+            ex_base = f"file://{(sd / 'examples').resolve()}/"
+            for theme in theme_list:
+                txt = raw.replace('href="../resources/', f'href="{res_base}').replace('href="./', f'href="{ex_base}')
+                if m_theme:
+                    txt = re.sub(r'(<html[^>]*data-theme=")[^"]*(")', rf"\g<1>{theme}\g<2>", txt, count=1)
+                txt = txt.replace("localStorage.getItem", "(function(){return null;})")
+                tmp = out_dir / f"{tag}-{theme}.html"
+                tmp.write_text(txt, encoding="utf-8")
+                for w, h in [(1440, 2200), (390, 3400)]:
+                    png = out_dir / f"{tag}-{theme}-{w}x{h}.png"
+                    subprocess.run(
+                        [
+                            "google-chrome", "--headless=new", "--no-sandbox", "--hide-scrollbars",
+                            f"--window-size={w},{h}", "--virtual-time-budget=4000",
+                            f"--screenshot={png}", f"file://{tmp}",
+                        ],
+                        check=True,
+                        capture_output=True,
+                    )
+            print(f"[RENDER] Rendered suite page {rel_hp} ({len(theme_list) * 2} screenshots)")
+
     errors.extend(check_mobile_viewports())
+    return errors
+
+
+def discover_suite_skills() -> list[pathlib.Path]:
+    """Discover real standalone sub-skills under suites/<game>/<skill-name>/ (ignoring _template and hidden dirs)."""
+    suites_root = ROOT / "suites"
+    if not suites_root.is_dir():
+        return []
+    found: list[pathlib.Path] = []
+    for game_dir in sorted(suites_root.iterdir()):
+        if not game_dir.is_dir() or game_dir.name.startswith((".", "_")):
+            continue
+        for skill_dir in sorted(game_dir.iterdir()):
+            if not skill_dir.is_dir() or skill_dir.name.startswith((".", "_")):
+                continue
+            if (skill_dir / "SKILL.md").is_file():
+                found.append(skill_dir)
+    return found
+
+
+def check_suite_skills() -> list[str]:
+    """Validate suites/ docs, _template scaffolding, and every standalone sub-skill + its release bundle."""
+    suites_root = ROOT / "suites"
+    if not suites_root.is_dir():
+        return []
+    errors: list[str] = []
+
+    for game_dir in sorted(p for p in suites_root.iterdir() if p.is_dir() and not p.name.startswith((".", "_"))):
+        for doc_name in ("README.md", "SUITE_SPEC.md"):
+            mp = game_dir / doc_name
+            if not mp.is_file():
+                errors.append(f"{game_dir.relative_to(ROOT)}: missing {doc_name}")
+                continue
+            txt = mp.read_text(encoding="utf-8")
+            for target in re.findall(r"\]\(((?:\.\.?/)[^)#]+)", txt):
+                if not (mp.parent / target).resolve().exists():
+                    errors.append(f"{mp.relative_to(ROOT)}: broken relative link {target}")
+
+        tpl = game_dir / "_template"
+        if tpl.is_dir():
+            req_tpl = [
+                "SKILL.md",
+                "references/foundations.md",
+                "references/layout-and-components.md",
+                "resources/theme.css",
+                "examples/index.html",
+            ]
+            for rel in req_tpl:
+                if not (tpl / rel).is_file():
+                    errors.append(f"{tpl.relative_to(ROOT)}: missing template file {rel}")
+            for mp in sorted(tpl.rglob("*.md")):
+                txt = mp.read_text(encoding="utf-8")
+                for target in re.findall(r"\]\(((?:\.\.?/)[^)#]+)", txt):
+                    resolved = (mp.parent / target).resolve()
+                    if not resolved.is_relative_to(tpl.resolve()) or not resolved.exists():
+                        errors.append(f"{mp.relative_to(ROOT)}: broken or escaping template link {target}")
+            for hp in sorted((tpl / "examples").glob("*.html")):
+                txt = hp.read_text(encoding="utf-8")
+                for target in re.findall(r'(?:href|src)="((?:\.\.?/)[^"#?]+)"', txt):
+                    resolved = (hp.parent / target).resolve()
+                    if not resolved.is_relative_to(tpl.resolve()) or not resolved.exists():
+                        errors.append(f"{hp.relative_to(ROOT)}: broken or escaping template asset {target}")
+            print(f"[SUITE] Verified scaffolding & template under {game_dir.relative_to(ROOT)}")
+
+    skills = discover_suite_skills()
+    for sd in skills:
+        rel_sd = sd.relative_to(ROOT)
+        skill_md = sd / "SKILL.md"
+        head = skill_md.read_text(encoding="utf-8")
+        if not re.match(rf"^---\s*\nname:\s*{re.escape(sd.name)}\s*\ndescription:", head):
+            errors.append(f"{rel_sd}/SKILL.md: invalid frontmatter (name must be '{sd.name}')")
+        if not (sd / "references" / "foundations.md").is_file():
+            errors.append(f"{rel_sd}: missing references/foundations.md")
+
+        css_files = sorted((sd / "resources").glob("*.css")) if (sd / "resources").is_dir() else []
+        html_files = sorted((sd / "examples").glob("*.html")) if (sd / "examples").is_dir() else []
+        if not css_files:
+            errors.append(f"{rel_sd}: missing resources/*.css")
+        if not html_files:
+            errors.append(f"{rel_sd}: missing examples/*.html")
+
+        defined: set[str] = set()
+        for cf in css_files:
+            ctxt = cf.read_text(encoding="utf-8")
+            defined |= set(re.findall(r"\.([a-zA-Z_-][a-zA-Z0-9_-]*)", ctxt))
+            kfs = set(re.findall(r"@keyframes\s+([a-zA-Z0-9_-]+)", ctxt))
+            used_kf = set(re.findall(r"animation(?:-name)?\s*:\s*([a-zA-Z0-9_-]+)", ctxt))
+            for m in re.findall(r"animation\s*:\s*([^;}{]+)", ctxt):
+                for kf in kfs:
+                    if kf in m:
+                        used_kf.add(kf)
+            missing_kf = sorted(used_kf - kfs - {"none"})
+            unused_kf = sorted(kfs - used_kf)
+            if missing_kf:
+                errors.append(f"{cf.relative_to(ROOT)}: missing keyframes {missing_kf}")
+            if unused_kf:
+                errors.append(f"{cf.relative_to(ROOT)}: unused keyframes {unused_kf}")
+            if "prefers-reduced-motion" not in ctxt:
+                errors.append(f"{cf.relative_to(ROOT)}: missing @media (prefers-reduced-motion: reduce)")
+
+        for hp in html_files:
+            htxt = hp.read_text(encoding="utf-8")
+            local_css = "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", htxt, re.S))
+            scoped = defined | set(re.findall(r"\.([a-zA-Z_-][a-zA-Z0-9_-]*)", local_css))
+            used = {c for m in re.findall(r'class="([^"]+)"', htxt) for c in m.split()}
+            missing = sorted(c for c in used if c not in scoped)
+            inline_grids = len(re.findall(r"grid-template-columns\s*:", htxt))
+            fake_hex = [t for t in ("0x7F3A", "0xDEAD") if t in htxt]
+            if missing:
+                errors.append(f"{hp.relative_to(ROOT)}: missing classes {missing}")
+            if inline_grids:
+                errors.append(f"{hp.relative_to(ROOT)}: found {inline_grids} inline grid-template-columns")
+            if fake_hex:
+                errors.append(f"{hp.relative_to(ROOT)}: leaked fake hex tokens {fake_hex}")
+            for target in re.findall(r'(?:href|src)="((?:\.\.?/)[^"#?]+)"', htxt):
+                resolved = (hp.parent / target).resolve()
+                if not resolved.is_relative_to(sd.resolve()) or not resolved.exists():
+                    errors.append(f"{hp.relative_to(ROOT)}: broken or escaping asset {target}")
+
+        for mp in sorted(sd.rglob("*.md")):
+            mtxt = mp.read_text(encoding="utf-8")
+            for target in re.findall(r"\]\(((?:\.\.?/)[^)#]+)", mtxt):
+                resolved = (mp.parent / target).resolve()
+                if not resolved.is_relative_to(sd.resolve()) or not resolved.exists():
+                    errors.append(f"{mp.relative_to(ROOT)}: broken or escaping link {target}")
+
+        bundle = ROOT / "release" / sd.name
+        if not bundle.is_dir():
+            errors.append(f"release/{sd.name} is missing (run scripts/package-release.py)")
+        else:
+            expected: dict[str, pathlib.Path] = {"SKILL.md": skill_md}
+            for lic in ("LICENSE", "NOTICE.md"):
+                expected[lic] = (sd / lic) if (sd / lic).is_file() else (ROOT / lic)
+            for d in ("references", "resources", "examples"):
+                if (sd / d).is_dir():
+                    for f in sorted((sd / d).rglob("*")):
+                        if f.is_file():
+                            expected[str(f.relative_to(sd))] = f
+            actual = {str(p.relative_to(bundle)): p for p in sorted(bundle.rglob("*")) if p.is_file()}
+            stale = sorted(set(actual) - set(expected))
+            if stale:
+                errors.append(f"release/{sd.name} has stale files: {stale}")
+            for rel, src in sorted(expected.items()):
+                dst = bundle / rel
+                if not dst.exists():
+                    errors.append(f"release/{sd.name}/{rel}: missing")
+                elif src.read_bytes() != dst.read_bytes():
+                    errors.append(f"release/{sd.name}/{rel}: out of sync (run scripts/package-release.py)")
+
+        print(f"[SUITE] Verified sub-skill {rel_sd} (css={len(css_files)}, html={len(html_files)})")
+
+    if not skills:
+        print("[SUITE] Discovered 0 published sub-skills under suites/ (template ready)")
     return errors
 
 
@@ -426,6 +608,8 @@ def check_mobile_viewports() -> list[str]:
     """Verify exact 375px and 390px layout width via same-origin iframes (avoids headless window min-width clamp)."""
     errors: list[str] = []
     pages = sorted((ROOT / "examples").glob("*.html"))
+    for sd in discover_suite_skills():
+        pages.extend(sorted((sd / "examples").glob("*.html")))
     rels = ["/" + str(p.relative_to(ROOT)).replace("\\", "/") for p in pages]
     names = [str(p.relative_to(ROOT)) for p in pages]
 
@@ -507,6 +691,7 @@ def main() -> int:
     errors.extend(check_markdown_files(defined))
     errors.extend(check_css_animations())
     errors.extend(check_release_bundle())
+    errors.extend(check_suite_skills())
     if args.render:
         errors.extend(run_chrome_render_and_behavior(pathlib.Path(args.out)))
 

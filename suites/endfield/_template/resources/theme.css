@@ -1,0 +1,95 @@
+/*! Endfield Theme Sub-Skill Template (.ef-<slug>-*)
+ *  新建专题时将所有 <slug> 替换为简短唯一标识，并按 foundations.md 实现真实视觉系统。
+ *  本模板文件仅作结构脚手架，不参与正式发布打包。
+ */
+
+:root {
+  --ef-tpl-surface: #f4f4f2;
+  --ef-tpl-surface-raised: #ffffff;
+  --ef-tpl-ink: #191919;
+  --ef-tpl-ink-muted: #626262;
+  --ef-tpl-line: #d4d4d0;
+  --ef-tpl-accent: #fffa00;
+  --ef-tpl-on-accent: #191919;
+  --ef-tpl-font-body: "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --ef-tpl-font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.ef-tpl-scope {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ef-tpl-surface);
+  color: var(--ef-tpl-ink);
+  font-family: var(--ef-tpl-font-body);
+  line-height: 1.6;
+}
+
+.ef-tpl-scope *,
+.ef-tpl-scope *::before,
+.ef-tpl-scope *::after {
+  box-sizing: border-box;
+}
+
+/* 保障显式 display 组件同样服从 HTML [hidden] 语义 */
+.ef-tpl-scope [hidden] {
+  display: none !important;
+}
+
+.ef-tpl-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.ef-tpl-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--ef-tpl-ink);
+}
+
+.ef-tpl-code {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--ef-tpl-accent);
+  color: var(--ef-tpl-on-accent);
+  font-family: var(--ef-tpl-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ef-tpl-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.ef-tpl-card {
+  padding: 20px;
+  background: var(--ef-tpl-surface-raised);
+  border: 1px solid var(--ef-tpl-line);
+}
+
+@media (max-width: 767px) {
+  .ef-tpl-shell {
+    padding: 24px 16px;
+  }
+  .ef-tpl-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ef-tpl-scope *,
+  .ef-tpl-scope *::before,
+  .ef-tpl-scope *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
