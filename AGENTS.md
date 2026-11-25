@@ -14,7 +14,7 @@
 
 入口：[SKILL.md](./SKILL.md)。结构说明：[README.md](./README.md)。
 
-> **当前分支定位（`suite/arknights`）**：本分支基于 `main`（`v1.2` 通用基座）独立演进**《明日方舟》本家特色活动/玩法专题子 Skill 套组**（位于 [`suites/arknights/`](./suites/arknights/README.md)）。**不动 `main` 通用基座的核心铁律**；每个专题子 Skill 必须完全自包含、采风先行并遵守 [`suites/arknights/SUITE_SPEC.md`](./suites/arknights/SUITE_SPEC.md)。
+> **当前分支定位（`suite/arknights`）**：本分支基于 `main`（`v1.3` 通用基座）独立演进**《明日方舟》本家特色活动/玩法专题子 Skill 套组**（位于 [`suites/arknights/`](./suites/arknights/README.md)）。**不动 `main` 通用基座的核心铁律**；每个专题子 Skill 必须完全自包含、采风先行并遵守 [`suites/arknights/SUITE_SPEC.md`](./suites/arknights/SUITE_SPEC.md)。
 
 ## 二、目录职责与“谁能改什么”
 
@@ -44,8 +44,9 @@
    检查清单见 [SKILL.md 第五步](./SKILL.md)：无文字重叠/裁切、390px 无横向溢出、亮暗对比度、无纯色占位块。
 4. **规则 ↔ 实现一致**：SKILL.md / references 里写的类名必须在 CSS 里真实存在（`python3 scripts/verify.py` 会比对样板与文档中的 `.ak-*` / `.ef-*` 类及 `@keyframes`）。
 5. **小步提交**：一个主题一个 commit，信息用 `feat|fix|docs|chore: 简述`。**不要未经用户要求就 commit / push。**
-6. **不随意加依赖/商业资源**：不引入鹰角官方位图与商业字体；字体只用开源字体并在 NOTICE 说明回退。
-7. 回复保持简洁；引用文件用相对链接。
+6. **字体作为一等视觉设计维度（且零商业侵权资产）**：不引入鹰角官方位图与商业字体，但**绝不能只把字体当合规回退草草带过**。每套体系或专题子 Skill 必须按真实气质独立定义四层字体角色（展示巨字 Display / 中文标题与正文 CJK / 技术编号与等宽数据 Mono·Tabular / 装饰副标 Accent），明确字重、字宽（Condensed/Extended）、字距与衬线/无衬线选型，选用合法开源字体并同时提供 Google Fonts + `@fontsource` 离线自托管与系统回退链；渲染验证时须确认目标字体真实生效。
+7. **视觉语言与网站原型解耦（反“万物皆控制台”惯性）**：设计系统定义的是配色、字阶、几何、节奏与交互质感，**不等于只能做后台控制台/监控面板**。必须先识别用户的真实网站类型（官网落地页 / 长文博客与文档 / 作品集与商品画廊 / 登录表单与专题页 / 控制台工作台），再挑选匹配的空间骨架与组件；非后台场景严禁硬塞侧边监控栏、KPI 指标卡、实时状态灯或数据表。
+8. 回复保持简洁；引用文件用相对链接。
 
 ## 四、项目记忆（Project Memory）
 
@@ -136,17 +137,28 @@
 | 44 | 全站可交互组件与关键帧动效复查检出：① `prts-addons.css` 与 `endfield-standalone.css` 均缺 `[hidden] { display: none !important; }`，导致 `.ak-folio-item`/`ef-item-slot`（`display: grid`）在设 `hidden` 后仍未视觉隐藏；② PRTS 上游 `.ak-popover` 缺独立 `.ak-tip-anchor` 显隐规则，且 `prts-components.html` 遗漏 Popover 演示及分页/精英阶段/技能等级/屏蔽词/官网清单交互；③ Endfield 样板 Hero 与仓储矩阵筛选/格点选定无事件联动，组件目录缺 `.ef-loader`/`.animate-flicker`/`.animate-fill` 演练与分页/导航器/头像/OTP/月历/工具栏/重播动效交互，且 `.ef-btn[aria-pressed="false"]` 覆写了 `.ef-btn--light` 点阵外观；④ 两份目录及样板缺完备键盘切换与滚动高亮联动 | `display: grid` 优先级高于 UA `[hidden]`；上游 Popover 依赖 Vue `v-show` 控制；初版陈列页与样板保留了一批仅静态展示的按钮与离屏动画；`.ef-tag` 固定 24px 高但未加 `nowrap` | ① 双 CSS 补齐 `.ak-scope [hidden]`/`.ef-scope [hidden]`、`button.ef-avatar` 无边框、`.ef-table--compact`、`.ef-btn[aria-pressed="false"]:not(.ef-btn--light)` 与 `.ef-tag` 防折行，新增 `ak-corner-lock`、`.ak-tip-anchor.is-open > .ak-popover`、`.ak-brief.is-updating` 扫描切换与 `.ak-news-card__head::after` 缓显；② 补齐 `prts-components.html` 的 Popover/分页/阶段/技能等级/屏蔽词/清单/动效重播，完善 `prts-boilerplate.html` 缩略卡键盘导航与滚动联动；③ `endfield-boilerplate.html` 增 `.animate-flicker`、仓储筛选/落格属性面板与 Hero 行动联动，`endfield-components.html` 补齐工具栏/分页/导航器/头像/OTP/月历/班表/`.ef-loader` 与「重播入场动效」，并扩展 `verify.py` 实机 DOM/显示/键盘/动效探针 | 凡设置了 `display: grid/flex` 的组件切换 `hidden` 时须通过 `[hidden] { display: none !important; }` 兜底并在 `verify.py` 检查 `getComputedStyle(el).display === 'none'`；离屏或状态型关键帧（`ef-fill`/`ef-flicker`/`ak-corner-lock`）统一纳入加载态 + 重播交互验证 |
 | 45 | `065261d` 实渲染审查检出：① 嵌入式 `.ef-loader` 在 Endfield 暗色下背景 `#141414` 与画布撞色且无边框导致容器轮廓蒸发；② 高视口初次加载时 `IntersectionObserver` 把 `endfield-boilerplate` 侧轨高亮错标到第 2 项；③ 黑底 `.ef-panel__head[data-theme="inverse"]` 内的「重播入场动效」按钮偏闷且含内联尺寸，下方 `.corner-brackets` 标签贴顶偏挤 | `.ef-loader` 缺暗色表面阶差与细框；滚动监听缺 `scrollY < 40` 首屏兜底且多段相交时后项覆盖前项；反转标题头按钮无专用描边类 | `endfield-standalone.css` 为非全屏 `.ef-loader` 补细框与暗色深墨 `#0c0c0c` 底，新增 `.ef-btn--head` 与 `.ef-row--bracket-pad`；三份样板滚动监听统一增加 `scrollY < 40` 锁定首屏及取最靠上相交项 | `verify.py` 增 `endfield-components-dark` 探针校验 `loaderFramedOk`，并在 `endfield-boilerplate` 校验 `initialRailFirst` |
 
+### 2026-11-25 · 字体设计盲区复盘与专题套组硬性记忆
+
+| # | 现象 | 根因 | 处理 | 防再犯 |
+| :-: | :--- | :--- | :--- | :--- |
+| 46 | 前期设计注意力集中在色板、几何形状与页面骨架，却普遍忽略了**字体作为核心风格识别维度**的重要性，导致不同风格容易在字型气质上同质化、退化成普通默认黑体网页 | 此前只在第 #5 条从“版权/CDN 合规回退”视角提及字体，未把「展示字宽窄、衬线/无衬线气质、中文体例、等宽编号与字距节律」列为采风与设计的一等要素 | ① 在本文件第三节第 6 条与第五节自检明确「字体一等视觉原则」：采风阶段必须同步采集字型气质，按四层角色（Display 展示 / CJK 正文与大标 / Mono·Tabular 编号数据 / Accent 副标）选用契合该风格的开源字体（例如战术/机能走压缩高耸无衬线与机械等宽、炎国/岁家走宋体衬线与典雅拉丁衬线、剧场/阵营典籍走高反差古典衬线、波普/庆典走强表现力宽重展示体），并配齐 `@fontsource` 与系统回退链；② 同步纳入 `suite/arknights` 与 `suite/endfield` 专题规范与渲染检查 | 凡新建或升级任意设计体系/专题子 Skill，必须先定「四层字体角色与字型气质」再定版式；渲染审查时核验字体确实加载生效且不与主基座千篇一律 |
+| 47 | 现有样板与 DeepSeek 盲测产物几乎清一色落入「后台控制台 / 监控调度台」（左侧导航轨 + KPI 数字条 + 遥测表 + 状态灯），忽略了现实中官网落地页、长文博客/文档、作品集/商城画廊、登录/营销专题页等非控制台网站类型 | 现有整页样板与规范示例高度锚定在“调度台 / 情报终端 / 数据矩阵”场景，将“设计语言”与“控制台布局原型”隐性焊死，导致小模型拿到非后台需求也惯性套壳做控制台 | ① 在本文件第三节第 7 条与第五节自检立下「视觉语言与网站原型解耦」红线，按五大常见网站类型（官网落地页 / 博客文档阅读 / 画廊作品集与电商 / 登录表单与专题页 / 控制台）分别匹配空间结构，非后台场景主动剥离侧栏、KPI 与状态灯；② 后续在 `SKILL.md` 与 `suite/*` 的 `SUITE_SPEC.md` 中引入页面原型路由，并按场景补充非控制台整页样板，打破样板锚定偏差 | 新建或评审任何 Skill 与样板前，先问「这是不是控制台需求？」——若不是，禁止出现无意义的侧边管理轨、监控 KPI 块与 `ONLINE/TELEMETRY` 装饰 |
+| 48 | `v1.3-dev` 通用网站原型重构实渲染检出：① `.ef-has-reveal .ef-reveal.is-in` 复用无 `to { opacity: 1 }` 的 `ef-shift-in` 关键帧，导致 `opacity: 0` 态触发入场后停在透明不可见；② `.ef-plan-card` 纵向 flex 拉伸子级 `.ef-tag` 成满宽色条；③ `endfield-landing.html` 顶栏与首屏同时放黄色按钮违反“单屏仅一个黄主行动”铁律；④ `prts-editorial.html` 正文代码块文本含 `grid-template-columns:` 触发静态内联栅格检查 | `ef-shift-in` 仅声明 `from` 关键帧，终止值依赖元素自身 `opacity`；flex 默认 `align-items: stretch`；顶栏误用 `.ef-btn--action` | ① `.ef-has-reveal .ef-reveal.is-in` 与 `.ak-has-reveal .ak-reveal.is-in` 显式声明 `opacity: 1`；② `.ef-plan-card > .ef-tag` 设 `align-self: flex-start`；③ `endfield-landing.html` 顶栏按钮改默认墨色 `.ef-btn`，首屏保留唯一切角黄行动 `.ef-btn--cut`；④ 改写 `prts-editorial.html` 代码示例为复用语义类，在 `verify.py` 新增 `ef-landing` / `prts-editorial` 亮暗探针与 `revealVisibleOk` 断言 | 凡只写 `from` 关键帧的淡入动画（如 `ef-shift-in`），激活类必须显式设回 `opacity: 1`，并在探针校验计算后透明度；flex 卡片内的 `.ef-tag` 统一 `align-self: flex-start` |
+| 49 | `48d7eeb`（`v1.3` 本地提交）全量实渲染审美与规范复审检出：① PRTS `.ak-article-head__kicker` 误用 `var(--ak-link)` 致暗色不可点击眉题呈亮冰青 `#5ddcff`，且 `.ak-prose p` `(0,1,1)` 覆盖了 `.ak-article-head__lead` 下边距致导语与作者栏 `0px` 贴死；② `.ak-topbar__wordmark` 在 `≤420px` 写死 `max-width: 112px`，致 `MONOLITH.NOTES` 在 390px 留有余量时过早截断为 `MONOLITH.NO…`；③ Endfield `.ef-landing-hero > .ef-hero__ghost` 紧贴粘性顶栏底线被削平顶弧，暗色下 `.ef-showcase-card__media` 纯黑 `#000000` 吞没网格肌理，两份新样板画廊卡媒体区空置，且暗色下移动端「菜单」与个人定价钮误用恒浅色 `.ef-btn--light` 反客为主；④ 恒深色登录栏 `.ak-auth-visual` / `.ef-auth-brand` 未锁暗态语义令牌（亮色宿主下子元素黑底黑字或 `#6b5d00` 低对比失效），`motifs-and-components.md` 顶栏蓝图仍残留 `ef-btn--action` | 排版容器元素级规则特指度高于单类；窄屏品牌宽度写死固定像素而非 flex 自适应收缩；恒深色分屏栏遗漏暗态令牌作用域；文档蓝图未与样板同步去黄钮 | ① `.ak-article-head__kicker` 改 `--ak-fg-muted` + `8px` 实块锚点，补齐 `.ak-prose .ak-article-head__lead` 间距、正文链接/列表样式与 `.ak-prose-diagram`，顶栏品牌改为 flex 自适应省略；② `.ef-landing-hero > .ef-hero__ghost` 下移留出 10px 呼吸距并对齐版心，调优 `.ef-showcase-card__media` 表面混色与叠层，为两份新样板共 9 张画廊卡补入精密矢量工程/建筑线稿 `.ak-work-card__art` / `.ef-showcase-card__art`；③ 移动端菜单与次级定价钮改语义 `.ef-btn`，抽离 `.ef-specimen-card` / `.ef-section-bar` 清理内联样式与硬编码色值，为 `.ak-auth-visual` / `.ef-auth-brand` 锁齐暗态令牌并补全 `.ef-prose`；④ 修正 `motifs-and-components.md` 蓝图与 `README.md` / `foundations.md` 描述，扩展 `verify.py` 探针并重打 `release/` | 新增恒深色局部容器（Hero/顶栏/登录品牌栏）必须在 CSS 内自带暗态令牌作用域并用亮色探针实测；含 `.ak-prose p` / `.ef-prose p` 的阅读容器内子组件须注意 `(0,1,1)` 特指度覆盖 |
+
 **已知遗留 / 待办**
 - Endfield 窄屏巨字被右侧截断属于“越界截断”的有意效果，极窄屏（<360px）可视需求再缩字号。
 - 样板用的数据为虚构示例；真实项目需替换，**微文字必须是真实可读内容**（见 SKILL 红线）。
 - 仓库不内置 `.woff2` 商业/开源字体二进制，但已在两份 `components-catalog.md` 补充 `@fontsource` 离线自托管安装与引入片段。
 - 业务项目接入时，原生 `<dialog>` 自带焦点捕获；两份陈列页的受控 Dropdown 已实现点击外部关闭与方向键/`Esc` 导航，若在项目中改用 `<details class="ef-dropdown">` 或独立 `.ef-popover`，仍需按 catalog 契约补齐外部关闭脚本。
-- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 16 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并由 [`scripts/package-release.py`](./scripts/package-release.py) 输出纯净单包 [`release/arknights-design/`](./release/arknights-design/)。
+- 仓库静态与视觉门禁已封装为 [`scripts/verify.py`](./scripts/verify.py)（`--render` 跑 24 张 1440px/390px 亮暗截图 + Chrome 实时动效/交互探针），并由 [`scripts/package-release.py`](./scripts/package-release.py) 输出纯净单包 [`release/arknights-design/`](./release/arknights-design/)。
 
 ## 五、给 AI 助手的快速自检（交付前 30 秒）
 
 - [ ] 我是否混用了 A/B 两套规则？（PRTS 不许切角/圆角卡片；Endfield 不许四角全切）
 - [ ] 我改的是“可手改”的文件吗？（见第二节表）
+- [ ] 我是否为本体系/专题独立选定了四层字体角色与字型气质，并在渲染图里确认生效（而非沿用默认黑体）？
+- [ ] 我是否按真实网站类型选择布局原型（而非把落地页/博客/画廊硬做成控制台）？
 - [ ] 我渲染并看过 1440px 与 390px、亮与暗了吗？
 - [ ] 文档、CSS、样板三者一致吗？
 - [ ] 我把这次的现象→根因→处理追加进第四节了吗？

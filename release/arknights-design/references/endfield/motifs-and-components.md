@@ -307,6 +307,74 @@
 
 ---
 
+## 四、 通用非控制台网站原型骨架（品牌落地页 / 博客文档 / 画廊 / 登录页）
+
+做品牌官网、产品落地页、作品集、博客文档或登录表单时，**严禁默认套用 `.ef-app-shell`（224px 后台侧轨）**，请改用 `endfield-standalone.css` 第 9 节提供的无侧栏通用网站骨架（完整可交互示范见 [`examples/endfield-landing.html`](../../examples/endfield-landing.html)）：
+
+```html
+<!-- 1. 顶部 3px 信号黄阅读进度条 + 无侧栏官网顶栏 -->
+<div class="ef-read-bar" aria-hidden="true"></div>
+<header class="ef-site-header">
+  <div class="ef-site-header__inner">
+    <a class="ef-site-header__brand" href="#top"><span class="ef-site-header__mark">KL</span><span>BRAND</span></a>
+    <nav class="ef-site-header__nav">
+      <a class="ef-site-header__link is-current" href="#top" aria-current="page">概览</a>
+      <a class="ef-site-header__link" href="#catalog">画廊</a>
+    </nav>
+    <div class="ef-site-header__actions">
+      <button type="button" class="ef-btn ef-btn--sm ef-site-header__cta">预约体验</button>
+      <button type="button" class="ef-btn ef-btn--sm ef-site-header__menu">菜单</button>
+    </div>
+  </div>
+</header>
+
+<!-- 2. 无侧栏落地页首屏 (.ef-landing-hero) + 全幅内容舞台 (.ef-site-main / .ef-site-section) -->
+<section class="ef-landing-hero">
+  <span aria-hidden="true" class="ghost-hatch ef-hero__ghost">//SERIES</span>
+  <div class="ef-site-main">
+    <div class="ef-landing-hero__grid">
+      <div>
+        <h1 class="ef-landing-hero__title">主标题</h1>
+        <p class="ef-landing-hero__lead">副标题导语…</p>
+      </div>
+      <div>右侧焦点产品/视觉块</div>
+    </div>
+  </div>
+</section>
+
+<div class="ef-site-main">
+  <!-- 3. 无边框特性分栏 (.ef-feature-grid)、产品/作品画廊 (.ef-gallery-grid) 与定价方案 (.ef-pricing-grid) -->
+  <section class="ef-site-section">
+    <div class="ef-feature-grid">
+      <article class="ef-feature-item ef-reveal"><span class="ef-feature-item__num">01</span><h3 class="ef-feature-item__title">特性</h3><p class="ef-feature-item__desc">说明</p></article>
+    </div>
+    <div class="ef-gallery-grid">
+      <button type="button" class="ef-showcase-card ef-reveal">
+        <div class="ef-showcase-card__media"><span class="ef-showcase-card__code">ID // 01</span><span class="ef-showcase-card__fig">MODEL</span></div>
+        <div class="ef-showcase-card__body"><div class="ef-showcase-card__head"><h3 class="ef-showcase-card__title">名称</h3><span class="ef-showcase-card__price">¥2,499</span></div><p class="ef-showcase-card__desc">摘要</p></div>
+      </button>
+    </div>
+    <div class="ef-pricing-grid">
+      <article class="ef-plan-card ef-plan-card--featured"><h3 class="ef-plan-card__name">方案</h3><div class="ef-plan-card__price">¥299<small>/ 月</small></div><ul class="ef-plan-card__list"><li>权益条目</li></ul></article>
+    </div>
+  </section>
+
+  <!-- 4. 长文博客/文档阅读壳 (.ef-article-shell + .ef-prose) -->
+  <div class="ef-article-shell">
+    <article class="ef-prose"><h2>章节</h2><p>72ch 舒适阅读正文…</p></article>
+    <aside><ul class="ef-toc"><li class="ef-toc__item is-current"><a href="#">目录</a></li></ul></aside>
+  </div>
+</div>
+
+<!-- 5. 登录 / 表单向导分屏壳 (.ef-auth-shell) -->
+<div class="ef-auth-shell">
+  <section class="ef-auth-brand">左侧深色品牌宣言</section>
+  <section class="ef-auth-card">右侧极简表单</section>
+</div>
+```
+
+---
+
 ## 附：Hero 与镂空巨字的安全布局（防重叠）
 
 镂空巨字（`ghost-hatch`）是**背景层**，必须与标题/面包屑分层，否则会出现文字叠压、被裁切的事故：

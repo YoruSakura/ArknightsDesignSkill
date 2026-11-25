@@ -22,7 +22,11 @@
 - 所有正文文字对比度 ≥ 4.5:1，大号展示标题与交互边框 ≥ 3:1。
 - 给出品牌换色覆盖清单（仅覆写语义强调令牌，不破坏中性基底层级）。
 
-## 四、字体回退与动效节律
+## 四、四层字体角色与动效节律（一等视觉维度）
 
-- **展示字 / 编号字 / 正文字**：只使用开源字体与系统回退，附 `@fontsource` 离线引入示例。
+- 按四层角色定义开源字体（含字重、字宽、衬线/无衬线选型、Google Fonts 链接、`@fontsource` 离线方案与系统回退链）：
+  1. **Display 展示巨字**：`--ak-<slug>-font-display`（TODO）
+  2. **CJK 中文标题与正文**：`--ak-<slug>-font-body`（TODO）
+  3. **Mono / Tabular 编号与数据**：`--ak-<slug>-font-mono`（TODO，配 `tabular-nums`）
+  4. **Accent 装饰副标 / 引言**：`--ak-<slug>-font-accent`（TODO）
 - **动效语言**：定义本专题的过渡时长、缓动曲线与专属 `@keyframes`，并声明 `prefers-reduced-motion: reduce` 行为。
