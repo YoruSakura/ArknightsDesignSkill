@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KINETIC LAB // 桌面声学与模块硬件官网（Endfield 通用落地页示范）</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,600..800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;800&family=Outfit:wght@300;500;700&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../resources/endfield-standalone.css">
+</head>
+<body class="ef-scope">
+  <!-- 顶部 3px 信号黄滚动阅读进度线 -->
+  <div class="ef-read-bar" id="ef-read-bar" aria-hidden="true"></div>
+
+  <!-- 无侧栏官网顶部导航栏（原型 1：品牌官网 / 产品落地页，严禁强塞 224px 后台侧轨） -->
+  <header class="ef-site-header">
+    <div class="ef-site-header__inner">
+      <a class="ef-site-header__brand" href="#top">
+        <span class="ef-site-header__mark" aria-hidden="true">KL</span>
+        <span>KINETIC LAB</span>
+      </a>
+
+      <nav class="ef-site-header__nav" aria-label="主导航">
+        <a class="ef-site-header__link is-current" href="#top" aria-current="page">产品概览</a>
+        <a class="ef-site-header__link" href="#craft">设计哲学</a>
+        <a class="ef-site-header__link" href="#catalog">硬件画廊</a>
+        <a class="ef-site-header__link" href="#plans">服务方案</a>
+        <a class="ef-site-header__link" href="#faq">常见问题</a>
+      </nav>
+
+      <div class="ef-site-header__actions">
+        <div role="group" aria-label="外观模式切换" class="ef-site-header__switch">
+          <button type="button" id="ef-btn-light" class="ef-btn ef-btn--sm" aria-pressed="true" onclick="toggleTheme('light')">纸白</button>
+          <button type="button" id="ef-btn-dark" class="ef-btn ef-btn--sm" aria-pressed="false" onclick="toggleTheme('dark')">烟黑</button>
+        </div>
+        <button type="button" class="ef-btn ef-btn--sm ef-site-header__cta" onclick="openBooking()">预约试听</button>
+        <button type="button" class="ef-btn ef-btn--sm ef-site-header__menu" id="ef-nav-btn" aria-controls="ef-nav-drawer" aria-expanded="false">菜单</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 首屏：无侧栏开放式品牌 Hero（纸墨主体 + 镂空巨字背景 + 唯一切角主行动） -->
+    <section id="top" class="ef-landing-hero">
+      <span aria-hidden="true" class="ghost-hatch ef-hero__ghost">//ACOUSTIC</span>
+      <div aria-hidden="true" class="contour ef-landing-hero__bg"></div>
+
+      <div class="ef-site-main">
+        <div class="ef-landing-hero__grid">
+          <div>
+            <span class="ef-section-title__meta">▼ // KINETIC LAB · SERIES 04 · 2026 AUTUMN EDITION</span>
+            <h1 class="ef-landing-hero__title">把精密声学仪器<br>做成桌面的静默雕塑</h1>
+            <div aria-hidden="true" class="ef-reg-strip ef-landing-hero__reg">
+              <span class="m"></span><span class="c"></span><span class="y"></span><span class="rule"></span>
+            </div>
+            <p class="ef-landing-hero__lead">
+              CNC 阳极氧化铝一体化腔体、可替换磁吸编码器与零延迟平衡解码。去掉一切花哨灯光，让每一次阻尼旋钮转动都像精密测绘仪器般克制准确。
+            </p>
+            <div class="ef-row">
+              <button type="button" class="ef-btn ef-btn--cut" id="ef-hero-book" onclick="openBooking()">预约线下声学试听</button>
+              <a href="#catalog" class="ef-btn">浏览全系硬件</a>
+              <a href="./endfield-boilerplate.html" class="ef-btn ef-btn--text">对照控制台样板</a>
+            </div>
+          </div>
+
+          <!-- 右侧：局部暗色产品聚焦卡（通电闪烁入场 animate-flicker，非监控仪表盘） -->
+          <div data-theme="dark" id="ef-hero-specimen" class="ef-scope corner-brackets animate-flicker ef-specimen-card">
+            <div class="ef-specimen-card__head">
+              <span>MODEL // KL-04 MONO DAC</span>
+              <span class="ef-specimen-card__status">IN STOCK · BATCH 26</span>
+            </div>
+            <div class="ef-specimen-card__stage">
+              <svg viewBox="0 0 240 160" width="220" height="146" aria-hidden="true">
+                <rect x="20" y="24" width="200" height="112" fill="none" stroke="currentColor" stroke-width="1.5" stroke-opacity=".45"/>
+                <line x1="20" y1="52" x2="220" y2="52" stroke="currentColor" stroke-opacity=".2"/>
+                <circle cx="88" cy="94" r="30" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="88" cy="94" r="22" fill="none" stroke="currentColor" stroke-dasharray="2 5" stroke-width="4" stroke-opacity=".55"/>
+                <line x1="88" y1="94" x2="104" y2="78" stroke="var(--ef-action)" stroke-width="2"/>
+                <rect x="142" y="72" width="56" height="10" fill="currentColor" fill-opacity=".2"/>
+                <rect x="142" y="72" width="38" height="10" fill="var(--ef-action)"/>
+                <rect x="142" y="92" width="56" height="6" fill="currentColor" fill-opacity=".2"/>
+                <rect x="142" y="106" width="44" height="6" fill="currentColor" fill-opacity=".2"/>
+              </svg>
+            </div>
+            <div class="ef-prop-list">
+              <div class="ef-prop-row"><span class="ef-prop-row__k">全铝机身工艺</span><span class="ef-prop-row__v">6063-T6 喷砂阳极</span></div>
+              <div class="ef-prop-row"><span class="ef-prop-row__k">动态范围 / 底噪</span><span class="ef-prop-row__v">128 dB / 0.8 µV</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 通栏信号黄换气色带（全站唯一一条大面积黄带，用来切换章节节奏） -->
+    <div class="ef-band-title">
+      <div>
+        <p class="ef-band-title__sub">KINETIC LAB // DESIGN PRINCIPLES</p>
+        <h2 class="ef-band-title__main">PRECISION IN SILENCE</h2>
+      </div>
+      <div class="ef-band-title__meta">
+        <div>EDITION 2026</div>
+        <div>INDUSTRIAL ACOUSTICS</div>
+      </div>
+    </div>
+
+    <div class="ef-site-main">
+      <!-- 版块 1：三列无边框核心特性 -->
+      <section id="craft" class="ef-site-section ef-stack">
+        <header class="ef-section-title">
+          <span class="ef-section-title__meta">▼ // SECTION 01 · PHILOSOPHY</span>
+          <div class="ef-section-title__row">
+            <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
+            <p class="ef-section-title__en">CRAFT &amp; MATERIALS</p>
+          </div>
+          <h2 class="ef-section-title__cn">为十年桌面对话而造的三项坚持</h2>
+        </header>
+
+        <div class="ef-feature-grid">
+          <article class="ef-feature-item ef-reveal">
+            <span class="ef-feature-item__num">01</span>
+            <h3 class="ef-feature-item__title">全模块化可维护结构</h3>
+            <p class="ef-feature-item__desc">主控板、耳放子卡与阻尼旋钮均采用标准内六角紧固，用户只需一把螺丝刀即可在五分钟内完成升级或更换。</p>
+          </article>
+          <article class="ef-feature-item ef-reveal" style="--stagger: 60ms;">
+            <span class="ef-feature-item__num">02</span>
+            <h3 class="ef-feature-item__title">零视觉噪音面板语义</h3>
+            <p class="ef-feature-item__desc">拒绝彩色 RGB 跑马灯。物理刻度刻在机壳表面，仅以一粒低亮度琥珀微光指示锁定状态，在暗室中依然克制。</p>
+          </article>
+          <article class="ef-feature-item ef-reveal" style="--stagger: 120ms;">
+            <span class="ef-feature-item__num">03</span>
+            <h3 class="ef-feature-item__title">开放驱动与跨平台固件</h3>
+            <p class="ef-feature-item__desc">原生支持 macOS、Linux 与 Windows 免驱 UAC2，提供开源命令行校准工具，设备生命周期不绑定任何云账号。</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 版块 2：作品/产品画廊（胶囊筛选 + 点击呼出右侧详情抽屉） -->
+      <section id="catalog" class="ef-site-section ef-stack">
+        <div class="ef-section-bar">
+          <header class="ef-section-title">
+            <span class="ef-section-title__meta">▼ // SECTION 02 · HARDWARE CATALOG</span>
+            <div class="ef-section-title__row">
+              <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
+              <p class="ef-section-title__en">PRODUCT LINEUP</p>
+            </div>
+            <h2 class="ef-section-title__cn">核心硬件与模块化桌面配件</h2>
+          </header>
+
+          <div class="ef-row" role="group" aria-label="硬件分类筛选" id="ef-gallery-filters">
+            <button type="button" class="ef-filter-chip is-selected" aria-pressed="true" data-cat="all">全部产品</button>
+            <button type="button" class="ef-filter-chip" aria-pressed="false" data-cat="audio">桌面声学</button>
+            <button type="button" class="ef-filter-chip" aria-pressed="false" data-cat="module">模块配件</button>
+          </div>
+        </div>
+
+        <div class="ef-gallery-grid" id="ef-gallery-grid">
+          <button type="button" class="ef-showcase-card ef-reveal" data-cat="audio"
+            data-code="KL-04" data-title="KL-04 平衡桌面解码耳放" data-price="¥2,499"
+            data-spec="双单声道 R-2R 架构 · 4.4mm + XLR 平衡输出 · 1,800mW @ 32Ω"
+            data-summary="旗舰桌面主机，整块 6063 铝合金 CNC 铣削成型，无级高精度步进音量轮，专为近场监听与高阻头戴耳机设计。">
+            <div class="ef-showcase-card__media dot-grid">
+              <span class="ef-showcase-card__code">AUDIO // KL-04</span>
+              <svg class="ef-showcase-card__art" viewBox="0 0 124 84" aria-hidden="true">
+                <rect x="8" y="14" width="108" height="56" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity=".55"/>
+                <circle cx="42" cy="42" r="16" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <circle cx="42" cy="42" r="11" fill="none" stroke="currentColor" stroke-dasharray="2 4" stroke-width="2.5" stroke-opacity=".5"/>
+                <line x1="42" y1="42" x2="51" y2="33" stroke="var(--ef-accent-ink)" stroke-width="2"/>
+                <rect x="70" y="30" width="32" height="6" fill="var(--ef-accent-ink)"/>
+                <rect x="70" y="42" width="32" height="4" fill="currentColor" fill-opacity=".28"/>
+                <rect x="70" y="51" width="22" height="4" fill="currentColor" fill-opacity=".28"/>
+              </svg>
+              <span class="ef-showcase-card__fig">MONO DAC</span>
+            </div>
+            <div class="ef-showcase-card__body">
+              <div class="ef-showcase-card__head">
+                <h3 class="ef-showcase-card__title">KL-04 平衡桌面解码耳放</h3>
+                <span class="ef-showcase-card__price">¥2,499</span>
+              </div>
+              <p class="ef-showcase-card__desc">双单声道 R-2R 平衡架构，CNC 一体成型全铝机身与阻尼刻度轮。</p>
+            </div>
+          </button>
+
+          <button type="button" class="ef-showcase-card ef-reveal" data-cat="audio" style="--stagger: 50ms;"
+            data-code="KL-M2" data-title="KL-M2 近场有源监听音箱" data-price="¥3,899"
+            data-spec="4.5 英寸铝合金振膜 · D 类双功放 90W · 房间声学三段拨杆"
+            data-summary="专为 60–90cm 紧凑书桌优化的同轴近场监听，背部内置物理房间衰减拨杆，直连平衡口零底噪。">
+            <div class="ef-showcase-card__media hatch">
+              <span class="ef-showcase-card__code">AUDIO // KL-M2</span>
+              <svg class="ef-showcase-card__art" viewBox="0 0 124 84" aria-hidden="true">
+                <rect x="34" y="6" width="56" height="72" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity=".6"/>
+                <circle cx="62" cy="24" r="7" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                <circle cx="62" cy="52" r="16" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <circle cx="62" cy="52" r="5" fill="var(--ef-accent-ink)"/>
+                <line x1="46" y1="72" x2="78" y2="72" stroke="currentColor" stroke-width="2" stroke-opacity=".4"/>
+              </svg>
+              <span class="ef-showcase-card__fig">MONITOR</span>
+            </div>
+            <div class="ef-showcase-card__body">
+              <div class="ef-showcase-card__head">
+                <h3 class="ef-showcase-card__title">KL-M2 近场有源监听音箱</h3>
+                <span class="ef-showcase-card__price">¥3,899</span>
+              </div>
+              <p class="ef-showcase-card__desc">4.5 英寸全铝振膜与物理三段房间声学拨杆，还原干净中高频细节。</p>
+            </div>
+          </button>
+
+          <button type="button" class="ef-showcase-card ef-reveal" data-cat="module" style="--stagger: 100ms;"
+            data-code="KL-D1" data-title="KL-D1 磁吸阻尼旋钮控制器" data-price="¥599"
+            data-spec="360° 光电编码器 · 4 颗可编程机械微动 · USB-C / 蓝牙双模"
+            data-summary="适配音频音量、视频剪辑时间轴与设计软件画笔缩放的独立桌面控制器，底座配高密度硅胶防滑配重块。">
+            <div class="ef-showcase-card__media blueprint-grid">
+              <span class="ef-showcase-card__code">MODULE // KL-D1</span>
+              <svg class="ef-showcase-card__art" viewBox="0 0 124 84" aria-hidden="true">
+                <rect x="20" y="10" width="84" height="64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity=".55"/>
+                <circle cx="62" cy="34" r="16" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="62" y1="20" x2="62" y2="27" stroke="var(--ef-accent-ink)" stroke-width="2.2"/>
+                <rect x="28" y="57" width="14" height="9" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+                <rect x="46" y="57" width="14" height="9" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+                <rect x="64" y="57" width="14" height="9" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+                <rect x="82" y="57" width="14" height="9" fill="var(--ef-accent-ink)"/>
+              </svg>
+              <span class="ef-showcase-card__fig">DIAL PAD</span>
+            </div>
+            <div class="ef-showcase-card__body">
+              <div class="ef-showcase-card__head">
+                <h3 class="ef-showcase-card__title">KL-D1 磁吸阻尼旋钮控制器</h3>
+                <span class="ef-showcase-card__price">¥599</span>
+              </div>
+              <p class="ef-showcase-card__desc">光电无触点编码器与四颗机械微动，支持剪辑时间轴与音量精调。</p>
+            </div>
+          </button>
+
+          <button type="button" class="ef-showcase-card ef-reveal" data-cat="module"
+            data-code="KL-S8" data-title="KL-S8 铝合金防震避震脚钉" data-price="¥329"
+            data-spec="实心不锈钢滚珠隔振 · 单颗承重 12kg · 四枚套装"
+            data-summary="有效隔离桌面共振与键盘敲击传导，适用于桌面音箱、解码器及黑胶唱盘的底部声学退耦。">
+            <div class="ef-showcase-card__media dot-grid">
+              <span class="ef-showcase-card__code">MODULE // KL-S8</span>
+              <svg class="ef-showcase-card__art" viewBox="0 0 124 84" aria-hidden="true">
+                <rect x="24" y="18" width="76" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity=".6"/>
+                <circle cx="42" cy="42" r="5" fill="var(--ef-accent-ink)"/>
+                <circle cx="62" cy="42" r="5" fill="var(--ef-accent-ink)"/>
+                <circle cx="82" cy="42" r="5" fill="var(--ef-accent-ink)"/>
+                <rect x="18" y="52" width="88" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity=".6"/>
+              </svg>
+              <span class="ef-showcase-card__fig">ISOLATOR</span>
+            </div>
+            <div class="ef-showcase-card__body">
+              <div class="ef-showcase-card__head">
+                <h3 class="ef-showcase-card__title">KL-S8 铝合金防震避震脚钉</h3>
+                <span class="ef-showcase-card__price">¥329</span>
+              </div>
+              <p class="ef-showcase-card__desc">内部滚珠三点隔振结构，显著降低桌面低频驻波与结构共振。</p>
+            </div>
+          </button>
+
+          <button type="button" class="ef-showcase-card ef-reveal" data-cat="audio" style="--stagger: 50ms;"
+            data-code="KL-H1" data-title="KL-H1 开放式平板头戴耳机" data-price="¥2,999"
+            data-spec="86mm 超薄纳米振膜 · 32Ω / 96dB · 可换磁吸羊皮耳罩"
+            data-summary="仅重 345g 的轻量化开放式平板耳机，兼顾极速瞬态响应与全天候长时间佩戴舒适度。">
+            <div class="ef-showcase-card__media hatch">
+              <span class="ef-showcase-card__code">AUDIO // KL-H1</span>
+              <svg class="ef-showcase-card__art" viewBox="0 0 124 84" aria-hidden="true">
+                <path d="M30 46 A32 32 0 0 1 94 46" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <rect x="22" y="42" width="14" height="26" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <rect x="88" y="42" width="14" height="26" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <line x1="29" y1="46" x2="29" y2="64" stroke="var(--ef-accent-ink)" stroke-width="2"/>
+                <line x1="95" y1="46" x2="95" y2="64" stroke="var(--ef-accent-ink)" stroke-width="2"/>
+              </svg>
+              <span class="ef-showcase-card__fig">PLANAR</span>
+            </div>
+            <div class="ef-showcase-card__body">
+              <div class="ef-showcase-card__head">
+                <h3 class="ef-showcase-card__title">KL-H1 开放式平板头戴耳机</h3>
+                <span class="ef-showcase-card__price">¥2,999</span>
+              </div>
+              <p class="ef-showcase-card__desc">86mm 纳米平板振膜与可换磁吸耳罩，声场开阔通透不闷耳。</p>
+            </div>
+          </button>
+
+          <button type="button" class="ef-showcase-card ef-reveal" data-cat="module" style="--stagger: 100ms;"
+            data-code="KL-C4" data-title="KL-C4 屏蔽平衡信号线套装" data-price="¥249"
+            data-spec="单晶铜镀银双屏蔽 · Neutrik 原装卡农头 · 1.2m / 2.0m"
+            data-summary="柔软抗缠绕织物外被配双层铝箔铜网屏蔽，解决桌面多设备走线带来的交流哼声干扰。">
+            <div class="ef-showcase-card__media blueprint-grid">
+              <span class="ef-showcase-card__code">MODULE // KL-C4</span>
+              <svg class="ef-showcase-card__art" viewBox="0 0 124 84" aria-hidden="true">
+                <circle cx="42" cy="42" r="20" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <circle cx="35" cy="37" r="2.6" fill="var(--ef-accent-ink)"/>
+                <circle cx="49" cy="37" r="2.6" fill="var(--ef-accent-ink)"/>
+                <circle cx="42" cy="49" r="2.6" fill="var(--ef-accent-ink)"/>
+                <line x1="62" y1="42" x2="112" y2="42" stroke="currentColor" stroke-width="3" stroke-opacity=".55"/>
+                <rect x="96" y="36" width="16" height="12" fill="none" stroke="currentColor" stroke-width="1.3"/>
+              </svg>
+              <span class="ef-showcase-card__fig">XLR LINK</span>
+            </div>
+            <div class="ef-showcase-card__body">
+              <div class="ef-showcase-card__head">
+                <h3 class="ef-showcase-card__title">KL-C4 屏蔽平衡信号线套装</h3>
+                <span class="ef-showcase-card__price">¥249</span>
+              </div>
+              <p class="ef-showcase-card__desc">双层屏蔽抗干扰平衡跳线，织物外被耐磨易理线。</p>
+            </div>
+          </button>
+        </div>
+      </section>
+
+      <!-- 版块 3：工作室延保与声学校准方案（定价矩阵 + 双标签开关切换年/月付） -->
+      <section id="plans" class="ef-site-section ef-stack">
+        <div class="ef-section-bar">
+          <header class="ef-section-title">
+            <span class="ef-section-title__meta">▼ // SECTION 03 · CARE &amp; CALIBRATION</span>
+            <div class="ef-section-title__row">
+              <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
+              <p class="ef-section-title__en">STUDIO PLANS</p>
+            </div>
+            <h2 class="ef-section-title__cn">声学校准与模块化以旧换新计划</h2>
+          </header>
+
+          <div class="ef-row">
+            <span class="ef-billing-note">计费周期（年付立省 20%）</span>
+            <label class="ef-switch-dual">
+              <input type="checkbox" id="ef-billing-toggle" aria-label="切换月付与年付方案">
+              <span class="ef-switch-dual__knob" aria-hidden="true"></span>
+              <span class="ef-switch-dual__opt ef-switch-dual__opt--off">月付</span>
+              <span class="ef-switch-dual__opt ef-switch-dual__opt--on">年付</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="ef-pricing-grid">
+          <article class="ef-plan-card">
+            <span class="ef-tag">PERSONAL</span>
+            <h3 class="ef-plan-card__name">个人桌面守护</h3>
+            <div class="ef-plan-card__price"><span data-monthly="¥99" data-yearly="¥79">¥99</span><small data-cadence>/ 月</small></div>
+            <ul class="ef-plan-card__list">
+              <li>两年原厂硬件延保与免费顺丰双向取送</li>
+              <li>每年一次免费旋钮阻尼与接口深度保养</li>
+              <li>专属房间声学 EQ 预设文件生成</li>
+            </ul>
+            <button type="button" class="ef-btn" onclick="pushLandingToast('已选择「个人桌面守护」方案')">选择个人方案</button>
+          </article>
+
+          <article class="ef-plan-card ef-plan-card--featured">
+            <div class="ef-plan-card__top">
+              <span class="ef-tag ef-tag--accent">RECOMMENDED</span>
+              <span class="ef-plan-card__badge">BEST VALUE</span>
+            </div>
+            <h3 class="ef-plan-card__name">创作者工作室</h3>
+            <div class="ef-plan-card__price"><span data-monthly="¥299" data-yearly="¥239">¥299</span><small data-cadence>/ 月</small></div>
+            <ul class="ef-plan-card__list">
+              <li>涵盖 3 台主机与监听音箱的三年全保</li>
+              <li>升级子卡享 7 折置换，免费借用备用机</li>
+              <li>远程声学工程师 1 对 1 摆位测量指导</li>
+            </ul>
+            <button type="button" class="ef-btn ef-btn--action" onclick="openBooking('创作者工作室方案咨询')">立即预约方案</button>
+          </article>
+
+          <article class="ef-plan-card">
+            <span class="ef-tag">ENTERPRISE</span>
+            <h3 class="ef-plan-card__name">团队录音棚定制</h3>
+            <div class="ef-plan-card__price"><span data-monthly="¥899" data-yearly="¥719">¥899</span><small data-cadence>/ 月</small></div>
+            <ul class="ef-plan-card__list">
+              <li>多房间批量校准与定制激光机身编号</li>
+              <li>24 小时先寄备机后返修服务协议</li>
+              <li>独立固件签名与内网离线部署支持</li>
+            </ul>
+            <button type="button" class="ef-btn" onclick="openBooking('团队录音棚定制咨询')">联系企业顾问</button>
+          </article>
+        </div>
+      </section>
+
+      <!-- 版块 4：常见问题 FAQ 手风琴 -->
+      <section id="faq" class="ef-site-section ef-stack">
+        <header class="ef-section-title">
+          <span class="ef-section-title__meta">▼ // SECTION 04 · QUESTIONS</span>
+          <div class="ef-section-title__row">
+            <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
+            <p class="ef-section-title__en">FREQUENT QUESTIONS</p>
+          </div>
+          <h2 class="ef-section-title__cn">发货周期、试听体验与质保说明</h2>
+        </header>
+
+        <div class="ef-accordion">
+          <details class="ef-accordion__item" open>
+            <summary class="ef-accordion__trigger">是否支持 14 天桌面无理由试听退换？</summary>
+            <div class="ef-accordion__body">支持。所有直营渠道售出的声学硬件均享签收起 14 天居家真实环境试听，只要机身无磕碰划痕、附件齐全即可申请全额退换。</div>
+          </details>
+          <details class="ef-accordion__item">
+            <summary class="ef-accordion__trigger">没有专业声卡经验，能直接插电脑或平板使用吗？</summary>
+            <div class="ef-accordion__body">可以。KL-04 与 KL-D1 均采用标准 USB-C 免驱协议，连接 Windows、macOS、Linux 或 iPad 即可自动识别输出。</div>
+          </details>
+          <details class="ef-accordion__item">
+            <summary class="ef-accordion__trigger">线下体验空间目前开放哪些城市？</summary>
+            <div class="ef-accordion__body">目前在上海静安、北京朝阳与深圳南山设有独立声学试听室，点击页面「预约试听」即可选择 60 分钟独享时段。</div>
+          </details>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="ef-footer">
+    <div aria-hidden="true" class="ef-hazard ef-footer__stripe"></div>
+    <div class="ef-footer__inner">
+      <div>
+        <div class="ef-footer__meta">KINETIC LAB ACOUSTICS // INDUSTRIAL EDITORIAL LANDING ARCHETYPE</div>
+        <div class="ef-footer__meta">ENDFIELD UI NON-CONSOLE DEMO · ZERO SIDEBAR · ZERO TELEMETRY NOISE</div>
+      </div>
+      <nav class="ef-footer__links" aria-label="页脚导航">
+        <a href="./endfield-boilerplate.html">Endfield 控制台样板</a>
+        <a href="./endfield-components.html">Endfield 全组件目录</a>
+        <a href="./prts-editorial.html">PRTS 长文专栏样板</a>
+        <button type="button" class="ef-back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- 移动端导航抽屉 -->
+  <div class="ef-drawer-backdrop" id="ef-drawer-bg" onclick="closeAllDrawers()"></div>
+  <aside class="ef-drawer ef-drawer--left" id="ef-nav-drawer" role="dialog" aria-modal="true" aria-label="站点导航菜单">
+    <header class="ef-drawer__head">
+      <h3 class="ef-drawer__title">KINETIC LAB // 导航</h3>
+      <button type="button" class="ef-icon-btn ef-icon-btn--close" onclick="closeAllDrawers()" aria-label="关闭菜单"><span>✕</span></button>
+    </header>
+    <div class="ef-drawer__body ef-stack">
+      <a class="ef-link-card" href="#top" onclick="closeAllDrawers()">产品概览</a>
+      <a class="ef-link-card" href="#craft" onclick="closeAllDrawers()">设计哲学</a>
+      <a class="ef-link-card" href="#catalog" onclick="closeAllDrawers()">硬件画廊</a>
+      <a class="ef-link-card" href="#plans" onclick="closeAllDrawers()">服务方案</a>
+      <a class="ef-link-card" href="#faq" onclick="closeAllDrawers()">常见问题</a>
+    </div>
+    <footer class="ef-drawer__foot">
+      <button type="button" class="ef-btn ef-btn--action ef-btn--block" onclick="closeAllDrawers(); openBooking();">预约线下试听</button>
+    </footer>
+  </aside>
+
+  <!-- 右侧硬件详情抽屉 -->
+  <aside class="ef-drawer ef-drawer--accent" id="ef-detail-drawer" role="dialog" aria-modal="true" aria-label="硬件规格详情">
+    <header class="ef-drawer__head">
+      <h3 class="ef-drawer__title" id="ef-dd-title">硬件详情</h3>
+      <button type="button" class="ef-icon-btn ef-icon-btn--close" onclick="closeAllDrawers()" aria-label="关闭详情"><span>✕</span></button>
+    </header>
+    <div class="ef-drawer__body ef-stack">
+      <div class="ef-prop-list">
+        <div class="ef-prop-row"><span class="ef-prop-row__k">产品编号</span><span class="ef-prop-row__v" id="ef-dd-code">KL-04</span></div>
+        <div class="ef-prop-row"><span class="ef-prop-row__k">官方售价</span><span class="ef-prop-row__v" id="ef-dd-price">¥2,499</span></div>
+      </div>
+      <div class="ef-alert" role="note">
+        <strong>●</strong>
+        <div id="ef-dd-spec">规格参数加载中</div>
+      </div>
+      <p id="ef-dd-summary" class="ef-feature-item__desc"></p>
+    </div>
+    <footer class="ef-drawer__foot">
+      <button type="button" class="ef-btn ef-btn--light" onclick="closeAllDrawers()">继续浏览</button>
+      <button type="button" class="ef-btn ef-btn--action" onclick="var t=document.getElementById('ef-dd-title').textContent; closeAllDrawers(); openBooking(t);">预约试听此型号</button>
+    </footer>
+  </aside>
+
+  <!-- 预约试听弹窗 Dialog -->
+  <dialog id="ef-book-dialog" class="ef-dialog">
+    <header class="ef-dialog__head">
+      <h3 class="ef-dialog__title" id="ef-book-title">预约线下声学试听</h3>
+      <div class="ef-dialog__dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <button type="button" class="ef-dialog__close" onclick="this.closest('dialog').close()" aria-label="关闭"><span>✕</span></button>
+    </header>
+    <form class="ef-dialog__body ef-stack" id="ef-book-form" novalidate>
+      <div class="ef-dialog__card ef-stack">
+        <div class="ef-field" id="ef-f-name-wrap">
+          <label class="ef-field__label" for="ef-book-name">您的称呼 <span class="ef-field__req">*</span></label>
+          <div class="ef-input-box"><input id="ef-book-name" class="ef-input" type="text" placeholder="例如 林先生 / 陈女士" required></div>
+        </div>
+        <div class="ef-field">
+          <label class="ef-field__label" for="ef-book-city">试听城市</label>
+          <div class="ef-input-box">
+            <select id="ef-book-city" class="ef-select">
+              <option>上海 · 静安声学空间</option>
+              <option>北京 · 朝阳设计中心</option>
+              <option>深圳 · 南山体验室</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+    <footer class="ef-dialog__foot">
+      <button type="button" class="ef-btn ef-btn--light" onclick="document.getElementById('ef-book-dialog').close()">取消</button>
+      <button type="button" class="ef-btn ef-btn--action" id="ef-book-submit">提交预约</button>
+    </footer>
+  </dialog>
+
+  <div class="ef-toast-region" id="ef-landing-toasts" aria-live="polite"></div>
+
+  <script>
+    // 主题初始化与 View Transition 切换
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ef-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'light', false);
+    })();
+    function applyTheme(theme, persist) {
+      var run = function () {
+        document.documentElement.dataset.theme = theme;
+        var bl = document.getElementById('ef-btn-light'), bd = document.getElementById('ef-btn-dark');
+        if (bl) bl.setAttribute('aria-pressed', String(theme === 'light'));
+        if (bd) bd.setAttribute('aria-pressed', String(theme === 'dark'));
+      };
+      if (persist && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.dataset.themeSwitching = '1';
+        document.startViewTransition(run).finished.finally(function () { delete document.documentElement.dataset.themeSwitching; });
+      } else { run(); }
+      if (persist) { try { localStorage.setItem('ef-theme', theme); } catch (e) {} }
+    }
+    function toggleTheme(theme) { applyTheme(theme, true); }
+
+    function pushLandingToast(msg) {
+      var wrap = document.getElementById('ef-landing-toasts');
+      wrap.innerHTML = '';
+      var t = document.createElement('div');
+      t.className = 'ef-toast ef-toast--success';
+      t.setAttribute('role', 'status');
+      t.innerHTML = '<span class="ef-toast__tone" aria-hidden="true"></span><span></span>';
+      t.querySelector('span:last-child').textContent = msg;
+      wrap.appendChild(t);
+      setTimeout(function () { if (t.parentNode) t.remove(); }, 3400);
+    }
+
+    // 顶边阅读进度条与顶栏滚动高亮
+    (function () {
+      var bar = document.getElementById('ef-read-bar');
+      function updateBar() {
+        var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        if (bar) bar.style.setProperty('--_p', String(Math.min(1, Math.max(0, window.scrollY / max))));
+      }
+      window.addEventListener('scroll', updateBar, { passive: true });
+      updateBar();
+
+      var links = Array.prototype.slice.call(document.querySelectorAll('.ef-site-header__link[href^="#"]'));
+      function setNav(hash) {
+        links.forEach(function (a) {
+          var on = a.getAttribute('href') === hash;
+          a.classList.toggle('is-current', on);
+          if (on) a.setAttribute('aria-current', 'page');
+          else a.removeAttribute('aria-current');
+        });
+      }
+      links.forEach(function (a) { a.addEventListener('click', function () { setNav(a.getAttribute('href')); }); });
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function (entries) {
+          if (window.scrollY < 40) { setNav('#top'); return; }
+          var hit = entries.filter(function (e) { return e.isIntersecting; })
+            .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; })[0];
+          if (hit) setNav('#' + hit.target.id);
+        }, { rootMargin: '-24% 0px -60% 0px', threshold: 0 });
+        ['top', 'craft', 'catalog', 'plans', 'faq'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) obs.observe(el);
+        });
+      }
+    })();
+
+    // 抽屉与弹窗管理（带焦点归还与 Esc 关闭）
+    var openerEl = null;
+    function openDrawer(id) {
+      openerEl = document.activeElement;
+      document.getElementById('ef-drawer-bg').classList.add('is-open');
+      var d = document.getElementById(id);
+      d.classList.add('is-open');
+      if (id === 'ef-nav-drawer') document.getElementById('ef-nav-btn').setAttribute('aria-expanded', 'true');
+      var btn = d.querySelector('button');
+      if (btn) btn.focus();
+    }
+    function closeAllDrawers() {
+      document.getElementById('ef-drawer-bg').classList.remove('is-open');
+      document.getElementById('ef-nav-drawer').classList.remove('is-open');
+      document.getElementById('ef-detail-drawer').classList.remove('is-open');
+      document.getElementById('ef-nav-btn').setAttribute('aria-expanded', 'false');
+      if (openerEl) { openerEl.focus(); openerEl = null; }
+    }
+    document.getElementById('ef-nav-btn').addEventListener('click', function () { openDrawer('ef-nav-drawer'); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.getElementById('ef-drawer-bg').classList.contains('is-open')) closeAllDrawers();
+    });
+
+    function openBooking(subject) {
+      document.getElementById('ef-book-title').textContent = subject ? ('预约 · ' + subject) : '预约线下声学试听';
+      document.getElementById('ef-f-name-wrap').classList.remove('is-invalid');
+      document.getElementById('ef-book-dialog').showModal();
+    }
+    document.getElementById('ef-book-submit').addEventListener('click', function () {
+      var nameIn = document.getElementById('ef-book-name');
+      var wrap = document.getElementById('ef-f-name-wrap');
+      if (!nameIn.value.trim()) {
+        wrap.classList.add('is-invalid');
+        nameIn.focus();
+        return;
+      }
+      wrap.classList.remove('is-invalid');
+      document.getElementById('ef-book-dialog').close();
+      pushLandingToast('预约已登记 · ' + document.getElementById('ef-book-city').value);
+      nameIn.value = '';
+    });
+
+    // 画廊筛选 + 点击呼出规格抽屉
+    (function () {
+      var filters = Array.prototype.slice.call(document.querySelectorAll('#ef-gallery-filters .ef-filter-chip'));
+      var cards = Array.prototype.slice.call(document.querySelectorAll('#ef-gallery-grid .ef-showcase-card'));
+      filters.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var cat = btn.dataset.cat;
+          filters.forEach(function (x) {
+            x.classList.toggle('is-selected', x === btn);
+            x.setAttribute('aria-pressed', String(x === btn));
+          });
+          cards.forEach(function (card) {
+            card.hidden = !(cat === 'all' || card.dataset.cat === cat);
+          });
+        });
+      });
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          document.getElementById('ef-dd-title').textContent = card.dataset.title;
+          document.getElementById('ef-dd-code').textContent = card.dataset.code;
+          document.getElementById('ef-dd-price').textContent = card.dataset.price;
+          document.getElementById('ef-dd-spec').textContent = card.dataset.spec;
+          document.getElementById('ef-dd-summary').textContent = card.dataset.summary;
+          openDrawer('ef-detail-drawer');
+        });
+      });
+    })();
+
+    // 月付/年付方案价格实时切换
+    document.getElementById('ef-billing-toggle').addEventListener('change', function () {
+      var yearly = this.checked;
+      document.querySelectorAll('#plans [data-monthly]').forEach(function (el) {
+        el.textContent = yearly ? el.dataset.yearly : el.dataset.monthly;
+      });
+      document.querySelectorAll('#plans [data-cadence]').forEach(function (el) {
+        el.textContent = yearly ? '/ 月 · 按年结' : '/ 月';
+      });
+    });
+
+    // 渐进滚动入场动效（遵循 prefers-reduced-motion，无 JS 时默认可见）
+    (function () {
+      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var els = Array.prototype.slice.call(document.querySelectorAll('.ef-reveal'));
+      if (!els.length) return;
+      document.body.classList.add('ef-has-reveal');
+      var revObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            revObs.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
+      els.forEach(function (el) { revObs.observe(el); });
+    })();
+  </script>
+</body>
+</html>

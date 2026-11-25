@@ -11,8 +11,10 @@
   --ef-tpl-line: #d4d4d0;
   --ef-tpl-accent: #fffa00;
   --ef-tpl-on-accent: #191919;
+  --ef-tpl-font-display: "Outfit", "Noto Sans SC", system-ui, sans-serif;
   --ef-tpl-font-body: "Noto Sans SC", system-ui, -apple-system, sans-serif;
   --ef-tpl-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --ef-tpl-font-accent: "Space Grotesk", "Noto Sans SC", sans-serif;
 }
 
 .ef-tpl-scope {

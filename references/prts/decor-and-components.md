@@ -266,4 +266,63 @@
 </div>
 ```
 
+## 五、 通用非控制台网站原型骨架（落地页 / 长文博客 / 作品画廊 / 登录表单）
+
+非后台站点（博客、技术文档、品牌落地页、作品集、登录页）**不得强制套用右侧轨 `.ak-index-rail` 或百科侧栏 `.ak-sidebar`**，直接使用 `prts-addons.css` 内置的通用原型类（完整示范见 [`examples/prts-editorial.html`](../../examples/prts-editorial.html)）：
+
+```html
+<!-- 顶边 2px 阅读进度线 + 无侧栏全幅内容舞台 -->
+<div class="ak-read-bar" aria-hidden="true"></div>
+<main class="ak-site-shell">
+  <!-- 1. 长文阅读 / 文档双栏（72ch 正文 + 240px 右侧粘性目录；单栏阅读加 .ak-prose-shell--solo） -->
+  <div class="ak-prose-shell">
+    <article class="ak-prose">
+      <header class="ak-article-head">
+        <span class="ak-article-head__kicker">ISSUE 24 // MONOGRAPH</span>
+        <h1 class="ak-article-head__title ak-anim-scan">标题</h1>
+        <p class="ak-article-head__lead">导语摘要</p>
+        <div class="ak-article-meta"><span>作者</span><span class="ak-article-meta__sep">/</span><span>2026 // 11 / 25</span></div>
+      </header>
+      <h2 id="s1">章节标题</h2>
+      <p>舒展行宽正文段落…</p>
+      <nav class="ak-article-pager"><a class="ak-article-pager__item" href="#"><small>PREV</small><strong>上一篇</strong></a></nav>
+    </article>
+    <aside class="ak-article-toc">
+      <h2 class="ak-article-toc__title">ON THIS PAGE</h2>
+      <ul class="ak-article-toc__list"><li><a class="ak-article-toc__link is-active" href="#s1">章节标题</a></li></ul>
+    </aside>
+  </div>
+
+  <!-- 2. 作品集 / 商品画廊（3 列纯直角卡片，支持 --halftone / --diagonal 肌理与 .ak-work-card__art 矢量图槽） -->
+  <div class="ak-gallery-grid">
+    <button type="button" class="ak-work-card ak-reveal">
+      <div class="ak-work-card__media">
+        <span class="ak-work-card__tag">WORK // 01</span>
+        <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true"></svg>
+        <span class="ak-work-card__fig">GRID</span>
+      </div>
+      <div class="ak-work-card__body">
+        <div class="ak-work-card__meta"><span>分类</span><span>2026 // 11 / 25</span></div>
+        <h3 class="ak-work-card__title">作品名称</h3>
+        <p class="ak-work-card__desc">一句话摘要</p>
+      </div>
+    </button>
+  </div>
+
+  <!-- 3. 特性分栏 (.ak-feature-grid / .ak-feature-item) 与定价方案 (.ak-pricing-grid / .ak-price-tier--featured) -->
+  <div class="ak-feature-grid">
+    <div class="ak-feature-item"><span class="ak-feature-item__num ak-anim-bar">01</span><h3 class="ak-feature-item__title">特性标题</h3><p class="ak-feature-item__desc">说明</p></div>
+  </div>
+  <div class="ak-pricing-grid">
+    <div class="ak-price-tier ak-price-tier--featured"><div class="ak-price-tier__val">¥299</div></div>
+  </div>
+</main>
+
+<!-- 4. 登录 / 表单向导非对称分屏壳（<900px 自动单栏） -->
+<div class="ak-auth-shell">
+  <section class="ak-auth-visual">品牌视觉区</section>
+  <section class="ak-auth-form">表单输入区</section>
+</div>
+```
+
 > 更多通用组件（下拉菜单、四态页签、原生 `<dialog>`、右侧 `.ak-drawer`、Toast、表单控件）与方舟领域组件（`.ak-op-card`、`.ak-skill`、`.ak-module`、`.ak-dossier`、`.ak-stage`）见按需目录 [`components-catalog.md`](./components-catalog.md)。

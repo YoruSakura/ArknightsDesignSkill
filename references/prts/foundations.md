@@ -15,7 +15,7 @@ UI 的本质是**《明日方舟》官网的冷峻建筑感与罗德岛 PRTS 指
 | :--- | :--- | :--- |
 | **适用场景** | 产品官网、品牌落地页、智能调度台主页、情报简报站 | 百科图鉴、文档站、高密度筛选表单、干员数值矩阵表 |
 | **顶栏导航** | 极简漂浮深黑玻璃条 `.ak-topbar`（双语上下叠排导航 `EN / 中文` + 右侧声波与主题开关） | 三列终端页眉 `.ak-header`（Logo + `/` 快捷键检索触发器 + 主题开关） |
-| **主体骨架** | 开放大气画布 `.ak-bg-lattice` + `.ak-stage-shell`（左开放舞台 + 右侧 1px 竖轨 `.ak-index-rail` 大号序号 `01 // 01 / 04`） | `.ak-layout` 两列布局（左侧 `.ak-sidebar` / `.ak-portlet` 导航树 + 主内容 `.ak-main`，<1120px 自动折叠为抽屉） |
+| **主体骨架** | 开放大气画布 `.ak-bg-lattice` + 全幅无侧栏 `.ak-site-shell`（长文博客用 `.ak-prose-shell`、画廊用 `.ak-gallery-grid`、登录用 `.ak-auth-shell`；概念门户可选配右侧 1px 竖轨 `.ak-stage-shell` + `.ak-index-rail`） | `.ak-layout` 两列布局（左侧 `.ak-sidebar` / `.ak-portlet` 导航树 + 主内容 `.ak-main`，<1120px 自动折叠为抽屉） |
 | **边框纪律** | **去边框化（能划线的绝不画框）**：`.ak-rule` 1px 标尺配实块、`.ak-stat--minimal` 顶线指标、`.ak-folio-list` 无框清单、`.ak-news-grid--staggered` 错位无框下文字 | 按功能克制分组使用 `.ak-panel` / `.ak-table`（`1px` 细框 + `border-image` 4px 色条直角拼接） |
 | **Hero 构图** | 开放 `.ak-hero--editorial`（左下贴边低透巨字 `.ak-ghost-word` + 左侧大标题 + 右侧 `.ak-brief` & 4 格 `.ak-thumb-card` 缩略选卡与滑轨） | 经典 `.ak-hero` 或紧接任务状态条进入数据矩阵 |
 

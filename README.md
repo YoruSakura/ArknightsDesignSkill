@@ -13,7 +13,7 @@
 | 维度 | 体系 A · 明日方舟本家 (`PRTS Design`) | 体系 B · 明日方舟：终末地 (`Endfield UI`) |
 | :--- | :--- | :--- |
 | **类/令牌前缀** | `.ak-*` / `--ak-*` | `.ef-*` / `--ef-*` |
-| **双载体架构** | **载体 1 · 官网概念展示**（`ak.hypergryph.com`：漂浮双语顶栏 + 三角暗格画布 + 右侧序号窄轨 + 去框标尺/错位情报流）<br>**载体 2 · PRTS 资料百科终端**（`.ak-header` + `.ak-layout` + `.ak-sidebar`） | **载体 1 · 纸白工业编辑画册**（`.ef-side-rail` + `ghost-hatch` + 信号黄色带 + 偏心分栏）<br>**载体 2 · 游戏实机 HUD 七大家族**（深色行带 `Sparkline` / `TickRing` / `Viewfinder`） |
+| **多原型与双载体架构** | **通用非控制台骨架**（`.ak-topbar` + `.ak-site-shell` / `.ak-prose-shell` / `.ak-gallery-grid` / `.ak-auth-shell`）<br>**官网概念门户**（`.ak-stage-shell` + `.ak-index-rail`）与 **PRTS 资料百科终端**（`.ak-header` + `.ak-layout` + `.ak-sidebar`） | **通用非控制台官网/画册骨架**（`.ef-site-header` + `.ef-site-main` + `.ef-landing-hero` / `.ef-article-shell` / `.ef-auth-shell`）<br>**工业调度控制台与实机 HUD 七大家族**（`.ef-app-shell` + `.ef-side-rail` / `Sparkline` / `TickRing` / `Viewfinder`） |
 | **色彩哲学** | **黑白灰炭为体、冰青为用**：暗底配官网冰青 `#18D1FF`，亮底配游戏蓝 `#0098DC`（小字 `#0072A8`）；黄黑条纹仅限警示 | **纸与墨是主体，信号黄是唯一焦点**：13 级纯中性灰 + `#FFFA00`（单屏面积 ≤ 10%，白底字改用 `#6B5D00`） |
 | **形状铁律** | **纯直角 `border-radius: 0`，严禁任何 45° 切角/斜切**；独立小装饰仅 4 处用源石菱形 | **形状即语义**：面板直角、按钮 4px 微圆角、核心行动/机械件单角切角或斜楔、筛选用胶囊 |
 | **装饰与动效** | 三角网格暗格 `.ak-bg-lattice`、贴边巨字 `.ak-ghost-word`、`.ak-rule` 1px 标尺配实块、错位双列卡片、硬切扫描（`.ak-anim-wipe`/`.ak-anim-scan`）与 `.ak-wave-btn` 声波条 | 斜纹镂空巨字（`ghost-hatch`）、滑块分节标题（三步揭示）、方括号姓名、CMY 注册条、四角括号与 16 个关键帧硬切动效 |
@@ -35,9 +35,9 @@
 
 ## 快速开始
 
-### 在其他前端项目中接入本 Skill（正式版 `v1.2`）
+### 在其他前端项目中接入本 Skill（正式版 `v1.3`）
 
-推荐下载 [GitHub Releases · v1.2](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.2) 中的压缩包解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
+推荐下载 [GitHub Releases · v1.3](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.3) 中的压缩包解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
 
 ```bash
 # 方式一（推荐接入）：直接复制已打包的 Skill 文件夹
@@ -70,12 +70,14 @@ mkdir -p .claude/skills && ln -s ../../.agents/skills/arknights-design .claude/s
 python3 -m http.server 8080
 ```
 
-| 页面 | 定位 | 核心覆盖内容 |
+| 页面 | 对应网站原型 | 核心覆盖内容 |
 | :--- | :--- | :--- |
-| [`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html) | PRTS 官网建筑级整页样板 | 漂浮双语顶栏 + 声波开关、三角暗格斜光画布、右侧数字标尺窄轨、开放 Hero + 干员焦点滑轨选卡、去框化指标、1px 标尺线与无边框清单、错位双列新闻卡、四列暗幕入口与极简页脚 |
-| [`examples/prts-components.html`](./examples/prts-components.html) | PRTS 全组件对照与交互陈列 | Wiki 外壳与按钮/筛选芯片、`<details>`/受控下拉菜单、面包屑/路径条、WAI-ARIA 多态页签、表单、弹窗/抽屉/Toast、骨架屏/进度、干员/技能/模组/声波领域件与官网建筑扩展组件 |
-| [`examples/endfield-boilerplate.html`](./examples/endfield-boilerplate.html) | Endfield 整页构图样板 | 左侧窄轨、镂空巨字叠加排版、Hero、信号黄色带、左竖线统计块、深色数据行带（含内嵌 Sparkline 走势图）、仓储物品格与完整 Footer/回到顶部 |
-| [`examples/endfield-components.html`](./examples/endfield-components.html) | Endfield 全组件对照与交互陈列 | 按钮族与展开条、三态页签、分页/步骤条、浅/强暗菜单、实色底点阵弹窗/抽屉、方圆↔菱形表单、Combobox/TagInput/文件上传/日历/排期/取景框 HUD/轮播与跑马灯 |
+| [`examples/endfield-landing.html`](./examples/endfield-landing.html) | **Endfield · 原型 1+3（无侧栏品牌官网落地页）** | 顶边黄进度线、无侧栏 `.ef-site-header`、镂空巨字首屏、信号黄换气带、无框特性、胶囊筛选画廊 + 右侧规格抽屉、年/月付定价切换、FAQ 手风琴与预约弹窗 |
+| [`examples/prts-editorial.html`](./examples/prts-editorial.html) | **PRTS · 原型 2+3（无侧栏长文专栏与画廊）** | 纸昼/暗夜双正典阅读、顶边 2px 进度线、`72ch` 舒适长文 `.ak-prose-shell` + 粘性目录、文内 WAI-ARIA 代码页签、可点屏蔽批注、筛选画廊 + 速览抽屉与订阅表单 |
+| [`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html) | **PRTS · 原型 1（暗色概念展示门户）** | 漂浮双语顶栏 + 声波开关、三角暗格斜光画布、右侧数字标尺窄轨、开放 Hero + 干员焦点滑轨选卡、去框化指标、1px 标尺线与无边框清单、错位双列新闻卡、四列暗幕入口与极简页脚 |
+| [`examples/endfield-boilerplate.html`](./examples/endfield-boilerplate.html) | **Endfield · 原型 5（工业调度控制台）** | 左侧常驻窄轨、镂空巨字叠加排版、Hero、信号黄色带、左竖线统计块、深色数据行带（含内嵌 Sparkline 走势图）、仓储物品格与完整 Footer/回到顶部 |
+| [`examples/prts-components.html`](./examples/prts-components.html) | **PRTS · 全组件与百科壳目录** | Wiki 外壳与按钮/筛选芯片、`<details>`/受控下拉菜单、气泡卡片、WAI-ARIA 多态页签、表单、弹窗/抽屉/Toast、骨架屏/进度、干员/技能/模组/声波领域件与官网建筑扩展组件 |
+| [`examples/endfield-components.html`](./examples/endfield-components.html) | **Endfield · 全组件与动效目录** | 按钮族与展开条、三态页签、分页/导航器/步骤条、浅/强暗菜单、实色底点阵弹窗/抽屉、方圆↔菱形表单、Combobox/TagInput/文件上传/日历/排期/取景框 HUD/Loader 动效重播与跑马灯 |
 
 > **字体与离线环境说明**：原版规范提及的商业字体 `Bender`、`Novecento Sans Wide` 未随本仓库分发，样式表默认回退至 `Oswald`、`Chakra Petch`、`Archivo`、`Outfit`、`Space Grotesk`、`JetBrains Mono` 与 `Noto Sans SC`（国内网络可用 `@fontsource` 或本地 `@font-face` 自托管，两份 `components-catalog.md` 均附完整引入代码）。
 
@@ -105,7 +107,9 @@ ArknightsDesignSkill/
 │   ├── prts-tokens.css                       # PRTS Design 纯令牌变量文件
 │   ├── endfield-standalone.css               # Endfield UI 零依赖纯 CSS 样式表（令牌 + 16 关键帧动画 + 母题 + 8.1–8.8 全套组件 + Skill 补丁层）
 │   └── endfield-theme.css                    # Endfield UI Tailwind CSS v4 @theme / @utility 专用样式
-├── examples/                                 # 【双体系旗舰样板 & 全组件可视化目录】
+├── examples/                                 # 【双体系多原型样板（落地页/专栏/门户/控制台）与全组件目录】
+│   ├── endfield-landing.html
+│   ├── prts-editorial.html
 │   ├── prts-boilerplate.html
 │   ├── prts-components.html
 │   ├── endfield-boilerplate.html
