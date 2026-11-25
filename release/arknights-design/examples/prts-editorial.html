@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MONOLITH.NOTES // 建筑排版与界面工程专栏（PRTS 长文阅读与画廊示范）</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700;800&family=Oswald:wght@500;700&display=swap">
+  <link rel="stylesheet" href="../resources/prts-design.css">
+  <link rel="stylesheet" href="../resources/prts-addons.css">
+  <style>
+    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+  </style>
+</head>
+<body class="ak-scope ak-bg-lattice">
+  <!-- 顶边 2px 阅读进度线 -->
+  <div class="ak-read-bar" id="ak-read-bar" aria-hidden="true"></div>
+
+  <!-- 极简深黑双语顶栏（原型 2+3：长文博客 / 作品集，零侧栏、零 KPI、零状态灯） -->
+  <header class="ak-topbar">
+    <div class="ak-topbar__inner">
+      <a class="ak-topbar__brand" href="#article-top">
+        <span class="ak-topbar__mark" aria-hidden="true">MN</span>
+        <span class="ak-topbar__wordmark">
+          MONOLITH.NOTES
+          <small>ARCHITECTURE &amp; UI JOURNAL</small>
+        </span>
+      </a>
+
+      <nav class="ak-topbar__nav" aria-label="主导航">
+        <a class="ak-topbar__link is-active" href="#article-top" aria-current="page"><strong>ESSAY</strong><span>专栏正文</span></a>
+        <a class="ak-topbar__link" href="#related"><strong>ARCHIVE</strong><span>案例画廊</span></a>
+        <a class="ak-topbar__link" href="#subscribe"><strong>DISPATCH</strong><span>双周订阅</span></a>
+        <a class="ak-topbar__link" href="./prts-boilerplate.html"><strong>PORTAL</strong><span>门户样板</span></a>
+      </nav>
+
+      <div class="ak-topbar__tools">
+        <div class="ak-seg" role="group" aria-label="阅读模式切换">
+          <button type="button" onclick="setTheme('light')" id="btn-light" class="is-active" aria-pressed="true">纸昼</button>
+          <button type="button" onclick="setTheme('dark')" id="btn-dark" aria-pressed="false">暗夜</button>
+        </div>
+        <button type="button" class="ak-topbar__menu" id="ak-menu-btn" aria-controls="ak-nav-drawer" aria-expanded="false">菜单</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="ak-drawer-scrim" id="ak-scrim"></div>
+  <aside class="ak-drawer ak-drawer--left" id="ak-nav-drawer" role="dialog" aria-modal="true" aria-label="阅读导航菜单">
+    <nav class="ak-drawer-nav">
+      <div class="ak-drawer-nav__head">
+        <span>MONOLITH // MENU</span>
+        <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" id="ak-drawer-close" aria-label="关闭菜单">✕</button>
+      </div>
+      <a class="ak-drawer-nav__link is-active" href="#article-top"><span>专栏正文</span><small>ESSAY</small></a>
+      <a class="ak-drawer-nav__link" href="#related"><span>案例画廊</span><small>ARCHIVE</small></a>
+      <a class="ak-drawer-nav__link" href="#subscribe"><span>双周订阅</span><small>DISPATCH</small></a>
+      <a class="ak-drawer-nav__link" href="./prts-boilerplate.html"><span>PRTS 官网门户样板</span><small>PORTAL</small></a>
+      <a class="ak-drawer-nav__link" href="./endfield-landing.html"><span>Endfield 产品落地页</span><small>LANDING</small></a>
+    </nav>
+  </aside>
+
+  <!-- 无侧栏全幅内容舞台 -->
+  <main class="ak-site-shell">
+    <!-- 长文阅读双栏壳：左 72ch 舒适阅读列 + 右极简粘性目录 -->
+    <div class="ak-prose-shell" id="article-top">
+      <article class="ak-prose">
+        <header class="ak-article-head">
+          <span class="ak-article-head__kicker">ISSUE 24 // TYPOGRAPHY &amp; GRID ARCHITECTURE</span>
+          <h1 class="ak-article-head__title ak-anim-scan">用 1px 建筑标尺与字阶落差，取代泛滥的卡片边框</h1>
+          <p class="ak-article-head__lead">
+            当网页设计从后台监控台走向博客、文档与品牌叙事时，真正塑造高级感的从来不是层层嵌套的圆角阴影盒，而是克制的单轴对齐、舒展行宽与极简结构标尺。
+          </p>
+          <div class="ak-article-meta">
+            <span>作者：林疏白</span>
+            <span class="ak-article-meta__sep" aria-hidden="true">/</span>
+            <span>2026 // 11 / 25</span>
+            <span class="ak-article-meta__sep" aria-hidden="true">/</span>
+            <span>预计阅读 6 分钟</span>
+            <button type="button" class="ak-btn ak-btn--xs ak-btn--outline" id="ak-copy-link" style="margin-left: auto;">复制文章链接</button>
+          </div>
+        </header>
+
+        <h2 id="sec-debox">一、为什么好设计往往先做“去边框”减法</h2>
+        <p>
+          许多信息密集型页面在迭代几轮后，都会不自觉滑向「套娃框」困境：外层套面板、面板里套卡片、卡片里再套灰色标签框。线条数量翻倍，信息层级却越画越平。
+        </p>
+        <p>
+          参考现代瑞士网格与工业制图规范，解决之道是把四面封闭边框收敛为<strong>单向基准线</strong>：用顶边 <code>1px</code> 细线配 <code>28px</code> 短强调块建立锚点，让留白本身成为最清晰的分隔墙。
+        </p>
+        <blockquote>
+          「如果删掉某一条边框后，页面依然能靠字号跨度、对齐轴线和间距节奏一眼分清主次，那么这条边框从一开始就是视觉噪音。」
+        </blockquote>
+
+        <h2 id="sec-type">二、四层字体角色与 72ch 阅读行宽</h2>
+        <p>
+          阅读型网页的成败一半落在字型组合上。拉丁展示体（如 <code>Oswald</code>）适合承担大号章节索引与标题眉题；技术标号体（<code>Chakra Petch</code>）承载日期 <code>2026 // 11 / 25</code> 与图注编号；而真正长时间阅读的中文段落必须回归干净、字腔舒展的正文黑体，并将单行宽度严格限制在 <strong>65–72ch</strong> 以内。
+        </p>
+
+        <!-- 文内可交互代码示例页签（WAI-ARIA Tabs） -->
+        <div>
+          <div class="ak-tabs" role="tablist" data-tabs="prose-code" aria-label="排版方案对比">
+            <button type="button" role="tab" class="ak-tab is-active" id="ak-pc-t0" aria-controls="ak-pc-p0" aria-selected="true" tabindex="0">去边框标尺写法</button>
+            <button type="button" role="tab" class="ak-tab" id="ak-pc-t1" aria-controls="ak-pc-p1" aria-selected="false" tabindex="-1">阅读容器断点</button>
+          </div>
+          <div class="ak-tabpanel" role="tabpanel" id="ak-pc-p0" aria-labelledby="ak-pc-t0" tabindex="0" data-tabpanel="prose-code">
+            <pre><code>.section-rule {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ak-border);
+}
+.section-rule::after {
+  width: 48px; height: 4px; background: var(--ak-fg);
+}</code></pre>
+          </div>
+          <div class="ak-tabpanel" role="tabpanel" id="ak-pc-p1" aria-labelledby="ak-pc-t1" tabindex="0" data-tabpanel="prose-code" hidden>
+            <pre><code>/* 直接复用内置响应式类，拒绝内联栅格 */
+&lt;main class="ak-site-shell"&gt;
+  &lt;div class="ak-prose-shell"&gt;
+    &lt;article class="ak-prose"&gt;…&lt;/article&gt;
+    &lt;aside class="ak-article-toc"&gt;…&lt;/aside&gt;
+  &lt;/div&gt;
+&lt;/main&gt;</code></pre>
+          </div>
+        </div>
+
+        <h2 id="sec-motion">三、克制的硬切节奏与可访问细节</h2>
+        <p>
+          阅读页面的动效应当退居幕后：顶部 2px 进度细线随滚动平滑延展，标题标尺以 <code>320ms</code> 左向右硬切擦入，悬停只做边框显影与右上直角三角落锁，严禁卡片上浮抖动干扰视线。
+        </p>
+        <p>
+          对于需要隐藏的勘误批注或剧透脚注，可结合键盘可聚焦的屏蔽条：<span class="ak-redacted" role="button" tabindex="0" aria-pressed="false">实测 15.5px / 1.85 行高在 1440px 屏幕下连续阅读 20 分钟最不易疲劳</span>（点击或悬停展开批注）。
+        </p>
+
+        <figure>
+          <div style="padding: 24px; background: #141517; color: #f0f0f0; display: grid; place-items: center;">
+            <svg viewBox="0 0 560 120" style="width: 100%; max-width: 520px; height: auto;" aria-hidden="true">
+              <line x1="16" y1="24" x2="544" y2="24" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+              <rect x="16" y="21" width="54" height="4" fill="#18d1ff"/>
+              <rect x="16" y="42" width="330" height="58" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+              <line x1="36" y1="62" x2="290" y2="62" stroke="#ffffff" stroke-width="2"/>
+              <line x1="36" y1="78" x2="310" y2="78" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+              <rect x="380" y="42" width="164" height="58" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="4 4"/>
+              <line x1="380" y1="42" x2="380" y2="66" stroke="#18d1ff" stroke-width="3"/>
+              <text x="396" y="64" fill="rgba(255,255,255,0.8)" font-size="11" font-family="monospace">TOC // 240PX</text>
+              <text x="36" y="92" fill="#18d1ff" font-size="10" font-family="monospace">PROSE COLUMN · 72CH MAX</text>
+            </svg>
+          </div>
+          <figcaption>FIG 01 // 72ch 单轴正文列与 240px 粘性细线目录的比例示意，窄屏自动折为单栏。</figcaption>
+        </figure>
+
+        <nav class="ak-article-pager" aria-label="上下篇阅读导航">
+          <a class="ak-article-pager__item" href="#related">
+            <small>PREVIOUS // ISSUE 23</small>
+            <strong>暗色终端模式下的低眩光灰度曲线设计</strong>
+          </a>
+          <a class="ak-article-pager__item" href="#related">
+            <small>NEXT // ISSUE 25</small>
+            <strong>无外框画廊网格：图文比例与焦点抽屉实践</strong>
+          </a>
+        </nav>
+      </article>
+
+      <!-- 右侧粘性文章目录 -->
+      <aside class="ak-article-toc" aria-label="本文章节目录">
+        <h2 class="ak-article-toc__title">ON THIS PAGE</h2>
+        <ul class="ak-article-toc__list">
+          <li><a class="ak-article-toc__link is-active" href="#sec-debox">一、为什么先做“去边框”减法</a></li>
+          <li><a class="ak-article-toc__link" href="#sec-type">二、四层字体角色与 72ch 行宽</a></li>
+          <li><a class="ak-article-toc__link" href="#sec-motion">三、克制的硬切节奏与细节</a></li>
+          <li><a class="ak-article-toc__link" href="#related">四、相关案例画廊</a></li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- 相关案例 / 作品集画廊（原型 3 示范：筛选条 + 3 列直角画廊 + 右侧快速阅读抽屉） -->
+    <section id="related">
+      <div class="ak-rule">
+        <div class="ak-rule__head">
+          <h2 class="ak-rule__title">延伸阅读与作品归档</h2>
+          <span class="ak-rule__en" lang="en">SELECTED MONOGRAPHS</span>
+        </div>
+        <span class="ak-rule__aside">03 ITEMS</span>
+      </div>
+
+      <div class="ak-filter-strip ak-mb-4" role="group" aria-label="案例分类筛选" id="ak-work-filters">
+        <button type="button" class="ak-filter-strip__btn is-active" aria-pressed="true" data-cat="all">全部归档</button>
+        <button type="button" class="ak-filter-strip__btn" aria-pressed="false" data-cat="arch">建筑空间</button>
+        <button type="button" class="ak-filter-strip__btn" aria-pressed="false" data-cat="ui">界面工程</button>
+      </div>
+
+      <div class="ak-gallery-grid" id="ak-work-grid">
+        <button type="button" class="ak-work-card ak-reveal" data-cat="arch"
+          data-code="ARCH // 01" data-title="混凝土美术馆导视系统重制" data-date="2026 // 10 / 19"
+          data-summary="在保留清水混凝土墙面粗粝肌理的前提下，以黑钢 1px 折边导视牌与高对比无衬线字阶完成全馆动线标识重构。">
+          <div class="ak-work-card__media">
+            <span class="ak-work-card__tag">ARCH // 01</span>
+            <span class="ak-work-card__fig">WAYFINDING</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>建筑空间</span><span>2026 // 10 / 19</span></div>
+            <h3 class="ak-work-card__title">混凝土美术馆导视系统重制</h3>
+            <p class="ak-work-card__desc">以黑钢折边与极简编号标尺建立无压迫感的场馆空间导视。</p>
+          </div>
+        </button>
+
+        <button type="button" class="ak-work-card ak-reveal" data-cat="ui"
+          data-code="ENG // 02" data-title="纯 CSS 零运行时设计令牌实践" data-date="2026 // 11 / 02"
+          data-summary="拆解如何用三层语义变量支撑亮暗双主题与局部反色作用域，让同一套 CSS 在 React、Vue 与静态文档站无缝复用。">
+          <div class="ak-work-card__media">
+            <span class="ak-work-card__tag">ENG // 02</span>
+            <span class="ak-work-card__fig">TOKEN SYSTEM</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>界面工程</span><span>2026 // 11 / 02</span></div>
+            <h3 class="ak-work-card__title">纯 CSS 零运行时设计令牌实践</h3>
+            <p class="ak-work-card__desc">跨框架共享亮暗语义令牌、焦点安全抽屉与键盘导航契约。</p>
+          </div>
+        </button>
+
+        <button type="button" class="ak-work-card ak-reveal" data-cat="ui"
+          data-code="ENG // 03" data-title="数字表格的排版可读性指南" data-date="2026 // 11 / 14"
+          data-summary="从等宽数字对齐、表头密度控制到 390px 窄屏横向滚表包裹，系统总结长文档与数据站点的表格细节。">
+          <div class="ak-work-card__media">
+            <span class="ak-work-card__tag">ENG // 03</span>
+            <span class="ak-work-card__fig">TABULAR UI</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>界面工程</span><span>2026 // 11 / 14</span></div>
+            <h3 class="ak-work-card__title">数字表格的排版可读性指南</h3>
+            <p class="ak-work-card__desc">正文字体配 tabular-nums 与窄屏不挤压的滚动容器规范。</p>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- 极简双周刊订阅栏 -->
+    <section id="subscribe">
+      <div class="ak-rule">
+        <div class="ak-rule__head">
+          <h2 class="ak-rule__title">订阅双周电子刊</h2>
+          <span class="ak-rule__en" lang="en">BI-WEEKLY DISPATCH</span>
+        </div>
+        <span class="ak-rule__aside">NO SPAM</span>
+      </div>
+
+      <form class="ak-flex ak-wrap ak-gap-3 ak-items-center" id="ak-sub-form" novalidate>
+        <input id="ak-sub-email" class="ak-input" type="email" placeholder="输入邮箱地址，例如 editor@monolith.notes" aria-label="订阅邮箱地址" style="flex: 1 1 260px; max-width: 420px;">
+        <button type="submit" class="ak-btn ak-btn--primary">订阅更新</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- 右侧作品速览抽屉 -->
+  <aside id="ak-work-drawer" class="ak-drawer ak-drawer--right ak-p-4" role="dialog" aria-modal="true" aria-label="作品归档摘要">
+    <div class="ak-flex ak-justify-between ak-items-center ak-mb-4">
+      <strong id="ak-wd-code">ARCH // 01</strong>
+      <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" onclick="closeAllDrawers()" aria-label="关闭速览">✕</button>
+    </div>
+    <h3 id="ak-wd-title" class="ak-mt-0 ak-mb-2">作品标题</h3>
+    <div id="ak-wd-date" class="ak-code-id ak-mb-4">2026 // 10 / 19</div>
+    <p id="ak-wd-summary" class="ak-fs-sm ak-fg-2" style="line-height: 1.75;"></p>
+    <div class="ak-mt-6">
+      <button type="button" class="ak-btn ak-btn--primary" onclick="closeAllDrawers(); pushAkToast('已加入收藏夹', '归档条目已保存至本地阅读清单。');">收藏此归档</button>
+    </div>
+  </aside>
+
+  <div class="ak-toasts" id="ak-toasts" aria-live="polite"></div>
+
+  <footer class="ak-footer ak-footer--editorial">
+    <span class="ak-watermark" aria-hidden="true">MONOLITH</span>
+    <div class="ak-footer__inner">
+      <div class="ak-footer__brand">
+        <div class="ak-header__wordmark">MONOLITH.NOTES</div>
+        <p>PRTS Design 非控制台通用示范：长文阅读专栏与作品集画廊，亮昼/暗夜双正典极性切换。</p>
+      </div>
+      <div class="ak-footer__col">
+        <h4>EXAMPLES // 其他原型</h4>
+        <ul>
+          <li><a href="./prts-boilerplate.html">PRTS 官网门户样板</a></li>
+          <li><a href="./prts-components.html">PRTS 全组件目录</a></li>
+          <li><a href="./endfield-landing.html">Endfield 品牌官网落地页</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 主题初始化（默认 light 纸昼阅读模式）与 View Transition 切换
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('ak-editorial-theme'); } catch (e) {}
+      applyTheme(saved || document.documentElement.dataset.theme || 'light', false);
+    })();
+    function applyTheme(theme, persist) {
+      var run = function () {
+        document.documentElement.dataset.theme = theme;
+        var bl = document.getElementById('btn-light'), bd = document.getElementById('btn-dark');
+        if (bl) { bl.classList.toggle('is-active', theme === 'light'); bl.setAttribute('aria-pressed', String(theme === 'light')); }
+        if (bd) { bd.classList.toggle('is-active', theme === 'dark'); bd.setAttribute('aria-pressed', String(theme === 'dark')); }
+      };
+      if (persist && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.startViewTransition(run);
+      } else { run(); }
+      if (persist) { try { localStorage.setItem('ak-editorial-theme', theme); } catch (e) {} }
+    }
+    function setTheme(theme) { applyTheme(theme, true); }
+
+    function pushAkToast(title, desc) {
+      var wrap = document.getElementById('ak-toasts');
+      var t = document.createElement('div');
+      t.className = 'ak-toast ak-toast--success';
+      t.setAttribute('role', 'status');
+      t.innerHTML = '<div class="ak-toast__body"><div class="ak-toast__title"></div><div></div></div><button type="button" class="ak-btn ak-btn--ghost ak-btn--xs" aria-label="关闭">✕</button><div class="ak-toast__progress"></div>';
+      t.querySelector('.ak-toast__title').textContent = title;
+      t.querySelector('.ak-toast__body').lastElementChild.textContent = desc;
+      t.querySelector('button').onclick = function () { t.remove(); };
+      wrap.appendChild(t);
+      setTimeout(function () { if (t.parentNode) t.remove(); }, 4000);
+    }
+
+    // 阅读进度线与右侧文章目录滚动同步（scrollY < 40 锁定首项）
+    (function () {
+      var bar = document.getElementById('ak-read-bar');
+      function updateBar() {
+        var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        if (bar) bar.style.setProperty('--_p', String(Math.min(1, Math.max(0, window.scrollY / max))));
+      }
+      window.addEventListener('scroll', updateBar, { passive: true });
+      updateBar();
+
+      var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.ak-article-toc__link'));
+      function setToc(hash) {
+        tocLinks.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === hash); });
+      }
+      tocLinks.forEach(function (a) { a.addEventListener('click', function () { setToc(a.getAttribute('href')); }); });
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function (entries) {
+          if (window.scrollY < 40) { setToc('#sec-debox'); return; }
+          var hit = entries.filter(function (e) { return e.isIntersecting; })
+            .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; })[0];
+          if (hit) setToc('#' + hit.target.id);
+        }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
+        ['sec-debox', 'sec-type', 'sec-motion', 'related'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) obs.observe(el);
+        });
+      }
+    })();
+
+    // 导航抽屉与右侧速览抽屉
+    var drawerOpener = null;
+    var scrim = document.getElementById('ak-scrim'), navDrawer = document.getElementById('ak-nav-drawer'), workDrawer = document.getElementById('ak-work-drawer'), menuBtn = document.getElementById('ak-menu-btn');
+    function openDrawer(drawerEl) {
+      drawerOpener = document.activeElement;
+      scrim.classList.add('is-open');
+      drawerEl.classList.add('is-open');
+      if (drawerEl === navDrawer) menuBtn.setAttribute('aria-expanded', 'true');
+      var firstBtn = drawerEl.querySelector('button');
+      if (firstBtn) firstBtn.focus();
+    }
+    function closeAllDrawers() {
+      scrim.classList.remove('is-open');
+      navDrawer.classList.remove('is-open');
+      workDrawer.classList.remove('is-open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      if (drawerOpener) { drawerOpener.focus(); drawerOpener = null; }
+    }
+    menuBtn.addEventListener('click', function () { openDrawer(navDrawer); });
+    document.getElementById('ak-drawer-close').addEventListener('click', closeAllDrawers);
+    scrim.addEventListener('click', closeAllDrawers);
+    navDrawer.addEventListener('click', function (e) { if (e.target.closest('a')) closeAllDrawers(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && scrim.classList.contains('is-open')) closeAllDrawers();
+    });
+
+    // 文内 WAI-ARIA Tabs + 屏蔽批注 + 复制链接
+    document.querySelectorAll('[data-tabs]').forEach(function (list) {
+      var key = list.getAttribute('data-tabs');
+      var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('[data-tabpanel="' + key + '"]'));
+      function select(i, focus) {
+        tabs.forEach(function (x, j) { x.classList.toggle('is-active', i === j); x.setAttribute('aria-selected', String(i === j)); x.tabIndex = i === j ? 0 : -1; });
+        panels.forEach(function (p, j) { p.hidden = i !== j; });
+        if (focus) tabs[i].focus();
+      }
+      tabs.forEach(function (t, i) {
+        t.addEventListener('click', function () { select(i, false); });
+        t.addEventListener('keydown', function (e) {
+          var n = tabs.length, to = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') to = (i + 1) % n;
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') to = (i - 1 + n) % n;
+          else if (e.key === 'Home') to = 0;
+          else if (e.key === 'End') to = n - 1;
+          if (to !== null) { e.preventDefault(); select(to, true); }
+        });
+      });
+    });
+
+    document.querySelectorAll('.ak-redacted').forEach(function (el) {
+      function toggle() { el.setAttribute('aria-pressed', String(el.classList.toggle('is-revealed'))); }
+      el.addEventListener('click', toggle);
+      el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    });
+
+    document.getElementById('ak-copy-link').addEventListener('click', function () {
+      pushAkToast('链接已复制', '文章永久引用地址已写入剪贴板。');
+    });
+
+    // 案例画廊筛选与速览抽屉
+    (function () {
+      var btns = Array.prototype.slice.call(document.querySelectorAll('#ak-work-filters .ak-filter-strip__btn'));
+      var cards = Array.prototype.slice.call(document.querySelectorAll('#ak-work-grid .ak-work-card'));
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var cat = btn.dataset.cat;
+          btns.forEach(function (x) { x.classList.toggle('is-active', x === btn); x.setAttribute('aria-pressed', String(x === btn)); });
+          cards.forEach(function (c) { c.hidden = !(cat === 'all' || c.dataset.cat === cat); });
+        });
+      });
+      cards.forEach(function (c) {
+        c.addEventListener('click', function () {
+          document.getElementById('ak-wd-code').textContent = c.dataset.code;
+          document.getElementById('ak-wd-title').textContent = c.dataset.title;
+          document.getElementById('ak-wd-date').textContent = c.dataset.date;
+          document.getElementById('ak-wd-summary').textContent = c.dataset.summary;
+          openDrawer(workDrawer);
+        });
+      });
+    })();
+
+    // 双周刊订阅表单校验
+    document.getElementById('ak-sub-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = document.getElementById('ak-sub-email');
+      var val = input.value.trim();
+      if (!val || val.indexOf('@') === -1) {
+        input.setAttribute('aria-invalid', 'true');
+        pushAkToast('邮箱格式有误', '请填写包含 @ 的有效邮箱地址。');
+        input.focus();
+        return;
+      }
+      input.removeAttribute('aria-invalid');
+      input.value = '';
+      pushAkToast('订阅成功', '下期 MONOLITH.NOTES 双周刊将发送至您的邮箱。');
+    });
+
+    // 渐进滚动入场动效（遵循 prefers-reduced-motion）
+    (function () {
+      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var els = Array.prototype.slice.call(document.querySelectorAll('.ak-reveal'));
+      if (!els.length) return;
+      document.body.classList.add('ak-has-reveal');
+      var revObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            revObs.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.05 });
+      els.forEach(function (el) { revObs.observe(el); });
+    })();
+  </script>
+</body>
+</html>

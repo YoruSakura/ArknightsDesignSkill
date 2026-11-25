@@ -149,7 +149,9 @@ def run_chrome_render_and_behavior(out_dir: pathlib.Path) -> list[str]:
     out_dir.mkdir(parents=True, exist_ok=True)
     pages = [
         ("prts-bp", "examples/prts-boilerplate.html", 2420, 3550),
+        ("prts-editorial", "examples/prts-editorial.html", 2780, 4050),
         ("prts-comp", "examples/prts-components.html", 3950, 6200),
+        ("ef-landing", "examples/endfield-landing.html", 3550, 6200),
         ("ef-bp", "examples/endfield-boilerplate.html", 1750, 2600),
         ("ef-comp", "examples/endfield-components.html", 4950, 7900),
     ]
@@ -391,10 +393,88 @@ window.addEventListener('load', () => {
 });
 </script>
 """
+    ef_landing_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = {
+    heroFlicker: getComputedStyle(document.getElementById('ef-hero-specimen')).animationName,
+    sectionBlock: getComputedStyle(document.querySelector('.ef-section-title__block')).animationName,
+    sectionArrow: getComputedStyle(document.querySelector('.ef-section-title__block > span')).animationName,
+    sectionTitle: getComputedStyle(document.querySelector('.ef-section-title__en')).animationName,
+  };
+  const noSidebar = !document.querySelector('.ef-side-rail') && !document.querySelector('.ef-app-shell');
+  const initialNavFirst = document.querySelector('.ef-site-header__link[href="#top"]').classList.contains('is-current');
+  document.querySelector('#ef-gallery-filters [data-cat="audio"]').click();
+  const galleryFilterOk = [...document.querySelectorAll('#ef-gallery-grid .ef-showcase-card')].every(c =>
+    c.dataset.cat === 'audio' ? getComputedStyle(c).display !== 'none' : getComputedStyle(c).display === 'none');
+  const firstAudio = document.querySelector('#ef-gallery-grid .ef-showcase-card[data-cat="audio"]');
+  firstAudio.click();
+  const detailOpened = document.getElementById('ef-detail-drawer').classList.contains('is-open')
+    && document.getElementById('ef-dd-code').textContent === 'KL-04';
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  const detailEscClosed = !document.getElementById('ef-detail-drawer').classList.contains('is-open');
+  const billing = document.getElementById('ef-billing-toggle');
+  billing.click();
+  const billingSwitchOk = document.querySelector('#plans [data-monthly]').textContent === '¥79';
+  openBooking('试听校验');
+  const bookingDialogOk = document.getElementById('ef-book-dialog').hasAttribute('open');
+  document.getElementById('ef-book-dialog').close();
+  const revealVisibleOk = [...document.querySelectorAll('#craft .ef-feature-item')].every(el => {
+    el.classList.add('is-in');
+    const animOk = getComputedStyle(el).animationName === 'ef-shift-in';
+    el.style.animation = 'none';
+    const baseOpaque = parseFloat(getComputedStyle(el).opacity) >= 0.99;
+    el.style.animation = '';
+    return animOk && baseOpaque;
+  });
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, noSidebar, initialNavFirst, galleryFilterOk, detailOpened, detailEscClosed, billingSwitchOk, bookingDialogOk, revealVisibleOk, noOverflow
+  }));
+});
+</script>
+"""
+    prts_editorial_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = {
+    titleScan: getComputedStyle(document.querySelector('.ak-article-head__title')).animationName,
+  };
+  const noSidebar = !document.querySelector('.ak-sidebar') && !document.querySelector('.ak-index-rail');
+  const initialTocFirst = document.querySelector('.ak-article-toc__link[href="#sec-debox"]').classList.contains('is-active');
+  const tab0 = document.getElementById('ak-pc-t0');
+  tab0.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  const tabsArrowOk = document.getElementById('ak-pc-t1').getAttribute('aria-selected') === 'true'
+    && !document.getElementById('ak-pc-p1').hidden;
+  const redacted = document.querySelector('.ak-redacted');
+  redacted.click();
+  const redactedOk = redacted.classList.contains('is-revealed') && redacted.getAttribute('aria-pressed') === 'true';
+  document.querySelector('#ak-work-filters [data-cat="ui"]').click();
+  const workFilterOk = [...document.querySelectorAll('#ak-work-grid .ak-work-card')].every(c =>
+    c.dataset.cat === 'ui' ? getComputedStyle(c).display !== 'none' : getComputedStyle(c).display === 'none');
+  document.querySelector('#ak-work-grid .ak-work-card[data-cat="ui"]').click();
+  const workDrawerOpened = document.getElementById('ak-work-drawer').classList.contains('is-open');
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  const workDrawerEscClosed = !document.getElementById('ak-work-drawer').classList.contains('is-open');
+  document.getElementById('ak-sub-email').value = 'reader@example.com';
+  document.getElementById('ak-sub-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  const subFormOk = document.getElementById('ak-sub-email').value === ''
+    && document.querySelectorAll('#ak-toasts .ak-toast').length > 0;
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, noSidebar, initialTocFirst, tabsArrowOk, redactedOk, workFilterOk, workDrawerOpened, workDrawerEscClosed, subFormOk, noOverflow
+  }));
+});
+</script>
+"""
     for src_name, html_file, probe in [
         ("prts-boilerplate", out_dir / "prts-bp-dark.html", prts_bp_probe),
+        ("prts-editorial-light", out_dir / "prts-editorial-light.html", prts_editorial_probe),
+        ("prts-editorial-dark", out_dir / "prts-editorial-dark.html", prts_editorial_probe),
         ("prts-components-dark", out_dir / "prts-comp-dark.html", prts_probe),
         ("prts-components-light", out_dir / "prts-comp-light.html", prts_probe),
+        ("endfield-landing-light", out_dir / "ef-landing-light.html", ef_landing_probe),
+        ("endfield-landing-dark", out_dir / "ef-landing-dark.html", ef_landing_probe),
         ("endfield-boilerplate", out_dir / "ef-bp-light.html", ef_bp_probe),
         ("endfield-components-light", out_dir / "ef-comp-light.html", ef_probe),
         ("endfield-components-dark", out_dir / "ef-comp-dark.html", ef_probe),
@@ -453,8 +533,8 @@ def check_mobile_viewports() -> list[str]:
                     "const de = d.documentElement;"
                     "const ro = d.querySelector('.ef-viewfinder__ro');"
                     "const cor = d.querySelector('.ef-viewfinder__corners');"
-                    "const tbBrand = d.querySelector('.ak-topbar__brand');"
-                    "const tbTools = d.querySelector('.ak-topbar__tools');"
+                    "const tbBrand = d.querySelector('.ak-topbar__brand, .ef-site-header__brand');"
+                    "const tbTools = d.querySelector('.ak-topbar__tools, .ef-site-header__actions');"
                     "const topbarClear = tbBrand && tbTools ? (tbBrand.getBoundingClientRect().right <= tbTools.getBoundingClientRect().left + 1) : true;"
                     "return { name, cw: de.clientWidth, sw: de.scrollWidth, ok: de.scrollWidth <= de.clientWidth, topbarClear,"
                     " vfVisible: ro && cor ? (getComputedStyle(ro).display !== 'none' && getComputedStyle(cor).display !== 'none') : true };"
