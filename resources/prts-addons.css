@@ -8,7 +8,8 @@
  *  PART A · 上游 Wiki/终端底座补丁层（保留向后兼容）
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* 0. 确保显式设置了 display 的组件同样服从 HTML [hidden] 隐藏语义 */
+/* 0. 确保显式设置了 display 的组件同样服从 HTML [hidden] 隐藏语义，且作用域 body 零默认外边距 */
+body.ak-scope { margin: 0; }
 .ak-scope [hidden] { display: none !important; }
 
 /* 1. 黑色 Hero 内的 contrast 按钮：Hero 恒为黑底，按钮必须恒为白底黑字 */
@@ -1213,7 +1214,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font: 700 11px/1 var(--ak-font-label);
+  font: 700 11px/1.45 var(--ak-font-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ak-fg-muted);
@@ -1250,6 +1251,16 @@
 }
 .ak-article-head__lead + .ak-article-meta { margin-top: 0; }
 .ak-article-meta__action { margin-left: auto; }
+.ak-article-meta a:not([class]) {
+  color: var(--ak-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--ak-dur-fast), border-color var(--ak-dur-fast);
+}
+.ak-article-meta a:not([class]):hover {
+  color: var(--ak-accent);
+  border-bottom-color: currentColor;
+}
 .ak-article-meta__sep {
   color: var(--ak-border-strong);
   user-select: none;
@@ -1573,10 +1584,13 @@
   align-items: stretch;
 }
 @media (max-width: 1023px) { .ak-pricing-grid { grid-template-columns: minmax(0, 1fr); } }
+/* <a class="ak-btn ak-btn--block"> 默认 content-box，100% 宽叠加内边距会越出卡片：统一 border-box */
+.ak-btn { box-sizing: border-box; max-width: 100%; }
 .ak-price-tier {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
   padding: 24px;
   border: 1px solid var(--ak-border);
   background: var(--ak-bg-surface);
@@ -1624,7 +1638,7 @@
 }
 .ak-landing-hero__title {
   margin: 14px 0 16px;
-  font: 800 clamp(2rem, 3.8vw, 3.1rem)/1.16 var(--ak-font-body);
+  font: 800 clamp(1.65rem, 3.8vw, 3.1rem)/1.18 var(--ak-font-body);
   letter-spacing: -0.015em;
   color: var(--ak-fg);
   text-wrap: balance;

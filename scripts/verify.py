@@ -511,9 +511,11 @@ window.addEventListener('load', () => {
   const drawerOpened = document.getElementById('ak-tpl-drawer').classList.contains('is-open');
   document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   const drawerEscClosed = !document.getElementById('ak-tpl-drawer').classList.contains('is-open');
+  const priceBtnContained = [...document.querySelectorAll('.ak-price-tier')].every(card =>
+    card.querySelector('.ak-btn').getBoundingClientRect().right <= card.getBoundingClientRect().right - 16);
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, noSidebar, emptyShownOnMiss, resetRestoresAll, billingYearlyOk, drawerOpened, drawerEscClosed, noOverflow
+    anims, noSidebar, emptyShownOnMiss, resetRestoresAll, billingYearlyOk, drawerOpened, drawerEscClosed, priceBtnContained, noOverflow
   }));
 });
 </script>
@@ -538,9 +540,10 @@ window.addEventListener('load', () => {
   t0.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
   const tabsArrowOk = document.getElementById('ef-dt-1').getAttribute('aria-selected') === 'true'
     && !document.getElementById('ef-dp-1').hidden && document.getElementById('ef-dp-0').hidden;
+  const noDoubleArrow = [...document.querySelectorAll('.ef-docs-nav__link')].every(a => (a.textContent.match(/↗/g) || []).length <= 1);
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, noSidebar, docEmptyOk, docResetOk, tabsArrowOk, noOverflow
+    anims, noSidebar, docEmptyOk, docResetOk, tabsArrowOk, noDoubleArrow, noOverflow
   }));
 });
 </script>
@@ -549,6 +552,10 @@ window.addEventListener('load', () => {
 <script>
 window.addEventListener('load', () => {
   const anims = { titleScan: getComputedStyle(document.querySelector('.ak-auth-visual__title')).animationName };
+  const bodyMarginZero = getComputedStyle(document.body).marginTop === '0px';
+  const metaLink = document.querySelector('.ak-article-meta a');
+  const metaLinkThemed = metaLink && getComputedStyle(metaLink).color !== 'rgb(0, 0, 238)'
+    && getComputedStyle(metaLink).textDecorationLine === 'none';
   const visualFg = getComputedStyle(document.querySelector('.ak-auth-visual__title')).color;
   const authVisualDarkOk = visualFg === 'rgb(255, 255, 255)';
   document.getElementById('ak-login-email').value = 'bad-email';
@@ -567,7 +574,7 @@ window.addEventListener('load', () => {
     && document.getElementById('ak-wiz-done-desc').textContent.includes('Monolith Studio');
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
   document.body.setAttribute('data-verify', JSON.stringify({
-    anims, authVisualDarkOk, loginErrorShown, wizardDoneOk, noOverflow
+    anims, bodyMarginZero, metaLinkThemed, authVisualDarkOk, loginErrorShown, wizardDoneOk, noOverflow
   }));
 });
 </script>
@@ -601,6 +608,8 @@ window.addEventListener('load', () => {
     hub_probe = """
 <script>
 window.addEventListener('load', () => {
+  const curTheme = document.documentElement.dataset.theme || 'dark';
+  const themeBtnSynced = document.getElementById('hub-' + curTheme).getAttribute('aria-pressed') === 'true';
   document.querySelector('.hub-filters [data-sys="prts"]').click();
   const prtsCount = [...document.querySelectorAll('#hub-grid .hub-card')].filter(c => !c.hidden).length;
   document.querySelector('.hub-filters [data-sys="ef"]').click();
@@ -609,12 +618,13 @@ window.addEventListener('load', () => {
   const allCount = [...document.querySelectorAll('#hub-grid .hub-card')].filter(c => !c.hidden).length;
   const filterCountsOk = prtsCount === 5 && efCount === 5 && allCount === 10;
   const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
-  document.body.setAttribute('data-verify', JSON.stringify({ filterCountsOk, noOverflow }));
+  document.body.setAttribute('data-verify', JSON.stringify({ themeBtnSynced, filterCountsOk, noOverflow }));
 });
 </script>
 """
     for src_name, html_file, probe in [
-        ("hub-index", out_dir / "hub-index-dark.html", hub_probe),
+        ("hub-index-light", out_dir / "hub-index-light.html", hub_probe),
+        ("hub-index-dark", out_dir / "hub-index-dark.html", hub_probe),
         ("prts-landing-light", out_dir / "prts-landing-light.html", prts_landing_probe),
         ("prts-landing-dark", out_dir / "prts-landing-dark.html", prts_landing_probe),
         ("prts-auth-light", out_dir / "prts-auth-light.html", prts_auth_probe),

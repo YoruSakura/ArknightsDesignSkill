@@ -340,11 +340,18 @@
 
 <script>
 const root = document.documentElement;
-function setTheme(t) {
+function applyTheme(t, persist) {
   root.dataset.theme = t;
+  if (persist) { try { localStorage.setItem('ak-hub-theme', t); } catch (e) {} }
   document.getElementById('hub-dark').setAttribute('aria-pressed', String(t === 'dark'));
   document.getElementById('hub-light').setAttribute('aria-pressed', String(t === 'light'));
 }
+function setTheme(t) { applyTheme(t, true); }
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('ak-hub-theme'); } catch (e) {}
+  applyTheme(saved === 'dark' || saved === 'light' ? saved : (root.dataset.theme || 'dark'), false);
+})();
 const cards = [...document.querySelectorAll('#hub-grid .hub-card')];
 const count = document.getElementById('hub-count');
 document.querySelectorAll('.hub-filters [data-sys]').forEach((btn) => {
