@@ -35,9 +35,9 @@
 
 ## 快速开始
 
-### 在其他前端项目中接入本 Skill（正式版 `v1.3`）
+### 在其他前端项目中接入本 Skill（正式版 `v1.4`）
 
-推荐下载 [GitHub Releases · v1.3](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.3) 中的压缩包解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
+推荐下载 [GitHub Releases · v1.4](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.4) 中的压缩包解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
 
 ```bash
 # 方式一（推荐接入）：直接复制已打包的 Skill 文件夹
