@@ -309,19 +309,27 @@
     </button>
   </div>
 
-  <!-- 3. 特性分栏 (.ak-feature-grid / .ak-feature-item) 与定价方案 (.ak-pricing-grid / .ak-price-tier--featured) -->
+  <!-- 3. 商业产品落地页首屏 (.ak-landing-hero)、特性分栏 (.ak-feature-grid)、检索空态 (.ak-catalog-bar + .ak-empty) 与定价 (.ak-pricing-grid)，完整示范见 examples/prts-landing.html -->
+  <section class="ak-landing-hero">
+    <div class="ak-landing-hero__grid">
+      <div><h1 class="ak-landing-hero__title">商业主标题</h1><p class="ak-landing-hero__lead">副标题导语</p></div>
+      <aside class="ak-landing-hero__spec">右侧规格图卡</aside>
+    </div>
+  </section>
   <div class="ak-feature-grid">
     <div class="ak-feature-item"><span class="ak-feature-item__num ak-anim-bar">01</span><h3 class="ak-feature-item__title">特性标题</h3><p class="ak-feature-item__desc">说明</p></div>
   </div>
+  <div class="ak-catalog-bar"><div class="ak-catalog-search"><input class="ak-input" type="search"></div></div>
+  <div class="ak-empty" hidden><div class="ak-empty__code">00 // NO MATCH</div><h3 class="ak-empty__title">未命中结果</h3></div>
   <div class="ak-pricing-grid">
-    <div class="ak-price-tier ak-price-tier--featured"><div class="ak-price-tier__val">¥299</div></div>
+    <div class="ak-price-tier ak-price-tier--featured"><div class="ak-price-tier__val">¥199</div></div>
   </div>
 </main>
 
-<!-- 4. 登录 / 表单向导非对称分屏壳（<900px 自动单栏） -->
+<!-- 4. 登录 / 3 步入驻向导非对称分屏壳（<900px 自动单栏，完整示范见 examples/prts-auth.html） -->
 <div class="ak-auth-shell">
-  <section class="ak-auth-visual">品牌视觉区</section>
-  <section class="ak-auth-form">表单输入区</section>
+  <section class="ak-auth-visual">恒深黑建筑品牌栏（自带暗态令牌作用域）</section>
+  <section class="ak-auth-form">表单输入与 .ak-stepper / .ak-auth-otp 向导区</section>
 </div>
 ```
 

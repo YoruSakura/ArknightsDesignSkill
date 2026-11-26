@@ -34,10 +34,10 @@ description: >-
 
 | 网站原型 | PRTS 推荐外壳与核心类 | Endfield 推荐外壳与核心类 | **严禁硬塞的控制台噪音** |
 | :--- | :--- | :--- | :--- |
-| **1. 品牌官网 / 产品落地页** | `.ak-topbar` + `.ak-site-shell`（或 `.ak-stage-shell`）+ `.ak-hero--editorial` + `.ak-feature-grid` / `.ak-pricing-grid` + `.ak-footer--editorial` | `.ef-site-header` + `.ef-site-main` + `.ef-landing-hero` + `.ef-band-title` + `.ef-feature-grid` / `.ef-pricing-grid` + `.ef-accordion` + `.ef-footer` | ❌ 常驻 224px 后台侧轨、KPI 监控数字条、遥测表、`ONLINE` 状态灯 |
-| **2. 博客 / 长文 / 技术文档** | `.ak-topbar` + `.ak-read-bar` + `.ak-site-shell` + `.ak-prose-shell`（`72ch` 正文 `.ak-prose` + 粘性 `.ak-article-toc` + `.ak-article-pager`） | `.ef-site-header` + `.ef-read-bar` + `.ef-site-main` + `.ef-article-shell`（`72ch` `.ef-prose` + `.ef-toc`） | ❌ 大面积巨字水印压正文、监控卡片堆叠、遥测行带、物品格 |
-| **3. 作品集 / 图鉴 / 电商画廊** | `.ak-topbar` + `.ak-site-shell` + `.ak-filter-strip` + `.ak-gallery-grid` / `.ak-work-card` + 点击呼出右侧 `.ak-drawer` | `.ef-site-header` + `.ef-site-main` + `.ef-filter-chip` + `.ef-gallery-grid` / `.ef-showcase-card` + 右侧 `.ef-drawer` | ❌ 后台管理侧栏、KPI 仪表块、实时链路读数 |
-| **4. 登录 / 表单向导 / 活动单页** | `.ak-auth-shell`（`.ak-auth-visual` + `.ak-auth-form`）+ `.ak-stepper` + 表单控件 | `.ef-auth-shell`（`.ef-auth-brand` + `.ef-auth-card`）+ `.ef-steps` + `.ef-input-box` | ❌ 多级顶栏导航、侧边栏、多列大页脚 |
+| **1. 品牌官网 / 产品落地页** | `.ak-topbar` + `.ak-site-shell` + `.ak-landing-hero`（或 `.ak-stage-shell` + `.ak-hero--editorial`）+ `.ak-feature-grid` / `.ak-pricing-grid` + `.ak-footer--editorial` | `.ef-site-header` + `.ef-site-main` + `.ef-landing-hero` + `.ef-band-title` + `.ef-feature-grid` / `.ef-pricing-grid` + `.ef-accordion` + `.ef-footer` | ❌ 常驻 224px 后台侧轨、KPI 监控数字条、遥测表、`ONLINE` 状态灯 |
+| **2. 博客 / 长文 / 技术文档** | `.ak-topbar` + `.ak-read-bar` + `.ak-site-shell` + `.ak-prose-shell`（`72ch` 正文 `.ak-prose` + 粘性 `.ak-article-toc` + `.ak-article-pager`） | `.ef-site-header` + `.ef-read-bar` + `.ef-site-main` + `.ef-docs-shell`（三栏左树 + `72ch` `.ef-prose` + `.ef-toc`）或 `.ef-article-shell`（两栏） | ❌ 大面积巨字水印压正文、监控卡片堆叠、遥测行带、物品格 |
+| **3. 作品集 / 图鉴 / 电商画廊** | `.ak-topbar` + `.ak-site-shell` + `.ak-catalog-bar`（搜索 + `.ak-filter-strip`）+ `.ak-gallery-grid` / `.ak-work-card` + `.ak-empty` + 右侧 `.ak-drawer` | `.ef-site-header` + `.ef-site-main` + `.ef-filter-chip` + `.ef-gallery-grid` / `.ef-showcase-card` + `.ef-empty` + 右侧 `.ef-drawer` | ❌ 后台管理侧栏、KPI 仪表块、实时链路读数 |
+| **4. 登录 / 表单向导 / 活动单页** | `.ak-auth-shell`（`.ak-auth-visual` + `.ak-auth-form`）+ `.ak-stepper` + `.ak-auth-otp` + 表单报错校验 | `.ef-auth-shell`（`.ef-auth-brand` + `.ef-auth-card`）+ `.ef-steps` + `.ef-otp` + `.ef-field__error` | ❌ 多级顶栏导航、侧边栏、多列大页脚 |
 | **5. 控制台 / 监控台 / 管理后台** | `.ak-header` + `.ak-layout` + `.ak-sidebar` + `.ak-table-scroll` / `.ak-stat--minimal` + `.ak-drawer` | `.ef-app-shell` + `.ef-side-rail` + `.ef-stat-row` + `.ef-data-list` / `.ef-sparkline` / `.ef-item-grid` | —（**仅此类后台/监控需求才启用侧栏与监控组件**） |
 
 ---
@@ -55,8 +55,10 @@ description: >-
    - [`resources/prts-design.css`](./resources/prts-design.css)（上游完整底座与通用/领域组件）
    - [`resources/prts-addons.css`](./resources/prts-addons.css)（官网/博客/画廊/登录全原型壳层、硬切动效与上游补丁）
    - 仅需令牌时：[`resources/prts-tokens.css`](./resources/prts-tokens.css)
-3. **分原型参考样板**（按目标网站类型挑对应的看，**严禁抄录测试文案**）：
+3. **分原型参考样板**（按目标网站类型挑对应的看，**严禁抄录测试文案**；全景索引见 [`examples/index.html`](./examples/index.html)）：
+   - 商业产品落地页 + 多维检索画廊与空态（原型 1+3 · 无侧栏）：[`examples/prts-landing.html`](./examples/prts-landing.html)
    - 长文专栏 + 作品画廊（原型 2+3 · 无侧栏）：[`examples/prts-editorial.html`](./examples/prts-editorial.html)
+   - 分屏登录 + 3 步入驻向导（原型 4 · 表单报错/OTP）：[`examples/prts-auth.html`](./examples/prts-auth.html)
    - 官网概念门户（原型 1 · 暗色主视觉）：[`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html)
    - 百科侧栏外壳 & 全组件目录（原型 5）：[`examples/prts-components.html`](./examples/prts-components.html)
 
@@ -70,6 +72,8 @@ description: >-
    - Tailwind CSS v4 专用：[`resources/endfield-theme.css`](./resources/endfield-theme.css)
 3. **分原型参考样板**（按目标网站类型挑对应的看，**严禁抄录测试文案**）：
    - 品牌产品落地页 + 筛选画廊 + 定价 + FAQ（原型 1+3 · 无侧栏）：[`examples/endfield-landing.html`](./examples/endfield-landing.html)
+   - 三栏技术文档 + API 参考站（原型 2 · 左树检索/空态/右 TOC）：[`examples/endfield-docs.html`](./examples/endfield-docs.html)
+   - 分屏登录 + 3 步设备激活向导（原型 4 · 校验/OTP/完成横幅）：[`examples/endfield-auth.html`](./examples/endfield-auth.html)
    - 工业调度控制台（原型 5 · 含侧轨与遥测）：[`examples/endfield-boilerplate.html`](./examples/endfield-boilerplate.html)
    - 全组件与动效目录：[`examples/endfield-components.html`](./examples/endfield-components.html)
 

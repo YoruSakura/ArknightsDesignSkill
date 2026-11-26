@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArknightsDesignSkill — 双体系 × 五原型全景示例总览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hub-bg: #0f1012;
+    --hub-surface: #17191d;
+    --hub-surface-2: #1f2228;
+    --hub-fg: #f2f4f7;
+    --hub-fg-2: #b8c0cc;
+    --hub-muted: #7f8998;
+    --hub-line: rgba(255, 255, 255, 0.12);
+    --hub-line-strong: rgba(255, 255, 255, 0.28);
+    --hub-prts: #18d1ff;
+    --hub-ef: #fffa00;
+    --hub-ef-ink: #141414;
+  }
+  [data-theme="light"] {
+    --hub-bg: #f4f5f6;
+    --hub-surface: #ffffff;
+    --hub-surface-2: #eceef1;
+    --hub-fg: #141619;
+    --hub-fg-2: #4a525e;
+    --hub-muted: #6c7582;
+    --hub-line: rgba(20, 22, 25, 0.12);
+    --hub-line-strong: rgba(20, 22, 25, 0.28);
+    --hub-prts: #0072a8;
+    --hub-ef: #fffa00;
+    --hub-ef-ink: #141414;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--hub-bg);
+    color: var(--hub-fg);
+    font-family: "Noto Sans SC", system-ui, -apple-system, sans-serif;
+    line-height: 1.65;
+  }
+  .hub-wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
+  .hub-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--hub-surface);
+    border-bottom: 1px solid var(--hub-line);
+  }
+  .hub-header__inner {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .hub-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Oswald", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--hub-fg);
+    text-decoration: none;
+  }
+  .hub-brand__tag {
+    padding: 2px 7px;
+    background: var(--hub-fg);
+    color: var(--hub-bg);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+  }
+  .hub-tools { display: flex; align-items: center; gap: 8px; }
+  .hub-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--hub-line-strong);
+    background: transparent;
+    color: var(--hub-fg);
+    font: 600 12px/1 "Chakra Petch", "Noto Sans SC", sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .hub-btn[aria-pressed="true"],
+  .hub-btn:hover { background: var(--hub-fg); color: var(--hub-bg); border-color: var(--hub-fg); }
+
+  .hub-hero { padding: 48px 0 36px; border-bottom: 1px solid var(--hub-line); }
+  .hub-kicker {
+    font: 700 11px/1.2 "Chakra Petch", monospace;
+    letter-spacing: 0.14em;
+    color: var(--hub-muted);
+    text-transform: uppercase;
+  }
+  .hub-title {
+    margin: 12px 0 12px;
+    font-size: clamp(1.75rem, 3.6vw, 2.75rem);
+    font-weight: 900;
+    line-height: 1.18;
+  }
+  .hub-lead { margin: 0 0 24px; max-width: 68ch; font-size: 15px; color: var(--hub-fg-2); }
+  .hub-filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+  .hub-section { padding: 36px 0 48px; }
+  .hub-section__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--hub-line-strong);
+  }
+  .hub-section__title { margin: 0; font-size: 18px; font-weight: 800; }
+  .hub-section__meta { font: 600 12px/1 "JetBrains Mono", monospace; color: var(--hub-muted); }
+
+  .hub-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .hub-card {
+    flex: 1 1 420px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 22px 24px;
+    background: var(--hub-surface);
+    border: 1px solid var(--hub-line);
+    border-top-width: 3px;
+    color: var(--hub-fg);
+    text-decoration: none;
+    transition: border-color 140ms ease, background-color 140ms ease;
+  }
+  .hub-card--prts { border-top-color: var(--hub-prts); }
+  .hub-card--ef { border-top-color: var(--hub-ef); }
+  .hub-card:hover { border-color: var(--hub-fg); background: var(--hub-surface-2); }
+  .hub-card:focus-visible { outline: 2px solid var(--hub-prts); outline-offset: 2px; }
+  .hub-card__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .hub-badge {
+    padding: 3px 8px;
+    font: 700 11px/1.1 "JetBrains Mono", monospace;
+    letter-spacing: 0.06em;
+  }
+  .hub-badge--prts { background: var(--hub-prts); color: #090b0d; }
+  [data-theme="light"] .hub-badge--prts { color: #ffffff; }
+  .hub-badge--ef { background: var(--hub-ef); color: var(--hub-ef-ink); }
+  .hub-card__arch { font: 600 11px/1.2 "Chakra Petch", monospace; color: var(--hub-muted); }
+  .hub-card__title { margin: 0; font-size: 17px; font-weight: 800; color: var(--hub-fg); }
+  .hub-card__desc { margin: 0; font-size: 13.5px; color: var(--hub-fg-2); flex: 1; }
+  .hub-card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--hub-line);
+    font: 600 12px/1.2 "JetBrains Mono", monospace;
+    color: var(--hub-muted);
+  }
+  .hub-card__go { color: var(--hub-fg); }
+
+  .hub-footer {
+    padding: 24px 0 40px;
+    border-top: 1px solid var(--hub-line);
+    font-size: 12.5px;
+    color: var(--hub-muted);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 16px;
+  }
+
+  @media (max-width: 820px) {
+    .hub-wrap { padding: 0 16px; }
+    .hub-card { flex-basis: 100%; }
+    .hub-hero { padding: 32px 0 28px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hub-card { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <header class="hub-header">
+    <div class="hub-wrap hub-header__inner">
+      <a class="hub-brand" href="#top">
+        <span class="hub-brand__tag">MATRIX</span>
+        <span>ARKNIGHTS DESIGN EXAMPLES</span>
+      </a>
+      <div class="hub-tools" role="group" aria-label="总览页外观切换">
+        <button type="button" class="hub-btn" id="hub-dark" aria-pressed="true" onclick="setTheme('dark')">暗色</button>
+        <button type="button" class="hub-btn" id="hub-light" aria-pressed="false" onclick="setTheme('light')">亮色</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="hub-wrap" id="top">
+    <section class="hub-hero">
+      <div class="hub-kicker">ORTHOGONAL DUAL-SYSTEM SHOWCASE // 2 SYSTEMS × 5 ARCHETYPES</div>
+      <h1 class="hub-title">双体系 × 五大网站原型全景样板索引</h1>
+      <p class="hub-lead">
+        本页为 <code>examples/</code> 独立导航总览（不混引任何 <code>.ak-*</code> 与 <code>.ef-*</code> 样式表）。下方 10 份零依赖整页样板完整覆盖「商业落地页、长文与三栏文档、多维检索画廊、分屏登录与多步向导、控制台与全组件目录」，每页均支持亮/暗切换、键盘无障碍与 375px–1440px 响应式验证。
+      </p>
+      <div class="hub-filters" role="group" aria-label="按设计体系筛选样板">
+        <button type="button" class="hub-btn" data-sys="all" aria-pressed="true">全部样板 (10)</button>
+        <button type="button" class="hub-btn" data-sys="prts" aria-pressed="false">体系 A · PRTS Design (5)</button>
+        <button type="button" class="hub-btn" data-sys="ef" aria-pressed="false">体系 B · Endfield UI (5)</button>
+      </div>
+    </section>
+
+    <section class="hub-section">
+      <div class="hub-section__head">
+        <h2 class="hub-section__title">全量样板矩阵</h2>
+        <span class="hub-section__meta" id="hub-count">SHOWING 10 / 10 PAGES</span>
+      </div>
+
+      <div class="hub-grid" id="hub-grid">
+        <!-- PRTS 5 Pages -->
+        <a class="hub-card hub-card--prts" href="./prts-landing.html" data-sys="prts">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--prts">PRTS DESIGN</span>
+            <span class="hub-card__arch">原型 1 + 3 · 商业落地页与检索画廊</span>
+          </div>
+          <h3 class="hub-card__title">KILN.CLOUD — 商业产品落地页 + 多维模板检索</h3>
+          <p class="hub-card__desc">去游戏化商业 SaaS 落地页：亮/暗双极性首屏、无框特性网格、关键词搜索 + 分类芯片 + 空态（.ak-empty）、阶梯定价与详情抽屉。</p>
+          <div class="hub-card__foot"><span>examples/prts-landing.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--ef" href="./endfield-landing.html" data-sys="ef">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--ef">ENDFIELD UI</span>
+            <span class="hub-card__arch">原型 1 + 3 · 品牌官网与硬件画廊</span>
+          </div>
+          <h3 class="hub-card__title">KINETIC LAB — 工业编辑风品牌落地页</h3>
+          <p class="hub-card__desc">无侧栏开放式品牌官网：镂空斜纹巨字、唯一信号黄切角主行动、信号黄换气带、6 卡矢量硬件画廊、年/月付定价与 FAQ 手风琴。</p>
+          <div class="hub-card__foot"><span>examples/endfield-landing.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--prts" href="./prts-editorial.html" data-sys="prts">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--prts">PRTS DESIGN</span>
+            <span class="hub-card__arch">原型 2 + 3 · 长文专栏与作品画廊</span>
+          </div>
+          <h3 class="hub-card__title">MONOLITH.NOTES — 72ch 长文专栏与案例归档</h3>
+          <p class="hub-card__desc">双正典舒适阅读页：顶边 2px 滚动进度线、72ch 单轴正文 + 粘性 TOC、代码页签、键盘可点屏蔽批注、作品画廊与订阅表单。</p>
+          <div class="hub-card__foot"><span>examples/prts-editorial.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--ef" href="./endfield-docs.html" data-sys="ef">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--ef">ENDFIELD UI</span>
+            <span class="hub-card__arch">原型 2 · 三栏技术文档与 API 站</span>
+          </div>
+          <h3 class="hub-card__title">FORGEKIT DOCS — 三栏开源技术文档站</h3>
+          <p class="hub-card__desc">完整三栏文档架构（.ef-docs-shell）：左树实时关键词过滤与空态（.ef-empty）、中栏 72ch 正文与响应式 API 参数表、右栏粘性大纲与代码页签。</p>
+          <div class="hub-card__foot"><span>examples/endfield-docs.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--prts" href="./prts-auth.html" data-sys="prts">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--prts">PRTS DESIGN</span>
+            <span class="hub-card__arch">原型 4 · 分屏登录与 3 步入驻向导</span>
+          </div>
+          <h3 class="hub-card__title">KILN.CLOUD ACCESS — 认证与团队初始化流</h3>
+          <p class="hub-card__desc">完整落地 .ak-auth-shell：恒深黑建筑品牌栏、邮箱/口令错误校验态与焦点引导、3 步 .ak-stepper 向导、6 格验证码与成功回执。</p>
+          <div class="hub-card__foot"><span>examples/prts-auth.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--ef" href="./endfield-auth.html" data-sys="ef">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--ef">ENDFIELD UI</span>
+            <span class="hub-card__arch">原型 4 · 分屏登录与 3 步硬件激活</span>
+          </div>
+          <h3 class="hub-card__title">KINETIC ID — 登录与 3 步设备激活向导</h3>
+          <p class="hub-card__desc">完整落地 .ef-auth-shell：恒深墨等高线品牌栏、校验报错反馈、.ef-steps 三步进度、6 格 .ef-otp 自动前进与 .ef-completion-banner 签发横幅。</p>
+          <div class="hub-card__foot"><span>examples/endfield-auth.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--prts" href="./prts-boilerplate.html" data-sys="prts">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--prts">PRTS DESIGN</span>
+            <span class="hub-card__arch">原型 1 · 暗色概念展示门户</span>
+          </div>
+          <h3 class="hub-card__title">PRTS PORTAL — 官网建筑极简概念门户</h3>
+          <p class="hub-card__desc">对标官网视觉节奏：三角暗格斜光画布、漂浮双语顶栏 + 声波钮、右侧竖轨序号、焦点滑轨选卡、无框清单与四列暗幕展示条。</p>
+          <div class="hub-card__foot"><span>examples/prts-boilerplate.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--ef" href="./endfield-boilerplate.html" data-sys="ef">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--ef">ENDFIELD UI</span>
+            <span class="hub-card__arch">原型 5 · 工业调度控制台</span>
+          </div>
+          <h3 class="hub-card__title">ENDFIELD OPS — 工业调度与遥测控制台</h3>
+          <p class="hub-card__desc">后台/监控专用骨架（.ef-app-shell）：左侧常驻窄轨、镂空巨字首屏、左竖线 KPI、深色行带内嵌 Sparkline 与仓储物品格筛选。</p>
+          <div class="hub-card__foot"><span>examples/endfield-boilerplate.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--prts" href="./prts-components.html" data-sys="prts">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--prts">PRTS DESIGN</span>
+            <span class="hub-card__arch">原型 5 · 百科侧栏外壳与全组件目录</span>
+          </div>
+          <h3 class="hub-card__title">PRTS COMPONENTS — 全组件与 ARIA 交互目录</h3>
+          <p class="hub-card__desc">百科终端侧栏布局 + 按钮/菜单/气泡/多态页签/表单/抽屉/Toast/骨架屏 + 方舟干员/技能/模组/声波领域组件实测墙。</p>
+          <div class="hub-card__foot"><span>examples/prts-components.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+
+        <a class="hub-card hub-card--ef" href="./endfield-components.html" data-sys="ef">
+          <div class="hub-card__top">
+            <span class="hub-badge hub-badge--ef">ENDFIELD UI</span>
+            <span class="hub-card__arch">全组件 · 8.1–8.8 控件与 16 关键帧目录</span>
+          </div>
+          <h3 class="hub-card__title">ENDFIELD COMPONENTS — 全组件与动效实测墙</h3>
+          <p class="hub-card__desc">按钮展开条、三态楔形页签、分页/步骤条、方圆↔菱形表单、Combobox/日历/取景框 HUD、Loader 与 16 个关键帧一键重播。</p>
+          <div class="hub-card__foot"><span>examples/endfield-components.html</span><span class="hub-card__go">打开样板 →</span></div>
+        </a>
+      </div>
+    </section>
+
+    <footer class="hub-footer">
+      <span>ArknightsDesignSkill · 严格隔离 PRTS Design 与 Endfield UI</span>
+      <span>10 份独立样板 · 零外部位图依赖 · 亮/暗双主题</span>
+    </footer>
+  </main>
+
+<script>
+const root = document.documentElement;
+function setTheme(t) {
+  root.dataset.theme = t;
+  document.getElementById('hub-dark').setAttribute('aria-pressed', String(t === 'dark'));
+  document.getElementById('hub-light').setAttribute('aria-pressed', String(t === 'light'));
+}
+const cards = [...document.querySelectorAll('#hub-grid .hub-card')];
+const count = document.getElementById('hub-count');
+document.querySelectorAll('.hub-filters [data-sys]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const sys = btn.dataset.sys;
+    document.querySelectorAll('.hub-filters [data-sys]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    let vis = 0;
+    cards.forEach((c) => {
+      const show = sys === 'all' || c.dataset.sys === sys;
+      c.hidden = !show;
+      if (show) vis++;
+    });
+    count.textContent = `SHOWING ${vis} / ${cards.length} PAGES`;
+  });
+});
+</script>
+</body>
+</html>

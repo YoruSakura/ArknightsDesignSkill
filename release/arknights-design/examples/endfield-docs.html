@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORGEKIT DOCS — Endfield UI 三栏技术文档与 API 参考站样板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,700..900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Outfit:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../resources/endfield-standalone.css">
+</head>
+<body class="ef-scope">
+  <div class="ef-read-bar" id="ef-read-bar" aria-hidden="true"></div>
+
+  <!-- 1. 顶部网站导航（无后台控制台侧轨，保留清晰文档与版本定位） -->
+  <header class="ef-site-header">
+    <div class="ef-site-header__inner">
+      <a class="ef-site-header__brand" href="#doc-top" aria-label="FORGEKIT DOCS">
+        <span class="ef-site-header__mark" aria-hidden="true">FK</span>
+        <span>FORGEKIT DOCS</span>
+      </a>
+
+      <nav class="ef-site-header__nav" aria-label="文档导航">
+        <a class="ef-site-header__link is-active" href="#doc-top">指南</a>
+        <a class="ef-site-header__link" href="#sec-api">API 参考</a>
+        <a class="ef-site-header__link" href="#sec-examples">代码配方</a>
+        <a class="ef-site-header__link" href="./index.html">全原型总览</a>
+      </nav>
+
+      <div class="ef-site-header__actions">
+        <div role="group" aria-label="外观模式切换" class="ef-site-header__switch">
+          <button type="button" id="ef-btn-light" class="ef-btn ef-btn--sm" aria-pressed="true" onclick="toggleTheme('light')">纸白</button>
+          <button type="button" id="ef-btn-dark" class="ef-btn ef-btn--sm" aria-pressed="false" onclick="toggleTheme('dark')">烟黑</button>
+        </div>
+        <a class="ef-btn ef-btn--sm ef-site-header__cta" href="./endfield-auth.html">账户激活</a>
+        <button type="button" class="ef-btn ef-btn--sm ef-site-header__menu" id="ef-nav-btn" aria-controls="ef-nav-drawer" aria-expanded="false">菜单</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="ef-site-main" id="doc-top">
+    <!-- 2. 三栏技术文档站壳层：左章节树（含检索+空态）+ 中 72ch 正文与 API 表 + 右粘性大纲 -->
+    <div class="ef-docs-shell">
+      <aside class="ef-docs-nav" aria-label="文档章节树">
+        <div class="ef-field">
+          <label class="ef-field__label" for="ef-doc-search">章节检索 · FILTER</label>
+          <input id="ef-doc-search" class="ef-input-box" type="search" placeholder="过滤章节或 API（如 machine）…" autocomplete="off">
+        </div>
+
+        <div id="ef-doc-tree" class="ef-stack">
+          <div class="ef-docs-nav__group" data-group>
+            <h2 class="ef-docs-nav__title">01 // GETTING STARTED</h2>
+            <a class="ef-docs-nav__link is-active" href="#sec-overview" data-doc-item data-keywords="简介 安装 快速开始 overview"><span>架构概览与安装</span><span>01</span></a>
+            <a class="ef-docs-nav__link" href="#sec-machine" data-doc-item data-keywords="状态机 schema 校验 machine state"><span>声明式状态机</span><span>02</span></a>
+          </div>
+          <div class="ef-docs-nav__group" data-group>
+            <h2 class="ef-docs-nav__title">02 // REFERENCE</h2>
+            <a class="ef-docs-nav__link" href="#sec-api" data-doc-item data-keywords="api 参数 配置 props createMachine"><span>createMachine() 参数</span><span>03</span></a>
+            <a class="ef-docs-nav__link" href="#sec-examples" data-doc-item data-keywords="代码 表单 异步 提交 recipes"><span>多框架接入配方</span><span>04</span></a>
+          </div>
+          <div class="ef-docs-nav__group" data-group>
+            <h2 class="ef-docs-nav__title">03 // ECOSYSTEM</h2>
+            <a class="ef-docs-nav__link" href="./endfield-landing.html" data-doc-item data-keywords="官网 落地页 landing"><span>对照：品牌落地页 ↗</span><span>↗</span></a>
+            <a class="ef-docs-nav__link" href="./endfield-auth.html" data-doc-item data-keywords="登录 认证 向导 auth"><span>对照：账户向导页 ↗</span><span>↗</span></a>
+          </div>
+        </div>
+
+        <div class="ef-empty" id="ef-doc-empty" hidden>
+          <h3 class="ef-empty__title">未命中匹配章节</h3>
+          <p class="ef-empty__desc">请更换关键词或清除过滤条件查看完整目录。</p>
+          <button type="button" class="ef-btn ef-btn--sm" id="ef-doc-reset">重置检索</button>
+        </div>
+      </aside>
+
+      <!-- 中栏：72ch 舒适阅读正文 (.ef-prose) -->
+      <article class="ef-prose">
+        <header class="ef-section-title">
+          <span class="ef-section-title__meta">▼ // DOC REV 2.4 · ZERO RUNTIME OVERHEAD · UPDATED 2026-11-26</span>
+          <div class="ef-section-title__row">
+            <span class="ef-section-title__block" aria-hidden="true"><span>↘</span></span>
+            <h1 class="ef-section-title__en">FORGEKIT // FORM STATE ENGINE</h1>
+          </div>
+        </header>
+
+        <p>
+          <strong>ForgeKit</strong> 是一套面向复杂多步表单与工业配置向导的零依赖状态机库。它将字段验证、异步提交锁与可访问性焦点管理统一收敛为确定性状态迁移，避免在组件树中散落相互冲突的布尔标志。
+        </p>
+
+        <div class="ef-alert">
+          <div><strong>阅读原型提示：</strong>本页完整演示 Endfield UI 的「三栏技术文档站」骨架（<code>.ef-docs-shell</code> + <code>.ef-prose</code> + <code>.ef-toc</code>），严守纸墨可读性，全页克制保留 1 处信号黄标记。</div>
+        </div>
+
+        <h2 id="sec-overview">一、架构概览与安装</h2>
+        <p>
+          常规前端表单库往往与特定渲染框架强绑定，而在多框架工程或原生 Web Components 场景下，状态流转本身应当保持纯粹。ForgeKit 采用单向事件队列驱动，gzip 后体积仅 <code>3.8 KB</code>。
+        </p>
+
+        <pre><code>npm install @forgekit/core
+# 或使用 pnpm 离线镜像源
+pnpm add @forgekit/core</code></pre>
+
+        <blockquote>
+          <p>「状态机的价值不在于增加抽象层，而在于让非法中间态在类型与运行时层面都不可能被构造出来。」</p>
+        </blockquote>
+
+        <h2 id="sec-machine">二、声明式状态机与字段校验</h2>
+        <p>
+          每个向导流程由有限个具名步骤组成：<code>idle</code>、<code>validating</code>、<code>submitting</code> 与 <code>completed</code>。当任一必填字段未通过规则时，状态机自动阻断迁移并将焦点引导至首个报错输入项。
+        </p>
+
+        <figure>
+          <div class="ef-specimen-card__stage">
+            <svg viewBox="0 0 460 112" aria-hidden="true">
+              <rect x="12" y="34" width="88" height="44" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity=".6"/>
+              <text x="36" y="60" fill="currentColor" font-size="11" font-family="monospace">IDLE</text>
+              <line x1="100" y1="56" x2="134" y2="56" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="134" y="34" width="104" height="44" fill="none" stroke="var(--ef-accent-ink)" stroke-width="2"/>
+              <text x="150" y="60" fill="var(--ef-accent-ink)" font-size="11" font-family="monospace">VALIDATE</text>
+              <line x1="238" y1="56" x2="272" y2="56" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="272" y="34" width="84" height="44" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity=".6"/>
+              <text x="288" y="60" fill="currentColor" font-size="11" font-family="monospace">SUBMIT</text>
+              <line x1="356" y1="56" x2="386" y2="56" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="386" y="34" width="62" height="44" fill="var(--ef-action)"/>
+              <text x="399" y="60" fill="#191919" font-size="11" font-weight="700" font-family="monospace">DONE</text>
+            </svg>
+          </div>
+          <figcaption>FIG 01 // 四阶段确定性状态迁移路径：校验失败自动回退至 IDLE 并锁定错误焦点。</figcaption>
+        </figure>
+
+        <h2 id="sec-api">三、createMachine() API 参数表</h2>
+        <p>所有配置项均支持静态类型推导；窄屏视口下参数表自动包裹 <code>.ef-table-wrap</code> 避免挤压正文列。</p>
+
+        <div class="ef-table-wrap">
+          <table class="ef-table ef-table--compact">
+            <thead>
+              <tr>
+                <th>参数名</th>
+                <th>类型</th>
+                <th>默认值</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>initial</code></td>
+                <td><code>string</code></td>
+                <td><code>"idle"</code></td>
+                <td>初始激活步骤名称，须存在于 <code>steps</code> 键集合中</td>
+              </tr>
+              <tr>
+                <td><code>validateOnBlur</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code></td>
+                <td>失焦时执行字段级增量校验并同步 <code>aria-invalid</code></td>
+              </tr>
+              <tr>
+                <td><code>focusFirstError</code></td>
+                <td><code>boolean</code></td>
+                <td><code>true</code></td>
+                <td>提交失败时自动聚焦首个报错字段，保障键盘与读屏无障碍</td>
+              </tr>
+              <tr>
+                <td><code>retryLimit</code></td>
+                <td><code>number</code></td>
+                <td><code>2</code></td>
+                <td>网络抖动时允许的幂等提交重试次数上限</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="sec-examples">四、多框架接入配方</h2>
+        <p>通过标准 WAI-ARIA 页签切换不同运行环境的最小接入代码（支持键盘 <code>←</code> / <code>→</code> / <code>Home</code> / <code>End</code>）：</p>
+
+        <div id="ef-code-tabs">
+          <div class="ef-tabs ef-tabs--block" role="tablist" aria-label="接入代码示例切换">
+            <button type="button" class="ef-tab is-active" role="tab" id="ef-dt-0" aria-controls="ef-dp-0" aria-selected="true" tabindex="0">TypeScript 原生</button>
+            <button type="button" class="ef-tab" role="tab" id="ef-dt-1" aria-controls="ef-dp-1" aria-selected="false" tabindex="-1">React 19 Hook</button>
+            <button type="button" class="ef-tab" role="tab" id="ef-dt-2" aria-controls="ef-dp-2" aria-selected="false" tabindex="-1">Vue 3 Composable</button>
+          </div>
+          <div id="ef-dp-0" role="tabpanel" aria-labelledby="ef-dt-0">
+            <pre><code>import { createMachine } from '@forgekit/core';
+
+const flow = createMachine({
+  initial: 'account',
+  validateOnBlur: true,
+  focusFirstError: true,
+});
+
+flow.send({ type: 'NEXT', payload: { email: 'ops@example.com' } });</code></pre>
+          </div>
+          <div id="ef-dp-1" role="tabpanel" aria-labelledby="ef-dt-1" hidden>
+            <pre><code>import { useMachine } from '@forgekit/react';
+
+export function OnboardingForm() {
+  const { step, errors, next } = useMachine(onboardingSpec);
+  return &lt;button onClick={next}&gt;Step {step}&lt;/button&gt;;
+}</code></pre>
+          </div>
+          <div id="ef-dp-2" role="tabpanel" aria-labelledby="ef-dt-2" hidden>
+            <pre><code>import { useForgeMachine } from '@forgekit/vue';
+
+const { currentStep, submit, isValid } = useForgeMachine(onboardingSpec);</code></pre>
+          </div>
+        </div>
+
+        <nav class="ef-doc-pager" aria-label="上一篇与下一篇文档">
+          <a class="ef-doc-pager__item" href="./endfield-landing.html">
+            <small>PREVIOUS // LANDING</small>
+            <strong>← 返回品牌官网落地页样板</strong>
+          </a>
+          <a class="ef-doc-pager__item" href="./endfield-auth.html">
+            <small>NEXT // AUTH WIZARD</small>
+            <strong>前往登录与设备激活向导 →</strong>
+          </a>
+        </nav>
+      </article>
+
+      <!-- 右栏：粘性页内大纲 (.ef-docs-toc + .ef-toc) -->
+      <aside class="ef-docs-toc" aria-label="本页目录">
+        <h2 class="ef-docs-toc__title">ON THIS PAGE</h2>
+        <ul class="ef-toc" id="ef-page-toc">
+          <li class="ef-toc__item is-current"><a href="#sec-overview">一、架构概览与安装</a></li>
+          <li class="ef-toc__item"><a href="#sec-machine">二、声明式状态机</a></li>
+          <li class="ef-toc__item"><a href="#sec-api">三、createMachine() 参数</a></li>
+          <li class="ef-toc__item"><a href="#sec-examples">四、多框架接入配方</a></li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="ef-footer">
+    <div class="hazard ef-footer__stripe" aria-hidden="true"></div>
+    <div class="ef-footer__inner">
+      <div class="ef-footer__meta">
+        <span>FORGEKIT DOCUMENTATION // ENDFIELD UI TECHNICAL DOCS ARCHETYPE</span>
+        <span>THREE-COLUMN DOCS SHELL · 72CH PROSE · ZERO CONSOLE TELEMETRY</span>
+      </div>
+      <div class="ef-footer__links">
+        <a href="./index.html">全原型总览</a>
+        <a href="./endfield-landing.html">Endfield 官网落地页</a>
+        <a href="./endfield-auth.html">Endfield 登录向导</a>
+        <a href="./prts-editorial.html">PRTS 长文专栏</a>
+        <button type="button" class="ef-icon-btn" aria-label="返回顶部" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">↑</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 移动端导航抽屉 -->
+  <div class="ef-drawer-backdrop" id="ef-drawer-bg"></div>
+  <aside class="ef-drawer" id="ef-nav-drawer" role="dialog" aria-modal="true" aria-labelledby="ef-nav-drawer-title">
+    <header class="ef-drawer__head">
+      <h2 class="ef-drawer__title" id="ef-nav-drawer-title">DOCUMENTATION</h2>
+      <button type="button" class="ef-icon-btn" aria-label="关闭导航" data-close-drawer>✕</button>
+    </header>
+    <div class="ef-drawer__body ef-stack">
+      <a class="ef-btn ef-btn--block" href="#sec-overview" data-close-drawer>一、架构概览与安装</a>
+      <a class="ef-btn ef-btn--block" href="#sec-machine" data-close-drawer>二、声明式状态机</a>
+      <a class="ef-btn ef-btn--block" href="#sec-api" data-close-drawer>三、API 参数表</a>
+      <a class="ef-btn ef-btn--block" href="#sec-examples" data-close-drawer>四、多框架接入配方</a>
+      <a class="ef-btn ef-btn--action ef-btn--block" href="./endfield-auth.html">前往账户激活向导</a>
+    </div>
+  </aside>
+
+<script>
+const root = document.documentElement;
+function applyTheme(t, persist) {
+  root.dataset.theme = t;
+  if (persist) { try { localStorage.setItem('ef-docs-theme', t); } catch (e) {} }
+  document.getElementById('ef-btn-light').setAttribute('aria-pressed', String(t === 'light'));
+  document.getElementById('ef-btn-dark').setAttribute('aria-pressed', String(t === 'dark'));
+}
+function toggleTheme(t) { applyTheme(t, true); }
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('ef-docs-theme'); } catch (e) {}
+  applyTheme(saved === 'dark' || saved === 'light' ? saved : (root.dataset.theme || 'light'), false);
+})();
+
+/* 顶边阅读进度细线与右侧 TOC 滚动同步 */
+const readBar = document.getElementById('ef-read-bar');
+const tocItems = [...document.querySelectorAll('#ef-page-toc .ef-toc__item')];
+const sections = tocItems.map((li) => document.querySelector(li.querySelector('a').getAttribute('href')));
+function syncScroll() {
+  const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  readBar.style.transform = `scaleX(${Math.min(1, Math.max(0, window.scrollY / max))})`;
+  let idx = 0;
+  if (window.scrollY >= 40) {
+    sections.forEach((sec, i) => {
+      if (sec && sec.getBoundingClientRect().top <= 130) idx = i;
+    });
+  }
+  tocItems.forEach((li, i) => li.classList.toggle('is-current', i === idx));
+}
+window.addEventListener('scroll', syncScroll, { passive: true });
+syncScroll();
+
+/* 左侧文档树关键词过滤 + 空状态 */
+const docSearch = document.getElementById('ef-doc-search');
+const docLinks = [...document.querySelectorAll('[data-doc-item]')];
+const docGroups = [...document.querySelectorAll('[data-group]')];
+const docEmpty = document.getElementById('ef-doc-empty');
+function filterDocs() {
+  const q = docSearch.value.trim().toLowerCase();
+  let visible = 0;
+  docLinks.forEach((a) => {
+    const match = !q || `${a.textContent} ${a.dataset.keywords}`.toLowerCase().includes(q);
+    a.hidden = !match;
+    if (match) visible++;
+  });
+  docGroups.forEach((g) => {
+    const anyVis = [...g.querySelectorAll('[data-doc-item]')].some((a) => !a.hidden);
+    g.hidden = !anyVis;
+  });
+  docEmpty.hidden = visible > 0;
+}
+docSearch.addEventListener('input', filterDocs);
+document.getElementById('ef-doc-reset').addEventListener('click', () => {
+  docSearch.value = '';
+  filterDocs();
+  docSearch.focus();
+});
+
+/* WAI-ARIA Tabs（支持 ArrowLeft/ArrowRight/Home/End） */
+const tabs = [...document.querySelectorAll('#ef-code-tabs [role="tab"]')];
+function activateTab(idx, focus = true) {
+  tabs.forEach((t, i) => {
+    const sel = i === idx;
+    t.classList.toggle('is-active', sel);
+    t.setAttribute('aria-selected', String(sel));
+    t.tabIndex = sel ? 0 : -1;
+    const panel = document.getElementById(t.getAttribute('aria-controls'));
+    if (panel) panel.hidden = !sel;
+  });
+  if (focus) tabs[idx].focus();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => activateTab(i, false));
+  t.addEventListener('keydown', (e) => {
+    let next = null;
+    if (e.key === 'ArrowRight') next = (i + 1) % tabs.length;
+    else if (e.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = tabs.length - 1;
+    if (next !== null) { e.preventDefault(); activateTab(next, true); }
+  });
+});
+
+/* 移动导航抽屉 */
+const drawer = document.getElementById('ef-nav-drawer');
+const drawerBg = document.getElementById('ef-drawer-bg');
+const navBtn = document.getElementById('ef-nav-btn');
+function openDrawer() {
+  drawer.classList.add('is-open');
+  drawerBg.classList.add('is-open');
+  navBtn.setAttribute('aria-expanded', 'true');
+  drawer.querySelector('button, a').focus();
+}
+function closeDrawer(restore = true) {
+  if (!drawer.classList.contains('is-open')) return;
+  drawer.classList.remove('is-open');
+  drawerBg.classList.remove('is-open');
+  navBtn.setAttribute('aria-expanded', 'false');
+  if (restore) navBtn.focus();
+}
+navBtn.addEventListener('click', openDrawer);
+drawerBg.addEventListener('click', () => closeDrawer(true));
+drawer.querySelectorAll('[data-close-drawer]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(true); });
+</script>
+</body>
+</html>

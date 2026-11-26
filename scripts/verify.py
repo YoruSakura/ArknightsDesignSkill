@@ -148,10 +148,15 @@ def run_chrome_render_and_behavior(out_dir: pathlib.Path) -> list[str]:
     errors: list[str] = []
     out_dir.mkdir(parents=True, exist_ok=True)
     pages = [
+        ("hub-index", "examples/index.html", 1750, 3200),
+        ("prts-landing", "examples/prts-landing.html", 2900, 4800),
+        ("prts-auth", "examples/prts-auth.html", 960, 1450),
         ("prts-bp", "examples/prts-boilerplate.html", 2420, 3550),
         ("prts-editorial", "examples/prts-editorial.html", 2780, 4050),
         ("prts-comp", "examples/prts-components.html", 3950, 6200),
         ("ef-landing", "examples/endfield-landing.html", 3550, 6200),
+        ("ef-docs", "examples/endfield-docs.html", 2200, 3400),
+        ("ef-auth", "examples/endfield-auth.html", 960, 1500),
         ("ef-bp", "examples/endfield-boilerplate.html", 1750, 2600),
         ("ef-comp", "examples/endfield-components.html", 4950, 7900),
     ]
@@ -487,7 +492,133 @@ window.addEventListener('load', () => {
 });
 </script>
 """
+    prts_landing_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = { heroScan: getComputedStyle(document.querySelector('.ak-landing-hero__title')).animationName };
+  const noSidebar = !document.querySelector('.ak-sidebar') && !document.querySelector('.ak-index-rail');
+  const search = document.getElementById('ak-tpl-search');
+  search.value = 'NONEXISTENT_QUERY_XYZ';
+  search.dispatchEvent(new Event('input', { bubbles: true }));
+  const emptyShownOnMiss = !document.getElementById('ak-tpl-empty').hidden
+    && getComputedStyle(document.getElementById('ak-tpl-empty')).display !== 'none';
+  document.getElementById('ak-tpl-reset').click();
+  const resetRestoresAll = document.getElementById('ak-tpl-empty').hidden
+    && document.getElementById('ak-tpl-count').textContent === '6 / 6';
+  document.getElementById('ak-bill-y').click();
+  const billingYearlyOk = document.querySelector('.ak-price-tier--featured .ak-price-tier__val').textContent.includes('¥159');
+  document.querySelector('#ak-tpl-grid .ak-work-card').click();
+  const drawerOpened = document.getElementById('ak-tpl-drawer').classList.contains('is-open');
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  const drawerEscClosed = !document.getElementById('ak-tpl-drawer').classList.contains('is-open');
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, noSidebar, emptyShownOnMiss, resetRestoresAll, billingYearlyOk, drawerOpened, drawerEscClosed, noOverflow
+  }));
+});
+</script>
+"""
+    ef_docs_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = {
+    sectionBlock: getComputedStyle(document.querySelector('.ef-section-title__block')).animationName,
+    sectionArrow: getComputedStyle(document.querySelector('.ef-section-title__block > span')).animationName,
+  };
+  const noSidebar = !document.querySelector('.ef-side-rail');
+  const docSearch = document.getElementById('ef-doc-search');
+  docSearch.value = 'ZZZZ_NO_MATCH';
+  docSearch.dispatchEvent(new Event('input', { bubbles: true }));
+  const docEmptyOk = !document.getElementById('ef-doc-empty').hidden
+    && getComputedStyle(document.getElementById('ef-doc-empty')).display !== 'none';
+  document.getElementById('ef-doc-reset').click();
+  const docResetOk = document.getElementById('ef-doc-empty').hidden
+    && [...document.querySelectorAll('[data-doc-item]')].every(a => !a.hidden);
+  const t0 = document.getElementById('ef-dt-0');
+  t0.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  const tabsArrowOk = document.getElementById('ef-dt-1').getAttribute('aria-selected') === 'true'
+    && !document.getElementById('ef-dp-1').hidden && document.getElementById('ef-dp-0').hidden;
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, noSidebar, docEmptyOk, docResetOk, tabsArrowOk, noOverflow
+  }));
+});
+</script>
+"""
+    prts_auth_probe = """
+<script>
+window.addEventListener('load', () => {
+  const anims = { titleScan: getComputedStyle(document.querySelector('.ak-auth-visual__title')).animationName };
+  const visualFg = getComputedStyle(document.querySelector('.ak-auth-visual__title')).color;
+  const authVisualDarkOk = visualFg === 'rgb(255, 255, 255)';
+  document.getElementById('ak-login-email').value = 'bad-email';
+  document.getElementById('ak-login-pwd').value = '123';
+  document.getElementById('ak-login-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  const loginErrorShown = !document.getElementById('ak-login-email-err').hidden
+    && document.getElementById('ak-login-email-field').classList.contains('is-invalid');
+  document.getElementById('ak-mode-wizard').click();
+  document.getElementById('ak-wiz-org').value = 'Monolith Studio';
+  document.getElementById('ak-wiz-mail').value = 'admin@monolith.example';
+  document.getElementById('ak-wiz-next1').click();
+  const otpCells = [...document.querySelectorAll('#ak-otp-group .ak-auth-otp__cell')];
+  otpCells.forEach((c, i) => { c.value = String((i + 1) % 10); c.dispatchEvent(new Event('input', { bubbles: true })); });
+  document.getElementById('ak-wiz-next2').click();
+  const wizardDoneOk = !document.getElementById('ak-wiz-s3').hidden
+    && document.getElementById('ak-wiz-done-desc').textContent.includes('Monolith Studio');
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    anims, authVisualDarkOk, loginErrorShown, wizardDoneOk, noOverflow
+  }));
+});
+</script>
+"""
+    ef_auth_probe = """
+<script>
+window.addEventListener('load', () => {
+  const brandTitle = getComputedStyle(document.querySelector('.ef-auth-brand__title')).color;
+  const authBrandDarkOk = brandTitle === 'rgb(250, 250, 250)';
+  document.getElementById('ef-login-email').value = 'bad';
+  document.getElementById('ef-login-pwd').value = '123';
+  document.getElementById('ef-login-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+  const loginErrorShown = !document.getElementById('ef-login-email-err').hidden
+    && document.getElementById('ef-login-email').classList.contains('is-invalid');
+  document.getElementById('ef-mode-wizard').click();
+  document.getElementById('ef-wiz-sn').value = 'KL04-2026-8841';
+  document.getElementById('ef-wiz-mail').value = 'owner@example.com';
+  document.getElementById('ef-wiz-next1').click();
+  const otpCells = [...document.querySelectorAll('#ef-otp-group .ef-otp__cell')];
+  otpCells.forEach((c, i) => { c.value = String((i + 2) % 10); c.dispatchEvent(new Event('input', { bubbles: true })); });
+  document.getElementById('ef-wiz-next2').click();
+  const wizardDoneOk = !document.getElementById('ef-wiz-s3').hidden
+    && document.getElementById('ef-wiz-done-desc').textContent.includes('KL04-2026-8841');
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({
+    authBrandDarkOk, loginErrorShown, wizardDoneOk, noOverflow
+  }));
+});
+</script>
+"""
+    hub_probe = """
+<script>
+window.addEventListener('load', () => {
+  document.querySelector('.hub-filters [data-sys="prts"]').click();
+  const prtsCount = [...document.querySelectorAll('#hub-grid .hub-card')].filter(c => !c.hidden).length;
+  document.querySelector('.hub-filters [data-sys="ef"]').click();
+  const efCount = [...document.querySelectorAll('#hub-grid .hub-card')].filter(c => !c.hidden).length;
+  document.querySelector('.hub-filters [data-sys="all"]').click();
+  const allCount = [...document.querySelectorAll('#hub-grid .hub-card')].filter(c => !c.hidden).length;
+  const filterCountsOk = prtsCount === 5 && efCount === 5 && allCount === 10;
+  const noOverflow = document.documentElement.scrollWidth <= document.documentElement.clientWidth;
+  document.body.setAttribute('data-verify', JSON.stringify({ filterCountsOk, noOverflow }));
+});
+</script>
+"""
     for src_name, html_file, probe in [
+        ("hub-index", out_dir / "hub-index-dark.html", hub_probe),
+        ("prts-landing-light", out_dir / "prts-landing-light.html", prts_landing_probe),
+        ("prts-landing-dark", out_dir / "prts-landing-dark.html", prts_landing_probe),
+        ("prts-auth-light", out_dir / "prts-auth-light.html", prts_auth_probe),
+        ("prts-auth-dark", out_dir / "prts-auth-dark.html", prts_auth_probe),
         ("prts-boilerplate", out_dir / "prts-bp-dark.html", prts_bp_probe),
         ("prts-editorial-light", out_dir / "prts-editorial-light.html", prts_editorial_probe),
         ("prts-editorial-dark", out_dir / "prts-editorial-dark.html", prts_editorial_probe),
@@ -495,6 +626,10 @@ window.addEventListener('load', () => {
         ("prts-components-light", out_dir / "prts-comp-light.html", prts_probe),
         ("endfield-landing-light", out_dir / "ef-landing-light.html", ef_landing_probe),
         ("endfield-landing-dark", out_dir / "ef-landing-dark.html", ef_landing_probe),
+        ("endfield-docs-light", out_dir / "ef-docs-light.html", ef_docs_probe),
+        ("endfield-docs-dark", out_dir / "ef-docs-dark.html", ef_docs_probe),
+        ("endfield-auth-light", out_dir / "ef-auth-light.html", ef_auth_probe),
+        ("endfield-auth-dark", out_dir / "ef-auth-dark.html", ef_auth_probe),
         ("endfield-boilerplate", out_dir / "ef-bp-light.html", ef_bp_probe),
         ("endfield-components-light", out_dir / "ef-comp-light.html", ef_probe),
         ("endfield-components-dark", out_dir / "ef-comp-dark.html", ef_probe),
