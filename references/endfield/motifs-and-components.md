@@ -359,17 +359,31 @@
     </div>
   </section>
 
-  <!-- 4. 长文博客/文档阅读壳 (.ef-article-shell + .ef-prose) -->
-  <div class="ef-article-shell">
-    <article class="ef-prose"><h2>章节</h2><p>72ch 舒适阅读正文…</p></article>
-    <aside><ul class="ef-toc"><li class="ef-toc__item is-current"><a href="#">目录</a></li></ul></aside>
+  <!-- 4. 长文博客双栏 (.ef-article-shell) 或 三栏技术文档站 (.ef-docs-shell，完整示范见 examples/endfield-docs.html) -->
+  <div class="ef-docs-shell">
+    <aside class="ef-docs-nav">
+      <div class="ef-docs-nav__group">
+        <h2 class="ef-docs-nav__title">01 // GUIDE</h2>
+        <a class="ef-docs-nav__link is-active" href="#s1"><span>快速开始</span><span>01</span></a>
+      </div>
+      <div class="ef-empty" hidden><h3 class="ef-empty__title">未命中匹配章节</h3></div>
+    </aside>
+    <article class="ef-prose">
+      <h2 id="s1">章节</h2>
+      <p>72ch 舒适阅读正文…</p>
+      <nav class="ef-doc-pager"><a class="ef-doc-pager__item" href="#"><small>NEXT</small><strong>下一篇 →</strong></a></nav>
+    </article>
+    <aside class="ef-docs-toc">
+      <h2 class="ef-docs-toc__title">ON THIS PAGE</h2>
+      <ul class="ef-toc"><li class="ef-toc__item is-current"><a href="#s1">目录</a></li></ul>
+    </aside>
   </div>
 </div>
 
-<!-- 5. 登录 / 表单向导分屏壳 (.ef-auth-shell) -->
+<!-- 5. 登录 / 3 步向导分屏壳 (.ef-auth-shell，完整示范见 examples/endfield-auth.html) -->
 <div class="ef-auth-shell">
-  <section class="ef-auth-brand">左侧深色品牌宣言</section>
-  <section class="ef-auth-card">右侧极简表单</section>
+  <section class="ef-auth-brand">左侧恒深墨品牌宣言（内置暗态语义令牌）</section>
+  <section class="ef-auth-card">右侧自适应纸白/烟黑表单与 .ef-steps / .ef-otp 向导</section>
 </div>
 ```
 

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KILN.CLOUD ACCESS — PRTS Design 登录与多步入驻向导样板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../resources/prts-design.css">
+<link rel="stylesheet" href="../resources/prts-addons.css">
+</head>
+<body class="ak-scope">
+  <!-- 原型 4：无侧栏、无大页脚的分屏登录与多步向导（.ak-auth-shell） -->
+  <main class="ak-auth-shell">
+    <!-- 左栏：恒深黑建筑品牌栏（自带暗态令牌作用域，亮/暗宿主下恒定高对比） -->
+    <section class="ak-auth-visual ak-bg-lattice" aria-label="平台安全与架构说明">
+      <span class="ak-ghost-word" aria-hidden="true">KILN</span>
+
+      <div class="ak-auth-visual__top">
+        <a class="ak-topbar__brand" href="./prts-landing.html" aria-label="返回 KILN.CLOUD 首页">
+          <span class="ak-topbar__mark" aria-hidden="true">KN</span>
+          <span class="ak-topbar__wordmark">
+            <strong>KILN.CLOUD</strong>
+            <small>WORKSPACE ACCESS PORTAL</small>
+          </span>
+        </a>
+      </div>
+
+      <div class="ak-auth-visual__body">
+        <span class="ak-article-head__kicker">AUTH // ZERO-TRUST WORKSPACE</span>
+        <h1 class="ak-auth-visual__title ak-anim-scan">以确定性身份凭证，<br>接入全球边缘发布网络</h1>
+        <p class="ak-auth-visual__lead">
+          支持单点登录、邮箱一次性校验码与细粒度项目角色隔离。每次授权变更均自动记入团队不可变审计轨迹。
+        </p>
+        <ul class="ak-auth-visual__points">
+          <li>支持个人邮箱快速登录或 3 步完成团队工作区初始化</li>
+          <li>全流程纯直角建筑表单与即时无障碍错误校验反馈</li>
+          <li>内置纸昼 / 暗夜双极性，左侧品牌视觉恒定深黑防眩光</li>
+        </ul>
+      </div>
+
+      <div class="ak-auth-visual__foot">
+        <span>PRTS DESIGN // AUTH ARCHETYPE</span>
+        <span>TLS 1.3 · WEBAUTHN READY</span>
+      </div>
+    </section>
+
+    <!-- 右栏：自适应亮/暗表单舞台（登录 ↔ 3 步入驻向导） -->
+    <section class="ak-auth-form" aria-label="账户认证与工作区初始化">
+      <div class="ak-auth-form__bar">
+        <a class="ak-btn ak-btn--ghost ak-btn--sm" href="./index.html">← 全原型总览</a>
+        <div class="ak-seg" role="group" aria-label="外观模式切换">
+          <button type="button" id="ak-btn-light" class="is-active" aria-pressed="true" onclick="toggleTheme('light')">纸昼</button>
+          <button type="button" id="ak-btn-dark" aria-pressed="false" onclick="toggleTheme('dark')">暗夜</button>
+        </div>
+      </div>
+
+      <div class="ak-auth-form__inner">
+        <!-- 模式切换：登录 vs 3 步工作区向导 -->
+        <div class="ak-seg" role="group" aria-label="认证模式切换">
+          <button type="button" class="is-active" id="ak-mode-login" aria-pressed="true" onclick="setMode('login')">账号登录</button>
+          <button type="button" id="ak-mode-wizard" aria-pressed="false" onclick="setMode('wizard')">3 步创建工作区</button>
+        </div>
+
+        <!-- A. 账号登录表单（含实时校验报错态与提交反馈） -->
+        <form id="ak-login-form" class="ak-auth-stack" novalidate>
+          <div>
+            <h2 class="ak-auth-form__title">登录工作区</h2>
+            <p class="ak-auth-form__sub">输入已注册的工作邮箱与访问口令以继续。</p>
+          </div>
+
+          <div class="ak-field" id="ak-login-email-field">
+            <label for="ak-login-email">工作邮箱</label>
+            <input id="ak-login-email" class="ak-input" type="email" placeholder="engineer@studio.example" autocomplete="email" required>
+            <p class="ak-field-err" id="ak-login-email-err" hidden>请输入格式正确的工作邮箱地址（例如 name@domain.com）。</p>
+          </div>
+
+          <div class="ak-field" id="ak-login-pwd-field">
+            <label for="ak-login-pwd">访问口令</label>
+            <input id="ak-login-pwd" class="ak-input" type="password" placeholder="至少 8 位字符" autocomplete="current-password" required>
+            <p class="ak-field-err" id="ak-login-pwd-err" hidden>访问口令长度不得少于 8 位字符。</p>
+          </div>
+
+          <div class="ak-auth-actions">
+            <label class="ak-check">
+              <input type="checkbox" checked>
+              <span>7 天内保持本机登录态</span>
+            </label>
+            <button type="button" class="ak-btn ak-btn--ghost ak-btn--sm" onclick="setMode('wizard')">首次接入？创建团队</button>
+          </div>
+
+          <div class="ak-field">
+            <button type="submit" class="ak-btn ak-btn--primary ak-btn--block">验证并进入工作区</button>
+          </div>
+
+          <div class="ak-message ak-message--success" id="ak-login-ok" role="status" hidden>
+            <strong class="ak-message__title">身份验证通过</strong>
+            <span>已建立加密会话，可切换至「3 步创建工作区」继续体验分步表单流。</span>
+          </div>
+        </form>
+
+        <!-- B. 3 步工作区向导（.ak-stepper + 校验 + 6 格验证码 + 完成回执） -->
+        <div id="ak-wizard-panel" class="ak-auth-stack" hidden>
+          <div>
+            <h2 class="ak-auth-form__title">初始化团队工作区</h2>
+            <p class="ak-auth-form__sub">按三步完成域名命名、邮箱核验与初始节点签发。</p>
+          </div>
+
+          <ol class="ak-stepper" id="ak-stepper" aria-label="入驻向导进度">
+            <li class="ak-step is-current" data-step="1">工作区信息</li>
+            <li class="ak-step" data-step="2">安全核验</li>
+            <li class="ak-step" data-step="3">签发完成</li>
+          </ol>
+
+          <!-- Step 1 -->
+          <div id="ak-wiz-s1">
+            <div class="ak-field" id="ak-wiz-org-field">
+              <label for="ak-wiz-org">团队名称</label>
+              <input id="ak-wiz-org" class="ak-input" type="text" placeholder="例如：Monolith Studio" autocomplete="organization">
+              <p class="ak-field-err" id="ak-wiz-org-err" hidden>请输入至少 2 个字符的团队名称。</p>
+            </div>
+            <div class="ak-field" id="ak-wiz-mail-field">
+              <label for="ak-wiz-mail">管理员邮箱</label>
+              <input id="ak-wiz-mail" class="ak-input" type="email" placeholder="admin@monolith.example" autocomplete="email">
+              <p class="ak-field-err" id="ak-wiz-mail-err" hidden>请填写有效的管理员邮箱以接收 6 位校验码。</p>
+            </div>
+            <div class="ak-field">
+              <label for="ak-wiz-region">主边缘节点</label>
+              <select id="ak-wiz-region" class="ak-select">
+                <option value="ap-east">亚太东部 · 东京 / 新加坡</option>
+                <option value="eu-central">欧洲中部 · 法兰克福</option>
+                <option value="us-west">北美西部 · 俄勒冈</option>
+              </select>
+            </div>
+            <button type="button" class="ak-btn ak-btn--primary ak-btn--block" id="ak-wiz-next1">下一步：发送 6 位校验码</button>
+          </div>
+
+          <!-- Step 2 -->
+          <div id="ak-wiz-s2" hidden>
+            <div class="ak-field" id="ak-wiz-otp-field">
+              <label for="ak-otp-0">输入 6 位安全校验码（示例可用任意 6 位数字）</label>
+              <div class="ak-auth-otp" id="ak-otp-group">
+                <input id="ak-otp-0" class="ak-auth-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 1 位">
+                <input class="ak-auth-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 2 位">
+                <input class="ak-auth-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 3 位">
+                <input class="ak-auth-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 4 位">
+                <input class="ak-auth-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 5 位">
+                <input class="ak-auth-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 6 位">
+              </div>
+              <p class="ak-field-err" id="ak-wiz-otp-err" hidden>请完整填写 6 位数字校验码。</p>
+            </div>
+            <div class="ak-auth-actions">
+              <button type="button" class="ak-btn" id="ak-wiz-prev2">← 返回修改信息</button>
+              <button type="button" class="ak-btn ak-btn--primary" id="ak-wiz-next2">完成初始化</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div id="ak-wiz-s3" hidden>
+            <div class="ak-message ak-message--success" role="status">
+              <strong class="ak-message__title">工作区已就绪</strong>
+              <span id="ak-wiz-done-desc">团队空间与初始 TLS 证书已签发完毕。</span>
+            </div>
+            <div class="ak-auth-actions">
+              <a class="ak-btn ak-btn--primary" href="./prts-landing.html">返回产品首页</a>
+              <button type="button" class="ak-btn" id="ak-wiz-restart">重新演练向导</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ak-article-meta">
+        <span>PRTS AUTH // 0PX RIGHT-ANGLE FORM</span>
+        <a href="./endfield-auth.html">对照 Endfield 登录向导 ↗</a>
+      </div>
+    </section>
+  </main>
+
+<script>
+const root = document.documentElement;
+function applyTheme(t, persist) {
+  root.dataset.theme = t;
+  if (persist) { try { localStorage.setItem('ak-auth-theme', t); } catch (e) {} }
+  document.getElementById('ak-btn-light').setAttribute('aria-pressed', String(t === 'light'));
+  document.getElementById('ak-btn-light').classList.toggle('is-active', t === 'light');
+  document.getElementById('ak-btn-dark').setAttribute('aria-pressed', String(t === 'dark'));
+  document.getElementById('ak-btn-dark').classList.toggle('is-active', t === 'dark');
+}
+function toggleTheme(t) { applyTheme(t, true); }
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('ak-auth-theme'); } catch (e) {}
+  applyTheme(saved === 'dark' || saved === 'light' ? saved : (root.dataset.theme || 'light'), false);
+})();
+
+/* 登录 <-> 向导模式切换 */
+function setMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('ak-mode-login').classList.toggle('is-active', isLogin);
+  document.getElementById('ak-mode-login').setAttribute('aria-pressed', String(isLogin));
+  document.getElementById('ak-mode-wizard').classList.toggle('is-active', !isLogin);
+  document.getElementById('ak-mode-wizard').setAttribute('aria-pressed', String(!isLogin));
+  document.getElementById('ak-login-form').hidden = !isLogin;
+  document.getElementById('ak-wizard-panel').hidden = isLogin;
+}
+
+/* 登录表单校验（含报错态与焦点引导） */
+const loginForm = document.getElementById('ak-login-form');
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const email = document.getElementById('ak-login-email');
+  const pwd = document.getElementById('ak-login-pwd');
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+  const pwdOk = pwd.value.length >= 8;
+
+  document.getElementById('ak-login-email-field').classList.toggle('is-invalid', !emailOk);
+  email.setAttribute('aria-invalid', String(!emailOk));
+  document.getElementById('ak-login-email-err').hidden = emailOk;
+
+  document.getElementById('ak-login-pwd-field').classList.toggle('is-invalid', !pwdOk);
+  pwd.setAttribute('aria-invalid', String(!pwdOk));
+  document.getElementById('ak-login-pwd-err').hidden = pwdOk;
+
+  document.getElementById('ak-login-ok').hidden = !(emailOk && pwdOk);
+  if (!emailOk) email.focus();
+  else if (!pwdOk) pwd.focus();
+});
+
+/* 3 步向导与 OTP 自动跳转 */
+let wizStep = 1;
+function showWizStep(n) {
+  wizStep = n;
+  [1, 2, 3].forEach((s) => {
+    document.getElementById(`ak-wiz-s${s}`).hidden = s !== n;
+    const li = document.querySelector(`#ak-stepper [data-step="${s}"]`);
+    li.classList.toggle('is-done', s < n);
+    li.classList.toggle('is-current', s === n);
+  });
+}
+
+const otpCells = [...document.querySelectorAll('#ak-otp-group .ak-auth-otp__cell')];
+otpCells.forEach((cell, i) => {
+  cell.addEventListener('input', () => {
+    cell.value = cell.value.replace(/\D/g, '').slice(-1);
+    if (cell.value && otpCells[i + 1]) otpCells[i + 1].focus();
+  });
+  cell.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !cell.value && otpCells[i - 1]) otpCells[i - 1].focus();
+  });
+});
+
+document.getElementById('ak-wiz-next1').addEventListener('click', () => {
+  const org = document.getElementById('ak-wiz-org');
+  const mail = document.getElementById('ak-wiz-mail');
+  const orgOk = org.value.trim().length >= 2;
+  const mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.value.trim());
+
+  document.getElementById('ak-wiz-org-field').classList.toggle('is-invalid', !orgOk);
+  document.getElementById('ak-wiz-org-err').hidden = orgOk;
+  document.getElementById('ak-wiz-mail-field').classList.toggle('is-invalid', !mailOk);
+  document.getElementById('ak-wiz-mail-err').hidden = mailOk;
+
+  if (!orgOk) { org.focus(); return; }
+  if (!mailOk) { mail.focus(); return; }
+  showWizStep(2);
+  otpCells[0].focus();
+});
+
+document.getElementById('ak-wiz-prev2').addEventListener('click', () => showWizStep(1));
+document.getElementById('ak-wiz-next2').addEventListener('click', () => {
+  const code = otpCells.map((c) => c.value.trim()).join('');
+  const ok = code.length === 6;
+  document.getElementById('ak-wiz-otp-err').hidden = ok;
+  if (!ok) {
+    const firstEmpty = otpCells.find((c) => !c.value) || otpCells[0];
+    firstEmpty.focus();
+    return;
+  }
+  const org = document.getElementById('ak-wiz-org').value.trim();
+  const region = document.getElementById('ak-wiz-region').selectedOptions[0].textContent;
+  document.getElementById('ak-wiz-done-desc').textContent = `已为「${org}」在 ${region} 签发工作区与 TLS 凭证。`;
+  showWizStep(3);
+});
+document.getElementById('ak-wiz-restart').addEventListener('click', () => {
+  otpCells.forEach((c) => { c.value = ''; });
+  showWizStep(1);
+});
+</script>
+</body>
+</html>

@@ -8,7 +8,8 @@
  *  PART A · 上游 Wiki/终端底座补丁层（保留向后兼容）
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-/* 0. 确保显式设置了 display 的组件同样服从 HTML [hidden] 隐藏语义 */
+/* 0. 确保显式设置了 display 的组件同样服从 HTML [hidden] 隐藏语义，且作用域 body 零默认外边距 */
+body.ak-scope { margin: 0; }
 .ak-scope [hidden] { display: none !important; }
 
 /* 1. 黑色 Hero 内的 contrast 按钮：Hero 恒为黑底，按钮必须恒为白底黑字 */
@@ -1213,7 +1214,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font: 700 11px/1 var(--ak-font-label);
+  font: 700 11px/1.45 var(--ak-font-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ak-fg-muted);
@@ -1250,6 +1251,16 @@
 }
 .ak-article-head__lead + .ak-article-meta { margin-top: 0; }
 .ak-article-meta__action { margin-left: auto; }
+.ak-article-meta a:not([class]) {
+  color: var(--ak-link);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--ak-dur-fast), border-color var(--ak-dur-fast);
+}
+.ak-article-meta a:not([class]):hover {
+  color: var(--ak-accent);
+  border-bottom-color: currentColor;
+}
 .ak-article-meta__sep {
   color: var(--ak-border-strong);
   user-select: none;
@@ -1573,23 +1584,154 @@
   align-items: stretch;
 }
 @media (max-width: 1023px) { .ak-pricing-grid { grid-template-columns: minmax(0, 1fr); } }
+/* <a class="ak-btn ak-btn--block"> 默认 content-box，100% 宽叠加内边距会越出卡片：统一 border-box */
+.ak-btn { box-sizing: border-box; max-width: 100%; }
 .ak-price-tier {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
   padding: 24px;
   border: 1px solid var(--ak-border);
   background: var(--ak-bg-surface);
 }
 .ak-price-tier--featured { border-top: 3px solid var(--ak-accent); background: var(--ak-bg-surface-2); }
+.ak-price-tier__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ak-price-tier__name { margin: 0; font: 700 17px/1.3 var(--ak-font-body); color: var(--ak-fg); }
 .ak-price-tier__val { font: 800 34px/1 var(--ak-font-display); font-variant-numeric: tabular-nums; color: var(--ak-fg); }
+.ak-price-tier__unit { font: 600 12px/1 var(--ak-font-label); color: var(--ak-fg-muted); margin-left: 4px; }
+.ak-price-tier__desc { margin: 0; font-size: 13px; line-height: 1.6; color: var(--ak-fg-secondary); }
+.ak-price-tier__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  font-size: 13px;
+  color: var(--ak-fg-secondary);
+}
+.ak-price-tier__list li { display: flex; gap: 8px; align-items: baseline; }
+.ak-price-tier__list li::before { content: "▪"; color: var(--ak-accent); flex: none; }
+.ak-btn--block { width: 100%; justify-content: center; }
+
+/* 26b. 商业产品落地页首屏（亮/暗自适应）与多维检索工具栏 */
+.ak-landing-hero {
+  position: relative;
+  overflow: clip;
+  padding: 52px 0 60px;
+  border-bottom: 1px solid var(--ak-border);
+}
+.ak-landing-hero__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 36px 48px;
+  align-items: center;
+}
+.ak-landing-hero__title {
+  margin: 14px 0 16px;
+  font: 800 clamp(1.65rem, 3.8vw, 3.1rem)/1.18 var(--ak-font-body);
+  letter-spacing: -0.015em;
+  color: var(--ak-fg);
+  text-wrap: balance;
+}
+.ak-landing-hero__lead {
+  max-width: 54ch;
+  margin: 0 0 26px;
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: var(--ak-fg-secondary);
+}
+.ak-landing-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.ak-landing-hero__spec {
+  border: 1px solid var(--ak-border-strong);
+  background: var(--ak-bg-surface);
+  display: flex;
+  flex-direction: column;
+}
+.ak-landing-hero__spec-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #141517;
+  color: #f0f0f0;
+  font: 700 11px/1.2 var(--ak-font-label);
+  letter-spacing: 0.12em;
+}
+.ak-landing-hero__spec-head > span:last-child { color: var(--ak-theme-accent, #18d1ff); }
+.ak-landing-hero__spec-stage {
+  padding: 24px 20px;
+  background: #101114;
+  color: #f0f0f0;
+  display: grid;
+  place-items: center;
+  border-bottom: 1px solid var(--ak-border);
+}
+.ak-landing-hero__spec-stage > svg { width: 100%; max-width: 340px; height: auto; }
+.ak-landing-hero__spec-rows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ak-landing-hero__spec-cell {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid var(--ak-border);
+  border-bottom: 1px solid var(--ak-border);
+}
+.ak-landing-hero__spec-cell:nth-child(2n) { border-right: 0; }
+.ak-landing-hero__spec-cell:nth-last-child(-n+2) { border-bottom: 0; }
+.ak-landing-hero__spec-cell small { font: 600 10px/1.2 var(--ak-font-label); letter-spacing: 0.1em; color: var(--ak-fg-muted); }
+.ak-landing-hero__spec-cell strong { font: 700 13.5px/1.3 var(--ak-font-body); font-variant-numeric: tabular-nums; color: var(--ak-fg); }
+@media (max-width: 1023px) {
+  .ak-landing-hero { padding: 36px 0 44px; }
+  .ak-landing-hero__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+}
+
+.ak-catalog-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 20px;
+  margin-bottom: 22px;
+}
+.ak-catalog-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 240px;
+  max-width: 360px;
+}
+.ak-catalog-count {
+  font: 700 11px/1.2 var(--ak-font-label);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+  color: var(--ak-fg-muted);
+  white-space: nowrap;
+}
 
 .ak-sub-input { flex: 1 1 260px; max-width: 420px; }
 
 .ak-auth-shell {
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 460px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 480px);
   align-items: stretch;
 }
 .ak-auth-visual {
@@ -1615,20 +1757,89 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 32px;
 }
 .ak-auth-visual .ak-ghost-word { color: rgba(255, 255, 255, 0.045); }
+.ak-auth-visual__top,
+.ak-auth-visual__body,
+.ak-auth-visual__foot { position: relative; z-index: 1; }
+.ak-auth-visual__body { display: flex; flex-direction: column; gap: 18px; max-width: 46ch; }
+.ak-auth-visual__title {
+  margin: 0;
+  font: 800 clamp(1.75rem, 3vw, 2.55rem)/1.2 var(--ak-font-body);
+  color: #ffffff;
+  text-wrap: balance;
+}
+.ak-auth-visual__lead { margin: 0; font-size: 14.5px; line-height: 1.75; color: var(--ak-fg-secondary); }
+.ak-auth-visual__points {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--ak-fg-secondary);
+}
+.ak-auth-visual__points li { display: flex; gap: 10px; align-items: baseline; }
+.ak-auth-visual__points li::before { content: "▪"; color: var(--ak-accent); flex: none; }
+.ak-auth-visual__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ak-border);
+  font: 600 11px/1.4 var(--ak-font-label);
+  letter-spacing: 0.08em;
+  color: var(--ak-fg-muted);
+}
 .ak-auth-form {
-  padding: 48px 40px;
+  padding: 40px 40px;
   background: var(--ak-bg-surface);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 24px;
 }
+.ak-auth-form__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ak-auth-form__inner {
+  width: 100%;
+  max-width: 390px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.ak-auth-form__inner > .ak-seg { align-self: flex-start; }
+.ak-auth-stack { display: flex; flex-direction: column; gap: 16px; }
+.ak-auth-stack .ak-field { margin-bottom: 0; }
+.ak-auth-form__title { margin: 0; font: 800 22px/1.3 var(--ak-font-body); color: var(--ak-fg); }
+.ak-auth-form__sub { margin: 4px 0 0; font-size: 13.5px; color: var(--ak-fg-secondary); }
+.ak-field-err { margin: 2px 0 0; font-size: 12px; color: var(--ak-danger); }
+.ak-auth-otp { display: flex; gap: 8px; }
+.ak-auth-otp__cell {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 44px;
+  text-align: center;
+  font: 700 18px/1 var(--ak-font-display);
+  font-variant-numeric: lining-nums;
+  background: var(--ak-bg-surface);
+  color: var(--ak-fg);
+  border: 1px solid var(--ak-border-strong);
+}
+.ak-auth-otp__cell:focus { outline: 0; border-color: var(--ak-accent); box-shadow: var(--ak-shadow-accent); }
+.ak-auth-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
 @media (max-width: 899px) {
   .ak-auth-shell { grid-template-columns: minmax(0, 1fr); }
-  .ak-auth-visual { padding: 32px 20px; min-height: 220px; }
-  .ak-auth-form { padding: 32px 20px; }
+  .ak-auth-visual { padding: 28px 20px; min-height: 0; gap: 20px; }
+  .ak-auth-form { padding: 28px 20px; }
 }
 
 /* 27. 简化 Reduced Motion 保护（覆盖全部新增动效与交互） */

@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KILN.CLOUD — PRTS Design 商业产品落地页与多维检索画廊样板</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;700;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../resources/prts-design.css">
+  <link rel="stylesheet" href="../resources/prts-addons.css">
+  <style>
+    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+    .ak-landing-sec { padding: 48px 0; border-top: 1px solid var(--ak-border); }
+    @media (max-width: 767px) { .ak-landing-sec { padding: 34px 0; } }
+  </style>
+</head>
+<body class="ak-scope ak-bg-lattice">
+  <div class="ak-read-bar" id="ak-read-bar" aria-hidden="true"></div>
+
+  <!-- 1. 无侧栏漂浮顶栏（纯商业产品官网结构，严禁硬塞控制台侧栏） -->
+  <header class="ak-topbar">
+    <div class="ak-topbar__inner">
+      <a class="ak-topbar__brand" href="#top" aria-label="KILN.CLOUD 首页">
+        <span class="ak-topbar__mark" aria-hidden="true">KN</span>
+        <span class="ak-topbar__wordmark">
+          KILN.CLOUD
+          <small>EDGE BUILD &amp; ARCHIVE PLATFORM</small>
+        </span>
+      </a>
+
+      <nav class="ak-topbar__nav" aria-label="主导航">
+        <a class="ak-topbar__link is-active" href="#top" aria-current="page"><strong>OVERVIEW</strong><span>产品概览</span></a>
+        <a class="ak-topbar__link" href="#features"><strong>ARCHITECTURE</strong><span>架构特性</span></a>
+        <a class="ak-topbar__link" href="#templates"><strong>TEMPLATES</strong><span>模板检索</span></a>
+        <a class="ak-topbar__link" href="#pricing"><strong>PRICING</strong><span>方案定价</span></a>
+      </nav>
+
+      <div class="ak-topbar__tools">
+        <div class="ak-seg" role="group" aria-label="外观模式切换">
+          <button type="button" id="ak-btn-light" class="is-active" aria-pressed="true" onclick="toggleTheme('light')">纸昼</button>
+          <button type="button" id="ak-btn-dark" aria-pressed="false" onclick="toggleTheme('dark')">暗夜</button>
+        </div>
+        <button type="button" class="ak-topbar__menu" id="ak-nav-btn" aria-controls="ak-nav-drawer" aria-expanded="false">菜单</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="ak-drawer-scrim" id="ak-scrim" aria-hidden="true"></div>
+  <aside class="ak-drawer ak-drawer--left" id="ak-nav-drawer" role="dialog" aria-modal="true" aria-label="主导航菜单">
+    <nav class="ak-drawer-nav">
+      <div class="ak-drawer-nav__head">
+        <span>KILN.CLOUD // MENU</span>
+        <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" data-close aria-label="关闭菜单">✕</button>
+      </div>
+      <a class="ak-drawer-nav__link is-active" href="#top" data-close><span>产品概览</span><small>OVERVIEW</small></a>
+      <a class="ak-drawer-nav__link" href="#features" data-close><span>架构特性</span><small>ARCHITECTURE</small></a>
+      <a class="ak-drawer-nav__link" href="#templates" data-close><span>模板检索</span><small>TEMPLATES</small></a>
+      <a class="ak-drawer-nav__link" href="#pricing" data-close><span>方案定价</span><small>PRICING</small></a>
+      <a class="ak-drawer-nav__link" href="./prts-auth.html"><span>登录与创建工作区</span><small>ACCESS</small></a>
+    </nav>
+  </aside>
+
+  <main class="ak-site-shell" id="top">
+    <!-- 2. 亮/暗双极性商业落地页 Hero（无侧栏，纯直角建筑标尺美学） -->
+    <section class="ak-landing-hero">
+      <div class="ak-landing-hero__grid">
+        <div>
+          <span class="ak-article-head__kicker">RELEASE 4.2 // GLOBAL STATIC &amp; EDGE INFRASTRUCTURE</span>
+          <h1 class="ak-landing-hero__title ak-anim-scan">以确定性构建管道，<br>在 180 毫秒内交付全球站点</h1>
+          <p class="ak-landing-hero__lead">
+            KILN.CLOUD 将零配置静态编译、边缘原子回滚与不可变构建档案收束进一套克制的工程平台。告别冗杂控制台噪声，把每次上线都做成可审计的建筑级发布。
+          </p>
+          <div class="ak-landing-hero__actions">
+            <a class="ak-btn ak-btn--primary" href="./prts-auth.html">免费创建工作区</a>
+            <a class="ak-btn" href="#templates">浏览模板索引</a>
+            <a class="ak-btn ak-btn--ghost" href="./index.html">返回双体系总览 ↗</a>
+          </div>
+        </div>
+
+        <aside class="ak-landing-hero__spec" aria-label="核心架构规格示意">
+          <div class="ak-landing-hero__spec-head">
+            <span>SPEC // ATOMIC DEPLOY PIPELINE</span>
+            <span>REGION · 42 POP</span>
+          </div>
+          <div class="ak-landing-hero__spec-stage">
+            <svg viewBox="0 0 340 168" aria-hidden="true">
+              <rect x="14" y="18" width="90" height="44" fill="none" stroke="currentColor" stroke-opacity=".42"/>
+              <text x="26" y="44" fill="currentColor" font-size="10" font-family="monospace">01 BUILD</text>
+              <line x1="104" y1="40" x2="132" y2="40" stroke="#18d1ff" stroke-width="2"/>
+              <rect x="132" y="18" width="90" height="44" fill="none" stroke="#18d1ff" stroke-width="1.6"/>
+              <text x="144" y="44" fill="#18d1ff" font-size="10" font-family="monospace">02 VERIFY</text>
+              <line x1="222" y1="40" x2="250" y2="40" stroke="currentColor" stroke-opacity=".55" stroke-width="1.5"/>
+              <rect x="250" y="18" width="76" height="44" fill="none" stroke="currentColor" stroke-opacity=".42"/>
+              <text x="262" y="44" fill="currentColor" font-size="10" font-family="monospace">03 EDGE</text>
+              <line x1="14" y1="88" x2="326" y2="88" stroke="currentColor" stroke-opacity=".18" stroke-dasharray="3 4"/>
+              <rect x="14" y="106" width="312" height="42" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+              <rect x="24" y="121" width="168" height="10" fill="#18d1ff"/>
+              <rect x="198" y="121" width="64" height="10" fill="currentColor" fill-opacity=".28"/>
+              <rect x="268" y="121" width="46" height="10" fill="currentColor" fill-opacity=".14"/>
+            </svg>
+          </div>
+          <div class="ak-landing-hero__spec-rows">
+            <div class="ak-landing-hero__spec-cell">
+              <small>COLD START</small>
+              <strong>14 ms 边缘冷启动</strong>
+            </div>
+            <div class="ak-landing-hero__spec-cell">
+              <small>ROLLBACK</small>
+              <strong>1 秒全网原子回滚</strong>
+            </div>
+            <div class="ak-landing-hero__spec-cell">
+              <small>IMMUTABLE HASH</small>
+              <strong>SHA-256 构建归档</strong>
+            </div>
+            <div class="ak-landing-hero__spec-cell">
+              <small>SLA TIER</small>
+              <strong>99.99% 全球多活</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 3. 去框特性网格 (.ak-feature-grid) -->
+    <section class="ak-landing-sec" id="features">
+      <div class="ak-rule ak-anim-scan">
+        <div class="ak-rule__head">
+          <h2 class="ak-rule__title">核心架构特性</h2>
+          <span class="ak-rule__en" lang="en">CORE CAPABILITIES</span>
+        </div>
+        <span class="ak-rule__aside">06 MODULES</span>
+      </div>
+
+      <div class="ak-feature-grid">
+        <article class="ak-feature-item ak-reveal">
+          <span class="ak-feature-item__num">01</span>
+          <h3 class="ak-feature-item__title">不可变内容寻址</h3>
+          <p class="ak-feature-item__desc">每次构建生成独立只读快照，静态资产与边缘路由表绑定同一摘要哈希，杜绝线上版本撕裂。</p>
+        </article>
+        <article class="ak-feature-item ak-reveal">
+          <span class="ak-feature-item__num">02</span>
+          <h3 class="ak-feature-item__title">按分支自动预览</h3>
+          <p class="ak-feature-item__desc">每次 Pull Request 自动分配独立隔离预览域名，支持评论批注与无头截图回归对比。</p>
+        </article>
+        <article class="ak-feature-item ak-reveal">
+          <span class="ak-feature-item__num">03</span>
+          <h3 class="ak-feature-item__title">零运维边缘函数</h3>
+          <p class="ak-feature-item__desc">标准 Web Fetch API 编写鉴权、重写与灰度分流脚本，贴近访客 42 个边缘节点毫秒执行。</p>
+        </article>
+        <article class="ak-feature-item ak-reveal">
+          <span class="ak-feature-item__num">04</span>
+          <h3 class="ak-feature-item__title">零延迟证书签发</h3>
+          <p class="ak-feature-item__desc">绑定自定义域名后自动完成 ACME 校验、TLS 1.3 全链路加密与 HSTS 策略托管。</p>
+        </article>
+        <article class="ak-feature-item ak-reveal">
+          <span class="ak-feature-item__num">05</span>
+          <h3 class="ak-feature-item__title">可审计发布账本</h3>
+          <p class="ak-feature-item__desc">完整保留构建环境、依赖锁文件与环境变量变更轨迹，满足团队合规复核与事后溯源。</p>
+        </article>
+        <article class="ak-feature-item ak-reveal">
+          <span class="ak-feature-item__num">06</span>
+          <h3 class="ak-feature-item__title">私有内网镜像导出</h3>
+          <p class="ak-feature-item__desc">一键打包自包含静态归档或容器镜像，支持离线内网、混合云与政企专有环境无缝迁移。</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. 原型 3：多维检索画廊（关键词搜索 + 分类筛选 + 零结果空态 + 详情抽屉） -->
+    <section class="ak-landing-sec" id="templates">
+      <div class="ak-rule ak-anim-scan">
+        <div class="ak-rule__head">
+          <h2 class="ak-rule__title">官方模板与部署蓝图</h2>
+          <span class="ak-rule__en" lang="en">TEMPLATE REGISTRY</span>
+        </div>
+        <span class="ak-rule__aside" id="ak-tpl-meta">06 TEMPLATES</span>
+      </div>
+
+      <div class="ak-catalog-bar">
+        <div class="ak-filter-strip" role="group" aria-label="按类型筛选模板">
+          <button type="button" class="ak-filter-strip__btn is-active" data-cat="all" aria-pressed="true">全部蓝图</button>
+          <button type="button" class="ak-filter-strip__btn" data-cat="web" aria-pressed="false">官网与门户</button>
+          <button type="button" class="ak-filter-strip__btn" data-cat="docs" aria-pressed="false">文档与专栏</button>
+          <button type="button" class="ak-filter-strip__btn" data-cat="edge" aria-pressed="false">边缘应用</button>
+        </div>
+
+        <div class="ak-catalog-search">
+          <label class="ak-sr-only" for="ak-tpl-search">检索模板关键词</label>
+          <input id="ak-tpl-search" class="ak-input" type="search" placeholder="搜索模板名、框架或场景（如 Astro / 边缘）…" autocomplete="off">
+          <span class="ak-catalog-count" id="ak-tpl-count">6 / 6</span>
+        </div>
+      </div>
+
+      <div class="ak-gallery-grid" id="ak-tpl-grid">
+        <button type="button" class="ak-work-card ak-reveal" data-cat="web" data-keywords="品牌官网 landing 营销 静态 astro"
+          data-code="TPL // 01" data-title="品牌官网多段落地页" data-stack="Astro 5 · Pure CSS · Edge Cache"
+          data-summary="预置双主题语义令牌、无侧栏首屏与定价对比模块，Lighthouse 性能评分稳定保持 100。">
+          <div class="ak-work-card__media">
+            <span class="ak-work-card__tag">WEB // 01</span>
+            <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true">
+              <rect x="10" y="10" width="112" height="16" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+              <rect x="10" y="34" width="66" height="44" fill="none" stroke="currentColor" stroke-opacity=".75" stroke-width="1.4"/>
+              <rect x="84" y="34" width="38" height="44" fill="none" stroke="#18d1ff" stroke-width="1.5"/>
+              <line x1="20" y1="50" x2="64" y2="50" stroke="#18d1ff" stroke-width="2.5"/>
+              <line x1="20" y1="62" x2="54" y2="62" stroke="currentColor" stroke-opacity=".4" stroke-width="2"/>
+            </svg>
+            <span class="ak-work-card__fig">LANDING</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>官网与门户</span><span>ASTRO 5</span></div>
+            <h3 class="ak-work-card__title">品牌官网多段落地页</h3>
+            <p class="ak-work-card__desc">零 JS 依赖首屏直出，适配全球 CDN 边缘缓存与双语 SEO 索引。</p>
+          </div>
+        </button>
+
+        <button type="button" class="ak-work-card ak-reveal" data-cat="docs" data-keywords="文档 知识库 markdown toc vitepress 搜索"
+          data-code="TPL // 02" data-title="三栏技术文档与 API 站" data-stack="VitePress · Shiki · Local Index"
+          data-summary="内置全文静态索引、页内粘性大纲与多语言代码页签，支持离线单包导出与版本快照归档。">
+          <div class="ak-work-card__media ak-work-card__media--halftone">
+            <span class="ak-work-card__tag">DOCS // 02</span>
+            <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true">
+              <rect x="8" y="12" width="24" height="64" fill="none" stroke="currentColor" stroke-opacity=".45"/>
+              <rect x="38" y="12" width="62" height="64" fill="none" stroke="#18d1ff" stroke-width="1.4"/>
+              <rect x="106" y="12" width="18" height="42" fill="none" stroke="currentColor" stroke-opacity=".4"/>
+              <line x1="46" y1="28" x2="90" y2="28" stroke="#18d1ff" stroke-width="2"/>
+              <line x1="46" y1="42" x2="86" y2="42" stroke="currentColor" stroke-opacity=".5" stroke-width="1.5"/>
+              <line x1="46" y1="54" x2="78" y2="54" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
+            </svg>
+            <span class="ak-work-card__fig">DOC SITE</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>文档与专栏</span><span>VITEPRESS</span></div>
+            <h3 class="ak-work-card__title">三栏技术文档与 API 站</h3>
+            <p class="ak-work-card__desc">72ch 舒适阅读行宽、粘性章节目录与编译期静态全文检索。</p>
+          </div>
+        </button>
+
+        <button type="button" class="ak-work-card ak-reveal" data-cat="edge" data-keywords="鉴权 登录 oauth edge worker 边缘 路由"
+          data-code="TPL // 03" data-title="边缘鉴权与多租户网关" data-stack="Edge Runtime · WebCrypto · JWT"
+          data-summary="在边缘节点完成签名校验、速率限制与地域合规路由，无需回源即可拦截非法流量。">
+          <div class="ak-work-card__media ak-work-card__media--diagonal">
+            <span class="ak-work-card__tag">EDGE // 03</span>
+            <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true">
+              <rect x="14" y="28" width="32" height="32" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+              <rect x="54" y="20" width="32" height="48" fill="none" stroke="#18d1ff" stroke-width="1.6"/>
+              <rect x="94" y="28" width="24" height="32" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+              <line x1="46" y1="44" x2="54" y2="44" stroke="#18d1ff" stroke-width="2"/>
+              <line x1="86" y1="44" x2="94" y2="44" stroke="#18d1ff" stroke-width="2"/>
+              <rect x="64" y="38" width="12" height="12" fill="#18d1ff"/>
+            </svg>
+            <span class="ak-work-card__fig">AUTH GATE</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>边缘应用</span><span>WORKER</span></div>
+            <h3 class="ak-work-card__title">边缘鉴权与多租户网关</h3>
+            <p class="ak-work-card__desc">WebCrypto 无状态令牌验证与低延迟自定义域名分流。</p>
+          </div>
+        </button>
+
+        <button type="button" class="ak-work-card ak-reveal" data-cat="web" data-keywords="作品集 画廊 摄影 设计 展示 portfolio"
+          data-code="TPL // 04" data-title="建筑与工业作品集画廊" data-stack="Next.js · Image Pipeline · Drawer"
+          data-summary="纯直角 16:10 画幅网格、分类芯片过滤与右侧详情抽屉，突出图文比例与留白节奏。">
+          <div class="ak-work-card__media ak-work-card__media--halftone">
+            <span class="ak-work-card__tag">WEB // 04</span>
+            <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true">
+              <rect x="12" y="14" width="50" height="28" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+              <rect x="70" y="14" width="50" height="28" fill="none" stroke="#18d1ff" stroke-width="1.5"/>
+              <rect x="12" y="48" width="50" height="26" fill="none" stroke="currentColor" stroke-opacity=".4"/>
+              <rect x="70" y="48" width="50" height="26" fill="none" stroke="currentColor" stroke-opacity=".6"/>
+            </svg>
+            <span class="ak-work-card__fig">GALLERY</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>官网与门户</span><span>NEXT.JS</span></div>
+            <h3 class="ak-work-card__title">建筑与工业作品集画廊</h3>
+            <p class="ak-work-card__desc">支持多分类筛选、响应式图幅与零跳动抽屉速览。</p>
+          </div>
+        </button>
+
+        <button type="button" class="ak-work-card ak-reveal" data-cat="docs" data-keywords="更新日志 changelog 发布 博客 订阅 rss"
+          data-code="TPL // 05" data-title="产品更新日志与工程专栏" data-stack="MDX · RSS Atom · Read Bar"
+          data-summary="单轴时间线编排版本发布记录，支持文章顶部进度细线、RSS 订阅与双周邮件推送钩子。">
+          <div class="ak-work-card__media">
+            <span class="ak-work-card__tag">DOCS // 05</span>
+            <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true">
+              <line x1="26" y1="14" x2="26" y2="74" stroke="currentColor" stroke-opacity=".45" stroke-width="1.5"/>
+              <rect x="22" y="20" width="8" height="8" fill="#18d1ff"/>
+              <rect x="22" y="42" width="8" height="8" fill="currentColor" fill-opacity=".6"/>
+              <rect x="22" y="62" width="8" height="8" fill="currentColor" fill-opacity=".35"/>
+              <line x1="42" y1="24" x2="112" y2="24" stroke="#18d1ff" stroke-width="2"/>
+              <line x1="42" y1="46" x2="100" y2="46" stroke="currentColor" stroke-opacity=".5" stroke-width="1.5"/>
+              <line x1="42" y1="66" x2="88" y2="66" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
+            </svg>
+            <span class="ak-work-card__fig">CHANGELOG</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>文档与专栏</span><span>MDX</span></div>
+            <h3 class="ak-work-card__title">产品更新日志与工程专栏</h3>
+            <p class="ak-work-card__desc">自动生成 Atom 订阅源与结构化版本归档索引。</p>
+          </div>
+        </button>
+
+        <button type="button" class="ak-work-card ak-reveal" data-cat="edge" data-keywords="表单 webhook 提交 边缘 校验 api"
+          data-code="TPL // 06" data-title="边缘表单收集与 Webhook" data-stack="Edge Form · Turnstile · Queue"
+          data-summary="无需自建后端即可接收预约、反馈与订阅表单，自动进行字段校验并转发至指定 Webhook。">
+          <div class="ak-work-card__media ak-work-card__media--diagonal">
+            <span class="ak-work-card__tag">EDGE // 06</span>
+            <svg class="ak-work-card__art" viewBox="0 0 132 88" aria-hidden="true">
+              <rect x="18" y="16" width="96" height="14" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+              <rect x="18" y="36" width="96" height="14" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+              <rect x="18" y="58" width="44" height="14" fill="#18d1ff"/>
+              <rect x="70" y="58" width="44" height="14" fill="none" stroke="currentColor" stroke-opacity=".4"/>
+            </svg>
+            <span class="ak-work-card__fig">FORM HOOK</span>
+          </div>
+          <div class="ak-work-card__body">
+            <div class="ak-work-card__meta"><span>边缘应用</span><span>WEBHOOK</span></div>
+            <h3 class="ak-work-card__title">边缘表单收集与 Webhook</h3>
+            <p class="ak-work-card__desc">内置防重放签名、异步队列投递与失败重试回执。</p>
+          </div>
+        </button>
+      </div>
+
+      <!-- 搜索/筛选无匹配空状态（.ak-empty） -->
+      <div class="ak-empty" id="ak-tpl-empty" hidden>
+        <div class="ak-empty__code">00 // NO MATCH</div>
+        <h3 class="ak-empty__title">未检索到符合条件的部署蓝图</h3>
+        <p class="ak-work-card__desc">请尝试缩短关键词或清除当前分类筛选条件。</p>
+        <button type="button" class="ak-btn ak-btn--primary ak-btn--sm" id="ak-tpl-reset">重置全部筛选</button>
+      </div>
+    </section>
+
+    <!-- 5. 商业方案定价矩阵 (.ak-pricing-grid) -->
+    <section class="ak-landing-sec" id="pricing">
+      <div class="ak-rule ak-anim-scan">
+        <div class="ak-rule__head">
+          <h2 class="ak-rule__title">透明阶梯定价</h2>
+          <span class="ak-rule__en" lang="en">TRANSPARENT PLANS</span>
+        </div>
+        <div class="ak-seg" role="group" aria-label="计费周期切换">
+          <button type="button" class="is-active" id="ak-bill-m" aria-pressed="true" onclick="setBilling('monthly')">按月计费</button>
+          <button type="button" id="ak-bill-y" aria-pressed="false" onclick="setBilling('yearly')">按年立省 20%</button>
+        </div>
+      </div>
+
+      <div class="ak-pricing-grid">
+        <article class="ak-price-tier ak-reveal">
+          <div class="ak-price-tier__top">
+            <h3 class="ak-price-tier__name">个人构建版</h3>
+            <span class="ak-tag">STARTER</span>
+          </div>
+          <div class="ak-price-tier__val"><span data-m="¥0" data-y="¥0">¥0</span><span class="ak-price-tier__unit">/ 月</span></div>
+          <p class="ak-price-tier__desc">面向独立开发者、开源技术文档与个人作品集站点。</p>
+          <ul class="ak-price-tier__list">
+            <li>每月 100 GB 全球边缘流量</li>
+            <li>无限公开仓库自动预览部署</li>
+            <li>自动签发免费 TLS 1.3 证书</li>
+          </ul>
+          <a class="ak-btn ak-btn--block" href="./prts-auth.html">免费开始使用</a>
+        </article>
+
+        <article class="ak-price-tier ak-price-tier--featured ak-reveal">
+          <div class="ak-price-tier__top">
+            <h3 class="ak-price-tier__name">团队工程版</h3>
+            <span class="ak-tag ak-tag--accent">RECOMMENDED</span>
+          </div>
+          <div class="ak-price-tier__val"><span data-m="¥199" data-y="¥159">¥199</span><span class="ak-price-tier__unit">/ 月</span></div>
+          <p class="ak-price-tier__desc">面向持续交付的产品官网、设计系统与边缘应用团队。</p>
+          <ul class="ak-price-tier__list">
+            <li>每月 1 TB 边缘带宽与 1000 万次函数调用</li>
+            <li>不限席位 PR 预览评论与 90 天快照回滚</li>
+            <li>细粒度角色权限与构建审计日志导出</li>
+          </ul>
+          <a class="ak-btn ak-btn--primary ak-btn--block" href="./prts-auth.html">开启 14 天试用</a>
+        </article>
+
+        <article class="ak-price-tier ak-reveal">
+          <div class="ak-price-tier__top">
+            <h3 class="ak-price-tier__name">企业专有版</h3>
+            <span class="ak-tag">ENTERPRISE</span>
+          </div>
+          <div class="ak-price-tier__val"><span data-m="¥980" data-y="¥784">¥980</span><span class="ak-price-tier__unit">/ 月</span></div>
+          <p class="ak-price-tier__desc">面向高合规组织、私有化部署与多区域 SLA 保障需求。</p>
+          <ul class="ak-price-tier__list">
+            <li>99.99% 合同级 SLA 与 7×24 工程值守</li>
+            <li>SAML SSO 单点登录与私有内网镜像导出</li>
+            <li>专属静态出口 IP 与定制合规审计报表</li>
+          </ul>
+          <a class="ak-btn ak-btn--block" href="./prts-auth.html">预约架构顾问</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- 右侧模板详情抽屉 -->
+  <aside id="ak-tpl-drawer" class="ak-drawer ak-drawer--right ak-p-4" role="dialog" aria-modal="true" aria-labelledby="ak-d-title">
+    <div class="ak-flex ak-justify-between ak-items-center ak-mb-4">
+      <strong id="ak-d-code">TPL // 01</strong>
+      <button type="button" class="ak-btn ak-btn--ghost ak-btn--icon ak-btn--sm" data-close aria-label="关闭蓝图摘要">✕</button>
+    </div>
+    <h3 id="ak-d-title" class="ak-mt-0 ak-mb-2">品牌官网多段落地页</h3>
+    <div id="ak-d-stack" class="ak-code-id ak-mb-4">Astro 5 · Pure CSS · Edge Cache</div>
+    <p id="ak-d-summary" class="ak-fs-sm ak-fg-2"></p>
+    <div class="ak-mt-6">
+      <a class="ak-btn ak-btn--primary ak-btn--block" href="./prts-auth.html">使用此蓝图初始化项目</a>
+    </div>
+  </aside>
+
+  <!-- 6. 极简页脚 -->
+  <footer class="ak-footer ak-footer--editorial">
+    <span class="ak-watermark" aria-hidden="true">KILN.CLOUD</span>
+    <div class="ak-footer__inner">
+      <div class="ak-footer__brand">
+        <div class="ak-header__wordmark">KILN.CLOUD</div>
+        <p>PRTS Design 非控制台通用示范：商业产品落地页、多维检索画廊（含空状态）与阶梯定价矩阵。</p>
+      </div>
+      <div class="ak-footer__col">
+        <h4>EXAMPLES // 全原型矩阵</h4>
+        <ul>
+          <li><a href="./index.html">双体系 × 五原型总览</a></li>
+          <li><a href="./prts-editorial.html">PRTS 长文专栏样板</a></li>
+          <li><a href="./prts-auth.html">PRTS 登录与多步向导</a></li>
+          <li><a href="./endfield-landing.html">Endfield 品牌官网落地页</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+<script>
+const root = document.documentElement;
+function applyTheme(t, persist) {
+  root.dataset.theme = t;
+  if (persist) { try { localStorage.setItem('ak-landing-theme', t); } catch (e) {} }
+  document.getElementById('ak-btn-light').setAttribute('aria-pressed', String(t === 'light'));
+  document.getElementById('ak-btn-light').classList.toggle('is-active', t === 'light');
+  document.getElementById('ak-btn-dark').setAttribute('aria-pressed', String(t === 'dark'));
+  document.getElementById('ak-btn-dark').classList.toggle('is-active', t === 'dark');
+}
+function toggleTheme(t) { applyTheme(t, true); }
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('ak-landing-theme'); } catch (e) {}
+  applyTheme(saved === 'dark' || saved === 'light' ? saved : (root.dataset.theme || 'light'), false);
+})();
+
+const readBar = document.getElementById('ak-read-bar');
+function syncScroll() {
+  const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  readBar.style.transform = `scaleX(${Math.min(1, Math.max(0, window.scrollY / max))})`;
+}
+window.addEventListener('scroll', syncScroll, { passive: true });
+syncScroll();
+
+document.body.classList.add('ak-has-reveal');
+const reveals = [...document.querySelectorAll('.ak-reveal')];
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -30px 0px', threshold: 0.01 });
+  reveals.forEach((el) => {
+    if (el.getBoundingClientRect().top < window.innerHeight * 1.1) el.classList.add('is-in');
+    else io.observe(el);
+  });
+} else {
+  reveals.forEach((el) => el.classList.add('is-in'));
+}
+
+let currentCat = 'all';
+const searchInput = document.getElementById('ak-tpl-search');
+const cards = [...document.querySelectorAll('#ak-tpl-grid .ak-work-card')];
+const emptyBox = document.getElementById('ak-tpl-empty');
+const countLabel = document.getElementById('ak-tpl-count');
+const metaLabel = document.getElementById('ak-tpl-meta');
+
+function filterTemplates() {
+  const q = searchInput.value.trim().toLowerCase();
+  let visible = 0;
+  cards.forEach((c) => {
+    const matchCat = currentCat === 'all' || c.dataset.cat === currentCat;
+    const hay = `${c.dataset.title} ${c.dataset.stack} ${c.dataset.keywords} ${c.textContent}`.toLowerCase();
+    const matchQ = !q || hay.includes(q);
+    const show = matchCat && matchQ;
+    c.hidden = !show;
+    if (show) visible++;
+  });
+  emptyBox.hidden = visible > 0;
+  countLabel.textContent = `${visible} / ${cards.length}`;
+  metaLabel.textContent = `${String(visible).padStart(2, '0')} TEMPLATES`;
+}
+
+document.querySelectorAll('.ak-filter-strip__btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    currentCat = btn.dataset.cat;
+    document.querySelectorAll('.ak-filter-strip__btn').forEach((b) => {
+      const active = b === btn;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+    filterTemplates();
+  });
+});
+searchInput.addEventListener('input', filterTemplates);
+document.getElementById('ak-tpl-reset').addEventListener('click', () => {
+  searchInput.value = '';
+  document.querySelector('.ak-filter-strip__btn[data-cat="all"]').click();
+  searchInput.focus();
+});
+
+function setBilling(mode) {
+  const yearly = mode === 'yearly';
+  document.getElementById('ak-bill-m').classList.toggle('is-active', !yearly);
+  document.getElementById('ak-bill-m').setAttribute('aria-pressed', String(!yearly));
+  document.getElementById('ak-bill-y').classList.toggle('is-active', yearly);
+  document.getElementById('ak-bill-y').setAttribute('aria-pressed', String(yearly));
+  document.querySelectorAll('.ak-price-tier__val [data-m]').forEach((el) => {
+    el.textContent = yearly ? el.dataset.y : el.dataset.m;
+  });
+}
+
+const scrim = document.getElementById('ak-scrim');
+let activeDrawer = null, lastTrigger = null;
+function openDrawer(drawer, trigger) {
+  if (activeDrawer) closeDrawers(false);
+  activeDrawer = drawer;
+  lastTrigger = trigger || document.activeElement;
+  drawer.classList.add('is-open');
+  scrim.classList.add('is-open');
+  if (trigger && trigger.id === 'ak-nav-btn') trigger.setAttribute('aria-expanded', 'true');
+  const focusable = drawer.querySelector('button, a[href]');
+  if (focusable) focusable.focus();
+}
+function closeDrawers(restore = true) {
+  if (!activeDrawer) return;
+  activeDrawer.classList.remove('is-open');
+  scrim.classList.remove('is-open');
+  document.getElementById('ak-nav-btn').setAttribute('aria-expanded', 'false');
+  activeDrawer = null;
+  if (restore && lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+}
+scrim.addEventListener('click', () => closeDrawers(true));
+document.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => closeDrawers(true)));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && activeDrawer) closeDrawers(true); });
+
+document.getElementById('ak-nav-btn').addEventListener('click', (e) => openDrawer(document.getElementById('ak-nav-drawer'), e.currentTarget));
+cards.forEach((c) => c.addEventListener('click', () => {
+  document.getElementById('ak-d-code').textContent = c.dataset.code;
+  document.getElementById('ak-d-title').textContent = c.dataset.title;
+  document.getElementById('ak-d-stack').textContent = c.dataset.stack;
+  document.getElementById('ak-d-summary').textContent = c.dataset.summary;
+  openDrawer(document.getElementById('ak-tpl-drawer'), c);
+}));
+</script>
+</body>
+</html>

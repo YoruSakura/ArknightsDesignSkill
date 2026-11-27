@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KINETIC ID — Endfield UI 分屏登录与 3 步设备激活向导样板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,700..900&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Outfit:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../resources/endfield-standalone.css">
+</head>
+<body class="ef-scope">
+  <!-- 原型 4：工业编辑风分屏登录与 3 步硬件激活向导（.ef-auth-shell） -->
+  <main class="ef-auth-shell">
+    <!-- 左栏：恒深墨品牌画册栏（自带暗态语义令牌，亮色宿主下零低对比失效） -->
+    <section class="ef-auth-brand" aria-label="KINETIC ID 硬件激活说明">
+      <div aria-hidden="true" class="contour ef-landing-hero__bg"></div>
+      <span aria-hidden="true" class="ghost-hatch ef-hero__ghost">//ACCESS</span>
+
+      <div class="ef-auth-brand__top">
+        <a class="ef-site-header__brand" href="./endfield-landing.html" aria-label="返回 KINETIC LAB">
+          <span class="ef-site-header__mark" aria-hidden="true">KL</span>
+          <span>KINETIC LAB</span>
+        </a>
+      </div>
+
+      <div class="ef-auth-brand__body">
+        <span class="ef-section-title__meta">▼ // KINETIC ID · HARDWARE &amp; FIRMWARE REGISTRY</span>
+        <h1 class="ef-auth-brand__title">绑定精密声学硬件，<br>解锁固件签名与校音档案</h1>
+        <div aria-hidden="true" class="ef-reg-strip ef-landing-hero__reg">
+          <span class="m"></span><span class="c"></span><span class="y"></span><span class="rule"></span>
+        </div>
+        <p class="ef-auth-brand__lead">
+          使用您的 KINETIC ID 登录管理已购序列号，或通过三步向导完成新机防伪核验、质保注册与本地离线校准包下载。
+        </p>
+        <ul class="ef-auth-brand__list">
+          <li>单屏严守唯一信号黄主行动按钮，纸墨高对比可读</li>
+          <li>完整演示表单校验报错态、6 格 OTP 自动前进与步骤条进度</li>
+          <li>零后台侧轨、零无关监控卡片，专注认证与引导任务</li>
+        </ul>
+      </div>
+
+      <div class="ef-auth-brand__foot">
+        <span>ENDFIELD UI // AUTH &amp; ONBOARDING ARCHETYPE</span>
+        <span>SERIAL VERIFIED · OFFLINE FIRMWARE</span>
+      </div>
+    </section>
+
+    <!-- 右栏：自适应纸白/烟黑表单舞台 -->
+    <section class="ef-auth-card" aria-label="登录或三步设备激活">
+      <div class="ef-auth-card__bar">
+        <a class="ef-btn ef-btn--sm" href="./index.html">← 全原型总览</a>
+        <div role="group" aria-label="外观模式切换" class="ef-site-header__switch">
+          <button type="button" id="ef-btn-light" class="ef-btn ef-btn--sm" aria-pressed="true" onclick="toggleTheme('light')">纸白</button>
+          <button type="button" id="ef-btn-dark" class="ef-btn ef-btn--sm" aria-pressed="false" onclick="toggleTheme('dark')">烟黑</button>
+        </div>
+      </div>
+
+      <div class="ef-auth-card__inner">
+        <!-- 认证模式双态切换 -->
+        <div class="ef-row">
+          <button type="button" class="ef-filter-chip is-selected" id="ef-mode-login" aria-pressed="true" onclick="setMode('login')">账户登录</button>
+          <button type="button" class="ef-filter-chip" id="ef-mode-wizard" aria-pressed="false" onclick="setMode('wizard')">3 步激活新设备</button>
+        </div>
+
+        <!-- A. 账户登录表单（唯一切角信号黄主按钮） -->
+        <form id="ef-login-form" class="ef-stack" novalidate>
+          <div>
+            <h2 class="ef-auth-card__title">登录 KINETIC ID</h2>
+            <p class="ef-auth-card__sub">输入注册邮箱与密码以访问您的硬件保修与固件库。</p>
+          </div>
+
+          <div class="ef-field" id="ef-login-email-field">
+            <label class="ef-field__label" for="ef-login-email">注册邮箱 <span class="ef-field__req">*</span></label>
+            <input id="ef-login-email" class="ef-input-box" type="email" placeholder="studio@example.com" autocomplete="email" required>
+            <span class="ef-field__error" id="ef-login-email-err" hidden>请输入格式正确的电子邮箱地址。</span>
+          </div>
+
+          <div class="ef-field" id="ef-login-pwd-field">
+            <label class="ef-field__label" for="ef-login-pwd">访问密码 <span class="ef-field__req">*</span></label>
+            <input id="ef-login-pwd" class="ef-input-box" type="password" placeholder="至少 8 位字符" autocomplete="current-password" required>
+            <span class="ef-field__error" id="ef-login-pwd-err" hidden>密码长度须不少于 8 位字符。</span>
+          </div>
+
+          <div class="ef-auth-actions">
+            <label class="ef-check">
+              <input type="checkbox" checked>
+              <span>保持本机登录状态</span>
+            </label>
+            <button type="button" class="ef-btn ef-btn--sm" onclick="setMode('wizard')">新购设备？去激活</button>
+          </div>
+
+          <button type="submit" class="ef-btn ef-btn--cut ef-btn--block">登录并同步档案</button>
+
+          <div class="ef-alert ef-alert--success" id="ef-login-ok" role="status" hidden>
+            <strong>登录验证成功：</strong>已同步 2 台已登记声学设备；可切换至「3 步激活新设备」测试 OTP 与完成横幅。
+          </div>
+        </form>
+
+        <!-- B. 3 步设备激活向导（.ef-steps + .ef-otp + .ef-completion-banner） -->
+        <div id="ef-wizard-panel" class="ef-stack" hidden>
+          <div>
+            <h2 class="ef-auth-card__title">新设备激活向导</h2>
+            <p class="ef-auth-card__sub">核验机身编码、输入 6 位一次性校验码并签发电子质保卡。</p>
+          </div>
+
+          <ol class="ef-steps" id="ef-steps" aria-label="激活向导步骤">
+            <li class="ef-step is-current" data-step="1">
+              <div class="ef-step__head"><span class="ef-step__badge">01</span><span class="ef-step__line"></span></div>
+              <span class="ef-step__title">机身编码</span>
+            </li>
+            <li class="ef-step" data-step="2">
+              <div class="ef-step__head"><span class="ef-step__badge">02</span><span class="ef-step__line"></span></div>
+              <span class="ef-step__title">OTP 核验</span>
+            </li>
+            <li class="ef-step" data-step="3">
+              <div class="ef-step__head"><span class="ef-step__badge">03</span><span class="ef-step__line"></span></div>
+              <span class="ef-step__title">签发完成</span>
+            </li>
+          </ol>
+
+          <!-- Step 1 -->
+          <div id="ef-wiz-s1" class="ef-stack">
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-wiz-sn">机身序列号 <span class="ef-field__req">*</span></label>
+              <input id="ef-wiz-sn" class="ef-input-box" type="text" placeholder="例如：KL04-2026-8841" autocomplete="off">
+              <span class="ef-field__help">刻于机身底板铝合金铭牌右下角。</span>
+              <span class="ef-field__error" id="ef-wiz-sn-err" hidden>请输入至少 6 位机身序列号。</span>
+            </div>
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-wiz-mail">绑定邮箱 <span class="ef-field__req">*</span></label>
+              <input id="ef-wiz-mail" class="ef-input-box" type="email" placeholder="owner@example.com" autocomplete="email">
+              <span class="ef-field__error" id="ef-wiz-mail-err" hidden>请填写有效邮箱以接收 6 位激活校验码。</span>
+            </div>
+            <button type="button" class="ef-btn ef-btn--cut ef-btn--block" id="ef-wiz-next1">下一步：校验 OTP</button>
+          </div>
+
+          <!-- Step 2 -->
+          <div id="ef-wiz-s2" class="ef-stack" hidden>
+            <div class="ef-field">
+              <label class="ef-field__label" for="ef-otp-0">6 位安全校验码（输入任意 6 位数字测试）</label>
+              <div class="ef-otp" id="ef-otp-group">
+                <input id="ef-otp-0" class="ef-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 1 位">
+                <input class="ef-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 2 位">
+                <input class="ef-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 3 位">
+                <span class="ef-otp__dash" aria-hidden="true"></span>
+                <input class="ef-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 4 位">
+                <input class="ef-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 5 位">
+                <input class="ef-otp__cell" type="text" inputmode="numeric" maxlength="1" aria-label="校验码第 6 位">
+              </div>
+              <span class="ef-field__error" id="ef-wiz-otp-err" hidden>请完整输入 6 位数字校验码。</span>
+            </div>
+            <div class="ef-auth-actions">
+              <button type="button" class="ef-btn" id="ef-wiz-prev2">← 返回上一步</button>
+              <button type="button" class="ef-btn ef-btn--cut" id="ef-wiz-next2">确认并签发质保</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div id="ef-wiz-s3" class="ef-stack" hidden>
+            <div class="ef-completion-banner" role="status">
+              <span class="ef-completion-banner__word" aria-hidden="true">VERIFIED</span>
+              <div>
+                <div class="ef-completion-banner__title">设备激活与质保签发完成</div>
+                <p class="ef-auth-card__sub" id="ef-wiz-done-desc">序列号已绑定至您的 KINETIC ID。</p>
+              </div>
+            </div>
+            <div class="ef-auth-actions">
+              <a class="ef-btn ef-btn--action" href="./endfield-landing.html">返回硬件官网</a>
+              <button type="button" class="ef-btn" id="ef-wiz-restart">重新演练向导</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ef-auth-card__bar">
+        <span class="ef-billing-note">ENDFIELD AUTH // CUT-CORNER CTA</span>
+        <a class="ef-btn ef-btn--sm" href="./prts-auth.html">对照 PRTS 登录页 ↗</a>
+      </div>
+    </section>
+  </main>
+
+<script>
+const root = document.documentElement;
+function applyTheme(t, persist) {
+  root.dataset.theme = t;
+  if (persist) { try { localStorage.setItem('ef-auth-theme', t); } catch (e) {} }
+  document.getElementById('ef-btn-light').setAttribute('aria-pressed', String(t === 'light'));
+  document.getElementById('ef-btn-dark').setAttribute('aria-pressed', String(t === 'dark'));
+}
+function toggleTheme(t) { applyTheme(t, true); }
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('ef-auth-theme'); } catch (e) {}
+  applyTheme(saved === 'dark' || saved === 'light' ? saved : (root.dataset.theme || 'light'), false);
+})();
+
+/* 登录 <-> 向导切换 */
+function setMode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('ef-mode-login').classList.toggle('is-selected', isLogin);
+  document.getElementById('ef-mode-login').setAttribute('aria-pressed', String(isLogin));
+  document.getElementById('ef-mode-wizard').classList.toggle('is-selected', !isLogin);
+  document.getElementById('ef-mode-wizard').setAttribute('aria-pressed', String(!isLogin));
+  document.getElementById('ef-login-form').hidden = !isLogin;
+  document.getElementById('ef-wizard-panel').hidden = isLogin;
+}
+
+/* 登录表单校验与报错焦点 */
+document.getElementById('ef-login-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const email = document.getElementById('ef-login-email');
+  const pwd = document.getElementById('ef-login-pwd');
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+  const pwdOk = pwd.value.length >= 8;
+
+  email.classList.toggle('is-invalid', !emailOk);
+  email.setAttribute('aria-invalid', String(!emailOk));
+  document.getElementById('ef-login-email-err').hidden = emailOk;
+
+  pwd.classList.toggle('is-invalid', !pwdOk);
+  pwd.setAttribute('aria-invalid', String(!pwdOk));
+  document.getElementById('ef-login-pwd-err').hidden = pwdOk;
+
+  document.getElementById('ef-login-ok').hidden = !(emailOk && pwdOk);
+  if (!emailOk) email.focus();
+  else if (!pwdOk) pwd.focus();
+});
+
+/* 3 步设备激活向导与 OTP 自动前进 */
+function showWizStep(n) {
+  [1, 2, 3].forEach((s) => {
+    document.getElementById(`ef-wiz-s${s}`).hidden = s !== n;
+    const li = document.querySelector(`#ef-steps [data-step="${s}"]`);
+    li.classList.toggle('is-done', s < n);
+    li.classList.toggle('is-current', s === n);
+  });
+}
+
+const otpCells = [...document.querySelectorAll('#ef-otp-group .ef-otp__cell')];
+otpCells.forEach((cell, i) => {
+  cell.addEventListener('input', () => {
+    cell.value = cell.value.replace(/\D/g, '').slice(-1);
+    if (cell.value && otpCells[i + 1]) otpCells[i + 1].focus();
+  });
+  cell.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' && !cell.value && otpCells[i - 1]) otpCells[i - 1].focus();
+  });
+});
+
+document.getElementById('ef-wiz-next1').addEventListener('click', () => {
+  const sn = document.getElementById('ef-wiz-sn');
+  const mail = document.getElementById('ef-wiz-mail');
+  const snOk = sn.value.trim().length >= 6;
+  const mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.value.trim());
+
+  sn.classList.toggle('is-invalid', !snOk);
+  document.getElementById('ef-wiz-sn-err').hidden = snOk;
+  mail.classList.toggle('is-invalid', !mailOk);
+  document.getElementById('ef-wiz-mail-err').hidden = mailOk;
+
+  if (!snOk) { sn.focus(); return; }
+  if (!mailOk) { mail.focus(); return; }
+  showWizStep(2);
+  otpCells[0].focus();
+});
+document.getElementById('ef-wiz-prev2').addEventListener('click', () => showWizStep(1));
+document.getElementById('ef-wiz-next2').addEventListener('click', () => {
+  const code = otpCells.map((c) => c.value.trim()).join('');
+  const ok = code.length === 6;
+  document.getElementById('ef-wiz-otp-err').hidden = ok;
+  if (!ok) {
+    (otpCells.find((c) => !c.value) || otpCells[0]).focus();
+    return;
+  }
+  const sn = document.getElementById('ef-wiz-sn').value.trim().toUpperCase();
+  document.getElementById('ef-wiz-done-desc').textContent = `序列号 ${sn} 已激活，3 年官方质保与校准固件已归档。`;
+  showWizStep(3);
+});
+document.getElementById('ef-wiz-restart').addEventListener('click', () => {
+  otpCells.forEach((c) => { c.value = ''; });
+  showWizStep(1);
+});
+</script>
+</body>
+</html>

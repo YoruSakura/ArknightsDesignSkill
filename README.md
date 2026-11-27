@@ -35,9 +35,9 @@
 
 ## 快速开始
 
-### 在其他前端项目中接入本 Skill（正式版 `v1.3`）
+### 在其他前端项目中接入本 Skill（正式版 `v1.4`）
 
-推荐下载 [GitHub Releases · v1.3](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.3) 中的压缩包解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
+推荐下载 [GitHub Releases · v1.4](https://github.com/YoruSakura/ArknightsDesignSkill/releases/tag/v1.4) 中的压缩包解压，或直接复制仓库内整理好的纯运行时发布包 [`release/arknights-design`](./release/arknights-design)（已剔除 `AGENTS.md` 与维护脚本，零断链）：
 
 ```bash
 # 方式一（推荐接入）：直接复制已打包的 Skill 文件夹
@@ -72,12 +72,17 @@ python3 -m http.server 8080
 
 | 页面 | 对应网站原型 | 核心覆盖内容 |
 | :--- | :--- | :--- |
+| [`examples/index.html`](./examples/index.html) | **双体系 × 五原型全景展示中心** | 统一导航入口，按 PRTS / Endfield 筛选直达全部 10 份零依赖整页样板 |
+| [`examples/prts-landing.html`](./examples/prts-landing.html) | **PRTS · 原型 1+3（商业产品落地页与检索画廊）** | 亮/暗双极性商业首屏、6 项无框特性网格、关键词搜索 + 分类芯片 + 零结果空态（`.ak-empty`）、阶梯定价与详情抽屉 |
 | [`examples/endfield-landing.html`](./examples/endfield-landing.html) | **Endfield · 原型 1+3（无侧栏品牌官网落地页）** | 顶边黄进度线、无侧栏 `.ef-site-header`、镂空巨字首屏、信号黄换气带、无框特性、胶囊筛选画廊 + 右侧规格抽屉、年/月付定价切换、FAQ 手风琴与预约弹窗 |
 | [`examples/prts-editorial.html`](./examples/prts-editorial.html) | **PRTS · 原型 2+3（无侧栏长文专栏与画廊）** | 纸昼/暗夜双正典阅读、顶边 2px 进度线、`72ch` 舒适长文 `.ak-prose-shell` + 粘性目录、文内 WAI-ARIA 代码页签、可点屏蔽批注、筛选画廊 + 速览抽屉与订阅表单 |
+| [`examples/endfield-docs.html`](./examples/endfield-docs.html) | **Endfield · 原型 2（三栏技术文档与 API 站）** | 完整 `.ef-docs-shell` 三栏骨架：左树实时关键词过滤与空态（`.ef-empty`）、中栏 `72ch` `.ef-prose` 与响应式 API 参数表、右栏粘性 `.ef-toc`、多框架代码页签与上下篇导航 |
+| [`examples/prts-auth.html`](./examples/prts-auth.html) | **PRTS · 原型 4（分屏登录与 3 步入驻向导）** | `.ak-auth-shell` 恒深黑建筑品牌栏 + 自适应表单舞台、邮箱/口令错误校验态与焦点引导、`.ak-stepper` 3 步向导、6 格验证码与成功回执 |
+| [`examples/endfield-auth.html`](./examples/endfield-auth.html) | **Endfield · 原型 4（分屏登录与 3 步设备激活）** | `.ef-auth-shell` 恒深墨等高线品牌栏 + 唯一切角黄行动钮、实时表单报错反馈、`.ef-steps` 3 步进度、6 格 `.ef-otp` 自动前进与 `.ef-completion-banner` 签发横幅 |
 | [`examples/prts-boilerplate.html`](./examples/prts-boilerplate.html) | **PRTS · 原型 1（暗色概念展示门户）** | 漂浮双语顶栏 + 声波开关、三角暗格斜光画布、右侧数字标尺窄轨、开放 Hero + 干员焦点滑轨选卡、去框化指标、1px 标尺线与无边框清单、错位双列新闻卡、四列暗幕入口与极简页脚 |
 | [`examples/endfield-boilerplate.html`](./examples/endfield-boilerplate.html) | **Endfield · 原型 5（工业调度控制台）** | 左侧常驻窄轨、镂空巨字叠加排版、Hero、信号黄色带、左竖线统计块、深色数据行带（含内嵌 Sparkline 走势图）、仓储物品格与完整 Footer/回到顶部 |
-| [`examples/prts-components.html`](./examples/prts-components.html) | **PRTS · 全组件与百科壳目录** | Wiki 外壳与按钮/筛选芯片、`<details>`/受控下拉菜单、气泡卡片、WAI-ARIA 多态页签、表单、弹窗/抽屉/Toast、骨架屏/进度、干员/技能/模组/声波领域件与官网建筑扩展组件 |
-| [`examples/endfield-components.html`](./examples/endfield-components.html) | **Endfield · 全组件与动效目录** | 按钮族与展开条、三态页签、分页/导航器/步骤条、浅/强暗菜单、实色底点阵弹窗/抽屉、方圆↔菱形表单、Combobox/TagInput/文件上传/日历/排期/取景框 HUD/Loader 动效重播与跑马灯 |
+| [`examples/prts-components.html`](./examples/prts-components.html) | **PRTS · 原型 5（百科侧栏壳与全组件目录）** | Wiki 外壳与按钮/筛选芯片、`<details>`/受控下拉菜单、气泡卡片、WAI-ARIA 多态页签、表单、弹窗/抽屉/Toast、骨架屏/进度、干员/技能/模组/声波领域件与官网建筑扩展组件 |
+| [`examples/endfield-components.html`](./examples/endfield-components.html) | **Endfield · 全组件与 16 关键帧动效目录** | 按钮族与展开条、三态页签、分页/导航器/步骤条、浅/强暗菜单、实色底点阵弹窗/抽屉、方圆↔菱形表单、Combobox/TagInput/文件上传/日历/排期/取景框 HUD/Loader 动效重播与跑马灯 |
 
 > **字体与离线环境说明**：原版规范提及的商业字体 `Bender`、`Novecento Sans Wide` 未随本仓库分发，样式表默认回退至 `Oswald`、`Chakra Petch`、`Archivo`、`Outfit`、`Space Grotesk`、`JetBrains Mono` 与 `Noto Sans SC`（国内网络可用 `@fontsource` 或本地 `@font-face` 自托管，两份 `components-catalog.md` 均附完整引入代码）。
 
@@ -107,13 +112,18 @@ ArknightsDesignSkill/
 │   ├── prts-tokens.css                       # PRTS Design 纯令牌变量文件
 │   ├── endfield-standalone.css               # Endfield UI 零依赖纯 CSS 样式表（令牌 + 16 关键帧动画 + 母题 + 8.1–8.8 全套组件 + Skill 补丁层）
 │   └── endfield-theme.css                    # Endfield UI Tailwind CSS v4 @theme / @utility 专用样式
-├── examples/                                 # 【双体系多原型样板（落地页/专栏/门户/控制台）与全组件目录】
-│   ├── endfield-landing.html
-│   ├── prts-editorial.html
-│   ├── prts-boilerplate.html
-│   ├── prts-components.html
-│   ├── endfield-boilerplate.html
-│   └── endfield-components.html
+├── examples/                                 # 【2 体系 × 5 原型全景样板（10 份独立页 + 总览入口）】
+│   ├── index.html                            # 双体系 × 五原型全景展示中心
+│   ├── prts-landing.html                     # PRTS 商业产品落地页 + 多维检索画廊与空态
+│   ├── prts-editorial.html                   # PRTS 72ch 长文专栏 + 作品画廊
+│   ├── prts-auth.html                        # PRTS 分屏登录 + 3 步入驻向导
+│   ├── prts-boilerplate.html                 # PRTS 暗色官网概念门户
+│   ├── prts-components.html                  # PRTS 百科侧栏壳 + 全组件目录
+│   ├── endfield-landing.html                 # Endfield 工业编辑风品牌落地页
+│   ├── endfield-docs.html                    # Endfield 三栏技术文档 + API 参考站
+│   ├── endfield-auth.html                    # Endfield 分屏登录 + 3 步设备激活向导
+│   ├── endfield-boilerplate.html             # Endfield 工业调度控制台
+│   └── endfield-components.html              # Endfield 全组件与 16 关键帧动效目录
 ├── release/                                  # 【即用型 Skill 发布产物】（由 scripts/package-release.py 生成）
 │   ├── README.md
 │   ├── arknights-design/                     # 独立纯净运行时 Skill 文件夹（无维护脚手架）
