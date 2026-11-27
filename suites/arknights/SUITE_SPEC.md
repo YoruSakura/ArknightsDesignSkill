@@ -1,6 +1,6 @@
 # SUITE_SPEC — 明日方舟本家专题子 Skill 规范与验收红线
 
-> 本规范沉淀自 `v1.1`–`v1.3` 的历史视觉复盘（见仓库根目录 [`AGENTS.md`](../../AGENTS.md)）。凡在 `suite/arknights` 分支新建或迭代任何本家专题子 Skill，必须逐条遵守。
+> 本规范沉淀自 `v1.1`–`v1.4` 的历史视觉复盘（见仓库根目录 [`AGENTS.md`](../../AGENTS.md)）。凡在 `suite/arknights` 分支新建或迭代任何本家专题子 Skill，必须逐条遵守。
 
 ---
 

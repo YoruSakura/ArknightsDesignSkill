@@ -1,6 +1,6 @@
 # Arknights Theme Suite — 明日方舟本家特色专题设计套组
 
-> **所属分支**：`suite/arknights`（基于 `main` 的通用 `v1.3` 基座演进，不污染 `main` 纯净通用包）  
+> **所属分支**：`suite/arknights`（基于 `main` 的通用 `v1.4` 基座演进，不污染 `main` 纯净通用包）  
 > **创建与验收规范**：动工任何新专题前必读 [`SUITE_SPEC.md`](./SUITE_SPEC.md)
 
 ## 定位与设计边界
@@ -30,7 +30,7 @@
 3. **补齐规范、样式与整页样板**：替换 `<slug>` 占位符，完善 `SKILL.md`、`references/`、`resources/theme.css` 与 `examples/index.html`。
 4. **打包与校验**：
    ```bash
-   python3 scripts/package-release.py --version v1.3-arknights-dev
+   python3 scripts/package-release.py --version v1.4-arknights-dev
    python3 scripts/verify.py --render --out /tmp/arknights-suite-verify
    ```
    待 1440px / 390px / 375px 实渲染与小模型冷启动盲测均通过后，再合入对应发布流程。
